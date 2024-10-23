@@ -1,0 +1,42 @@
+<div
+  class="menu-toggle-wrap w-6 h-6 bg-grey-100 block transition-colors {{
+    isMenuOpen ? 'fill-gray-100' : 'fill-gray-700'
+  }} scale-100 group-hover:scale-75 transition-transform"
+>
+  <svg
+    viewBox="0 0 26.458332 26.458333"
+    version="1.1"
+    id="svg1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:svg="http://www.w3.org/2000/svg"
+  >
+    <defs id="defs1" />
+    <g id="layer1">
+      <path
+        class="m {{ isMenuOpen ? 'open' : null }}"
+        data-testid="nav-toggle-m"
+        d="M 0,11.377083 H 26.458332 V 15.08125 H 0 Z"
+      />
+      <path
+        class="b {{ isMenuOpen ? 'open' : null }}"
+        data-testid="nav-toggle-b"
+        d="m 0,22.754167 h 26.458333 l 1e-6,3.704166 H 0 Z"
+      />
+      <path
+        class="bo {{ isMenuOpen ? 'open' : null }}"
+        data-testid="nav-toggle-b-open"
+        d="M 0,23.8125 23.8125,0 26.458334,2.6458333 2.6458334,26.458333 Z"
+      />
+      <path
+        class="t {{ isMenuOpen ? 'open' : null }}"
+        data-testid="nav-toggle-t-closed"
+        d="m 0,0 h 26.458334 l -1e-6,3.7041667 H 0 Z"
+      />
+      <path
+        class="to {{ isMenuOpen ? 'open' : null }}"
+        data-testid="nav-toggle-t-open"
+        d="M 2.6458333,0 26.458334,23.8125 23.8125,26.458333 0,2.6458333 Z"
+      />
+    </g>
+  </svg>
+</div>
