@@ -1,0 +1,27 @@
+@import url("https://fonts.googleapis.com/css2?family=Arvo:wght@700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-primary: "Montserrat", sans-serif;
+  --font-headline: "Arvo", serif;
+  --color-primary: #1dce52;
+}
+
+html {
+  font-size: 16px;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: var(--font-primary);
+  font-weight: 400;
+  font-size: 1rem;
+}
+
+h1 {
+  font-family: var(--font-headline);
+  font-weight: 700;
+}

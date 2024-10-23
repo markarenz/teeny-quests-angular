@@ -1,0 +1,46 @@
+.nav-root {
+  z-index: 99;
+  opacity: 0;
+  height: 100%;
+  pointer-events: none;
+  &.menuOpen {
+    pointer-events: all;
+    opacity: 1;
+  }
+  a {
+    font-family: var(--font-headline);
+    font-size: 2rem;
+  }
+}
+
+.nav-link {
+  span {
+    position: relative;
+    display: inline-block;
+    &:after {
+      content: "";
+      position: absolute;
+      bottom: 0px;
+      display: block;
+      width: 0;
+      height: 6px;
+      background: var(--color-primary);
+      transition: width 0.3s;
+    }
+  }
+  &:hover {
+    span {
+      &:after {
+        width: 100%;
+      }
+    }
+  }
+  &:focus {
+    outline: none;
+    span {
+      &:after {
+        width: 100%;
+      }
+    }
+  }
+}

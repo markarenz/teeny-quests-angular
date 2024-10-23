@@ -1,0 +1,9 @@
+.active {
+  background-color: yellow;
+}
+
+.toggle-root {
+  position: relative;
+  z-index: 100;
+  border-radius: 100%;
+}

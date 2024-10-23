@@ -1,0 +1,35 @@
+.user-login-root {
+  z-index: 2;
+  &.active {
+    z-index: 101;
+  }
+}
+
+.user-menu {
+  position: absolute;
+  top: 64px;
+  left: 1%;
+  width: 98%;
+  background-color: white;
+  border: 1px solid #000;
+  padding: 8px;
+  @media screen and (min-width: 768px) {
+    left: -76px;
+    top: 56px;
+    width: 200px;
+  }
+}
+.user-link {
+  display: block;
+  width: 100%;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: center;
+  background-color: #eee;
+  padding: 8px;
+  transition: 0.25s all ease;
+  &:hover {
+    background-color: #333;
+    color: #eee;
+  }
+}

@@ -1,0 +1,10 @@
+.angular/
+.vscode/
+dist/
+.build-analytics
+.ng-dev.user*
+.log
+node_modules/
+secret.ts
+.editorconfig
+.DS_Store
