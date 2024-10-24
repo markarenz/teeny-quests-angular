@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "deploy": "aws s3 sync dist/teeny-quests-angular/browser s3://teeny-quests",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
