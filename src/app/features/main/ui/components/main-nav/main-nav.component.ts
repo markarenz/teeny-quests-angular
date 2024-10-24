@@ -4,12 +4,13 @@ import { RouterLink } from '@angular/router';
 import { ContainerComponent } from '@main/ui/components/container/container.component';
 import { MainAppService } from '@main/services/main-app-service';
 import { Subscription } from 'rxjs';
+import { ModalBgComponent } from '../modal-bg/modal-bg.component';
 import { mainMenuData } from '@content/menus/main-menu-data';
 
 @Component({
   selector: 'app-main-nav',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, ContainerComponent],
+  imports: [RouterLink, RouterLinkActive, ContainerComponent, ModalBgComponent],
   templateUrl: './main-nav.component.html',
   styleUrl: './main-nav.component.css',
 })
@@ -33,7 +34,7 @@ export class MainNavComponent {
     this.subscription.unsubscribe();
   }
 
-  handleLinkClick() {
+  handleToggleMenu() {
     this._mainAppService.toggleMenu();
   }
   menuItems = mainMenuData;
