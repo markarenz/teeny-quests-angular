@@ -14,10 +14,10 @@ export class AuthGoogleService {
 
   profile = signal<any>(null);
 
-  private profileSub = new BehaviorSubject<any>(true);
+  private profileSub = new BehaviorSubject<any>({});
   profileObs = this.profileSub.asObservable();
 
-  private isLoggedIn = new BehaviorSubject<boolean>(true);
+  private isLoggedIn = new BehaviorSubject<boolean>(false);
   isLoggedInObs = this.isLoggedIn.asObservable();
 
   constructor() {
@@ -31,7 +31,20 @@ export class AuthGoogleService {
 
     this.oAuthService.loadDiscoveryDocumentAndTryLogin().then(() => {
       if (this.oAuthService.hasValidIdToken()) {
-        this.profile.set(this.oAuthService.getIdentityClaims());
+        const profileData = this.oAuthService.getIdentityClaims();
+        const initials =
+          profileData['name'] && profileData['name'].split(' ').length > 1
+            ? profileData['name']
+                .split(' ')
+                .slice(0, 2)
+                .map((n: string) => n[0].toUpperCase())
+                .join('')
+            : '';
+        this.profile.set(profileData);
+        this.profileSub.next({
+          ...profileData,
+          initials,
+        });
         this.isLoggedIn.next(true);
       }
     });
@@ -43,15 +56,16 @@ export class AuthGoogleService {
 
   logout() {
     this.oAuthService.revokeTokenAndLogout();
-
-    this.oAuthService.logOut();
     this.profile.set(null);
     this.isLoggedIn.next(false);
   }
 
+  getIsLoggedIn() {
+    return this.isLoggedIn.value;
+  }
+
   getProfile() {
     const t = this.profile();
-    console.log('T', t);
     return this.profile();
   }
 }

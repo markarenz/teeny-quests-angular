@@ -4,6 +4,26 @@
     z-index: 101;
   }
 }
+.user-menu-toggle {
+  border-radius: 100%;
+  outline: 2px solid #333;
+  transition: 0.25s all ease;
+  &.active {
+    outline-color: #eee;
+  }
+  &:hover {
+    outline-offset: 4px;
+  }
+}
+
+.initials {
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .user-menu {
   position: absolute;
@@ -19,6 +39,7 @@
     width: 200px;
   }
 }
+
 .user-link {
   display: block;
   width: 100%;
@@ -31,5 +52,16 @@
   &:hover {
     background-color: #333;
     color: #eee;
+  }
+}
+
+.icon {
+  transition: 0.25s fill ease;
+  &.icon-light {
+    fill: #fff;
+  }
+
+  &.icon-dark {
+    fill: #333;
   }
 }

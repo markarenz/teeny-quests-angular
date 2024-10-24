@@ -8,3 +8,4 @@ node_modules/
 secret.ts
 .editorconfig
 .DS_Store
+*.notes.md

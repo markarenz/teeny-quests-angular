@@ -1,3 +1,8 @@
+.nav-wrap {
+  z-index: 99;
+  opacity: 0;
+  height: 100%;
+}
 .nav-root {
   z-index: 99;
   opacity: 0;

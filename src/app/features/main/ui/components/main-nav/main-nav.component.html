@@ -1,20 +1,14 @@
-@if (isMenuOpen) {
 <div
   class="nav-root fixed top-0 left-0 w-screen h-scren {{
     isMenuOpen ? 'menuOpen' : null
   }}"
 >
-  <button
-    data-testid="user-menu-underlay"
-    aria-hidden="true"
-    role="button"
-    (click)="handleLinkClick()"
-    class="under-menu fixed left-0 top-0 w-screen h-screen bg-gray-800/75 z-1"
-  ></button>
-
+  <app-modal-bg (onBgClick)="handleToggleMenu()" />
   <app-container>
     <nav
-      class="py-12 w-full h-screen flex items-center justify-center text-gray-100"
+      class="py-12 w-full h-screen flex items-center justify-center text-gray-100 {{
+        isMenuOpen ? 'menuOpen' : null
+      }}"
     >
       <ul class="flex flex-col text-center">
         @for (menuItem of menuItems; track menuItem.id) {
@@ -26,7 +20,7 @@
             tabindex="{{ isMenuOpen ? 0 : -1 }}"
             [routerLinkActiveOptions]="{ exact: true }"
             ariaCurrentWhenActive="page"
-            (click)="handleLinkClick()"
+            (click)="handleToggleMenu()"
           >
             <span>
               {{ menuItem.label }}
@@ -38,5 +32,3 @@
     </nav>
   </app-container>
 </div>
-
-}
