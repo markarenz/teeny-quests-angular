@@ -43,6 +43,7 @@ export class AuthGoogleService {
         this.profile.set(profileData);
         this.profileSub.next({
           ...profileData,
+          userId: profileData['sub'],
           initials,
         });
         this.isLoggedIn.next(true);
