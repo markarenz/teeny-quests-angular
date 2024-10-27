@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { authConfig } from './auth.config';
 import { BehaviorSubject } from 'rxjs';
+import { getUserByIdOrCreateUser } from './auth-service-utils';
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +21,9 @@ export class AuthGoogleService {
   private isLoggedIn = new BehaviorSubject<boolean>(false);
   isLoggedInObs = this.isLoggedIn.asObservable();
 
+  private user = new BehaviorSubject<any>(false);
+  userObs = this.user.asObservable();
+
   constructor() {
     this.initConfiguration();
   }
@@ -29,9 +33,10 @@ export class AuthGoogleService {
 
     this.oAuthService.setupAutomaticSilentRefresh();
 
-    this.oAuthService.loadDiscoveryDocumentAndTryLogin().then(() => {
+    this.oAuthService.loadDiscoveryDocumentAndTryLogin().then(async () => {
       if (this.oAuthService.hasValidIdToken()) {
         const profileData = this.oAuthService.getIdentityClaims();
+        const userId = profileData['sub'];
         const initials =
           profileData['name'] && profileData['name'].split(' ').length > 1
             ? profileData['name']
@@ -43,9 +48,15 @@ export class AuthGoogleService {
         this.profile.set(profileData);
         this.profileSub.next({
           ...profileData,
-          userId: profileData['sub'],
+          userId,
           initials,
         });
+
+        const userData = getUserByIdOrCreateUser({
+          id: userId,
+        });
+        this.user.next(userData);
+
         this.isLoggedIn.next(true);
       }
     });

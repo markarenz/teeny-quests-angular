@@ -23,6 +23,7 @@
     "baseUrl": "./src",
     "paths": {
       "@app/*": ["app/*"],
+      "@config/*": ["config/*"],
       "@content/*": ["content/*"],
       "@editor/*": ["app/features/editor/*"],
       "@game/*": ["app/features/game/*"],
