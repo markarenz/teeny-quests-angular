@@ -13,9 +13,13 @@
       isUserMenuOpen ? 'active' : null
     }} w-12 h-12 block hover:scale-90 relative"
   >
-    @if(isLoggedIn && userProfile?.initials?.length > 0){
-    <div class="initials bg-primary text-gray-800">
-      {{ userProfile.initials }}
+    @if(isLoggedIn && user?.initials?.length > 0){
+    <div
+      class="initials bg-primary text-gray-800"
+      aria-label="user?.initials"
+      title="Logged in as {{ user?.user?.name }}"
+    >
+      {{ user.initials }}
     </div>
     } @else {
     <svg

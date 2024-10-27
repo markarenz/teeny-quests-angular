@@ -4,6 +4,7 @@ import { OAuthService } from 'angular-oauth2-oidc';
 import { authConfig } from './auth.config';
 import { BehaviorSubject } from 'rxjs';
 import { getUserByIdOrCreateUser } from './auth-service-utils';
+import { getInitialsFromName } from '@app/features/main/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -13,10 +14,9 @@ export class AuthGoogleService {
 
   private router = inject(Router);
 
-  profile = signal<any>(null);
-
-  private profileSub = new BehaviorSubject<any>({});
-  profileObs = this.profileSub.asObservable();
+  // profile = signal<any>(null);
+  // private profileSub = new BehaviorSubject<any>({});
+  // profileObs = this.profileSub.asObservable();
 
   private isLoggedIn = new BehaviorSubject<boolean>(false);
   isLoggedInObs = this.isLoggedIn.asObservable();
@@ -37,25 +37,13 @@ export class AuthGoogleService {
       if (this.oAuthService.hasValidIdToken()) {
         const profileData = this.oAuthService.getIdentityClaims();
         const userId = profileData['sub'];
-        const initials =
-          profileData['name'] && profileData['name'].split(' ').length > 1
-            ? profileData['name']
-                .split(' ')
-                .slice(0, 2)
-                .map((n: string) => n[0].toUpperCase())
-                .join('')
-            : '';
-        this.profile.set(profileData);
-        this.profileSub.next({
-          ...profileData,
-          userId,
-          initials,
-        });
-
-        const userData = getUserByIdOrCreateUser({
+        const userData = await getUserByIdOrCreateUser({
           id: userId,
         });
-        this.user.next(userData);
+        this.user.next({
+          initials: getInitialsFromName(userData?.name),
+          userData,
+        });
 
         this.isLoggedIn.next(true);
       }
@@ -68,16 +56,11 @@ export class AuthGoogleService {
 
   logout() {
     this.oAuthService.revokeTokenAndLogout();
-    this.profile.set(null);
+    this.user.next(null);
     this.isLoggedIn.next(false);
   }
 
   getIsLoggedIn() {
     return this.isLoggedIn.value;
-  }
-
-  getProfile() {
-    const t = this.profile();
-    return this.profile();
   }
 }

@@ -19,3 +19,6 @@ export const getRandomUsername = (): string => {
     `${nameWordlist.adjectives[idxAdjective]} ${nameWordlist.nouns[idxNoun]}`
   );
 };
+
+export const getInitialsFromName = (name: string): string =>
+  name.split(' ').reduce((acc, n) => acc + n[0].toUpperCase(), '');
