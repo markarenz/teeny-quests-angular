@@ -3,6 +3,9 @@ import { Router } from '@angular/router';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { authConfig } from './auth.config';
 import { BehaviorSubject } from 'rxjs';
+import { getUserByIdOrCreateUser } from './auth-service-utils';
+import { getInitialsFromName } from '@app/features/main/utils';
+import { User } from '../interfaces/types';
 
 @Injectable({
   providedIn: 'root',
@@ -12,13 +15,11 @@ export class AuthGoogleService {
 
   private router = inject(Router);
 
-  profile = signal<any>(null);
-
-  private profileSub = new BehaviorSubject<any>({});
-  profileObs = this.profileSub.asObservable();
-
   private isLoggedIn = new BehaviorSubject<boolean>(false);
   isLoggedInObs = this.isLoggedIn.asObservable();
+
+  private user = new BehaviorSubject<User | null>(null);
+  userObs = this.user.asObservable();
 
   constructor() {
     this.initConfiguration();
@@ -26,24 +27,17 @@ export class AuthGoogleService {
 
   initConfiguration() {
     this.oAuthService.configure(authConfig);
-
     this.oAuthService.setupAutomaticSilentRefresh();
-
-    this.oAuthService.loadDiscoveryDocumentAndTryLogin().then(() => {
+    this.oAuthService.loadDiscoveryDocumentAndTryLogin().then(async () => {
       if (this.oAuthService.hasValidIdToken()) {
         const profileData = this.oAuthService.getIdentityClaims();
-        const initials =
-          profileData['name'] && profileData['name'].split(' ').length > 1
-            ? profileData['name']
-                .split(' ')
-                .slice(0, 2)
-                .map((n: string) => n[0].toUpperCase())
-                .join('')
-            : '';
-        this.profile.set(profileData);
-        this.profileSub.next({
-          ...profileData,
-          initials,
+        const userId = profileData['sub'];
+        const userData = await getUserByIdOrCreateUser({
+          id: userId,
+        });
+        this.user.next({
+          ...userData,
+          initials: getInitialsFromName(userData?.name),
         });
         this.isLoggedIn.next(true);
       }
@@ -56,16 +50,11 @@ export class AuthGoogleService {
 
   logout() {
     this.oAuthService.revokeTokenAndLogout();
-    this.profile.set(null);
+    this.user.next(null);
     this.isLoggedIn.next(false);
   }
 
   getIsLoggedIn() {
     return this.isLoggedIn.value;
-  }
-
-  getProfile() {
-    const t = this.profile();
-    return this.profile();
   }
 }

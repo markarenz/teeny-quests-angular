@@ -17,7 +17,7 @@ export class LoginComponent {
   private authService = inject(AuthGoogleService);
 
   subscription: Subscription;
-  userProfile: any = null;
+  user: any = null;
   isLoggedIn: boolean = false;
   menuItems: any[] = [];
 
@@ -27,8 +27,8 @@ export class LoginComponent {
   }
 
   ngOnInit() {
-    this.subscription = this._authService.profileObs.subscribe((data: any) => {
-      this.userProfile = data;
+    this.subscription = this._authService.userObs.subscribe((data: any) => {
+      this.user = data;
     });
     this.subscription = this._authService.isLoggedInObs.subscribe(
       (data: any) => {
