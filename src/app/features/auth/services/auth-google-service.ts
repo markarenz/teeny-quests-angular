@@ -5,6 +5,7 @@ import { authConfig } from './auth.config';
 import { BehaviorSubject } from 'rxjs';
 import { getUserByIdOrCreateUser } from './auth-service-utils';
 import { getInitialsFromName } from '@app/features/main/utils';
+import { User } from '../interfaces/types';
 
 @Injectable({
   providedIn: 'root',
@@ -14,14 +15,10 @@ export class AuthGoogleService {
 
   private router = inject(Router);
 
-  // profile = signal<any>(null);
-  // private profileSub = new BehaviorSubject<any>({});
-  // profileObs = this.profileSub.asObservable();
-
   private isLoggedIn = new BehaviorSubject<boolean>(false);
   isLoggedInObs = this.isLoggedIn.asObservable();
 
-  private user = new BehaviorSubject<any>(false);
+  private user = new BehaviorSubject<User | null>(null);
   userObs = this.user.asObservable();
 
   constructor() {
@@ -30,9 +27,7 @@ export class AuthGoogleService {
 
   initConfiguration() {
     this.oAuthService.configure(authConfig);
-
     this.oAuthService.setupAutomaticSilentRefresh();
-
     this.oAuthService.loadDiscoveryDocumentAndTryLogin().then(async () => {
       if (this.oAuthService.hasValidIdToken()) {
         const profileData = this.oAuthService.getIdentityClaims();
@@ -41,10 +36,9 @@ export class AuthGoogleService {
           id: userId,
         });
         this.user.next({
+          ...userData,
           initials: getInitialsFromName(userData?.name),
-          userData,
         });
-
         this.isLoggedIn.next(true);
       }
     });
