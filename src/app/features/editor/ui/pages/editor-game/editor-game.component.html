@@ -1,0 +1,64 @@
+<app-main-layout [title]="title">
+  <app-container>
+    <div class="py-8">
+      <app-breadcrumbs [links]="breadcrumbLinks" />
+
+      <!-- if status is suspended, just display the status 
+    -- otherwise, display  a dropdown -->
+
+      <div class="relative mt-8 flex flex-col gap-4">
+        <div>
+          <label for="new-game--title" class="block text">Name</label>
+          <input
+            id="new-game--title"
+            type="text"
+            class="input w-full mt-1 p-1 rounded-md border-2 border-gray-400"
+            [(ngModel)]="game.title"
+            (ngModelChange)="validateForm()"
+          />
+        </div>
+        <div>
+          <label for="new-game--status" class="block text">Status</label>
+          <select
+            id="new-game--status"
+            class="input w-full mt-1 p-1 rounded-md border-2 border-gray-400"
+            [(ngModel)]="game.status"
+            (ngModelChange)="validateForm()"
+          >
+            @if(game.status === 'suspended' ) {
+            <option value="suspended">Suspended</option>
+            } @else {
+            <option value="active">Active</option>
+            <option value="draft">Draft</option>
+            <option value="archive">Archive</option>
+            }
+          </select>
+        </div>
+        <div>
+          <label for="new-game--description" class="block text"
+            >Description
+          </label>
+          <textarea
+            id="new-game--description"
+            class="input w-full mt-1 p-1 rounded-md border-2 border-gray-400"
+            [(ngModel)]="game.description"
+            (ngModelChange)="validateForm()"
+            rows="6"
+          ></textarea>
+        </div>
+        @if (isLoading) {
+        <app-loader-animation />
+        }
+      </div>
+      <div class="mt-4 flex justify-end">
+        <app-button
+          variant="contained"
+          label="Save"
+          [isDisabled]="isLoading || !isValid"
+          (onButtonClick)="handleSaveClick()"
+        />
+      </div>
+      <!-- Save Button -->
+    </div>
+  </app-container>
+</app-main-layout>

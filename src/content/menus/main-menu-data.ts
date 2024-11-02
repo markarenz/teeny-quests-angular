@@ -16,6 +16,11 @@ export const mainMenuData = [
   },
   {
     id: 4,
+    label: 'Game Editor',
+    href: '/editor',
+  },
+  {
+    id: 5,
     label: 'Profile',
     href: '/profile',
   },

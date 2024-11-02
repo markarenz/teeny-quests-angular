@@ -1,0 +1,61 @@
+<div
+  class="new-game-modal fixed top-0 left-0 w-screen h-scren {{
+    isMenuOpen ? 'menuOpen' : null
+  }}"
+>
+  <app-modal-bg (onBgClick)="handleCancelClick()" />
+  <div
+    class="fixed top-0 left-0 w-screen h-screen flex items-center justify-center"
+  >
+    <div
+      class="bg-gray-100 rounded-md w-full max-w-xl shadow-[0px_-2px_16px_4px_rgba(0,0,0,0.3)] {{
+        isMenuOpen ? 'menuOpen' : null
+      }}"
+    >
+      <div class="py-4 px-8 bg-primary rounded-tl-md rounded-tr-md">
+        <h2 class="text-2xl">New Game</h2>
+      </div>
+      <div class="p-8 relative">
+        <div>
+          <label for="new-game--title" class="block text">Name </label>
+          <input
+            id="new-game--title"
+            type="text"
+            class="input w-full mt-1 p-1 rounded-md border-2 border-gray-400"
+            [(ngModel)]="title"
+            (ngModelChange)="validateForm()"
+          />
+        </div>
+        <div class="mt-4">
+          <label for="new-game--description" class="block text"
+            >Description
+          </label>
+          <textarea
+            id="new-game--description"
+            class="input w-full mt-1 p-1 rounded-md border-2 border-gray-400"
+            [(ngModel)]="description"
+            (ngModelChange)="validateForm()"
+            rows="6"
+          ></textarea>
+        </div>
+        @if (isLoading) {
+        <app-loader-animation />
+        }
+      </div>
+      <div class="px-8 pb-8 flex justify-end gap-4">
+        <app-button
+          variant="outlined"
+          label="Cancel"
+          [isDisabled]="isLoading"
+          (onButtonClick)="handleCancelClick()"
+        />
+        <app-button
+          variant="contained"
+          label="OK"
+          [isDisabled]="isLoading || !isValid"
+          (onButtonClick)="handleOkClick()"
+        />
+      </div>
+    </div>
+  </div>
+</div>

@@ -22,3 +22,13 @@
 - [x] Frontend: Use user.name for profile initials
 - [x] Frontend: Add title for avatar with "Logged in as"
 - [x] Frontend: Replace Profile observable with user data from DDB
+
+### TQ3: Game Editing Basics
+
+- Branch: TQ3-Editor-Basics
+- [ ] Common table component
+- [ ] Common button component
+
+- [ ] Frontend: For /editor page, display logged-in user's games
+- [ ] Frontend: On /editor page, add a button to a basic form to create/edit game
+- [ ] Frontend: One save, hit API to create/update game

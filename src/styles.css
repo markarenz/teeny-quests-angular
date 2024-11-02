@@ -8,6 +8,16 @@
   --font-primary: "Montserrat", sans-serif;
   --font-headline: "Arvo", serif;
   --color-primary: #1dce52;
+  --color-primary-dark: #068c2e;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
 }
 
 html {
@@ -21,7 +31,24 @@ body {
   font-size: 1rem;
 }
 
+*:focus {
+  outline: 2px solid var(--color-primary-dark);
+  outline-offset: 2px;
+}
+
 h1 {
   font-family: var(--font-headline);
   font-weight: 700;
+}
+
+h2 {
+  font-size: 2rem;
+  font-family: var(--font-headline);
+  font-weight: 700;
+}
+
+.text-link {
+  &:hover {
+    text-decoration: underline;
+  }
 }

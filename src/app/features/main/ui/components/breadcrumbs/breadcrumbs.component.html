@@ -1,0 +1,15 @@
+<div class="flex gap-2 flex-row">
+  @for (link of links; track link.label; let idx = $index) {
+  <div>
+    @if (link.href !== undefined) {
+    <div>
+      <a class="text-link" routerLink="{{ link.href }}"> {{ link.label }}</a>
+    </div>
+    } @else {
+    <div>{{ link.label }}</div>
+    }
+  </div>
+  @if (idx < links.length - 1) {
+  <div>/</div>
+  } }
+</div>

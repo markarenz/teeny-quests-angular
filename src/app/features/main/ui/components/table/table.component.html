@@ -1,0 +1,44 @@
+<div
+  class="bg-gray-100 rounded-md p-4 lg:p-8 shadow-xl border-2 border-gray-200"
+>
+  <h2 class="text-2xl">
+    {{ title }}
+  </h2>
+  <div class="">
+    <div
+      class="relative overflow-x-auto mt-4 lg:mt-8 rounded-md border-2 border-gray-400"
+    >
+      <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+        <thead class="text-md text-gray-800 bg-primary">
+          <tr>
+            @for (label of labels; track label.label) {
+            <th scope="col" class="px-6 py-3">
+              {{ label.label }}
+            </th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of rows; track row.id; let idx = $index) {
+          <tr
+            class="border-b {{ idx % 2 === 0 ? 'bg-gray-300' : 'bg-gray-200' }}"
+          >
+            @for (label of labels; track label.field) {
+            <td class="px-6 py-4 text-gray-900">
+              <a
+                class="text-link"
+                routerLink="{{ linkFormat.replace(':id', row.id) }}"
+              >
+                {{ row[label.field] }}
+              </a>
+            </td>
+            }
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- END TEST -->
+  </div>
+</div>
