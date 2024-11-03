@@ -35,6 +35,7 @@ export class EditorGameComponent {
     { label: 'Game Editor', href: '/editor' },
     { label: 'Editing Game' },
   ];
+
   ngOnInit() {
     const id = this._route.snapshot.paramMap.get('id');
     fetch(`${gamesApiUrl}?id=${id}`, {

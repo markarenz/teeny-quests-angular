@@ -34,7 +34,7 @@ const toUrlString = (buffer) => {
 
 export const createItem = async (params) => {
   const { method, path, ip, dynamoDb, body } = params;
-  const { id: rawId, userId, userName, name, description, status } = body;
+  const { id: rawId, userId, username, title, description, itemStatus } = body;
   let success = false;
   let id = null;
   let resp = null;
@@ -71,7 +71,7 @@ export const createItem = async (params) => {
 
 export const updateItem = async (params) => {
   const { method, path, ip, dynamoDb, body } = params;
-  const { id, userId, userName, name, description } = body;
+  const { id, userId, username, title, description, itemStatus } = body;
   const bodyData = getBodyData({ body, path });
 
   const command = new PutCommand({
@@ -128,7 +128,7 @@ export const getItemsByUserId = async (params) => {
     const command = new QueryCommand({
       TableName: tableNames[path],
       IndexName: "userId-index",
-      ProjectionExpression: "id, title, description, userName",
+      ProjectionExpression: "id, title, description, username, itemStatus",
       KeyConditionExpression: "userId = :value",
       ExpressionAttributeValues: {
         ":value": { S: userId },

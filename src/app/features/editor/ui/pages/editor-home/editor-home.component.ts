@@ -6,6 +6,7 @@ import { MainLayoutComponent } from '@main/ui/components/main-layout/main-layout
 import { TableComponent } from '@app/features/main/ui/components/table/table.component';
 import { ButtonComponent } from '@app/features/main/ui/components/button/button.component';
 import { FieldLabel, Link } from '@main/interfaces/types';
+import { TableCellDisplayType } from '@main/interfaces/enums';
 import { AuthGoogleService } from '@app/features/auth/services/auth-google-service';
 import { NewGameModalComponent } from '../../components/new-game-modal/new-game-modal.component';
 import { BreadcrumbsComponent } from '@app/features/main/ui/components/breadcrumbs/breadcrumbs.component';
@@ -38,6 +39,7 @@ export class EditorHomeComponent {
 
   games: any[] = [];
   isMenuOpen: boolean = false;
+  isLoading: boolean = true;
 
   subscription: Subscription;
   user: any = null;
@@ -57,7 +59,10 @@ export class EditorHomeComponent {
       })
         .then((res) => res.json())
         .then((responseObj) => {
-          this.games = responseObj?.items ?? [];
+          setTimeout(() => {
+            this.games = responseObj?.items ?? [];
+            this.isLoading = false;
+          }, 100);
         });
     });
 
@@ -72,29 +77,21 @@ export class EditorHomeComponent {
     this.isMenuOpen = !this.isMenuOpen;
   }
 
-  items: any = [
-    {
-      userName: 'Test User',
-      description: 'Test game description. Lorem ipsum.',
-      id: 'cVqIAMDvgGQMdfETCneVZTn-pVWxDEb5NsZizkDUmbQ',
-      title: 'Test Game 10',
-    },
-    {
-      userName: 'Test User',
-      description: 'Another description.',
-      id: 'cVqIAMDvgGQMdfETCneVZTn-pVWxDEb5NsZizkDUmb2',
-      title: 'Test Game 11',
-    },
-  ];
-
   itemFieldLabels: FieldLabel[] = [
     {
       label: 'Title',
       field: 'title',
+      displayType: TableCellDisplayType.String,
     },
     {
       label: 'Description',
       field: 'description',
+      displayType: TableCellDisplayType.String,
+    },
+    {
+      label: 'Status',
+      field: 'itemStatus',
+      displayType: TableCellDisplayType.StatusChip,
     },
   ];
 }

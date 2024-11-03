@@ -10,7 +10,7 @@ export const fieldNames = {
       required: false,
     },
     {
-      fieldName: "status",
+      fieldName: "itemStatus",
       required: true,
     },
     {
@@ -18,7 +18,7 @@ export const fieldNames = {
       required: true,
     },
     {
-      fieldName: "userName",
+      fieldName: "username",
       required: true,
     },
     {
@@ -44,11 +44,11 @@ export const fieldNames = {
       required: false,
     },
     {
-      fieldName: "name",
+      fieldName: "username",
       required: true,
     },
     {
-      fieldName: "status",
+      fieldName: "itemStatus",
       required: true,
     },
   ],

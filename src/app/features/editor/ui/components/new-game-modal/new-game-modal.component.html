@@ -21,7 +21,6 @@
           <input
             id="new-game--title"
             type="text"
-            class="input w-full mt-1 p-1 rounded-md border-2 border-gray-400"
             [(ngModel)]="title"
             (ngModelChange)="validateForm()"
           />
@@ -32,7 +31,6 @@
           </label>
           <textarea
             id="new-game--description"
-            class="input w-full mt-1 p-1 rounded-md border-2 border-gray-400"
             [(ngModel)]="description"
             (ngModelChange)="validateForm()"
             rows="6"

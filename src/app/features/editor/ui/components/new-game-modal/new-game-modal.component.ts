@@ -63,14 +63,14 @@ export class NewGameModalComponent {
   handleOkClick() {
     this.isLoading = true;
     // get ID from fetch
-    if (this.user?.id && this.user.name) {
+    if (this.user?.id && this.user.username) {
       fetch(gamesApiUrl, {
         method: 'POST',
         headers: { Accept: 'application/json' },
         body: JSON.stringify({
           userId: this.user.id,
-          userName: this.user.name,
-          status: 'draft',
+          username: this.user.username,
+          itemStatus: 'draft',
           title: this.title,
           description: this.description,
           rating: 'n/a',

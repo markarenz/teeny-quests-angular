@@ -26,9 +26,12 @@
 ### TQ3: Game Editing Basics
 
 - Branch: TQ3-Editor-Basics
-- [ ] Common table component
-- [ ] Common button component
-
-- [ ] Frontend: For /editor page, display logged-in user's games
-- [ ] Frontend: On /editor page, add a button to a basic form to create/edit game
-- [ ] Frontend: One save, hit API to create/update game
+- [x] Common table component
+- [x] Common button component
+- [x] Editor page with a list of the logged in user with links to each
+- [x] New game button and modal that triggers a create API call
+- [x] Simple game detail page `editor/:id` with an edit form
+- [x] If the game is suspended, the status cannot change
+- [x] Build lambda deploy NPM script for convenience
+- [x] Form layout 2-col split
+- [x] Loading animation for editor game page, bake into table with `isLoading` prop
