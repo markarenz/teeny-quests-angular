@@ -9,7 +9,6 @@ export class MainAppService {
   isMenuOpenObs = this.isMenuOpen.asObservable();
 
   constructor() {
-    console.log('MainAppService constructor');
     this.isMenuOpen.next(false);
   }
 

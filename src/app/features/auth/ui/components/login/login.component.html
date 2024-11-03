@@ -8,6 +8,7 @@
   }
   <button
     role="button"
+    aria-label="User Menu Toggle"
     (click)="toggleUserMenu()"
     class="user-menu-toggle {{
       isUserMenuOpen ? 'active' : null
@@ -17,7 +18,7 @@
     <div
       class="initials bg-primary text-gray-800"
       aria-label="user?.initials"
-      title="Logged in as {{ user?.user?.name }}"
+      title="Logged in as {{ user?.user?.username }}"
     >
       {{ user.initials }}
     </div>

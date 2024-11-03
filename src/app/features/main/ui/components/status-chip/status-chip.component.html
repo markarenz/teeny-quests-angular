@@ -1,0 +1,15 @@
+<div
+  class="px-2 py-1 {{
+    itemStatus === 'draft'
+      ? 'bg-yellow-300'
+      : itemStatus === 'active'
+      ? 'bg-primary'
+      : itemStatus === 'archived'
+      ? 'bg-gray-100'
+      : itemStatus === 'suspended'
+      ? 'bg-red-300'
+      : 'bg-gray-200'
+  }} rounded-full text-center border-2 border-gray-400"
+>
+  {{ itemStatusDisplay }}
+</div>

@@ -23,7 +23,6 @@ export class LoginComponent {
 
   constructor(private _authService: AuthGoogleService, private router: Router) {
     this.subscription = Subscription.EMPTY;
-    // private router: Router
   }
 
   ngOnInit() {
@@ -57,7 +56,6 @@ export class LoginComponent {
   isUserMenuOpen: boolean = false;
 
   toggleUserMenu() {
-    console.log('toggle user menu');
     this.isUserMenuOpen = !this.isUserMenuOpen;
   }
 

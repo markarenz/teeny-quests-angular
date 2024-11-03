@@ -5,7 +5,7 @@
         <div class="block h-12 w-20 bg-blue-400">
           <a
             class="block h-full w-full"
-            routerLink="/editor"
+            routerLink="/"
             ariaCurrentWhenActive="page"
           >
             <img
@@ -30,6 +30,7 @@
           role="button"
           (click)="handleToggleMenu()"
           class="flex w-12 h-12 justify-center items-center group hover:bg-gray-400/50 toggle-root transition-colors duration-500"
+          aria-label="Toggle Menu"
         >
           <app-menu-toggle />
         </button>

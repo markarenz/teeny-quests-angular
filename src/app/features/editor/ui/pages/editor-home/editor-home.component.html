@@ -1,5 +1,28 @@
 <app-main-layout [title]="title">
   <app-container>
-    <p>editor-home works!</p>
+    <div class="py-8">
+      <app-breadcrumbs [links]="breadcrumbLinks" />
+      <div class="w-full md:flex md:justify-end mt-8">
+        <app-button
+          label="New Game"
+          (onButtonClick)="toggleNewGameModal()"
+          variant="contained"
+        />
+      </div>
+
+      <div class="mt-8">
+        <app-table
+          title="Your Games"
+          [rows]="games"
+          [labels]="itemFieldLabels"
+          linkFormat="/editor/:id"
+          [isLoading]="isLoading"
+        />
+      </div>
+    </div>
+    <app-new-game-modal
+      [isMenuOpen]="isMenuOpen"
+      (onBgClick)="toggleNewGameModal()"
+    />
   </app-container>
 </app-main-layout>

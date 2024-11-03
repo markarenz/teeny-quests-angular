@@ -1,0 +1,14 @@
+.new-game-modal {
+  z-index: 99;
+  opacity: 0;
+  height: 100%;
+  pointer-events: none;
+  &.menuOpen {
+    pointer-events: all;
+    opacity: 1;
+  }
+  a {
+    font-family: var(--font-headline);
+    font-size: 2rem;
+  }
+}

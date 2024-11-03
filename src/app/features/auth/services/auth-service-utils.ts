@@ -22,7 +22,8 @@ export const getUserByIdOrCreateUser = async ({ id }: { id: string }) => {
       headers: { Accept: 'application/json' },
       body: JSON.stringify({
         id,
-        name: getRandomUsername(),
+        username: getRandomUsername(),
+        itemStatus: 'active',
       }),
     }).then((res) => res.json());
     return userDataResponse.item;

@@ -22,3 +22,16 @@
 - [x] Frontend: Use user.name for profile initials
 - [x] Frontend: Add title for avatar with "Logged in as"
 - [x] Frontend: Replace Profile observable with user data from DDB
+
+### TQ3: Game Editing Basics
+
+- Branch: TQ3-Editor-Basics
+- [x] Common table component
+- [x] Common button component
+- [x] Editor page with a list of the logged in user with links to each
+- [x] New game button and modal that triggers a create API call
+- [x] Simple game detail page `editor/:id` with an edit form
+- [x] If the game is suspended, the status cannot change
+- [x] Build lambda deploy NPM script for convenience
+- [x] Form layout 2-col split
+- [x] Loading animation for editor game page, bake into table with `isLoading` prop
