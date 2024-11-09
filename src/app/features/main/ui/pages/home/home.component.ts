@@ -13,8 +13,9 @@ import { MainLayoutComponent } from '@main/ui/components/main-layout/main-layout
 export class HomeComponent {
   constructor(private titleService: Title, private metaService: Meta) {}
 
-  title = 'Home Page';
-  description = 'This is the description of my RAS page';
+  title = 'Teeny Quests';
+  description =
+    'Embark on a journey of miniscule proportions, and even make your own game for friends to play.';
 
   ngOnInit(): void {
     this.titleService.setTitle(this.title);
