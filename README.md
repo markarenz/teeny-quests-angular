@@ -39,7 +39,8 @@
 ### TQ4: Game Basics
 
 - Branch: TQ4-Game-Basics
-- [ ] Update style to use dark gray backgrounds
+- [x] Update style to use dark gray backgrounds
+- [ ] API: for get multiple, do not return content
 - [ ] On the homepage, list games that are active and sort by last update. Link to a /play:id page for each.
 - [ ] On the /play/:id page, pull in the basic info and display it.
 

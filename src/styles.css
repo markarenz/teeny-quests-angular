@@ -48,6 +48,11 @@ h2 {
   font-family: var(--font-headline);
   font-weight: 700;
 }
+h3 {
+  font-size: 1.5rem;
+  font-family: var(--font-headline);
+  font-weight: 700;
+}
 
 .text-link {
   text-decoration-style: solid;
