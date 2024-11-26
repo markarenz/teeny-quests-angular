@@ -1,12 +1,33 @@
 <app-main-layout [title]="title">
+  <div class="bg-gray-900 pt-5 pb-4">
+    <app-container>
+      <div class="inline-flex rounded-md shadow-sm w-full" role="group">
+        @for (item of subNavLinks; track item.label; let idx = $index) {
+        <button
+          type="button"
+          (click)="handleSubNavClick(item.slug)"
+          class="px-4 py-2 w-full text-sm font-bold  border focus:z-10  border-gray-700  hover:text-white hover:bg-gray-800 {{
+            idx === 0 && 'rounded-s-lg'
+          }} {{ idx === subNavLinks.length - 1 && 'rounded-e-lg' }} {{
+            subNavCurrent === item.slug ? '' : ''
+          }} bg-gray-900 text-gray-100 disabled:bg-gray-700 disabled:text-white transition-colors duration-300"
+          [disabled]="subNavCurrent === item.slug"
+        >
+          {{ item.label }}
+        </button>
+        }
+      </div>
+    </app-container>
+  </div>
   <app-container>
-    <div class="py-8">
+    <div class="py-8 flex flex-col gap-8">
       <app-breadcrumbs [links]="breadcrumbLinks" />
 
       <!-- if itemStatus is suspended, just display the itemStatus 
     -- otherwise, display  a dropdown -->
 
-      <div class="relative mt-8 flex flex-col gap-4">
+      @if(subNavCurrent === 'info') {
+      <div class="relative flex flex-col gap-4">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <div>
             <label for="new-game--title" class="block text">Name</label>
@@ -49,6 +70,12 @@
         <app-loader-animation />
         }
       </div>
+      } @else if (subNavCurrent === 'areas') {
+      <div>OK AREAS</div>
+      } @else if (subNavCurrent === 'misc') {
+      <div>OK Misc</div>
+      }
+
       <div class="mt-4 flex justify-end">
         <app-button
           variant="contained"
@@ -57,7 +84,6 @@
           (onButtonClick)="handleSaveClick()"
         />
       </div>
-      <!-- Save Button -->
     </div>
   </app-container>
 </app-main-layout>

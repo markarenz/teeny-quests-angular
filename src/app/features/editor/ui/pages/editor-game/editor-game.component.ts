@@ -4,10 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { MainLayoutComponent } from '@main/ui/components/main-layout/main-layout.component';
 import { ContainerComponent } from '@app/features/main/ui/components/container/container.component';
 import { gamesApiUrl } from '@config/index';
+import { HeaderSectionComponent } from '../../components/common/header-section/header-section.component';
 import { LoaderAnimationComponent } from '@app/features/main/ui/components/loader-animation/loader-animation.component';
 import { ButtonComponent } from '@app/features/main/ui/components/button/button.component';
 import { BreadcrumbsComponent } from '@app/features/main/ui/components/breadcrumbs/breadcrumbs.component';
-import { Link } from '@app/features/main/interfaces/types';
+import { Link, SubNavItem } from '@app/features/main/interfaces/types';
 
 @Component({
   selector: 'app-editor-game',
@@ -19,6 +20,7 @@ import { Link } from '@app/features/main/interfaces/types';
     FormsModule,
     ButtonComponent,
     BreadcrumbsComponent,
+    HeaderSectionComponent,
   ],
   templateUrl: './editor-game.component.html',
   styleUrl: './editor-game.component.css',
@@ -28,12 +30,20 @@ export class EditorGameComponent {
   isLoading: boolean = false;
   isValid: boolean = false;
   game: any = {};
+
   constructor(private _route: ActivatedRoute) {}
 
   breadcrumbLinks: Link[] = [
     { label: 'Home', href: '' },
     { label: 'Game Editor', href: '/editor' },
     { label: 'Editing Game' },
+  ];
+
+  subNavCurrent: string = 'info';
+  subNavLinks: SubNavItem[] = [
+    { label: 'Info', slug: 'info' },
+    { label: 'Areas', slug: 'areas' },
+    { label: 'Misc', slug: 'misc' },
   ];
 
   ngOnInit() {
@@ -70,5 +80,8 @@ export class EditorGameComponent {
       .then((data) => {
         this.isLoading = false;
       });
+  }
+  handleSubNavClick(slug: string) {
+    this.subNavCurrent = slug;
   }
 }

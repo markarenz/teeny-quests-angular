@@ -8,6 +8,7 @@ import { ButtonComponent } from '@app/features/main/ui/components/button/button.
 import { LoaderAnimationComponent } from '@app/features/main/ui/components/loader-animation/loader-animation.component';
 import { gamesApiUrl } from '@config/index';
 import { AuthGoogleService } from '@app/features/auth/services/auth-google-service';
+import { User } from '@app/features/auth/interfaces/types';
 
 @Component({
   selector: 'app-new-game-modal',
@@ -24,7 +25,7 @@ import { AuthGoogleService } from '@app/features/auth/services/auth-google-servi
 })
 export class NewGameModalComponent {
   subscription: Subscription;
-  user: any = null;
+  user: User | null = null;
 
   constructor(private _authService: AuthGoogleService, private router: Router) {
     this.subscription = Subscription.EMPTY;

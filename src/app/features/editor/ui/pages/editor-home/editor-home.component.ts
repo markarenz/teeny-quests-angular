@@ -11,6 +11,7 @@ import { AuthGoogleService } from '@app/features/auth/services/auth-google-servi
 import { NewGameModalComponent } from '../../components/new-game-modal/new-game-modal.component';
 import { BreadcrumbsComponent } from '@app/features/main/ui/components/breadcrumbs/breadcrumbs.component';
 import { gamesApiUrl } from '@config/index';
+import { User } from '@app/features/auth/interfaces/types';
 
 @Component({
   selector: 'app-editor-home',
@@ -42,7 +43,7 @@ export class EditorHomeComponent {
   isLoading: boolean = true;
 
   subscription: Subscription;
-  user: any = null;
+  user: User | null = null;
 
   breadcrumbLinks: Link[] = [
     { label: 'Home', href: '' },
@@ -53,17 +54,19 @@ export class EditorHomeComponent {
     this.subscription = this._authService.userObs.subscribe((data: any) => {
       this.user = data;
       // get user's games
-      fetch(`${gamesApiUrl}?userId=${this.user.id}`, {
-        method: 'GET',
-        headers: { Accept: 'application/json' },
-      })
-        .then((res) => res.json())
-        .then((responseObj) => {
-          setTimeout(() => {
-            this.games = responseObj?.items ?? [];
-            this.isLoading = false;
-          }, 100);
-        });
+      if (this.user) {
+        fetch(`${gamesApiUrl}?userId=${this.user.id}`, {
+          method: 'GET',
+          headers: { Accept: 'application/json' },
+        })
+          .then((res) => res.json())
+          .then((responseObj) => {
+            setTimeout(() => {
+              this.games = responseObj?.items ?? [];
+              this.isLoading = false;
+            }, 100);
+          });
+      }
     });
 
     this.titleService.setTitle(this.title);

@@ -11,11 +11,11 @@ export const routes: Routes = [
   {
     path: 'editor',
     component: EditorHomeComponent,
-    canActivate: [hasAuthGuard],
+    // canActivate: [hasAuthGuard],
   },
   {
     path: 'editor/:id',
     component: EditorGameComponent,
-    canActivate: [hasAuthGuard],
+    // canActivate: [hasAuthGuard],
   },
 ];
