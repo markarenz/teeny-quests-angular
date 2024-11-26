@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { MainLayoutComponent } from '@main/ui/components/main-layout/main-layout.component';
 import { ContainerComponent } from '@app/features/main/ui/components/container/container.component';
 import { gamesApiUrl } from '@config/index';
-import { HeaderSectionComponent } from '../../components/common/header-section/header-section.component';
 import { LoaderAnimationComponent } from '@app/features/main/ui/components/loader-animation/loader-animation.component';
 import { ButtonComponent } from '@app/features/main/ui/components/button/button.component';
 import { BreadcrumbsComponent } from '@app/features/main/ui/components/breadcrumbs/breadcrumbs.component';
@@ -20,7 +19,6 @@ import { Link, SubNavItem } from '@app/features/main/interfaces/types';
     FormsModule,
     ButtonComponent,
     BreadcrumbsComponent,
-    HeaderSectionComponent,
   ],
   templateUrl: './editor-game.component.html',
   styleUrl: './editor-game.component.css',
