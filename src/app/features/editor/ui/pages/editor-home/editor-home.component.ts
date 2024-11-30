@@ -5,13 +5,13 @@ import { ContainerComponent } from '@main/ui/components/container/container.comp
 import { MainLayoutComponent } from '@main/ui/components/main-layout/main-layout.component';
 import { TableComponent } from '@app/features/main/ui/components/table/table.component';
 import { ButtonComponent } from '@app/features/main/ui/components/button/button.component';
-import { FieldLabel, Link } from '@main/interfaces/types';
+import { FieldLabel, Game, Link } from '@main/interfaces/types';
 import { TableCellDisplayType } from '@main/interfaces/enums';
 import { AuthGoogleService } from '@app/features/auth/services/auth-google-service';
 import { NewGameModalComponent } from '../../components/new-game-modal/new-game-modal.component';
 import { BreadcrumbsComponent } from '@app/features/main/ui/components/breadcrumbs/breadcrumbs.component';
-import { gamesApiUrl } from '@config/index';
 import { User } from '@app/features/auth/interfaces/types';
+import { GameEditorServiceService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 
 @Component({
   selector: 'app-editor-home',
@@ -30,19 +30,17 @@ import { User } from '@app/features/auth/interfaces/types';
 export class EditorHomeComponent {
   constructor(
     private _authService: AuthGoogleService,
+    private _gameEditorService: GameEditorServiceService,
     private titleService: Title,
     private metaService: Meta
-  ) {
-    this.subscription = Subscription.EMPTY;
-  }
+  ) {}
+  private subscriptions: Subscription[] = [];
+
   title = 'Editor Page';
   description = 'This page lists your current games.';
-
-  games: any[] = [];
   isMenuOpen: boolean = false;
-  isLoading: boolean = true;
-
-  subscription: Subscription;
+  games: any[] = [];
+  isLoading: boolean = false;
   user: User | null = null;
 
   breadcrumbLinks: Link[] = [
@@ -51,29 +49,34 @@ export class EditorHomeComponent {
   ];
 
   ngOnInit(): void {
-    this.subscription = this._authService.userObs.subscribe((data: any) => {
-      this.user = data;
-      // get user's games
-      if (this.user) {
-        fetch(`${gamesApiUrl}?userId=${this.user.id}`, {
-          method: 'GET',
-          headers: { Accept: 'application/json' },
-        })
-          .then((res) => res.json())
-          .then((responseObj) => {
-            setTimeout(() => {
-              this.games = responseObj?.items ?? [];
-              this.isLoading = false;
-            }, 100);
-          });
-      }
-    });
+    this.subscriptions.push(
+      this._gameEditorService.gamesObs.subscribe((data: Game[]) => {
+        this.games = data;
+      })
+    );
+
+    this.subscriptions.push(
+      this._gameEditorService.isLoadingObs.subscribe((data: boolean) => {
+        this.isLoading = data;
+      })
+    );
+
+    this.subscriptions.push(
+      this._authService.userObs.subscribe((data: any) => {
+        this.user = data;
+        this._gameEditorService.getGamesByUserId(this.user);
+      })
+    );
 
     this.titleService.setTitle(this.title);
     this.metaService.addTag({
       name: 'description',
       content: this.description,
     });
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
   toggleNewGameModal() {

@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ModalBgComponent } from '@main/ui/components/modal-bg/modal-bg.component';
-import { ContainerComponent } from '@app/features/main/ui/components/container/container.component';
 import { ButtonComponent } from '@app/features/main/ui/components/button/button.component';
 import { LoaderAnimationComponent } from '@app/features/main/ui/components/loader-animation/loader-animation.component';
 import { gamesApiUrl } from '@config/index';
@@ -15,7 +14,6 @@ import { User } from '@app/features/auth/interfaces/types';
   standalone: true,
   imports: [
     ModalBgComponent,
-    ContainerComponent,
     ButtonComponent,
     FormsModule,
     LoaderAnimationComponent,

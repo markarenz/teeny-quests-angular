@@ -1,0 +1,32 @@
+.area-editor-stage {
+  background-color: var(--color-gray-900);
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  aspect-ratio: 1 / 1;
+  position: relative;
+  .stage-base {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    aspect-ratio: 2 / 1;
+    path {
+      stroke: none;
+      stroke-width: 0;
+      stroke-linecap: round;
+      stroke-dasharray: none;
+      stroke-opacity: 1;
+    }
+    path.outline {
+      stroke: none;
+      stroke-width: 0;
+      fill: var(--color-gray-700);
+    }
+    path.inner {
+      stroke: none;
+      stroke-width: 0;
+      fill: var(--color-gray-900);
+    }
+  }
+}

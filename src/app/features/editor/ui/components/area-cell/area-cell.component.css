@@ -1,0 +1,4 @@
+.area-cell {
+  position: absolute;
+  pointer-events: none;
+}

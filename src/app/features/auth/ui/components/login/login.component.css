@@ -38,6 +38,7 @@
   height: 100%;
   border-radius: 100%;
   display: flex;
+  font-weight: bold;
   justify-content: center;
   align-items: center;
 }
