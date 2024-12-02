@@ -14,11 +14,11 @@
       isUserMenuOpen ? 'active' : null
     }} w-12 h-12 block hover:scale-90 relative"
   >
-    @if(isLoggedIn && user?.initials?.length > 0){
+    @if(isLoggedIn && user && user.initials && user.initials.length > 0){
     <div
       class="initials bg-primary text-gray-800"
       aria-label="user?.initials"
-      title="Logged in as {{ user?.user?.username }}"
+      title="Logged in as {{ user.username }}"
     >
       {{ user.initials }}
     </div>

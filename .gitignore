@@ -9,3 +9,4 @@ secret.ts
 .editorconfig
 .DS_Store
 *.notes.md
+_local-assets/

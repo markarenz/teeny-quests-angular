@@ -1,0 +1,36 @@
+<div class="area-editor-stage">
+  <div
+    id="area-editor-bg-click-catcher"
+    (click)="handleBackgroundClick()"
+    class="absolute top-0 left-0 w-full h-full"
+    aria-hidden="true"
+  ></div>
+  <svg
+    viewBox="0 0 100 50"
+    version="1.1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:svg="http://www.w3.org/2000/svg"
+    class="stage-base"
+    (click)="handleBackgroundClick()"
+  >
+    <g id="outer-ring">
+      <path class="outline" d="M 50.000003,0 100,25 50.000003,50 0,25 Z" />
+      <path class="inner" d="M 50.000003,0.5 99,25 50.000003,49.5 1,25 Z" />
+    </g>
+  </svg>
+
+  <!-- If Nmost EMost, Wmost or Smost, show only opposite face -->
+  <!-- Cells are display only and the base is a button overlaying the whole area map -->
+
+  <!-- Area Display -->
+  @if(selectedAreaMap) { @for(positionKey of areaDataPositionKeys; track
+  positionKey;) {
+  <app-area-cell [cellData]="selectedAreaMap[positionKey]" />
+  }
+
+  <!-- Area Cell Selector Buttons -->
+  @for(positionKey of areaDataPositionKeys; track positionKey;) {
+  <app-area-cell-button [positionKey]="positionKey" />
+  } }
+  <app-area-cell-modal />
+</div>

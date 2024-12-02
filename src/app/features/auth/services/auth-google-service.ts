@@ -35,7 +35,6 @@ export class AuthGoogleService {
         const userData = await getUserByIdOrCreateUser({
           id: userId,
         });
-        console.log('userData', userData);
         // Check status of user first...
         this.user.next({
           ...userData,

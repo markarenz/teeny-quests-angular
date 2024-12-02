@@ -123,6 +123,7 @@ export const getItemById = async (params) => {
 export const getItemsByUserId = async (params) => {
   const { path, dynamoDb, searchParams } = params;
   let items = [];
+  // TODO: Filter by user ID for author page (FUTURE)
   if (searchParams?.userId && searchParams?.userId.length > 0) {
     const { userId } = searchParams;
     const command = new QueryCommand({
@@ -147,9 +148,17 @@ export const getItems = async (params) => {
   const { path, dynamoDb, searchParams } = params;
 
   // TODO: Load more pagination
-  const command = new ScanCommand({
+  // TODO: Filter by status
+  const command = new QueryCommand({
     TableName: tableNames[path],
+    IndexName: "itemStatus-index",
+    ProjectionExpression: "id, title, description, username",
+    KeyConditionExpression: "itemStatus = :value",
+    ExpressionAttributeValues: {
+      ":value": { S: "active" },
+    },
   });
+
   const resp = await dynamoDb.send(command);
   const items = resp?.Items ? unmarshallArray(resp?.Items) : null;
 

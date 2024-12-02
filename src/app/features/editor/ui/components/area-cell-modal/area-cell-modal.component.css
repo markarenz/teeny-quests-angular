@@ -1,0 +1,23 @@
+.height-button {
+  height: 44px;
+  width: 44px;
+  padding: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-gray-700);
+  transition: 0.3s background-color ease-in-out;
+  border-radius: 100%;
+  &:hover {
+    background-color: var(--color-gray-900);
+  }
+  polygon {
+    fill: var(--color-gray-200);
+  }
+  &:disabled {
+    background-color: var(--color-gray-500);
+    polygon {
+      fill: var(--color-gray-300);
+    }
+  }
+}

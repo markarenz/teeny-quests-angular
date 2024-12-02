@@ -14,7 +14,6 @@ import { Subscription } from 'rxjs';
     ContainerComponent,
     MenuToggleComponent,
     RouterLink,
-    RouterLinkActive,
     LoginComponent,
   ],
   templateUrl: './header.component.html',

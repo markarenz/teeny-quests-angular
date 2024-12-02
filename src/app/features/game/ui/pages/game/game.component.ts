@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
 import { ContainerComponent } from '@main/ui/components/container/container.component';
 import { MainLayoutComponent } from '@main/ui/components/main-layout/main-layout.component';
+import { gamesApiUrl } from '@config/index';
 
 @Component({
   selector: 'app-game',
@@ -11,17 +13,33 @@ import { MainLayoutComponent } from '@main/ui/components/main-layout/main-layout
   styleUrl: './game.component.css',
 })
 export class GameComponent {
-  constructor(private titleService: Title, private metaService: Meta) {}
+  isLoading: boolean = false;
+  game: any = {};
+  constructor(
+    private titleService: Title,
+    private metaService: Meta,
+    private _route: ActivatedRoute
+  ) {}
 
   // Eventually we will pull this in dynamically
-  title = 'Game Page';
-  description = 'This is a game.';
+  title = '';
+  description = '';
 
   ngOnInit(): void {
-    this.titleService.setTitle(this.title);
-    this.metaService.addTag({
-      name: 'description',
-      content: this.description,
-    });
+    const id = this._route.snapshot.paramMap.get('id');
+    fetch(`${gamesApiUrl}?id=${id}`, {
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        this.title = data?.item?.title;
+        this.game = data?.item;
+        this.titleService.setTitle(this.title);
+        this.metaService.addTag({
+          name: 'description',
+          content: this.description,
+        });
+      });
   }
 }
