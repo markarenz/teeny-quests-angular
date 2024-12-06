@@ -28,6 +28,12 @@
   <app-area-cell [cellData]="selectedAreaMap[positionKey]" />
   }
 
+  <div
+    class="absolute top-0 left-0 w-full h-full bg-gray-800/50 pointer-events-none	z-[80] {{
+      anyCellSelected ? 'block' : 'hidden'
+    }}"
+  ></div>
+
   <!-- Area Cell Selector Buttons -->
   @for(positionKey of areaDataPositionKeys; track positionKey;) {
   <app-area-cell-button [positionKey]="positionKey" />

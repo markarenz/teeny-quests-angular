@@ -27,6 +27,7 @@ export class EditorAreaComponent {
   selectedAreaMap: GameArea['map'] | null = null;
   selectedAreaCellPosition: string = '';
   selectedCell: GameAreaMapCell | null = null;
+  anyCellSelected: boolean = false;
   areaDataPositionKeys: string[] = [];
 
   ngOnInit(): void {
@@ -34,6 +35,13 @@ export class EditorAreaComponent {
       this._gameEditorService.gameObs.subscribe((data: Game | null) => {
         this.game = data;
       })
+    );
+    this.subscriptions.push(
+      this._gameEditorService.selectedCellObs.subscribe(
+        (data: GameAreaMapCell | null) => {
+          this.anyCellSelected = data !== null;
+        }
+      )
     );
     this.subscriptions.push(
       this._gameEditorService.selectedAreaIdObs.subscribe((data: string) => {

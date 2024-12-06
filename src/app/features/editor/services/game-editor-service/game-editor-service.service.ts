@@ -8,6 +8,7 @@ import {
   GameAreaMapCell,
   GameContent,
 } from '@app/features/main/interfaces/types';
+import { defaultGridSize } from '@config/index';
 
 @Injectable({
   providedIn: 'root',

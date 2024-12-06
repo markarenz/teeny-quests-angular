@@ -34,7 +34,19 @@ export class AreaCellComponent {
   isSelected: boolean = false;
   anyCellSelected: boolean = false;
   selectedCell: GameAreaMapCell | null = null;
-
+  displayElements: {
+    top: boolean;
+    left: boolean;
+    right: boolean;
+    backLeft: boolean;
+    backRight: boolean;
+  } = {
+    top: true,
+    left: true,
+    right: true,
+    backLeft: false,
+    backRight: false,
+  };
   updateCellProps() {
     if (this.cell) {
       const { x, y, h } = this.cell;
@@ -48,7 +60,38 @@ export class AreaCellComponent {
       this.svgPolygonPoints = [
         `0,0 50,25 50,${svgH} 0,${svgH - 25}`,
         `100,0 50,25 50,${svgH} 100,${svgH - 25}`,
+        // ??
+        `100,25 50,0 50,${svgH - 25} 100,${svgH}`,
+        `0,25 50,0 50,${svgH - 25} 0,${svgH}`,
       ];
+      this.displayElements = {
+        top: true,
+        left: true,
+        right: true,
+        backLeft: false,
+        backRight: false,
+      };
+      if (x === 0) {
+        // this.displayElements.top = false;
+        // this.displayElements.left = false;
+      }
+      if (y === 0) {
+        // this.displayElements.top = false;
+        // this.displayElements.right = false;
+      }
+
+      if (x === this.gridSize - 1) {
+        // this.displayElements.top = false;
+        // this.displayElements.left = false;
+        // this.displayElements.right = false;
+        // this.displayElements.backRight = true;
+      }
+      if (y === this.gridSize - 1) {
+        // this.displayElements.top = false;
+        // this.displayElements.right = false;
+        // this.displayElements.left = false;
+        // this.displayElements.backLeft = true;
+      }
     }
   }
   ngOnInit() {

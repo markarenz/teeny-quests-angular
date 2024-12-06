@@ -1,6 +1,7 @@
 .area-editor-stage {
   background-color: var(--color-gray-900);
   width: 100%;
+  overflow: hidden;
   max-width: 700px;
   margin: 0 auto;
   aspect-ratio: 1 / 1;
