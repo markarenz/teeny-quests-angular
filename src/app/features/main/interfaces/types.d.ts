@@ -1,5 +1,10 @@
 import { TableCellDisplayType } from './enums';
 
+export type SelectOptions = {
+  value: string;
+  label: string;
+};
+
 export type Link = {
   label: string;
   href?: string;
@@ -15,21 +20,13 @@ export type FieldLabel = {
   displayType: TableCellDisplayType;
 };
 
-export type GameAreaCellWall = {
-  texture: string;
-};
-
 export type GameAreaMapCell = {
   x: number;
   y: number;
   h: number;
-  n: GameAreaCellWall;
-  s: GameAreaCellWall;
-  e: GameAreaCellWall;
-  w: GameAreaCellWall;
-  walkable?: number; // 0 - no, player is on a floor level 1, 2 or 3
-  cellType?: string;
-  cellTheme?: string; // dungeon, forest, etc.
+  floor: string;
+  wallSouth: string;
+  wallEast: string;
 };
 
 export type GameArea = {

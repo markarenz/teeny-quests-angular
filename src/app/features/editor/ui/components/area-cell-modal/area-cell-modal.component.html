@@ -1,44 +1,75 @@
 <div
-  class="absolute bottom-0 right-0 p-4 rounded-lg bg-gray-300 border-2 border-gray-800 text-gray-900 {{
-    showModal ? 'block' : 'hidden'
-  }}"
+  class="absolute {{ showModal ? 'block' : 'hidden' }} w-[50%]"
+  [style.bottom]="modalPosition.bottom"
+  [style.left]="modalPosition.left"
+  [style.z-index]="300"
 >
-  @if(selectedCell){
-  <div class="flex flex-row gap-4">
-    @for(item of buttons; track item.direction) {
-    <button
-      class="height-button"
-      (click)="handleCellHeightChange(item.direction)"
-      [disabled]="
-        item.direction === 'up' ? selectedCell.h > 5 : selectedCell.h < 1
-      "
-      [attr.aria-label]="item.label"
-    >
-      <svg
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/"
-        class="{{ item.direction === 'down' ? 'rotate-180' : null }}"
+  <div
+    class="p-4 rounded-lg bg-gray-300 border-2 border-gray-800 text-gray-900"
+  >
+    @if(selectedCell){
+
+    <!-- <div class="flex flex-row gap-4">
+      @for(item of buttons; track item.direction) {
+      <button
+        class="height-button"
+        (click)="handleCellHeightChange(item.direction)"
+        [disabled]="
+          item.direction === 'up' ? selectedCell.h > 5 : selectedCell.h < 1
+        "
+        [attr.aria-label]="item.label"
       >
-        <polygon
-          fill="var(--color-gray-200)"
-          stroke="none"
-          points="12 5 3 15 9 15 9 19 15 19 15 15 21 15 12 5"
+        <svg
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/"
+          class="{{ item.direction === 'down' ? 'rotate-180' : null }}"
+        >
+          <polygon
+            fill="var(--color-gray-200)"
+            stroke="none"
+            points="12 5 3 15 9 15 9 19 15 19 15 15 21 15 12 5"
+          />
+        </svg>
+      </button>
+
+      }
+    </div> -->
+
+    <div class="absolute right-[-8px] top-[-8px]">
+      <app-button-close (onButtonClick)="handleCancelClick()" />
+    </div>
+    <div class="flex flex-col gap-4">
+      <div>
+        <label for="area-cell-height-input">Height</label>
+        <input
+          id="area-cell-height-input"
+          type="number"
+          [(ngModel)]="inputHeight"
+          class="w-12 inline-block text-center"
+          min="0"
+          [max]="inputHeightMax"
         />
-      </svg>
-    </button>
+      </div>
 
+      <div class="flex justify-center gap-4">
+        <div>Add Exit</div>
+        <div>Add Item</div>
+      </div>
+      <div class="flex justify-end gap-4">
+        <app-button
+          variant="contained"
+          label="Apply"
+          [isDisabled]="isFormValid"
+          (onButtonClick)="handleOkClick()"
+        />
+      </div>
+    </div>
     }
-  </div>
-  }
-  <div class="text-center">
-    {{ selectedCell?.h }}
-  </div>
 
-  <!-- Floor
-  Wall: N
-  Wall: S
-  Wall: W
-  Wall: W -->
+    <!-- 
+  Add Item
+  Add Exit
+  --></div>
 </div>

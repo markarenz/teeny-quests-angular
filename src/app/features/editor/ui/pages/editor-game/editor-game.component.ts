@@ -1,18 +1,24 @@
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
+import {
+  Game,
+  GameArea,
+  Link,
+  SubNavItem,
+} from '@app/features/main/interfaces/types';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MainLayoutComponent } from '@main/ui/components/main-layout/main-layout.component';
 import { ContainerComponent } from '@app/features/main/ui/components/container/container.component';
+import { EditorExitsComponent } from '../../components/editor-exits/editor-exits.component';
 import { gamesApiUrl } from '@config/index';
 import { LoaderAnimationComponent } from '@app/features/main/ui/components/loader-animation/loader-animation.component';
 import { EditorAreaComponent } from '../../components/editor-area/editor-area.component';
 import { EditorAreaSelectorComponent } from '../../components/editor-area-selector/editor-area-selector.component';
 import { ButtonComponent } from '@app/features/main/ui/components/button/button.component';
 import { BreadcrumbsComponent } from '@app/features/main/ui/components/breadcrumbs/breadcrumbs.component';
-import { Game, Link, SubNavItem } from '@app/features/main/interfaces/types';
-import { defaultGridSize } from '@config/index';
 import { GameEditorServiceService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
+import { EditorPanelCellsComponent } from '../../components/editor-panel-cells/editor-panel-cells.component';
 
 @Component({
   selector: 'app-editor-game',
@@ -26,6 +32,8 @@ import { GameEditorServiceService } from '@app/features/editor/services/game-edi
     BreadcrumbsComponent,
     EditorAreaComponent,
     EditorAreaSelectorComponent,
+    EditorExitsComponent,
+    EditorPanelCellsComponent,
   ],
   templateUrl: './editor-game.component.html',
   styleUrl: './editor-game.component.css',
@@ -39,6 +47,7 @@ export class EditorGameComponent {
 
   title = 'Editor Game';
   isLoading: boolean = false;
+  isDirty: boolean = false;
   isValid: boolean = false;
   game: Game | null = null;
 
@@ -61,6 +70,10 @@ export class EditorGameComponent {
   ngOnInit() {
     this.subscriptions.push(
       this._gameEditorService.gameObs.subscribe((data: Game | null) => {
+        if (this.game) {
+          this.isDirty = true;
+          this.validateForm();
+        }
         this.game = data;
         this.title = this.game?.title ?? 'Game Title';
       })
@@ -101,6 +114,7 @@ export class EditorGameComponent {
         this.isLoading = false;
       });
   }
+
   handleSubNavClick(slug: string) {
     this.subNavCurrent = slug;
   }

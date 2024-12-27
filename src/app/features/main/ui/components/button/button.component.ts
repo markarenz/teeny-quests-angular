@@ -10,6 +10,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 export class ButtonComponent {
   @Input('label') label: string = 'Click';
   // Supported variants: contained, outlined
+  @Input('fullWidth') fullWidth: boolean = false;
   @Input('variant') variant: string = 'contained';
   @Input('icon') icon: string | null = null;
   @Input('isDisabled') isDisabled: boolean = false;

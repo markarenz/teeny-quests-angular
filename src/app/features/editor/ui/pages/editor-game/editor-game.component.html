@@ -7,7 +7,7 @@
           <app-button
             variant="contained"
             label="Save"
-            [isDisabled]="isLoading || !isValid"
+            [isDisabled]="isLoading || !isValid || !isDirty"
             (onButtonClick)="handleSaveClick()"
           />
         </div>
@@ -35,9 +35,14 @@
             </button>
             }
           </div>
-          <div class="flex flex-col gap-4 mt-8">
+          <div class="flex flex-col gap-8 mt-8">
             @if (subNavCurrent === 'areas') {
             <app-editor-area-selector />
+
+            <app-editor-panel-cells />
+
+            <app-editor-exits />
+
             }
           </div>
         </div>
@@ -52,18 +57,13 @@
                   id="new-game--title"
                   type="text"
                   [(ngModel)]="game.title"
-                  (ngModelChange)="validateForm()"
                 />
               </div>
               <div>
                 <label for="new-game--itemStatus" class="block text"
                   >Status</label
                 >
-                <select
-                  id="new-game--itemStatus"
-                  [(ngModel)]="game.itemStatus"
-                  (ngModelChange)="validateForm()"
-                >
+                <select id="new-game--itemStatus" [(ngModel)]="game.itemStatus">
                   @if(game.itemStatus === 'suspended' ) {
                   <option value="suspended">Suspended</option>
                   } @else {
@@ -81,7 +81,6 @@
               <textarea
                 id="new-game--description"
                 [(ngModel)]="game.description"
-                (ngModelChange)="validateForm()"
                 rows="6"
               ></textarea>
             </div>
@@ -101,7 +100,4 @@
       </div>
     </div>
   </app-container>
-
-  <!-- if itemStatus is suspended, just display the itemStatus 
-    -- otherwise, display  a dropdown -->
 </app-main-layout>

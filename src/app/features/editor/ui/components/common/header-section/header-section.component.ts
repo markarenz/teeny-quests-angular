@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
+import { IconCaretComponent } from '../../../../../main/ui/components/icons/icon-caret/icon-caret.component';
 
 @Component({
   selector: 'app-header-section',
   standalone: true,
-  imports: [],
+  imports: [IconCaretComponent],
   templateUrl: './header-section.component.html',
   styleUrl: './header-section.component.css',
 })

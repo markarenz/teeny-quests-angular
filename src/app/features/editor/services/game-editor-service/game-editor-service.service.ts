@@ -48,25 +48,21 @@ export class GameEditorServiceService {
 
   setCellData(cellData: GameAreaMapCell) {
     if (this.game.value?.content.areas[this.selectedAreaId.value]) {
-      this.game.value.content.areas[this.selectedAreaId.value] = {
-        ...this.game.value?.content.areas[this.selectedAreaId.value],
+      const gameObj = { ...this.game.value } as Game;
+      gameObj.content.areas[this.selectedAreaId.value] = {
+        ...gameObj?.content.areas[this.selectedAreaId.value],
         map: {
-          ...this.game.value?.content.areas[this.selectedAreaId.value].map,
+          ...gameObj?.content.areas[this.selectedAreaId.value].map,
           [`${cellData.y}_${cellData.x}`]: cellData,
         },
       };
-      // this.selectedArea.next(
-      //   this.game.value.content.areas[this.selectedAreaId.value]
-      // );
+      this.game.next(gameObj);
+      this.selectedCell.next(cellData);
     }
-    this.selectedCell.next(cellData);
   }
 
   setSelectedAreaId(areaId: string) {
     this.selectedAreaId.next(areaId);
-    // if (this.game.value?.content) {
-    //   this.selectedArea.next(this.game.value?.content.areas[areaId] ?? null);
-    // }
   }
 
   setSelectedCellPosition(cellPosition: string) {
@@ -119,6 +115,43 @@ export class GameEditorServiceService {
           this.selectedAreaId.next(areaslist[0]);
           this.selectedArea.next(nextGameData.content.areas[areaslist[0]]);
         });
+    }
+  }
+  resetTexturesForCurrentArea() {
+    const area = this.game.value?.content.areas[this.selectedAreaId.value];
+    if (area && this.game.value) {
+      const newMap = { ...area.map };
+      Object.keys(newMap).forEach((key) => {
+        newMap[key] = {
+          ...newMap[key],
+          floor: 'default',
+          wallEast: 'default',
+          wallSouth: 'default',
+        };
+      });
+      const nextGameData = {
+        ...this.game.value,
+        content: {
+          ...this.game.value.content,
+          areas: {
+            ...this.game.value?.content.areas,
+            [this.selectedAreaId.value]: {
+              ...area,
+              map: newMap,
+            },
+          },
+        },
+      };
+      this.selectedArea.next({
+        ...area,
+        map: newMap,
+      });
+      this.game.next(nextGameData);
+      const currentAreaId = this.selectedAreaId.value;
+      this.selectedAreaId.next('NOTHING');
+      setTimeout(() => {
+        this.selectedAreaId.next(currentAreaId);
+      }, 100);
     }
   }
 }

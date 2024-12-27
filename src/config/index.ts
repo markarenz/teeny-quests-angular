@@ -4,3 +4,4 @@ export const baseApiUrl =
 export const usersApiUrl = `${baseApiUrl}/users`;
 export const gamesApiUrl = `${baseApiUrl}/games`;
 export const defaultGridSize = 7;
+export const maxAreaCellHeight = 10;

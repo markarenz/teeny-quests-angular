@@ -3,7 +3,6 @@ import { Subscription } from 'rxjs';
 import { GameEditorServiceService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import { AreaCellComponent } from '@app/features/editor/ui/components/area-cell/area-cell.component';
 import { AreaCellButtonComponent } from '@app/features/editor/ui/components/area-cell-button/area-cell-button.component';
-import { AreaCellModalComponent } from '../area-cell-modal/area-cell-modal.component';
 import {
   Game,
   GameArea,
@@ -13,7 +12,7 @@ import {
 @Component({
   selector: 'app-editor-area',
   standalone: true,
-  imports: [AreaCellComponent, AreaCellButtonComponent, AreaCellModalComponent],
+  imports: [AreaCellComponent, AreaCellButtonComponent],
   templateUrl: './editor-area.component.html',
   styleUrl: './editor-area.component.css',
 })
@@ -29,6 +28,14 @@ export class EditorAreaComponent {
   selectedCell: GameAreaMapCell | null = null;
   anyCellSelected: boolean = false;
   areaDataPositionKeys: string[] = [];
+
+  getAreaData() {
+    this.selectedAreaMap = this.selectedArea?.map ?? null;
+    this.areaDataPositionKeys = this.selectedArea?.map
+      ? Object.keys(this.selectedArea.map)
+      : [];
+    console.log('selectedAreaMap', this.selectedAreaMap);
+  }
 
   ngOnInit(): void {
     this.subscriptions.push(
@@ -46,13 +53,22 @@ export class EditorAreaComponent {
     this.subscriptions.push(
       this._gameEditorService.selectedAreaIdObs.subscribe((data: string) => {
         this.selectedAreaId = data;
+        console.log('editor area Subscribe selectedAreaIdObs');
         this.selectedArea =
           this.game?.content.areas[this.selectedAreaId] ?? null;
-        this.selectedAreaMap = this.selectedArea?.map ?? null;
-        this.areaDataPositionKeys = this.selectedArea?.map
-          ? Object.keys(this.selectedArea.map)
-          : [];
+        this.getAreaData();
       })
+    );
+    this.subscriptions.push(
+      this._gameEditorService.selectedAreaObs.subscribe(
+        (data: GameArea | null) => {
+          if (data) {
+            console.log('editor area Subscribe selectedAreaObs');
+            this.selectedArea = data;
+            this.getAreaData();
+          }
+        }
+      )
     );
   }
 
@@ -65,9 +81,12 @@ export class EditorAreaComponent {
     this.selectedCell = this.selectedArea?.map[cellPosition] ?? null;
   }
 
-  handleBackgroundClick() {
+  clearCellSelection() {
     this.selectedAreaCellPosition = '';
     this.selectedCell = null;
     this._gameEditorService.setSelectedCellPosition('');
+  }
+  handleBackgroundClick() {
+    this.clearCellSelection();
   }
 }

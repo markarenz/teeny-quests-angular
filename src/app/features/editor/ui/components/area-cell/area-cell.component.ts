@@ -5,13 +5,14 @@ import {
   AreaPosition,
   getAreaItemPositionStyle,
 } from '@app/features/game/lib/utils/index';
-import { GameAreaMapCell } from '@app/features/main/interfaces/types';
+import { GameArea, GameAreaMapCell } from '@app/features/main/interfaces/types';
 import { defaultGridSize } from '@config/index';
+import { TexturesFloorComponent } from '@app/features/game/ui/components/textures/textures-floor/textures-floor.component';
 
 @Component({
   selector: 'app-area-cell',
   standalone: true,
-  imports: [],
+  imports: [TexturesFloorComponent],
   templateUrl: './area-cell.component.html',
   styleUrl: './area-cell.component.css',
 })
@@ -22,7 +23,6 @@ export class AreaCellComponent {
   @Input('positionKey') positionKey: string = '';
   @Input('cellData') cellData: GameAreaMapCell | null = null;
 
-  // Listen for selectedcell change
   gridSize: number = defaultGridSize;
 
   cell: any = {};
@@ -34,6 +34,9 @@ export class AreaCellComponent {
   isSelected: boolean = false;
   anyCellSelected: boolean = false;
   selectedCell: GameAreaMapCell | null = null;
+  floorTexture: string = '';
+  wallLeftTexture: string = '';
+  wallRightTexture: string = '';
   displayElements: {
     top: boolean;
     left: boolean;
@@ -47,6 +50,7 @@ export class AreaCellComponent {
     backLeft: false,
     backRight: false,
   };
+
   updateCellProps() {
     if (this.cell) {
       const { x, y, h } = this.cell;
@@ -71,29 +75,12 @@ export class AreaCellComponent {
         backLeft: false,
         backRight: false,
       };
-      if (x === 0) {
-        // this.displayElements.top = false;
-        // this.displayElements.left = false;
-      }
-      if (y === 0) {
-        // this.displayElements.top = false;
-        // this.displayElements.right = false;
-      }
 
-      if (x === this.gridSize - 1) {
-        // this.displayElements.top = false;
-        // this.displayElements.left = false;
-        // this.displayElements.right = false;
-        // this.displayElements.backRight = true;
-      }
-      if (y === this.gridSize - 1) {
-        // this.displayElements.top = false;
-        // this.displayElements.right = false;
-        // this.displayElements.left = false;
-        // this.displayElements.backLeft = true;
-      }
+      this.floorTexture = `url(#texture-${this.cell.floor ?? 'default'})`;
+      // const wall = wallDefinitions.find((item) => item.id === this.cell.wall);
     }
   }
+
   ngOnInit() {
     this.cell = this.cellData;
 

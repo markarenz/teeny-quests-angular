@@ -1,5 +1,10 @@
 <div id="editor-areas-list">
-  <select [(ngModel)]="selectedArealocal" (change)="handleSelectedAreaChange()">
+  <label for="editor-areas-selector">Select Area</label>
+  <select
+    id="editor-areas-selector"
+    [(ngModel)]="selectedArealocal"
+    (change)="handleSelectedAreaChange()"
+  >
     <option value="" disabled>Select an Area</option>
     @for(item of areasList; track item) {
     <option [value]="item">{{ item }}</option>
