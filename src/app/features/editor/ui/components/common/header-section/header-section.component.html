@@ -1,0 +1,22 @@
+<section>
+  <button
+    (click)="toggleIsOpen()"
+    class="w-full flex flex-row justify-between items-center rounded-md"
+  >
+    <h2>{{ title }}</h2>
+    <div class="flex-grow relative w-8 h-8 flex flex-row justify-end">
+      <div
+        class="relative w-8 h-8 {{
+          isOpen ? 'rotate-0' : 'rotate-180'
+        }} transition-all duration-300"
+      >
+        <app-icon-caret />
+      </div>
+    </div>
+  </button>
+  @if(isOpen) {
+  <div>
+    <ng-content />
+  </div>
+  }
+</section>

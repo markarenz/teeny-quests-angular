@@ -1,0 +1,43 @@
+<div
+  id="area-cell-{{ cell?.y }}-{{ cell?.x }}"
+  class="area-cell"
+  [style.bottom]="position.bottom"
+  [style.left]="position.left"
+  [style.z-index]="isSelected ? 300 : position.z"
+  [style.width]="width"
+  [style.height]="height"
+>
+  <!-- [style.opacity]="isSelected ? 1 : anyCellSelected ? 0.1 : 1" -->
+  <svg
+    id="area-cell-{{ cell?.y }}-{{ cell?.x }}--sides"
+    [attr.viewBox]="svgViewBox"
+    version="1.1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:svg="http://www.w3.org/2000/svg"
+    style="position: absolute; bottom: 0; left: 0; width: 100%"
+  >
+    @if(displayElements.left) {
+    <polygon [attr.points]="svgPolygonPoints[0]" fill="#888" />
+    } @if(displayElements.right) {
+    <polygon [attr.points]="svgPolygonPoints[1]" fill="#999" />
+    }
+  </svg>
+
+  <!-- <svg
+    id="area-cell-{{ cell?.y }}-{{ cell?.x }}--sides"
+    [attr.viewBox]="svgViewBox"
+    version="1.1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:svg="http://www.w3.org/2000/svg"
+    style="position: absolute; top: 0; left: 0; width: 100%; opacity: 0.25"
+  >
+    @if(displayElements.backLeft) {
+    <polygon [attr.points]="svgPolygonPoints[2]" fill="#ddd" />
+    } @if(displayElements.backRight) {
+    <polygon [attr.points]="svgPolygonPoints[3]" fill="#999" />
+    }
+  </svg> -->
+  @if(cell && displayElements.top) {
+  <app-textures-floor [floorType]="cell.floor" />
+  }
+</div>

@@ -1,63 +1,103 @@
 <app-main-layout [title]="title">
   <app-container>
-    <div class="py-8">
-      <app-breadcrumbs [links]="breadcrumbLinks" />
+    <div class="py-8 flex flex-col gap-8">
+      <div class="flex flex-row justify-between">
+        <app-breadcrumbs [links]="breadcrumbLinks" />
+        <div class="relative top-[-9px]">
+          <app-button
+            variant="contained"
+            label="Save"
+            [isDisabled]="isLoading || !isValid || !isDirty"
+            (onButtonClick)="handleSaveClick()"
+          />
+        </div>
+      </div>
 
-      <!-- if itemStatus is suspended, just display the itemStatus 
-    -- otherwise, display  a dropdown -->
-
-      <div class="relative mt-8 flex flex-col gap-4">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <div>
-            <label for="new-game--title" class="block text">Name</label>
-            <input
-              id="new-game--title"
-              type="text"
-              [(ngModel)]="game.title"
-              (ngModelChange)="validateForm()"
-            />
-          </div>
-          <div>
-            <label for="new-game--itemStatus" class="block text">Status</label>
-            <select
-              id="new-game--itemStatus"
-              [(ngModel)]="game.itemStatus"
-              (ngModelChange)="validateForm()"
+      <div class="flex flex-col lg:flex-row gap-8">
+        <div id="editor-panel-controls" class="lg:max-w-md w-full">
+          <div
+            id="editor-tab-switcher"
+            class="inline-flex rounded-md shadow-sm w-full"
+            role="group"
+          >
+            @for (item of subNavLinks; track item.label; let idx = $index) {
+            <button
+              type="button"
+              (click)="handleSubNavClick(item.slug)"
+              class="px-4 py-2 w-full text-sm font-bold  border focus:z-10  border-gray-700  hover:text-white hover:bg-gray-800 {{
+                idx === 0 && 'rounded-s-lg'
+              }} {{ idx === subNavLinks.length - 1 && 'rounded-e-lg' }} {{
+                subNavCurrent === item.slug ? '' : ''
+              }} bg-gray-900 text-gray-100 disabled:bg-gray-700 disabled:text-white transition-colors duration-300"
+              [disabled]="subNavCurrent === item.slug"
             >
-              @if(game.itemStatus === 'suspended' ) {
-              <option value="suspended">Suspended</option>
-              } @else {
-              <option value="active">Active</option>
-              <option value="draft">Draft</option>
-              <option value="archive">Archive</option>
-              }
-            </select>
+              {{ item.label }}
+            </button>
+            }
+          </div>
+          <div class="flex flex-col gap-8 mt-8">
+            @if (subNavCurrent === 'areas') {
+            <app-editor-area-selector />
+
+            <app-editor-panel-cells />
+
+            <app-editor-exits />
+
+            }
           </div>
         </div>
-        <div>
-          <label for="new-game--description" class="block text"
-            >Description
-          </label>
-          <textarea
-            id="new-game--description"
-            [(ngModel)]="game.description"
-            (ngModelChange)="validateForm()"
-            rows="6"
-          ></textarea>
+        <div id="editor-panel-content" class="flex-grow">
+          @if(subNavCurrent === 'info' && game) {
+          <!-- PANEL: INFO -->
+          <div id="editor-content-info" class="relative flex flex-col gap-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div>
+                <label for="new-game--title" class="block text">Name</label>
+                <input
+                  id="new-game--title"
+                  type="text"
+                  [(ngModel)]="game.title"
+                />
+              </div>
+              <div>
+                <label for="new-game--itemStatus" class="block text"
+                  >Status</label
+                >
+                <select id="new-game--itemStatus" [(ngModel)]="game.itemStatus">
+                  @if(game.itemStatus === 'suspended' ) {
+                  <option value="suspended">Suspended</option>
+                  } @else {
+                  <option value="active">Active</option>
+                  <option value="draft">Draft</option>
+                  <option value="archived">Archived</option>
+                  }
+                </select>
+              </div>
+            </div>
+            <div>
+              <label for="new-game--description" class="block text"
+                >Description
+              </label>
+              <textarea
+                id="new-game--description"
+                [(ngModel)]="game.description"
+                rows="6"
+              ></textarea>
+            </div>
+            @if (isLoading) {
+            <app-loader-animation />
+            }
+          </div>
+          } @else if (subNavCurrent === 'areas') {
+          <!-- PANEL: AREA -->
+          <div id="editor-content-stage" class="p-4 bg-gray-900">
+            <app-editor-area />
+          </div>
+          } @else if (subNavCurrent === 'misc') {
+          <div id="editor-content-misc">OK Misc</div>
+          }
         </div>
-        @if (isLoading) {
-        <app-loader-animation />
-        }
       </div>
-      <div class="mt-4 flex justify-end">
-        <app-button
-          variant="contained"
-          label="Save"
-          [isDisabled]="isLoading || !isValid"
-          (onButtonClick)="handleSaveClick()"
-        />
-      </div>
-      <!-- Save Button -->
     </div>
   </app-container>
 </app-main-layout>

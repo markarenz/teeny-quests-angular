@@ -35,3 +35,15 @@
 - [x] Build lambda deploy NPM script for convenience
 - [x] Form layout 2-col split
 - [x] Loading animation for editor game page, bake into table with `isLoading` prop
+
+### TQ4: Game Basics
+
+- Branch: TQ4-Game-Basics
+- [x] Update style to use dark gray backgrounds
+- [ ] API: for get multiple, do not return content
+- [ ] On the homepage, list games that are active and sort by last update. Link to a /play:id page for each.
+- [ ] On the /play/:id page, pull in the basic info and display it.
+
+Update types for all
+Start pulling in the simple POC game components and port them to Angular
+Rethink exits - we need more variety than N/S/E/W exits

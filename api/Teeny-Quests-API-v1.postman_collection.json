@@ -1,0 +1,277 @@
+{
+  "info": {
+    "_postman_id": "f0934eb9-2da4-4be9-b879-bd04e38e0b50",
+    "name": "Teeny-Quests-API-v1",
+    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+    "_exporter_id": "23051515"
+  },
+  "item": [
+    {
+      "name": "Games",
+      "item": [
+        {
+          "name": "GAMES - POST",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "x-api-token",
+                "value": "abcd1234",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"itemStatus\": \"draft\",\n    \"userId\": \"1234567890\",\n    \"username\": \"Test User\",\n    \"title\": \"Test Game 10\",\n    \"description\": \"Test game description. Lorem ipsum.\",\n    \"rating\": \"n/a\",\n    \"content\": \"{}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{api_url}}/games"
+          },
+          "response": []
+        },
+        {
+          "name": "GAMES - PUT",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "x-api-token",
+                "value": "abcd1234",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"id\": \"abc1239\",\n    \"itemStatus\": \"draft\",\n    \"userId\": \"1234567890\",\n    \"username\": \"Test User 5\",\n    \"title\": \"Test Game 9e\",\n    \"description\": \"Test game description. Lorem ipsum.\",\n    \"rating\": \"n/a\",\n    \"content\": \"{}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{api_url}}/games"
+          },
+          "response": []
+        },
+        {
+          "name": "GAMES -  GET",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{api_url}}/games"
+          },
+          "response": []
+        },
+        {
+          "name": "GAMES -  GET by User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{api_url}}/games"
+          },
+          "response": []
+        },
+        {
+          "name": "GAMES -  GET By ID",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "x-api-token",
+                "value": "abcd1234",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/games?id=cVqIAMDvgGQMdfETCneVZTn-pVWxDEb5NsZizkDUmbQ",
+              "host": ["{{api_url}}"],
+              "path": ["games"],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "cVqIAMDvgGQMdfETCneVZTn-pVWxDEb5NsZizkDUmbQ"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "USERS - POST",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "x-api-token",
+                "value": "abcd1234",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"id\": \"abc123b\",\n    \"username\": \"Test User B\",\n    \"itemStatus\": \"active\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{api_url}}/users"
+          },
+          "response": []
+        },
+        {
+          "name": "USERS - PUT",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "x-api-token",
+                "value": "abcd1234",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"id\": \"abc123\",\n    \"username\": \"Testy McTesterson\",\n    \"itemStatus\": \"active\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{api_url}}/users"
+          },
+          "response": []
+        },
+        {
+          "name": "USERS -  GET",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{api_url}}/users"
+          },
+          "response": []
+        },
+        {
+          "name": "USERS -  GET By ID",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "x-api-token",
+                "value": "abcd1234",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/users?id=100076592647217116733",
+              "host": ["{{api_url}}"],
+              "path": ["users"],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "100076592647217116733"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

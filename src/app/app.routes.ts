@@ -7,15 +7,15 @@ import { EditorGameComponent } from './features/editor/ui/pages/editor-game/edit
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'game', component: GameComponent },
+  { path: 'game/:id', component: GameComponent },
   {
     path: 'editor',
     component: EditorHomeComponent,
-    canActivate: [hasAuthGuard],
+    // canActivate: [hasAuthGuard],
   },
   {
     path: 'editor/:id',
     component: EditorGameComponent,
-    canActivate: [hasAuthGuard],
+    // canActivate: [hasAuthGuard],
   },
 ];

@@ -1,9 +1,9 @@
 <button
   role="button"
   type="button"
-  class="button-root px-4 py-2 font-bold w-full md:w-auto {{
+  class="button-root px-4 py-2 font-bold {{
     variant === 'outlined' ? 'outlined' : 'contained'
-  }}"
+  }} {{ fullWidth ? 'w-full' : 'w-full md:w-auto' }}"
   disabled="{{ isDisabled ? 'TRUE' : null }}"
   (click)="handleButtonClick()"
 >

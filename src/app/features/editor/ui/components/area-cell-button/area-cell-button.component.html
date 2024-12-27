@@ -1,0 +1,25 @@
+<div
+  id="area-cell-button-{{ y }}-{{ x }}"
+  class="area-cell-button"
+  [style.bottom]="position.bottom"
+  [style.left]="position.left"
+  [style.width]="width"
+  [style.height]="height"
+  [style.z-index]="z"
+>
+  <svg
+    id="area-cell-{{ y }}-{{ x }}--top"
+    viewBox="0 0 100 50"
+    version="1.1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:svg="http://www.w3.org/2000/svg"
+    style="position: absolute; top: 0; left: 0; width: 100%"
+  >
+    <polygon
+      role="button"
+      points="50,0 100,25 50,50 0,25"
+      (click)="handleCellButtonClick()"
+      tabindex="0"
+    />
+  </svg>
+</div>

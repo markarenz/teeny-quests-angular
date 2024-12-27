@@ -1,0 +1,24 @@
+<button
+  role="button"
+  class="flex flex-row justify-between items-center px-4 py-2 bg-gray-700 w-full {{
+    isOpen ? 'rounded-t-lg border-b-0' : 'rounded-lg'
+  }} border-2 border-gray-400"
+  (click)="toggleCollapse()"
+>
+  <h3 class="inline-block">{{ title }}</h3>
+  <div
+    class="inline-block relative w-6 h-6 {{
+      isOpen ? 'rotate-180' : 'rotate-90'
+    }} transition-all duration-300"
+  >
+    <app-icon-caret />
+  </div>
+</button>
+
+@if(isOpen) {
+<div
+  class="bg-gray-900 border-2 border-gray-400 rounded-t-none rounded-b-lg rounded-l-lg rounded-r-lg border-t-0 flex flex-col gap-4 flex flex-col gap-4 p-4"
+>
+  <ng-content />
+</div>
+}
