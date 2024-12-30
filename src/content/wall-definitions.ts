@@ -1,23 +1,19 @@
 export type WallDefinition = {
   id: string;
   name: string;
-  texture: string;
 };
 
 export const wallDefinitions: WallDefinition[] = [
   {
     id: 'default',
-    name: 'Default',
-    texture: 'wall-default.svg',
+    name: 'Stone',
   },
   {
-    id: 'stone',
-    name: 'Stone',
-    texture: 'wall-stone.svg',
+    id: 'dark-stone',
+    name: 'Dark Stone',
   },
   {
     id: 'cave',
     name: 'Cave Wall',
-    texture: 'wall-cave.svg',
   },
 ];

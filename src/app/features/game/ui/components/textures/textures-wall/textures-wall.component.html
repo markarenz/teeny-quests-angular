@@ -1,0 +1,107 @@
+<svg
+  [attr.viewBox]="svgViewBox"
+  version="1.1"
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:svg="http://www.w3.org/2000/svg"
+  style="position: absolute; bottom: 0; left: 0; width: 100%"
+  [attr.class]="wallType + ' wall-position-' + wallPosition"
+>
+  <defs>
+    @if(wallType === 'test') {
+    <pattern
+      [id]="
+        'texture_' +
+        wallType +
+        '_' +
+        wallPosition +
+        '_' +
+        (isFlat ? 'flat' : 'wall')
+      "
+      x="0"
+      y="0"
+      width="1"
+      height="1"
+    >
+      <rect
+        x="0"
+        y="0"
+        width="100%"
+        height="100%"
+        [attr.fill]="wallPosition === 'l' ? '#999' : '#888'"
+      />
+      @if(wallPosition === 'l') { } @else { }
+    </pattern>
+    } @else {
+    <pattern
+      [id]="
+        'texture_' +
+        wallType +
+        '_' +
+        wallPosition +
+        '_' +
+        (isFlat ? 'flat' : 'wall')
+      "
+      x="0"
+      y="0"
+      width="1"
+      height="1"
+    >
+      <rect x="0" y="0" width="100" height="400" class="bgRect" />
+      @if(wallPosition === 'l') {
+      <line x1="0" y1="25" x2="50" y2="50" class="brick" strokeWidth="2" />
+      <line x1="0" y1="50" x2="50" y2="75" class="brick" strokeWidth="2" />
+      <line x1="0" y1="75" x2="50" y2="100" class="brick" strokeWidth="2" />
+      <line x1="0" y1="100" x2="50" y2="125" class="brick" strokeWidth="2" />
+      <line x1="0" y1="125" x2="50" y2="150" class="brick" strokeWidth="2" />
+      <line x1="0" y1="150" x2="50" y2="175" class="brick" strokeWidth="2" />
+      <line x1="0" y1="175" x2="50" y2="200" class="brick" strokeWidth="2" />
+      <line x1="0" y1="200" x2="50" y2="225" class="brick" strokeWidth="2" />
+      <line x1="0" y1="225" x2="50" y2="250" class="brick" strokeWidth="2" />
+      <line x1="0" y1="250" x2="50" y2="275" class="brick" strokeWidth="2" />
+      <line x1="0" y1="275" x2="50" y2="300" class="brick" strokeWidth="2" />
+
+      <line x1="25" y1="13" x2="25" y2="38" class="brick" strokeWidth="2" />
+      <line x1="10" y1="30" x2="10" y2="55" class="brick" strokeWidth="2" />
+      <line x1="25" y1="63" x2="25" y2="88" class="brick" strokeWidth="2" />
+      <line x1="10" y1="80" x2="10" y2="105" class="brick" strokeWidth="2" />
+      <line x1="25" y1="113" x2="25" y2="138" class="brick" strokeWidth="2" />
+      <line x1="10" y1="130" x2="10" y2="155" class="brick" strokeWidth="2" />
+      <line x1="25" y1="163" x2="25" y2="188" class="brick" strokeWidth="2" />
+      <line x1="10" y1="180" x2="10" y2="205" class="brick" strokeWidth="2" />
+      <line x1="25" y1="213" x2="25" y2="238" class="brick" strokeWidth="2" />
+      <line x1="10" y1="230" x2="10" y2="255" class="brick" strokeWidth="2" />
+      } @else {
+      <line x1="0" y1="50" x2="50" y2="25" class="brick" strokeWidth="2" />
+      <line x1="0" y1="75" x2="50" y2="50" class="brick" strokeWidth="2" />
+      <line x1="0" y1="100" x2="50" y2="75" class="brick" strokeWidth="2" />
+      <line x1="0" y1="125" x2="50" y2="100" class="brick" strokeWidth="2" />
+      <line x1="0" y1="150" x2="50" y2="125" class="brick" strokeWidth="2" />
+      <line x1="0" y1="175" x2="50" y2="150" class="brick" strokeWidth="2" />
+      <line x1="0" y1="200" x2="50" y2="175" class="brick" strokeWidth="2" />
+      <line x1="0" y1="225" x2="50" y2="200" class="brick" strokeWidth="2" />
+      <line x1="0" y1="250" x2="50" y2="225" class="brick" strokeWidth="2" />
+      <line x1="0" y1="275" x2="50" y2="250" class="brick" strokeWidth="2" />
+      <line x1="0" y1="300" x2="50" y2="275" class="brick" strokeWidth="2" />
+
+      <line x1="25" y1="13" x2="25" y2="38" class="brick" strokeWidth="2" />
+      <line x1="10" y1="44" x2="10" y2="69" class="brick" strokeWidth="2" />
+      <line x1="25" y1="63" x2="25" y2="88" class="brick" strokeWidth="2" />
+      <line x1="10" y1="94" x2="10" y2="119" class="brick" strokeWidth="2" />
+      <line x1="25" y1="113" x2="25" y2="138" class="brick" strokeWidth="2" />
+      <line x1="10" y1="144" x2="10" y2="169" class="brick" strokeWidth="2" />
+      <line x1="25" y1="163" x2="25" y2="188" class="brick" strokeWidth="2" />
+      <line x1="10" y1="194" x2="10" y2="219" class="brick" strokeWidth="2" />
+      <line x1="25" y1="213" x2="25" y2="238" class="brick" strokeWidth="2" />
+      <line x1="10" y1="244" x2="10" y2="269" class="brick" strokeWidth="2" />
+
+      }
+    </pattern>
+    }
+  </defs>
+
+  @if(wallPosition === 'l') {
+  <polygon [attr.points]="svgPolygonPoints[0]" [attr.fill]="wallTexture" />
+  } @if(wallPosition === 'r') {
+  <polygon [attr.points]="svgPolygonPoints[1]" [attr.fill]="wallTexture" />
+  }
+</svg>

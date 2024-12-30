@@ -10,5 +10,4 @@ import { Component, Input } from '@angular/core';
 export class TexturesFloorComponent {
   @Input('floorType') floorType: string = 'default';
   @Input('isFlat') isFlat: boolean = false;
-  floorTexture: string = `url(#texture-${this.floorType ?? 'default'})`;
 }

@@ -10,7 +10,17 @@
     [attr.aria-label]="option.name"
     [attr.title]="option.name"
   >
+    @if(surfaceType === 'floor') {
     <app-textures-floor [floorType]="option.id" [isFlat]="true" />
+    } @else {
+    <app-textures-wall
+      [wallType]="option.id"
+      [isFlat]="true"
+      [svgPolygonPoints]="['0,0 100,0 100,100 0,100', '']"
+      wallPosition="l"
+      svgViewBox="0 0 50 100"
+    />
+    }
   </button>
   }
 </div>
