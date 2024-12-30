@@ -8,11 +8,12 @@ import {
 import { GameArea, GameAreaMapCell } from '@app/features/main/interfaces/types';
 import { defaultGridSize } from '@config/index';
 import { TexturesFloorComponent } from '@app/features/game/ui/components/textures/textures-floor/textures-floor.component';
+import { TexturesWallComponent } from '@app/features/game/ui/components/textures/textures-wall/textures-wall.component';
 
 @Component({
   selector: 'app-area-cell',
   standalone: true,
-  imports: [TexturesFloorComponent],
+  imports: [TexturesFloorComponent, TexturesWallComponent],
   templateUrl: './area-cell.component.html',
   styleUrl: './area-cell.component.css',
 })
@@ -34,9 +35,6 @@ export class AreaCellComponent {
   isSelected: boolean = false;
   anyCellSelected: boolean = false;
   selectedCell: GameAreaMapCell | null = null;
-  floorTexture: string = '';
-  wallLeftTexture: string = '';
-  wallRightTexture: string = '';
   displayElements: {
     top: boolean;
     left: boolean;
@@ -75,9 +73,6 @@ export class AreaCellComponent {
         backLeft: false,
         backRight: false,
       };
-
-      this.floorTexture = `url(#texture-${this.cell.floor ?? 'default'})`;
-      // const wall = wallDefinitions.find((item) => item.id === this.cell.wall);
     }
   }
 

@@ -1,0 +1,37 @@
+.default {
+  &.wall-position-l {
+    .bgRect {
+      fill: #999;
+    }
+    .brick {
+      stroke: #888;
+    }
+  }
+  &.wall-position-r {
+    .bgRect {
+      fill: #888;
+    }
+    .brick {
+      stroke: #777;
+    }
+  }
+}
+
+.dark-stone {
+  &.wall-position-l {
+    .bgRect {
+      fill: #444;
+    }
+    .brick {
+      stroke: #666;
+    }
+  }
+  &.wall-position-r {
+    .bgRect {
+      fill: #333;
+    }
+    .brick {
+      stroke: #555;
+    }
+  }
+}
