@@ -34,7 +34,6 @@ export class EditorAreaComponent {
     this.areaDataPositionKeys = this.selectedArea?.map
       ? Object.keys(this.selectedArea.map)
       : [];
-    console.log('selectedAreaMap', this.selectedAreaMap);
   }
 
   ngOnInit(): void {
@@ -53,7 +52,6 @@ export class EditorAreaComponent {
     this.subscriptions.push(
       this._gameEditorService.selectedAreaIdObs.subscribe((data: string) => {
         this.selectedAreaId = data;
-        console.log('editor area Subscribe selectedAreaIdObs');
         this.selectedArea =
           this.game?.content.areas[this.selectedAreaId] ?? null;
         this.getAreaData();
@@ -63,7 +61,6 @@ export class EditorAreaComponent {
       this._gameEditorService.selectedAreaObs.subscribe(
         (data: GameArea | null) => {
           if (data) {
-            console.log('editor area Subscribe selectedAreaObs');
             this.selectedArea = data;
             this.getAreaData();
           }

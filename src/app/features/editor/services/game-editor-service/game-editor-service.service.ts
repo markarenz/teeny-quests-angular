@@ -6,7 +6,7 @@ import {
   Game,
   GameArea,
   GameAreaMapCell,
-  GameContent,
+  SelectIUIOption,
 } from '@app/features/main/interfaces/types';
 import { defaultGridSize } from '@config/index';
 
@@ -62,7 +62,10 @@ export class GameEditorServiceService {
   }
 
   setSelectedAreaId(areaId: string) {
-    this.selectedAreaId.next(areaId);
+    this.selectedAreaId.next('');
+    setTimeout(() => {
+      this.selectedAreaId.next(areaId);
+    }, 100);
   }
 
   setSelectedCellPosition(cellPosition: string) {
@@ -101,6 +104,18 @@ export class GameEditorServiceService {
     }
   }
 
+  getAreasListOptions(): SelectIUIOption[] {
+    let areasOptions: SelectIUIOption[] = [];
+    if (this.game.value) {
+      const areas = this.game.value.content.areas;
+      areasOptions = Object.keys(areas).map((areaId) => ({
+        value: areaId,
+        label: areas[areaId].name,
+      }));
+    }
+    return areasOptions;
+  }
+
   getGameById(gameId: string | null): void {
     if (gameId) {
       fetch(`${gamesApiUrl}?id=${gameId}`, {
@@ -117,6 +132,93 @@ export class GameEditorServiceService {
         });
     }
   }
+
+  getPositionKeysForGridSize(): string[] {
+    const numCells = defaultGridSize * defaultGridSize;
+    return Array.from({ length: numCells }, (_, i) => {
+      const x = i % defaultGridSize;
+      const y = Math.floor(i / defaultGridSize);
+      return `${y}_${x}`;
+    });
+  }
+
+  getDefaultMap(): { [key: string]: GameAreaMapCell } {
+    const newMap: { [key: string]: GameAreaMapCell } = {};
+
+    const positionKeys = this.getPositionKeysForGridSize();
+
+    positionKeys.forEach((key) => {
+      const [y, x] = key.split('_');
+      const cell: GameAreaMapCell = {
+        x: +x,
+        y: +y,
+        h: x === '0' || y === '0' ? 10 : 1,
+        floor: 'default',
+        wallEast: 'default',
+        wallSouth: 'default',
+      };
+      newMap[key] = cell;
+    });
+
+    return newMap;
+  }
+
+  createNewArea() {
+    if (this.game.value) {
+      const id = `${Date.now()}`;
+      const newArea: GameArea = {
+        id,
+        name: `Area ${id.slice(-5)}`,
+        map: this.getDefaultMap(),
+      };
+      const nextGameData = {
+        ...this.game.value,
+        content: {
+          ...this.game.value.content,
+          areas: {
+            ...this.game.value?.content.areas,
+            [id]: newArea,
+          },
+        },
+      };
+
+      this.game.next(nextGameData);
+      this.setSelectedAreaId(id);
+    }
+  }
+
+  renameCurrentSelectedArea(newAreaName: string) {
+    if (this.game.value) {
+      const nextGameData = {
+        ...this.game.value,
+        content: {
+          ...this.game.value.content,
+          areas: {
+            ...this.game.value?.content.areas,
+            [this.selectedAreaId.value]: {
+              ...this.game.value?.content.areas[this.selectedAreaId.value],
+              name: newAreaName,
+            },
+          },
+        },
+      };
+      this.game.next(nextGameData);
+    }
+  }
+
+  deleteCurrentSelectedArea() {
+    if (this.game.value) {
+      const nextGameData = {
+        ...this.game.value,
+      };
+      delete nextGameData.content.areas[this.selectedAreaId.value];
+
+      const areaslist = Object.keys(nextGameData.content.areas);
+      this.setSelectedAreaId(areaslist[0]);
+      this.game.next(nextGameData);
+    }
+  }
+
   resetTexturesForCurrentArea() {
     const area = this.game.value?.content.areas[this.selectedAreaId.value];
     if (area && this.game.value) {
@@ -142,10 +244,6 @@ export class GameEditorServiceService {
           },
         },
       };
-      this.selectedArea.next({
-        ...area,
-        map: newMap,
-      });
       this.game.next(nextGameData);
       const currentAreaId = this.selectedAreaId.value;
       this.selectedAreaId.next('NOTHING');

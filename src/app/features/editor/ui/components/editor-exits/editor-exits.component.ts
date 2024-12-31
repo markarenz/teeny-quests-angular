@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { SelectOptions } from '@app/features/main/interfaces/types';
+import { SelectIUIOption } from '@app/features/main/interfaces/types';
 import { CollapsibleCardComponent } from '@app/features/main/ui/components/collapsible-card/collapsible-card.component';
 import { ButtonComponent } from '@app/features/main/ui/components/button/button.component';
 import { exitDefinitions } from '@content/exit-definitions';
@@ -14,7 +14,7 @@ import { exitDefinitions } from '@content/exit-definitions';
 })
 export class EditorExitsComponent {
   panelMode: string = '';
-  exitTypeOptions: SelectOptions[] = exitDefinitions;
+  exitTypeOptions: SelectIUIOption[] = exitDefinitions;
   selectedExitType: string = '';
   selectedPosition: string = '';
   isFormValid: boolean = false;

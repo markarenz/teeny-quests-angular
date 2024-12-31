@@ -1,6 +1,6 @@
 import { TableCellDisplayType } from './enums';
 
-export type SelectOptions = {
+export type SelectIUIOption = {
   value: string;
   label: string;
 };
@@ -32,7 +32,6 @@ export type GameAreaMapCell = {
 export type GameArea = {
   id: string;
   name: string;
-  size: number;
   map: { [key: string]: GameAreaMapCell };
 };
 
