@@ -62,7 +62,6 @@ export type GameContent = {
   areas: { [key: string]: GameArea };
   items: { [key: string]: GameItem };
   events: GameEvent[];
-  // ...
 };
 
 export type Game = {

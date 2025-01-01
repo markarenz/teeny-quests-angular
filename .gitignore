@@ -10,3 +10,4 @@ secret.ts
 .DS_Store
 *.notes.md
 _local-assets/
+coverage/

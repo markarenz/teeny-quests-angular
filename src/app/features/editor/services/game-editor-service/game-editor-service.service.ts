@@ -42,6 +42,20 @@ export class GameEditorServiceService {
     this.isMenuOpen.next(false);
   }
 
+  setTestValue(value: any, fieldName: string) {
+    switch (fieldName) {
+      case 'selectedAreaId': {
+        this.selectedAreaId.next(value);
+        break;
+      }
+      case 'game':
+      default: {
+        this.game.next(value);
+        break;
+      }
+    }
+  }
+
   toggleMenu() {
     this.isMenuOpen.next(!this.isMenuOpen.value);
   }
