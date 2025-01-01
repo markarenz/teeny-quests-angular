@@ -15,20 +15,11 @@ export class AreaCellSelectorComponent {
   @Input('disabledCells') disabledCells: string[] = [];
   @Input('selectedCellPosition') selectedCellPosition: string = '';
 
-  // TODO: add disabledcells array support
-
-  numCells = defaultGridSize * defaultGridSize;
   areaDataPositionKeys: string[] = [];
 
   ngOnInit(): void {
-    this.areaDataPositionKeys = Array.from(
-      { length: this.numCells },
-      (_, i) => {
-        const x = i % defaultGridSize;
-        const y = Math.floor(i / defaultGridSize);
-        return `${y}_${x}`;
-      }
-    );
+    this.areaDataPositionKeys =
+      this._gameEditorService.getPositionKeysForGridSize();
   }
 
   handleCellButtonClick(position: string) {
