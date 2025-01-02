@@ -1,5 +1,4 @@
-import { Component, Input } from '@angular/core';
-import { defaultGridSize } from '@config/index';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { GameEditorServiceService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 
 @Component({
@@ -14,6 +13,7 @@ export class AreaCellSelectorComponent {
   @Input('id') id: string = 'area-cell-selector';
   @Input('disabledCells') disabledCells: string[] = [];
   @Input('selectedCellPosition') selectedCellPosition: string = '';
+  @Output() onPositionSelect: EventEmitter<string> = new EventEmitter<string>();
 
   areaDataPositionKeys: string[] = [];
 
@@ -23,6 +23,6 @@ export class AreaCellSelectorComponent {
   }
 
   handleCellButtonClick(position: string) {
-    this._gameEditorService.setSelectedCellPosition(position);
+    this.onPositionSelect.emit(position);
   }
 }

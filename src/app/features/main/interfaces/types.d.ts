@@ -29,10 +29,22 @@ export type GameAreaMapCell = {
   wallEast: string;
 };
 
+export type GameAreaExit = {
+  id: string;
+  exiType: string;
+  areaId: string;
+  direction: string;
+  x: number;
+  y: number;
+  destinationAreaId: string;
+  modifier?: string; // locked
+};
+
 export type GameArea = {
   id: string;
   name: string;
   map: { [key: string]: GameAreaMapCell };
+  exits?: GameAreaExit[];
 };
 
 export type GameEventCondition = {

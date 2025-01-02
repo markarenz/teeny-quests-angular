@@ -240,7 +240,7 @@ describe('getDefaultMap', () => {
   });
 });
 
-describe('createNewArea', () => {
+describe('createArea', () => {
   let service: GameEditorServiceService;
   beforeEach(() => {
     TestBed.configureTestingModule({});
@@ -260,7 +260,7 @@ describe('createNewArea', () => {
     });
 
     tick(100);
-    service.createNewArea();
+    service.createArea();
     tick(100);
   }));
 });
@@ -319,3 +319,5 @@ describe('resetTexturesForCurrentArea', () => {
     tick(1000);
   }));
 });
+
+describe('createNewExit', () => {});

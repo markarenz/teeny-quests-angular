@@ -10,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MainLayoutComponent } from '@main/ui/components/main-layout/main-layout.component';
 import { ContainerComponent } from '@app/features/main/ui/components/container/container.component';
-import { EditorExitsComponent } from '../../components/editor-exits/editor-exits.component';
+import { EditorPanelExitsComponent } from '../../components/editor-panel-exits/editor-panel-exits.component';
 import { gamesApiUrl } from '@config/index';
 import { LoaderAnimationComponent } from '@app/features/main/ui/components/loader-animation/loader-animation.component';
 import { EditorAreaComponent } from '../../components/editor-area/editor-area.component';
@@ -32,7 +32,7 @@ import { EditorPanelCellsComponent } from '../../components/editor-panel-cells/e
     BreadcrumbsComponent,
     EditorAreaComponent,
     EditorAreaSelectorComponent,
-    EditorExitsComponent,
+    EditorPanelExitsComponent,
     EditorPanelCellsComponent,
   ],
   templateUrl: './editor-game.component.html',

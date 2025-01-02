@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { Guid } from 'guid-typescript';
 import { gamesApiUrl } from '@config/index';
 import { User } from '@app/features/auth/interfaces/types';
 import {
   Game,
   GameArea,
+  GameAreaExit,
   GameAreaMapCell,
   SelectIUIOption,
 } from '@app/features/main/interfaces/types';
@@ -37,6 +39,9 @@ export class GameEditorServiceService {
 
   private isMenuOpen = new BehaviorSubject<boolean>(false);
   isMenuOpenObs = this.isMenuOpen.asObservable();
+
+  private selectedExitId = new BehaviorSubject<string>('');
+  selectedExitIdObs = this.selectedExitId.asObservable();
 
   constructor() {
     this.isMenuOpen.next(false);
@@ -80,6 +85,103 @@ export class GameEditorServiceService {
     setTimeout(() => {
       this.selectedAreaId.next(areaId);
     }, 100);
+  }
+
+  getExitsForCurrentArea(): GameAreaExit[] {
+    console.log('AreaId:', this.selectedAreaId.value);
+    console.log(
+      '???',
+      this.game.value?.content.areas[this.selectedAreaId.value]
+    );
+    return (
+      this.game.value?.content.areas[this.selectedAreaId.value]?.exits ?? []
+    );
+  }
+
+  createExit(): GameAreaExit | null {
+    let destinationAreaId = '';
+    const areas = this.game?.value?.content.areas;
+    if (!areas) {
+      return null;
+    }
+    const areaOptions = Object.keys(areas).filter(
+      (item) => item !== this.selectedAreaId.value
+    );
+    destinationAreaId = areaOptions[areaOptions.length - 1];
+
+    const area = areas[this.selectedAreaId.value] ?? {
+      exits: [],
+    };
+
+    let x = 2;
+    let y = 0;
+    let validPosition = false;
+    while (!validPosition) {
+      // this.items?.some((item) => item.area === this.selectedAreaId.value && item.x === x && item.y === y);
+      if (area.exits?.some((exit) => exit.x === x && exit.y === y)) {
+        x += 1;
+        if (x > defaultGridSize - 1) {
+          x = 0;
+          y += 1;
+          if (y > defaultGridSize - 1) {
+            console.error('No more space for exits');
+            break;
+          }
+        }
+      } else {
+        validPosition = true;
+      }
+    }
+    if (validPosition) {
+      let direction = 'north';
+      if (y < 2) {
+        direction = 'north';
+      } else if (y > defaultGridSize - 3) {
+        direction = 'south';
+      } else if (x < 2) {
+        direction = 'east';
+      } else if (x > defaultGridSize - 3) {
+        direction = 'west';
+      }
+
+      const newExit: GameAreaExit = {
+        id: Guid.create().toString(),
+        destinationAreaId,
+        exiType: 'default',
+        direction,
+        areaId: this.selectedAreaId.value,
+        x,
+        y,
+      };
+
+      const gameObj = { ...this.game.value } as Game;
+      gameObj.content.areas[this.selectedAreaId.value] = {
+        ...gameObj?.content.areas[this.selectedAreaId.value],
+        exits: [
+          ...(gameObj?.content.areas[this.selectedAreaId.value].exits ?? []),
+          newExit,
+        ],
+      };
+      this.game.next(gameObj);
+      this.selectedExitId.next(newExit.id);
+      return newExit;
+    }
+
+    return null;
+  }
+
+  deleteExit(exitId: string) {
+    const exits =
+      this.game.value?.content.areas[this.selectedAreaId.value].exits;
+    if (exits) {
+      const newExits = exits.filter((exit) => exit.id !== exitId);
+      const gameObj = { ...this.game.value } as Game;
+      gameObj.content.areas[this.selectedAreaId.value] = {
+        ...gameObj?.content.areas[this.selectedAreaId.value],
+        exits: newExits,
+      };
+      this.game.next(gameObj);
+    }
   }
 
   setSelectedCellPosition(cellPosition: string) {
@@ -177,9 +279,9 @@ export class GameEditorServiceService {
     return newMap;
   }
 
-  createNewArea() {
+  createArea() {
     if (this.game.value) {
-      const id = `${Date.now()}`;
+      const id = Guid.create().toString();
       const newArea: GameArea = {
         id,
         name: `Area ${id.slice(-5)}`,
