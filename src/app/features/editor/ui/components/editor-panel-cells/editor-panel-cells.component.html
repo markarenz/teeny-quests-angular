@@ -17,13 +17,13 @@
         <div class="flex flex-row gap-2">
           <app-icon-button
             icon="edit"
-            ariaLabel="Select Cell"
+            label="Select Cell"
             (click)="handleToggleCellSelector()"
           />
           <app-icon-button
             icon="close"
             theme="danger"
-            ariaLabel="Deselect Cell"
+            label="Deselect Cell"
             (click)="handleCellDeselect()"
             [isDisabled]="!selectedCellPosition"
           />

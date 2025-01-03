@@ -18,13 +18,13 @@
           <div class="flex flex-row gap-2">
             <app-icon-button
               icon="edit"
-              ariaLabel="Edit Exit"
+              label="Edit Exit"
               (click)="handleEditClick(exit.id)"
             />
             <app-icon-button
               icon="delete"
               theme="danger"
-              ariaLabel="Delete Exit"
+              label="Delete Exit"
               (click)="handleDeleteClick(exit.id)"
             />
           </div>
@@ -34,7 +34,7 @@
       <div class="flex flex-row justify-end">
         <app-icon-button
           icon="new"
-          ariaLabel="Add Exit"
+          label="Add Exit"
           (click)="handleCreateClick()"
         />
       </div>
@@ -54,6 +54,7 @@
         <select
           id="exits-exit-direction-selector"
           [(ngModel)]="inputExitDirection"
+          (change)="handleExitInputChange()"
         >
           @for(item of exitDirectionOptions; track item.value) {
           <option [value]="item.value">{{ item.label }}</option>
@@ -63,7 +64,11 @@
 
       <div>
         <label for="exits-exit-type-selector">Exit Type</label>
-        <select id="exits-exit-type-selector" [(ngModel)]="inputExitType">
+        <select
+          id="exits-exit-type-selector"
+          [(ngModel)]="inputExitType"
+          (change)="handleExitInputChange()"
+        >
           @for(item of exitTypeOptions; track item.value) {
           <option [value]="item.value">{{ item.label }}</option>
           }
@@ -74,6 +79,7 @@
         <select
           id="exits-exit-destination-selector"
           [(ngModel)]="inputExitDestination"
+          (change)="handleExitInputChange()"
         >
           @for(item of areasListOptions; track item.value) {
           <option [value]="item.value">{{ item.label }}</option>

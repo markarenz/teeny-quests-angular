@@ -31,7 +31,7 @@ export type GameAreaMapCell = {
 
 export type GameAreaExit = {
   id: string;
-  exiType: string;
+  exitType: string;
   areaId: string;
   direction: string;
   x: number;
@@ -44,7 +44,7 @@ export type GameArea = {
   id: string;
   name: string;
   map: { [key: string]: GameAreaMapCell };
-  exits?: GameAreaExit[];
+  exits: GameAreaExit[];
 };
 
 export type GameEventCondition = {

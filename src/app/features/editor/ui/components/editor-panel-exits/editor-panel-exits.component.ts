@@ -42,20 +42,6 @@ export class EditorPanelExitsComponent {
   isSelectedPositionValid: boolean = false;
   areasListOptions: SelectIUIOption[] = [];
 
-  checkIfSelectedPositionIsValid() {
-    // TODO: also check if cell is max height
-    // if (!this.selectedCellPosition) {
-    //   this.isSelectedPositionValid = false;
-    //   return;
-    // }
-    // const [y, x] = this.selectedCellPosition.split('_');
-    // const isCellOccupied = this.exits.some(
-    //   (exit: GameAreaExit) => exit.x === +x && exit.y === +y
-    // );
-    // this.isSelectedPositionValid =
-    //   !isCellOccupied && this.areasListOptions.length > 1;
-  }
-
   refreshUIData() {
     this.areasListOptions = this._gameEditorService
       .getAreasListOptions()
@@ -93,15 +79,13 @@ export class EditorPanelExitsComponent {
     this._gameEditorService.deleteExit(id);
   }
   handleEditClick(id: string) {
-    // set selectedExitId
-    // set inputs
     this.selectedExitId = id;
     const selectedExit = this.exits.find((exit) => exit.id === id);
     this.inputExitPosition = selectedExit
       ? `${selectedExit.y}_${selectedExit.x}`
       : '';
     this.inputExitDirection = selectedExit ? selectedExit.direction : '';
-    this.inputExitType = selectedExit ? selectedExit.exiType : '';
+    this.inputExitType = selectedExit ? selectedExit.exitType : '';
     this.inputExitDestination = selectedExit
       ? selectedExit.destinationAreaId
       : '';
@@ -109,12 +93,33 @@ export class EditorPanelExitsComponent {
 
   handlePositionSelect(position: string) {
     this.inputExitPosition = position;
+    this.handleExitInputChange();
   }
 
   handleCreateClick() {
     const exit: GameAreaExit | null = this._gameEditorService.createExit();
     if (exit) {
       this.handleEditClick(exit.id);
+    }
+  }
+
+  handleExitInputChange() {
+    const selectedExit = this.exits.find(
+      (exit) => exit.id === this.selectedExitId
+    );
+    const [y, x] = this.inputExitPosition.split('_');
+    if (selectedExit) {
+      const updatedExit: GameAreaExit = {
+        ...selectedExit,
+        id: this.selectedExitId,
+        exitType: this.inputExitType,
+        areaId: this.selectedAreaId,
+        direction: this.inputExitDirection,
+        x: +x,
+        y: +y,
+      };
+
+      this._gameEditorService.updateExit(updatedExit);
     }
   }
 

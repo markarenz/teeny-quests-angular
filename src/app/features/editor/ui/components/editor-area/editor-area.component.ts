@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { GameEditorServiceService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
-import { AreaCellComponent } from '@app/features/editor/ui/components/area-cell/area-cell.component';
+import { AreaCellComponent } from '@app/features/game/ui/components/area-cell/area-cell.component';
 import { AreaCellButtonComponent } from '@app/features/editor/ui/components/area-cell-button/area-cell-button.component';
 import {
   Game,
