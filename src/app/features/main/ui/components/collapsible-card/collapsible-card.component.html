@@ -4,6 +4,8 @@
     isOpen ? 'rounded-t-lg border-b-0' : 'rounded-lg'
   }} border-2 border-gray-400"
   (click)="toggleCollapse()"
+  attr.aria-label="{{ isOpen ? 'Close' : 'Open' }} {{ title }}"
+  title="{{ isOpen ? 'Close' : 'Open' }} {{ title }}"
 >
   <h3 class="inline-block">{{ title }}</h3>
   <div

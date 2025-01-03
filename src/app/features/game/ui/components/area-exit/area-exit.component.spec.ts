@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditorExitsComponent } from './editor-exits.component';
+import { AreaExitComponent } from './area-exit.component';
 
-describe('EditorExitsComponent', () => {
-  let component: EditorExitsComponent;
-  let fixture: ComponentFixture<EditorExitsComponent>;
+describe('AreaExitComponent', () => {
+  let component: AreaExitComponent;
+  let fixture: ComponentFixture<AreaExitComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EditorExitsComponent]
+      imports: [AreaExitComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(EditorExitsComponent);
+    fixture = TestBed.createComponent(AreaExitComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -8,7 +8,7 @@ import { maxAreaCellHeight } from '@config/index';
 import { wallDefinitions } from '@content/wall-definitions';
 import { floorDefinitions } from '@content/floor-definitions';
 import { EditorTextureSelectorComponent } from '../editor-texture-selector/editor-texture-selector.component';
-import { IconCaretComponent } from '../../../../main/ui/components/icons/icon-caret/icon-caret.component';
+import { IconButtonComponent } from '@app/features/main/ui/components/icon-button/icon-button.component';
 import { ButtonComponent } from '@app/features/main/ui/components/button/button.component';
 
 @Component({
@@ -18,7 +18,7 @@ import { ButtonComponent } from '@app/features/main/ui/components/button/button.
     AreaCellSelectorComponent,
     CollapsibleCardComponent,
     EditorTextureSelectorComponent,
-    IconCaretComponent,
+    IconButtonComponent,
     ButtonComponent,
   ],
   templateUrl: './editor-panel-cells.component.html',
@@ -79,8 +79,13 @@ export class EditorPanelCellsComponent {
     this.isCellSelectorOpen = !this.isCellSelectorOpen;
   }
 
+  handleCellSelect(position: string) {
+    this._gameEditorService.setSelectedCellPosition(position);
+  }
+
   handleCellDeselect() {
     this._gameEditorService.setSelectedCellPosition('');
+    this.isCellSelectorOpen = false;
   }
 
   handleCellHeightChange(direction: string) {
