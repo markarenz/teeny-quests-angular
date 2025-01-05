@@ -7,5 +7,6 @@ export const defaultExit: GameAreaExit = {
   direction: 'north',
   x: 2,
   y: 0,
+  h: 1,
   destinationAreaId: '',
 };

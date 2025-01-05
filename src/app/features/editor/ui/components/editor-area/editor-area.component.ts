@@ -3,16 +3,18 @@ import { Subscription } from 'rxjs';
 import { GameEditorServiceService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import { AreaCellComponent } from '@app/features/game/ui/components/area-cell/area-cell.component';
 import { AreaCellButtonComponent } from '@app/features/editor/ui/components/area-cell-button/area-cell-button.component';
+import { AreaExitComponent } from '@app/features/game/ui/components/area-exit/area-exit.component';
 import {
   Game,
   GameArea,
+  GameAreaExit,
   GameAreaMapCell,
 } from '@app/features/main/interfaces/types';
 
 @Component({
   selector: 'app-editor-area',
   standalone: true,
-  imports: [AreaCellComponent, AreaCellButtonComponent],
+  imports: [AreaCellComponent, AreaCellButtonComponent, AreaExitComponent],
   templateUrl: './editor-area.component.html',
   styleUrl: './editor-area.component.css',
 })
@@ -24,6 +26,7 @@ export class EditorAreaComponent {
   selectedAreaId: string = '';
   selectedArea: GameArea | null = null;
   selectedAreaMap: GameArea['map'] | null = null;
+  selectedAreaExits: GameArea['exits'] | null = null;
   selectedAreaCellPosition: string = '';
   selectedCell: GameAreaMapCell | null = null;
   anyCellSelected: boolean = false;
@@ -55,6 +58,11 @@ export class EditorAreaComponent {
         this.selectedArea =
           this.game?.content.areas[this.selectedAreaId] ?? null;
         this.getAreaData();
+      })
+    );
+    this.subscriptions.push(
+      this._gameEditorService.areaExitsObs.subscribe((data: GameAreaExit[]) => {
+        this.selectedAreaExits = data;
       })
     );
     this.subscriptions.push(

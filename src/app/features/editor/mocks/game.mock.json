@@ -995,7 +995,8 @@
             "direction": "south",
             "destinationAreaId": "area2",
             "x": 2,
-            "y": 6
+            "y": 6,
+            "h": 1
           }
         ]
       },
@@ -1404,7 +1405,8 @@
             "direction": "north",
             "destinationAreaId": "start",
             "x": 2,
-            "y": 0
+            "y": 0,
+            "h": 1
           }
         ]
       }

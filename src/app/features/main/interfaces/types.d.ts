@@ -36,6 +36,7 @@ export type GameAreaExit = {
   direction: string;
   x: number;
   y: number;
+  h: number;
   destinationAreaId: string;
   modifier?: string; // locked
 };

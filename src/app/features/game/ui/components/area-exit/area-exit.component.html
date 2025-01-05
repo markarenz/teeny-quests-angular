@@ -1,1 +1,154 @@
-<p>area-exit works!</p>
+<div
+  [style.width]="width"
+  [style.height]="width"
+  [style.z-index]="position.z"
+  class="area-exit"
+  [style.bottom]="position.bottom"
+  [style.left]="position.left"
+>
+  <svg
+    viewBox="0 0 100 100"
+    version="1.1"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:svg="http://www.w3.org/2000/svg"
+  >
+    <defs>
+      <linearGradient id="exit-default-gradient-1">
+        <stop
+          style="stop-color: #0c0c0c; stop-opacity: 1"
+          offset="0"
+          id="stop9"
+        />
+        <stop
+          style="stop-color: #5f5f5f; stop-opacity: 1"
+          offset="1"
+          id="stop10"
+        />
+      </linearGradient>
+      <linearGradient id="exit-default-gradient-2">
+        <stop
+          style="stop-color: #ababab; stop-opacity: 1"
+          offset="0"
+          id="stop2"
+        />
+        <stop
+          style="stop-color: #606060; stop-opacity: 1"
+          offset="1"
+          id="stop3"
+        />
+      </linearGradient>
+      <linearGradient
+        xlink:href="#exit-default-gradient-2"
+        id="exit-default-gradient-3"
+        x1="10.383331"
+        y1="39.808334"
+        x2="10.383331"
+        y2="69.808334"
+        gradientUnits="userSpaceOnUse"
+        gradientTransform="translate(2.116669,-1.058334)"
+      />
+      <linearGradient
+        xlink:href="#exit-default-gradient-1"
+        id="exit-default-gradient-4"
+        x1="17.983566"
+        y1="43.76738"
+        x2="12.5"
+        y2="68.75"
+        gradientUnits="userSpaceOnUse"
+      />
+      <linearGradient
+        xlink:href="#exit-default-gradient-2"
+        id="exit-default-gradient-5"
+        gradientUnits="userSpaceOnUse"
+        gradientTransform="translate(2.116669,-1.058334)"
+        x1="10.383331"
+        y1="39.808334"
+        x2="10.383331"
+        y2="69.808334"
+      />
+      <linearGradient
+        xlink:href="#exit-default-gradient-1"
+        id="exit-default-gradient-6"
+        gradientUnits="userSpaceOnUse"
+        x1="17.983566"
+        y1="43.76738"
+        x2="12.5"
+        y2="68.75"
+      />
+    </defs>
+    @if (exit.direction === 'west') {
+    <g id="exit-default-west">
+      <path
+        style="
+          display: inline;
+          fill: url(#exit-default-gradient-3);
+          stroke-width: 0;
+          stroke-linecap: round;
+        "
+        d="m 12.5,68.75 v -30 c 0,-18.611853 25.000001,-27.579216 25.000001,-12.5 v 30 z"
+      />
+      <path
+        style="
+          display: inline;
+          fill: url(#exit-default-gradient-4);
+          stroke-width: 0;
+          stroke-linecap: round;
+        "
+        d="M 23.009965,20.875212 C 17.489768,24.056501 12.500012,30.436305 12.500012,38.75009 V 68.749809 L 35.38337,57.30813 V 27.308411 c 0,-7.488627 -6.16595,-9.041834 -12.373405,-6.433199 z"
+      />
+    </g>
+    } @else if (exit.direction === 'north') {
+    <g id="exit-default-north" transform="matrix(-1,0,0,1,97.883371,-1.058411)">
+      <path
+        style="
+          display: inline;
+          fill: url(#exit-default-gradient-5);
+          stroke-width: 0;
+          stroke-linecap: round;
+        "
+        d="m 12.5,68.75 v -30 c 0,-18.611853 25.000001,-27.579216 25.000001,-12.5 v 30 z"
+      />
+      <path
+        style="
+          display: inline;
+          fill: url(#exit-default-gradient-6);
+          stroke-width: 0;
+          stroke-linecap: round;
+        "
+        d="M 23.009965,20.875212 C 17.489768,24.056501 12.500012,30.436305 12.500012,38.75009 V 68.749809 L 35.38337,57.30813 V 27.308411 c 0,-7.488627 -6.16595,-9.041834 -12.373405,-6.433199 z"
+      />
+    </g>
+    } @else if (exit.direction === 'south') {
+    <path
+      id="exit-default-south"
+      style="
+        display: inline;
+        fill: none;
+        fill-opacity: 1;
+        stroke: #0f0f0f;
+        stroke-width: 1;
+        stroke-linecap: round;
+        stroke-dasharray: none;
+        stroke-opacity: 1;
+      "
+      d="m 37.500001,93.75 v -30 c 0,-18.611853 -24.999999,-27.579216 -24.999999,-12.5 v 30 z"
+    />
+    } @else if (exit.direction === 'east') {
+    <path
+      id="exit-default-east"
+      style="
+        display: inline;
+        fill: none;
+        fill-opacity: 1;
+        stroke: #0f0f0f;
+        stroke-width: 1;
+        stroke-linecap: round;
+        stroke-dasharray: none;
+        stroke-opacity: 1;
+      "
+      d="M 62.500002,93.750001 V 63.749998 c 0,-18.611853 24.999999,-27.579216 24.999999,-12.5 v 30 z"
+    />
+    }
+  </svg>
+</div>

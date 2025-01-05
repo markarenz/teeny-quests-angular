@@ -320,4 +320,68 @@ describe('resetTexturesForCurrentArea', () => {
   }));
 });
 
-// describe('createNewExit', () => {});
+describe('deleteExit', () => {
+  it('should delete exit', () => {
+    const service = new GameEditorServiceService();
+    service.setTestValue(gameMock, 'game');
+    service.setTestValue('start', 'selectedAreaId');
+
+    let checkNow = false;
+    service.gameObs.subscribe((game) => {
+      const area = game ? game.content.areas['start'] : null;
+      const exits = area ? area.exits : null;
+      if (checkNow) {
+        expect(exits?.length).toEqual(0);
+      }
+    });
+
+    service.deleteExit('exit1');
+    checkNow = true;
+  });
+});
+
+describe('createExit', () => {
+  it('should create exit', () => {
+    const service = new GameEditorServiceService();
+    service.setTestValue(gameMock, 'game');
+    service.setTestValue('start', 'selectedAreaId');
+
+    let checkNow = false;
+    service.gameObs.subscribe((game) => {
+      const area = game ? game.content.areas['start'] : null;
+      const exits = area ? area.exits : null;
+      if (checkNow) {
+        expect(exits?.length).toEqual(2);
+      }
+    });
+
+    service.createExit();
+    checkNow = true;
+  });
+});
+
+describe('updateExit', () => {
+  it('should update exit', () => {
+    const service = new GameEditorServiceService();
+    service.setTestValue(gameMock, 'game');
+    service.setTestValue('start', 'selectedAreaId');
+
+    const mockExit = gameMock.content.areas['start'].exits[0];
+    let checkNow = false;
+    service.gameObs.subscribe((game) => {
+      const area = game ? game.content.areas['start'] : null;
+      const exit = area ? area.exits[0] : null;
+      if (checkNow) {
+        expect(exit?.x).toEqual(4);
+        expect(exit?.y).toEqual(3);
+      }
+    });
+
+    service.updateExit({
+      ...mockExit,
+      x: 4,
+      y: 3,
+    });
+    checkNow = true;
+  });
+});

@@ -1,0 +1,4 @@
+.area-exit {
+  position: absolute;
+  pointer-events: none;
+}

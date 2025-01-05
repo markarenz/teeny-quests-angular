@@ -36,6 +36,12 @@
 
   <!-- Area Cell Selector Buttons -->
   @for(positionKey of areaDataPositionKeys; track positionKey;) {
-  <app-area-cell-button [positionKey]="positionKey" />
-  } }
+  <app-area-cell-button [positionKey]="positionKey" /> } }
+
+  <!-- TEST -->
+
+  {{ selectedAreaExits?.length ?? 0 }}
+  @for(exit of selectedAreaExits; track exit.id;) {
+  <app-area-exit [exit]="exit" />
+  }
 </div>

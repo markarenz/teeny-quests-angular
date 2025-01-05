@@ -43,6 +43,9 @@ export class GameEditorServiceService {
   private selectedExitId = new BehaviorSubject<string>('');
   selectedExitIdObs = this.selectedExitId.asObservable();
 
+  private areaExits = new BehaviorSubject<GameAreaExit[]>([]);
+  areaExitsObs = this.areaExits.asObservable();
+
   constructor() {
     this.isMenuOpen.next(false);
   }
@@ -68,15 +71,26 @@ export class GameEditorServiceService {
   setCellData(cellData: GameAreaMapCell) {
     if (this.game.value?.content.areas[this.selectedAreaId.value]) {
       const gameObj = { ...this.game.value } as Game;
-      gameObj.content.areas[this.selectedAreaId.value] = {
+
+      const exits = gameObj?.content.areas[this.selectedAreaId.value].exits.map(
+        (exit) =>
+          exit.x === cellData.x && exit.y === cellData.y
+            ? { ...exit, h: cellData.h }
+            : exit
+      );
+      const nextArea = {
         ...gameObj?.content.areas[this.selectedAreaId.value],
         map: {
           ...gameObj?.content.areas[this.selectedAreaId.value].map,
           [`${cellData.y}_${cellData.x}`]: cellData,
         },
+        exits,
       };
+      gameObj.content.areas[this.selectedAreaId.value] = nextArea;
+
       this.game.next(gameObj);
       this.selectedCell.next(cellData);
+      this.selectedArea.next(nextArea);
     }
   }
 
@@ -97,11 +111,22 @@ export class GameEditorServiceService {
     const id = updatedExit.id;
     const gameObj = { ...this.game.value } as Game;
     const area = gameObj?.content.areas[this.selectedAreaId.value];
+
     if (area) {
+      const newExits = area.exits.map((exit) =>
+        exit.id === id
+          ? {
+              ...updatedExit,
+              h: area.map[`${updatedExit.y}_${updatedExit.x}`].h,
+            }
+          : exit
+      );
       gameObj.content.areas[this.selectedAreaId.value] = {
         ...gameObj?.content.areas[this.selectedAreaId.value],
-        exits: area.exits.map((exit) => (exit.id === id ? updatedExit : exit)),
+        exits: newExits,
       };
+
+      this.areaExits.next(newExits);
       this.game.next(gameObj);
     }
   }
@@ -152,6 +177,8 @@ export class GameEditorServiceService {
         direction = 'west';
       }
 
+      let h = area ? area.map[`${y}_${x}`].h : 1;
+
       const newExit: GameAreaExit = {
         id: Guid.create().toString(),
         destinationAreaId,
@@ -160,6 +187,7 @@ export class GameEditorServiceService {
         areaId: this.selectedAreaId.value,
         x,
         y,
+        h,
       };
 
       const gameObj = { ...this.game.value } as Game;
@@ -171,6 +199,9 @@ export class GameEditorServiceService {
         ],
       };
       this.game.next(gameObj);
+      this.areaExits.next(
+        gameObj?.content.areas[this.selectedAreaId.value].exits
+      );
       this.selectedExitId.next(newExit.id);
       return newExit;
     }
@@ -188,6 +219,7 @@ export class GameEditorServiceService {
         ...gameObj?.content.areas[this.selectedAreaId.value],
         exits: newExits,
       };
+      this.areaExits.next(newExits);
       this.game.next(gameObj);
     }
   }
@@ -252,6 +284,7 @@ export class GameEditorServiceService {
           const areaslist = Object.keys(nextGameData.content.areas);
           this.game.next(nextGameData);
           this.selectedAreaId.next(areaslist[0]);
+          this.areaExits.next(nextGameData.content.areas[areaslist[0]].exits);
           this.selectedArea.next(nextGameData.content.areas[areaslist[0]]);
         });
     }
