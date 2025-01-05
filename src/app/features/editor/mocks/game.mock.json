@@ -986,9 +986,21 @@
             "wallEast": "default",
             "wallSouth": "default"
           }
-        }
+        },
+        "exits": [
+          {
+            "id": "1735602762347",
+            "areaId": "start",
+            "exitType": "default",
+            "direction": "south",
+            "destinationAreaId": "area2",
+            "x": 2,
+            "y": 6,
+            "h": 1
+          }
+        ]
       },
-      "1735602762347": {
+      "area2": {
         "id": "1735602762347",
         "name": "Area New",
         "map": {
@@ -1384,7 +1396,19 @@
             "wallEast": "default",
             "wallSouth": "default"
           }
-        }
+        },
+        "exits": [
+          {
+            "id": "17356027612345",
+            "areaId": "1735602762347",
+            "exitType": "default",
+            "direction": "north",
+            "destinationAreaId": "start",
+            "x": 2,
+            "y": 0,
+            "h": 1
+          }
+        ]
       }
     },
     "items": {},

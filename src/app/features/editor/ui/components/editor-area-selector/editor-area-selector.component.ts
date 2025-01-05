@@ -70,6 +70,6 @@ export class EditorAreaSelectorComponent {
   }
 
   handleNewAreaClick() {
-    this._gameEditorService.createNewArea();
+    this._gameEditorService.createArea();
   }
 }

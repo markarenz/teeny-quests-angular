@@ -1,5 +1,5 @@
 <app-collapsible-card
-  title="Map Cells"
+  title="Map"
   [defaultOpen]="true"
   (onCollapse)="handleCellDeselect()"
 >
@@ -14,34 +14,19 @@
               : "None"
           }}
         </label>
-        <div class="flex flex-row gap-4">
-          @if(selectedCellPosition) {
-          <button
-            type="button"
-            role="button"
-            (click)="handleCellDeselect()"
-            class="rounded-md"
-          >
-            Deselect
-          </button>
-          }
-          <button
-            type="button"
-            role="button"
-            class="rounded-full w-10 h-10 flex items-center justify-center"
-            [attr.aria-label]="
-              isCellSelectorOpen ? 'Hide Selector' : 'Show Selector'
-            "
+        <div class="flex flex-row gap-2">
+          <app-icon-button
+            icon="edit"
+            label="Select Cell"
             (click)="handleToggleCellSelector()"
-          >
-            <div
-              class="transition-all duration-300 w-4 h-4 {{
-                isCellSelectorOpen ? 'rotate-180' : 'rotate-90'
-              }}"
-            >
-              <app-icon-caret />
-            </div>
-          </button>
+          />
+          <app-icon-button
+            icon="close"
+            theme="danger"
+            label="Deselect Cell"
+            (click)="handleCellDeselect()"
+            [isDisabled]="!selectedCellPosition"
+          />
         </div>
       </div>
 
@@ -49,6 +34,7 @@
       <app-area-cell-selector
         id="editor-cell-selector"
         [selectedCellPosition]="selectedCellPosition"
+        (onPositionSelect)="handleCellSelect($event)"
       />
       }
     </div>

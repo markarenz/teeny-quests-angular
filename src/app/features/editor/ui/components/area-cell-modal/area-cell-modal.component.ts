@@ -51,13 +51,7 @@ export class AreaCellModalComponent {
           const { x, y, h } = data ?? { x: 1, y: 1, h: 1 };
           this.inputHeight = h;
           // set left 50%
-          this.modalPosition = getAreaItemPositionStyle(
-            defaultGridSize,
-            y,
-            x,
-            h,
-            50 // modal width = 50%
-          );
+          this.modalPosition = getAreaItemPositionStyle(defaultGridSize, y, x);
         }
       )
     );

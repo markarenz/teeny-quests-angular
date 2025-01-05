@@ -1,9 +1,9 @@
-<div class="grid grid-cols-7 gap-1 w-full max-w-[340px] mx-auto" [id]="id">
+<div class="grid grid-cols-7 gap-1 w-full max-w-[250px] mx-auto" [id]="id">
   @for(positionKey of areaDataPositionKeys; track positionKey;) {
   <button
     role="button"
     type="button"
-    class="rounded-full aspect-square transition-colors duration-300 bg-gray-500"
+    class="cell-selector-button rounded-full aspect-square transition-colors duration-300 bg-gray-500"
     (click)="handleCellButtonClick(positionKey)"
     [attr.aria-label]="positionKey.replace('_', ', ')"
   >

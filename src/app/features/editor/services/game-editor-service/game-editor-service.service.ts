@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { Guid } from 'guid-typescript';
 import { gamesApiUrl } from '@config/index';
 import { User } from '@app/features/auth/interfaces/types';
 import {
   Game,
   GameArea,
+  GameAreaExit,
   GameAreaMapCell,
   SelectIUIOption,
 } from '@app/features/main/interfaces/types';
@@ -38,6 +40,12 @@ export class GameEditorServiceService {
   private isMenuOpen = new BehaviorSubject<boolean>(false);
   isMenuOpenObs = this.isMenuOpen.asObservable();
 
+  private selectedExitId = new BehaviorSubject<string>('');
+  selectedExitIdObs = this.selectedExitId.asObservable();
+
+  private areaExits = new BehaviorSubject<GameAreaExit[]>([]);
+  areaExitsObs = this.areaExits.asObservable();
+
   constructor() {
     this.isMenuOpen.next(false);
   }
@@ -63,15 +71,26 @@ export class GameEditorServiceService {
   setCellData(cellData: GameAreaMapCell) {
     if (this.game.value?.content.areas[this.selectedAreaId.value]) {
       const gameObj = { ...this.game.value } as Game;
-      gameObj.content.areas[this.selectedAreaId.value] = {
+
+      const exits = gameObj?.content.areas[this.selectedAreaId.value].exits.map(
+        (exit) =>
+          exit.x === cellData.x && exit.y === cellData.y
+            ? { ...exit, h: cellData.h }
+            : exit
+      );
+      const nextArea = {
         ...gameObj?.content.areas[this.selectedAreaId.value],
         map: {
           ...gameObj?.content.areas[this.selectedAreaId.value].map,
           [`${cellData.y}_${cellData.x}`]: cellData,
         },
+        exits,
       };
+      gameObj.content.areas[this.selectedAreaId.value] = nextArea;
+
       this.game.next(gameObj);
       this.selectedCell.next(cellData);
+      this.selectedArea.next(nextArea);
     }
   }
 
@@ -80,6 +99,129 @@ export class GameEditorServiceService {
     setTimeout(() => {
       this.selectedAreaId.next(areaId);
     }, 100);
+  }
+
+  getExitsForCurrentArea(): GameAreaExit[] {
+    return (
+      this.game.value?.content.areas[this.selectedAreaId.value]?.exits ?? []
+    );
+  }
+
+  updateExit(updatedExit: GameAreaExit) {
+    const id = updatedExit.id;
+    const gameObj = { ...this.game.value } as Game;
+    const area = gameObj?.content.areas[this.selectedAreaId.value];
+
+    if (area) {
+      const newExits = area.exits.map((exit) =>
+        exit.id === id
+          ? {
+              ...updatedExit,
+              h: area.map[`${updatedExit.y}_${updatedExit.x}`].h,
+            }
+          : exit
+      );
+      gameObj.content.areas[this.selectedAreaId.value] = {
+        ...gameObj?.content.areas[this.selectedAreaId.value],
+        exits: newExits,
+      };
+
+      this.areaExits.next(newExits);
+      this.game.next(gameObj);
+    }
+  }
+
+  createExit(): GameAreaExit | null {
+    let destinationAreaId = '';
+    const areas = this.game?.value?.content.areas;
+    if (!areas) {
+      return null;
+    }
+    const areaOptions = Object.keys(areas).filter(
+      (item) => item !== this.selectedAreaId.value
+    );
+    destinationAreaId = areaOptions[areaOptions.length - 1];
+
+    const area = areas[this.selectedAreaId.value] ?? {
+      exits: [],
+    };
+
+    let x = 2;
+    let y = 0;
+    let validPosition = false;
+    while (!validPosition) {
+      // this.items?.some((item) => item.area === this.selectedAreaId.value && item.x === x && item.y === y);
+      if (area.exits?.some((exit) => exit.x === x && exit.y === y)) {
+        x += 1;
+        if (x > defaultGridSize - 1) {
+          x = 0;
+          y += 1;
+          if (y > defaultGridSize - 1) {
+            console.error('No more space for exits');
+            break;
+          }
+        }
+      } else {
+        validPosition = true;
+      }
+    }
+    if (validPosition) {
+      let direction = 'north';
+      if (y < 2) {
+        direction = 'north';
+      } else if (y > defaultGridSize - 3) {
+        direction = 'south';
+      } else if (x < 2) {
+        direction = 'east';
+      } else if (x > defaultGridSize - 3) {
+        direction = 'west';
+      }
+
+      let h = area ? area.map[`${y}_${x}`].h : 1;
+
+      const newExit: GameAreaExit = {
+        id: Guid.create().toString(),
+        destinationAreaId,
+        exitType: 'default',
+        direction,
+        areaId: this.selectedAreaId.value,
+        x,
+        y,
+        h,
+      };
+
+      const gameObj = { ...this.game.value } as Game;
+      gameObj.content.areas[this.selectedAreaId.value] = {
+        ...gameObj?.content.areas[this.selectedAreaId.value],
+        exits: [
+          ...(gameObj?.content.areas[this.selectedAreaId.value].exits ?? []),
+          newExit,
+        ],
+      };
+      this.game.next(gameObj);
+      this.areaExits.next(
+        gameObj?.content.areas[this.selectedAreaId.value].exits
+      );
+      this.selectedExitId.next(newExit.id);
+      return newExit;
+    }
+
+    return null;
+  }
+
+  deleteExit(exitId: string) {
+    const exits =
+      this.game.value?.content.areas[this.selectedAreaId.value].exits;
+    if (exits) {
+      const newExits = exits.filter((exit) => exit.id !== exitId);
+      const gameObj = { ...this.game.value } as Game;
+      gameObj.content.areas[this.selectedAreaId.value] = {
+        ...gameObj?.content.areas[this.selectedAreaId.value],
+        exits: newExits,
+      };
+      this.areaExits.next(newExits);
+      this.game.next(gameObj);
+    }
   }
 
   setSelectedCellPosition(cellPosition: string) {
@@ -142,6 +284,7 @@ export class GameEditorServiceService {
           const areaslist = Object.keys(nextGameData.content.areas);
           this.game.next(nextGameData);
           this.selectedAreaId.next(areaslist[0]);
+          this.areaExits.next(nextGameData.content.areas[areaslist[0]].exits);
           this.selectedArea.next(nextGameData.content.areas[areaslist[0]]);
         });
     }
@@ -177,13 +320,14 @@ export class GameEditorServiceService {
     return newMap;
   }
 
-  createNewArea() {
+  createArea() {
     if (this.game.value) {
-      const id = `${Date.now()}`;
+      const id = Guid.create().toString();
       const newArea: GameArea = {
         id,
         name: `Area ${id.slice(-5)}`,
         map: this.getDefaultMap(),
+        exits: [],
       };
       const nextGameData = {
         ...this.game.value,

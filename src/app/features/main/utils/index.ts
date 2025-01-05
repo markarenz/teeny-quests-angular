@@ -9,7 +9,7 @@ export const capitalizeWords = (str?: string): string =>
         .join(' ');
 
 export const getRandomInt = (min: number, max: number): number =>
-  Math.floor(Math.random() * nameWordlist.nouns.length);
+  min + Math.floor(Math.random() * max);
 
 export const getRandomUsername = (): string => {
   const idxNoun = getRandomInt(0, nameWordlist.nouns.length);
