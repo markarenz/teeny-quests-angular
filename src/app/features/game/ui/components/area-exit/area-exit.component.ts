@@ -1,18 +1,27 @@
 import { Component, Input } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { GameEditorServiceService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
-import { GameArea, GameAreaExit } from '@app/features/main/interfaces/types';
+import { GameAreaExit } from '@app/features/main/interfaces/types';
 import { defaultExit } from '@app/features/game/lib/constants';
 import { defaultGridSize } from '@config/index';
 import {
   AreaPosition,
   getAreaItemPositionStyle,
 } from '@app/features/game/lib/utils/index';
+import { SvgExitDefaultWComponent } from './exits/svg-exit-default-w/svg-exit-default-w.component';
+import { SvgExitDefaultNComponent } from './exits/svg-exit-default-n/svg-exit-default-n.component';
+import { SvgExitDefaultSComponent } from './exits/svg-exit-default-s/svg-exit-default-s.component';
+import { SvgExitDefaultEComponent } from './exits/svg-exit-default-e/svg-exit-default-e.component';
 
 @Component({
   selector: 'app-area-exit',
   standalone: true,
-  imports: [],
+  imports: [
+    SvgExitDefaultWComponent,
+    SvgExitDefaultNComponent,
+    SvgExitDefaultSComponent,
+    SvgExitDefaultEComponent,
+  ],
   templateUrl: './area-exit.component.html',
   styleUrl: './area-exit.component.css',
 })
