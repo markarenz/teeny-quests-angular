@@ -2,7 +2,7 @@
   <div class="flex flex-col gap-8">
     <div class="flex flex-col gap-4">
       <div class="flex flex-col gap-4">
-        @if(exits.length > 0) { } @else {
+        @if(exits.length < 1) {
         <div>No exits. <i>(Not a Sartre reference).</i></div>
         } @for(exit of exits; track exit.id; let idx = $index) {
         <div

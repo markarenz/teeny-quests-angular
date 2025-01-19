@@ -1,6 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { GameEditorServiceService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import { GameAreaExit } from '@app/features/main/interfaces/types';
 import { defaultExit } from '@app/features/game/lib/constants';
 import { defaultGridSize } from '@config/index';
@@ -26,9 +24,7 @@ import { SvgExitDefaultEComponent } from './exits/svg-exit-default-e/svg-exit-de
   styleUrl: './area-exit.component.css',
 })
 export class AreaExitComponent {
-  constructor(private _gameEditorService: GameEditorServiceService) {}
   @Input('exit') exit: GameAreaExit = defaultExit;
-  private subscriptions: Subscription[] = [];
 
   gridSize: number = defaultGridSize;
 
@@ -47,21 +43,11 @@ export class AreaExitComponent {
     }
   }
 
-  ngOnInit() {
-    this.subscriptions.push(
-      this._gameEditorService.areaExitsObs.subscribe(
-        (data: GameAreaExit[] | null) => {
-          setTimeout(() => {
-            this.updateExitProps();
-          }, 10);
-        }
-      )
-    );
-
+  ngOnChanges() {
     this.updateExitProps();
   }
 
-  ngOnDestroy() {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  ngOnInit() {
+    this.updateExitProps();
   }
 }

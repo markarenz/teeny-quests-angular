@@ -1,11 +1,9 @@
 import { Component, Input } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { GameEditorServiceService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import {
   AreaPosition,
   getAreaItemPositionStyle,
 } from '@app/features/game/lib/utils/index';
-import { GameArea, GameAreaMapCell } from '@app/features/main/interfaces/types';
+import { GameAreaMapCell } from '@app/features/main/interfaces/types';
 import { defaultGridSize } from '@config/index';
 import { TexturesFloorComponent } from '@app/features/game/ui/components/textures/textures-floor/textures-floor.component';
 import { TexturesWallComponent } from '@app/features/game/ui/components/textures/textures-wall/textures-wall.component';
@@ -18,10 +16,8 @@ import { TexturesWallComponent } from '@app/features/game/ui/components/textures
   styleUrl: './area-cell.component.css',
 })
 export class AreaCellComponent {
-  constructor(private _gameEditorService: GameEditorServiceService) {}
-  private subscriptions: Subscription[] = [];
-
   @Input('positionKey') positionKey: string = '';
+  @Input('selectedAreaCellPosition') selectedAreaCellPosition?: string = '';
   @Input('cellData') cellData: GameAreaMapCell | null = null;
 
   gridSize: number = defaultGridSize;
@@ -34,7 +30,6 @@ export class AreaCellComponent {
   svgPolygonPoints: string[] = [];
   isSelected: boolean = false;
   anyCellSelected: boolean = false;
-  selectedCell: GameAreaMapCell | null = null;
   displayElements: {
     top: boolean;
     left: boolean;
@@ -62,7 +57,6 @@ export class AreaCellComponent {
       this.svgPolygonPoints = [
         `0,0 50,25 50,${svgH} 0,${svgH - 25}`,
         `100,0 50,25 50,${svgH} 100,${svgH - 25}`,
-        // ??
         `100,25 50,0 50,${svgH - 25} 100,${svgH}`,
         `0,25 50,0 50,${svgH - 25} 0,${svgH}`,
       ];
@@ -76,34 +70,14 @@ export class AreaCellComponent {
     }
   }
 
-  ngOnInit() {
+  ngOnChanges() {
     this.cell = this.cellData;
-
-    this.subscriptions.push(
-      this._gameEditorService.selectedCellPositionObs.subscribe(
-        (data: string) => {
-          this.anyCellSelected = data !== '';
-          this.isSelected = data === `${this.cell?.y}_${this.cell?.x}`;
-        }
-      )
-    );
-
-    this.subscriptions.push(
-      this._gameEditorService.selectedCellObs.subscribe(
-        (data: GameAreaMapCell | null) => {
-          this.selectedCell = data;
-          if (this.isSelected) {
-            this.cell = data;
-            this.updateCellProps();
-          }
-        }
-      )
-    );
-
+    this.isSelected = this.selectedAreaCellPosition === this.positionKey;
     this.updateCellProps();
   }
 
-  ngOnDestroy() {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  ngOnInit() {
+    this.cell = this.cellData;
+    this.updateCellProps();
   }
 }

@@ -998,10 +998,20 @@
             "y": 6,
             "h": 1
           }
+        ],
+        "items": [
+          {
+            "id": "1234abc",
+            "itemType": "coins-25",
+            "areaId": "start",
+            "x": 4,
+            "y": 3,
+            "h": 1
+          }
         ]
       },
       "area2": {
-        "id": "1735602762347",
+        "id": "area2",
         "name": "Area New",
         "map": {
           "0_0": {
@@ -1408,10 +1418,19 @@
             "y": 0,
             "h": 1
           }
+        ],
+        "items": [
+          {
+            "id": "1234abd",
+            "itemType": "coins-25",
+            "areaId": "area2",
+            "x": 4,
+            "y": 3,
+            "h": 1
+          }
         ]
       }
     },
-    "items": {},
     "events": []
   },
   "itemStatus": "active",
