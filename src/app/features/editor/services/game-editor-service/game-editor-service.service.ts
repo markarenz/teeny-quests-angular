@@ -6,11 +6,13 @@ import { User } from '@app/features/auth/interfaces/types';
 import {
   Game,
   GameArea,
+  GameItem,
   GameAreaExit,
   GameAreaMapCell,
   SelectIUIOption,
 } from '@app/features/main/interfaces/types';
 import { defaultGridSize } from '@config/index';
+import { floorDefinitions } from '@content/floor-definitions';
 
 @Injectable({
   providedIn: 'root',
@@ -43,8 +45,14 @@ export class GameEditorServiceService {
   private selectedExitId = new BehaviorSubject<string>('');
   selectedExitIdObs = this.selectedExitId.asObservable();
 
+  private selectedItemId = new BehaviorSubject<string>('');
+  selectedItemIdObs = this.selectedItemId.asObservable();
+
   private areaExits = new BehaviorSubject<GameAreaExit[]>([]);
   areaExitsObs = this.areaExits.asObservable();
+
+  private areaItems = new BehaviorSubject<GameItem[]>([]);
+  areaItemsObs = this.areaItems.asObservable();
 
   constructor() {
     this.isMenuOpen.next(false);
@@ -101,6 +109,12 @@ export class GameEditorServiceService {
     }, 100);
   }
 
+  getItemsForCurrentArea(): GameItem[] {
+    return (
+      this.game.value?.content.areas[this.selectedAreaId.value]?.items ?? []
+    );
+  }
+
   getExitsForCurrentArea(): GameAreaExit[] {
     return (
       this.game.value?.content.areas[this.selectedAreaId.value]?.exits ?? []
@@ -127,6 +141,114 @@ export class GameEditorServiceService {
       };
 
       this.areaExits.next(newExits);
+      this.game.next(gameObj);
+    }
+  }
+
+  findAnOpenCell(): string | null {
+    const area = this.game?.value?.content.areas[this.selectedAreaId.value];
+    if (area) {
+      const positionKeys = this.getPositionKeysForGridSize();
+      const openCell = positionKeys.find((key) => {
+        const [y, x] = key.split('_');
+        return (
+          floorDefinitions[area.map[key].floor ?? 'default'].walkable &&
+          !area.exits.some((exit) => exit.x === +x && exit.y === +y) &&
+          !area.items.some((item) => item.x === +x && item.y === +y)
+        );
+      });
+      return openCell ?? null;
+    }
+    return null;
+  }
+
+  createItem(): GameItem | null {
+    const areas = this.game?.value?.content.areas;
+    if (!areas) {
+      return null;
+    }
+    const area = areas[this.selectedAreaId.value] ?? {
+      items: [],
+    };
+
+    const openCellPosition = this.findAnOpenCell();
+    if (openCellPosition) {
+      const [y, x] = openCellPosition.split('_');
+      let direction = 'north';
+      if (+y < 2) {
+        direction = 'north';
+      } else if (+y > defaultGridSize - 3) {
+        direction = 'south';
+      } else if (+x < 2) {
+        direction = 'east';
+      } else if (+x > defaultGridSize - 3) {
+        direction = 'west';
+      }
+
+      let h = area ? area.map[openCellPosition].h : 1;
+      const newItem: GameItem = {
+        id: Guid.create().toString(),
+        itemType: 'coins-25',
+        areaId: this.selectedAreaId.value,
+        x: +x,
+        y: +y,
+        h,
+      };
+
+      const gameObj = { ...this.game.value } as Game;
+      gameObj.content.areas[this.selectedAreaId.value] = {
+        ...gameObj?.content.areas[this.selectedAreaId.value],
+        items: [
+          ...(gameObj?.content.areas[this.selectedAreaId.value].items ?? []),
+          newItem,
+        ],
+      };
+      this.game.next(gameObj);
+      this.areaItems.next(
+        gameObj?.content.areas[this.selectedAreaId.value].items
+      );
+      this.selectedItemId.next(newItem.id);
+      return newItem;
+    }
+
+    return null;
+  }
+
+  updateItem(updatedItem: GameItem) {
+    const id = updatedItem.id;
+    const gameObj = { ...this.game.value } as Game;
+    const area = gameObj?.content.areas[this.selectedAreaId.value];
+
+    if (area) {
+      const newItems = area.items.map((item) =>
+        item.id === id
+          ? {
+              ...updatedItem,
+              h: area.map[`${updatedItem.y}_${updatedItem.x}`].h,
+            }
+          : item
+      );
+      gameObj.content.areas[this.selectedAreaId.value] = {
+        ...gameObj?.content.areas[this.selectedAreaId.value],
+        items: newItems,
+      };
+
+      this.areaItems.next(newItems);
+      this.game.next(gameObj);
+    }
+  }
+
+  deleteItem(itemId: string) {
+    const items =
+      this.game.value?.content.areas[this.selectedAreaId.value].items;
+    if (items) {
+      const newItems = items.filter((item) => item.id !== itemId);
+      const gameObj = { ...this.game.value } as Game;
+      gameObj.content.areas[this.selectedAreaId.value] = {
+        ...gameObj?.content.areas[this.selectedAreaId.value],
+        items: newItems,
+      };
+      this.areaItems.next(newItems);
       this.game.next(gameObj);
     }
   }
@@ -211,7 +333,7 @@ export class GameEditorServiceService {
 
   deleteExit(exitId: string) {
     const exits =
-      this.game.value?.content.areas[this.selectedAreaId.value].exits;
+      this.game.value?.content.areas[this.selectedAreaId.value]?.exits;
     if (exits) {
       const newExits = exits.filter((exit) => exit.id !== exitId);
       const gameObj = { ...this.game.value } as Game;
@@ -285,6 +407,7 @@ export class GameEditorServiceService {
           this.game.next(nextGameData);
           this.selectedAreaId.next(areaslist[0]);
           this.areaExits.next(nextGameData.content.areas[areaslist[0]].exits);
+          this.areaItems.next(nextGameData.content.areas[areaslist[0]].items);
           this.selectedArea.next(nextGameData.content.areas[areaslist[0]]);
         });
     }
@@ -328,6 +451,7 @@ export class GameEditorServiceService {
         name: `Area ${id.slice(-5)}`,
         map: this.getDefaultMap(),
         exits: [],
+        items: [],
       };
       const nextGameData = {
         ...this.game.value,

@@ -321,11 +321,15 @@ describe('resetTexturesForCurrentArea', () => {
 });
 
 describe('deleteExit', () => {
-  it('should delete exit', () => {
-    const service = new GameEditorServiceService();
+  let service: GameEditorServiceService;
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(GameEditorServiceService);
     service.setTestValue(gameMock, 'game');
     service.setTestValue('start', 'selectedAreaId');
+  });
 
+  it('should delete exit', () => {
     let checkNow = false;
     service.gameObs.subscribe((game) => {
       const area = game ? game.content.areas['start'] : null;
@@ -341,11 +345,15 @@ describe('deleteExit', () => {
 });
 
 describe('createExit', () => {
-  it('should create exit', () => {
-    const service = new GameEditorServiceService();
+  let service: GameEditorServiceService;
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(GameEditorServiceService);
     service.setTestValue(gameMock, 'game');
     service.setTestValue('start', 'selectedAreaId');
+  });
 
+  it('should create exit', () => {
     let checkNow = false;
     service.gameObs.subscribe((game) => {
       const area = game ? game.content.areas['start'] : null;
@@ -361,11 +369,15 @@ describe('createExit', () => {
 });
 
 describe('updateExit', () => {
-  it('should update exit', () => {
-    const service = new GameEditorServiceService();
+  let service: GameEditorServiceService;
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(GameEditorServiceService);
     service.setTestValue(gameMock, 'game');
     service.setTestValue('start', 'selectedAreaId');
+  });
 
+  it('should update exit', () => {
     const mockExit = gameMock.content.areas['start'].exits[0];
     let checkNow = false;
     service.gameObs.subscribe((game) => {
@@ -382,6 +394,84 @@ describe('updateExit', () => {
       x: 4,
       y: 3,
     });
+    checkNow = true;
+  });
+});
+
+describe('createItem', () => {
+  let service: GameEditorServiceService;
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(GameEditorServiceService);
+    service.setTestValue(gameMock, 'game');
+    service.setTestValue('start', 'selectedAreaId');
+  });
+
+  it('should create item', () => {
+    let checkNow = false;
+    service.gameObs.subscribe((game) => {
+      const area = game ? game.content.areas['start'] : null;
+      const items = area ? area.items : null;
+      if (checkNow) {
+        expect(area?.items.length).toEqual(2);
+      }
+    });
+
+    service.createItem();
+    checkNow = true;
+  });
+});
+
+describe('updateItem', () => {
+  let service: GameEditorServiceService;
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(GameEditorServiceService);
+    service.setTestValue(gameMock, 'game');
+    service.setTestValue('start', 'selectedAreaId');
+  });
+
+  it('should update item', () => {
+    const mockItem = gameMock.content.areas['start'].items[0];
+    let checkNow = false;
+    service.gameObs.subscribe((game) => {
+      const area = game ? game.content.areas['start'] : null;
+      const item = area ? area.items[0] : null;
+      if (checkNow) {
+        expect(item?.x).toEqual(4);
+        expect(item?.y).toEqual(3);
+      }
+    });
+
+    service.updateItem({
+      ...mockItem,
+      x: 4,
+      y: 3,
+    });
+    checkNow = true;
+  });
+});
+
+describe('deleteItem', () => {
+  let service: GameEditorServiceService;
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(GameEditorServiceService);
+    service.setTestValue(gameMock, 'game');
+    service.setTestValue('start', 'selectedAreaId');
+  });
+
+  it('should delete item', () => {
+    let checkNow = false;
+    service.gameObs.subscribe((game) => {
+      const area = game ? game.content.areas['start'] : null;
+      const items = area ? area.items : null;
+      if (checkNow) {
+        expect(items?.length).toEqual(0);
+      }
+    });
+
+    service.deleteItem('item1');
     checkNow = true;
   });
 });

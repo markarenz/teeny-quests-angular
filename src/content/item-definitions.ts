@@ -1,20 +1,34 @@
+import { SelectIUIOption } from '@app/features/main/interfaces/types';
+
 export type ItemDefinition = {
-  id: 'edit';
-  name: 'Exit';
-  action: 'go';
+  id: string;
+  inventoryKey: string;
+  name: string;
+  variant?: string;
+  action?: string; // on click in area
+  use?: string; // action from Inventory
+  amount?: number;
 };
 
 export const itemDefinitions: { [key: string]: ItemDefinition } = {
-  exit: {
-    id: 'edit',
-    name: 'Exit',
-    action: 'go',
-
-    // Instance properties:
-    // id
-    // destination
-    // direction
-    // locked
-    // variant
+  'key-silver': {
+    id: 'key-silver',
+    inventoryKey: 'key-silver',
+    name: 'Silver Key',
+    variant: 'silver',
+    action: 'take',
+    use: 'unlock-door-silver',
+  },
+  'coins-25': {
+    id: 'coins-25',
+    inventoryKey: 'gold',
+    name: 'Coins',
+    variant: 'gold',
+    action: 'take',
+    amount: 25,
   },
 };
+export const itemOptions: SelectIUIOption[] = [
+  { value: 'key-silver', label: 'Silver Key' },
+  { value: 'coins-25', label: 'Coins' },
+];

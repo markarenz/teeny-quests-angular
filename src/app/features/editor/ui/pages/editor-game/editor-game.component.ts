@@ -10,7 +10,9 @@ import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MainLayoutComponent } from '@main/ui/components/main-layout/main-layout.component';
 import { ContainerComponent } from '@app/features/main/ui/components/container/container.component';
+import { EditorPanelCellsComponent } from '../../components/editor-panel-cells/editor-panel-cells.component';
 import { EditorPanelExitsComponent } from '../../components/editor-panel-exits/editor-panel-exits.component';
+import { EditorPanelItemsComponent } from '../../components/editor-panel-items/editor-panel-items.component';
 import { gamesApiUrl } from '@config/index';
 import { LoaderAnimationComponent } from '@app/features/main/ui/components/loader-animation/loader-animation.component';
 import { EditorAreaComponent } from '../../components/editor-area/editor-area.component';
@@ -18,7 +20,6 @@ import { EditorAreaSelectorComponent } from '../../components/editor-area-select
 import { ButtonComponent } from '@app/features/main/ui/components/button/button.component';
 import { BreadcrumbsComponent } from '@app/features/main/ui/components/breadcrumbs/breadcrumbs.component';
 import { GameEditorServiceService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
-import { EditorPanelCellsComponent } from '../../components/editor-panel-cells/editor-panel-cells.component';
 
 @Component({
   selector: 'app-editor-game',
@@ -34,6 +35,7 @@ import { EditorPanelCellsComponent } from '../../components/editor-panel-cells/e
     EditorAreaSelectorComponent,
     EditorPanelExitsComponent,
     EditorPanelCellsComponent,
+    EditorPanelItemsComponent,
   ],
   templateUrl: './editor-game.component.html',
   styleUrl: './editor-game.component.css',

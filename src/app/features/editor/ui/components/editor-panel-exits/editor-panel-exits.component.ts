@@ -1,9 +1,8 @@
-import { Component, input } from '@angular/core';
+import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { GameEditorServiceService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import { FormsModule } from '@angular/forms';
 import {
-  Game,
   GameAreaExit,
   SelectIUIOption,
 } from '@app/features/main/interfaces/types';
@@ -122,16 +121,4 @@ export class EditorPanelExitsComponent {
       this._gameEditorService.updateExit(updatedExit);
     }
   }
-
-  // Current cell position CANNOT match existing exits to be valid
-
-  // List all exits, if none show "no exits" message (not a Sartre reference)
-  // Under list, show the create button
-  // Create button is only enabled when we have a cell selected above
-  // Add message indicating this in the UI
-  // If exit selected (via service), display editor:
-  // - Position selector
-  // - Type selector
-  // - Direction selector
-  // All changes are live
 }

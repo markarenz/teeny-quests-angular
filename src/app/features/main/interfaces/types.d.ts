@@ -29,6 +29,16 @@ export type GameAreaMapCell = {
   wallEast: string;
 };
 
+export type GameItem = {
+  id: string;
+  itemType: string;
+  areaId: string;
+  x: number;
+  y: number;
+  h: number;
+  status?: string;
+};
+
 export type GameAreaExit = {
   id: string;
   exitType: string;
@@ -38,7 +48,7 @@ export type GameAreaExit = {
   y: number;
   h: number;
   destinationAreaId: string;
-  modifier?: string; // locked
+  status?: string; // locked
 };
 
 export type GameArea = {
@@ -46,6 +56,7 @@ export type GameArea = {
   name: string;
   map: { [key: string]: GameAreaMapCell };
   exits: GameAreaExit[];
+  items: GameItem[];
 };
 
 export type GameEventCondition = {
@@ -62,18 +73,8 @@ export type GameEvent = {
   actions: GameEventAction[];
 };
 
-export type GameItem = {
-  id: string;
-  itemType: string;
-  name: string;
-  area: string;
-  // position: string;
-  // ...
-};
-
 export type GameContent = {
   areas: { [key: string]: GameArea };
-  items: { [key: string]: GameItem };
   events: GameEvent[];
 };
 

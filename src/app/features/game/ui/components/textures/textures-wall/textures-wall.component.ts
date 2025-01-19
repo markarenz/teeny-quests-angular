@@ -17,9 +17,16 @@ export class TexturesWallComponent {
   w: number = 100;
   wallTexture: string = '';
 
-  ngOnInit() {
+  updateProps() {
     this.wallTexture = `url(#texture_${this.wallType}_${this.wallPosition}_${
       this.isFlat ? 'flat' : 'wall'
     })`;
+  }
+
+  ngOnChanges() {
+    this.updateProps();
+  }
+  ngOnInit() {
+    this.updateProps();
   }
 }

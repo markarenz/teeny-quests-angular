@@ -1,4 +1,4 @@
-import { GameAreaExit } from '@app/features/main/interfaces/types';
+import { GameAreaExit, GameItem } from '@app/features/main/interfaces/types';
 
 export const defaultExit: GameAreaExit = {
   id: 'test',
@@ -9,4 +9,13 @@ export const defaultExit: GameAreaExit = {
   y: 0,
   h: 1,
   destinationAreaId: '',
+};
+
+export const defaultItem: GameItem = {
+  id: 'test',
+  itemType: 'default',
+  areaId: 'start',
+  x: 2,
+  y: 0,
+  h: 1,
 };

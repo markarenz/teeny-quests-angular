@@ -19,13 +19,14 @@
     </g>
   </svg>
 
-  <!-- If Nmost EMost, Wmost or Smost, show only opposite face -->
-  <!-- Cells are display only and the base is a button overlaying the whole area map -->
-
   <!-- Area Display -->
   @if(selectedAreaMap) { @for(positionKey of areaDataPositionKeys; track
   positionKey;) {
-  <app-area-cell [cellData]="selectedAreaMap[positionKey]" />
+  <app-area-cell
+    [positionKey]="positionKey"
+    [cellData]="selectedAreaMap[positionKey]"
+    [selectedAreaCellPosition]="selectedAreaCellPosition"
+  />
   }
 
   <div
@@ -38,10 +39,13 @@
   @for(positionKey of areaDataPositionKeys; track positionKey;) {
   <app-area-cell-button [positionKey]="positionKey" /> } }
 
-  <!-- TEST -->
-
-  {{ selectedAreaExits?.length ?? 0 }}
+  <!-- Area Exits -->
   @for(exit of selectedAreaExits; track exit.id;) {
   <app-area-exit [exit]="exit" />
+  }
+
+  <!-- Area Items -->
+  @for(item of selectedAreaItems; track item.id;) {
+  <app-area-item [item]="item" />
   }
 </div>
