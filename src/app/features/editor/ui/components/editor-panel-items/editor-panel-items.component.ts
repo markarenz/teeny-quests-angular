@@ -99,8 +99,6 @@ export class EditorPanelItemsComponent {
         x: +x,
         y: +y,
       };
-      console.log('selectedItem', selectedItem);
-      console.log('updatedItem', updatedItem);
       this._gameEditorService.updateItem(updatedItem);
     }
   }

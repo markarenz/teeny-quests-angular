@@ -1431,7 +1431,19 @@
         ]
       }
     },
-    "events": []
+    "events": [],
+    "flags": {
+      "GAME_OVER": false,
+      "GAME_WON": false
+    },
+    "player": {
+      "x": 2,
+      "y": 2,
+      "areaId": "start",
+      "inventory": {
+        "gold": 0
+      }
+    }
   },
   "itemStatus": "active",
   "dateCreated": "2024-12-31T02:28:08.755Z",

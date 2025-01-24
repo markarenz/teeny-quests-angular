@@ -73,9 +73,24 @@ export type GameEvent = {
   actions: GameEventAction[];
 };
 
+export type Inventory = {
+  [key: string]: number;
+};
+
+export type GameFlags = {
+  [key: string]: boolean;
+};
+
 export type GameContent = {
   areas: { [key: string]: GameArea };
   events: GameEvent[];
+  flags: GameFlags;
+  player: {
+    x: number;
+    y: number;
+    areaId: string;
+    inventory: Inventory;
+  };
 };
 
 export type Game = {
