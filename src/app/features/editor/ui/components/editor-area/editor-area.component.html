@@ -19,33 +19,33 @@
     </g>
   </svg>
 
-  <!-- Area Display -->
-  @if(selectedAreaMap) { @for(positionKey of areaDataPositionKeys; track
-  positionKey;) {
-  <app-area-cell
-    [positionKey]="positionKey"
-    [cellData]="selectedAreaMap[positionKey]"
-    [selectedAreaCellPosition]="selectedAreaCellPosition"
-  />
-  }
+  @if(selectedAreaMap) {
+  <div>
+    @for(positionKey of areaDataPositionKeys; track positionKey;) {
+    <app-area-cell
+      [positionKey]="positionKey"
+      [cellData]="selectedAreaMap[positionKey]"
+      [selectedAreaCellPosition]="selectedAreaCellPosition"
+    />
+    }
 
-  <div
-    class="absolute top-0 left-0 w-full h-full bg-gray-800/50 pointer-events-none	z-[80] {{
-      anyCellSelected ? 'block' : 'hidden'
-    }}"
-  ></div>
+    <div
+      class="absolute top-0 left-0 w-full h-full bg-gray-800/50 pointer-events-none	z-[80] {{
+        anyCellSelected ? 'block' : 'hidden'
+      }}"
+    ></div>
 
-  <!-- Area Cell Selector Buttons -->
-  @for(positionKey of areaDataPositionKeys; track positionKey;) {
-  <app-area-cell-button [positionKey]="positionKey" /> } }
+    <!-- Area Items -->
+    @for(item of selectedAreaItems; track item.id;) {
+    <app-area-item [item]="item" />
+    }
 
-  <!-- Area Exits -->
-  @for(exit of selectedAreaExits; track exit.id;) {
-  <app-area-exit [exit]="exit" />
-  }
+    <app-editor-player-position [playerPosition]="playerPosition" />
 
-  <!-- Area Items -->
-  @for(item of selectedAreaItems; track item.id;) {
-  <app-area-item [item]="item" />
+    <!-- Area Exits -->
+    @for(exit of selectedAreaExits; track exit.id;) {
+    <app-area-exit [exit]="exit" />
+    }
+  </div>
   }
 </div>

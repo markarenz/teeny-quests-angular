@@ -6,8 +6,10 @@
   (click)="toggleCollapse()"
   attr.aria-label="{{ isOpen ? 'Close' : 'Open' }} {{ title }}"
   title="{{ isOpen ? 'Close' : 'Open' }} {{ title }}"
+  [attr.disabled]="!isCollapsible"
 >
-  <h3 class="inline-block">{{ title }}</h3>
+  <h2 class="inline-block">{{ title }}</h2>
+  @if (isCollapsible) {
   <div
     class="inline-block relative w-6 h-6 {{
       isOpen ? 'rotate-180' : 'rotate-90'
@@ -15,6 +17,13 @@
   >
     <app-icon-caret />
   </div>
+  } @if (showNewButton && !isCollapsible) {
+  <app-icon-button
+    icon="new"
+    label="Add to {{ title }}"
+    (click)="handleNewButtonClick()"
+  />
+  }
 </button>
 
 @if(isOpen) {

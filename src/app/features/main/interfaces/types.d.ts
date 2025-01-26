@@ -86,6 +86,7 @@ export type GameContent = {
   events: GameEvent[];
   flags: GameFlags;
   player: {
+    areaId: string;
     x: number;
     y: number;
     areaId: string;

@@ -1,0 +1,4 @@
+.player-position {
+  position: absolute;
+  pointer-events: none;
+}

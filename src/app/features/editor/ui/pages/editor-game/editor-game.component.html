@@ -7,7 +7,7 @@
           <app-button
             variant="contained"
             label="Save"
-            [isDisabled]="isLoading || !isValid || !isDirty"
+            [isDisabled]="isLoading"
             (onButtonClick)="handleSaveClick()"
           />
         </div>
@@ -36,67 +36,25 @@
             }
           </div>
           <div class="flex flex-col gap-8 mt-8">
-            @if (subNavCurrent === 'areas') {
+            @if (isLoading) {
+            <app-loader-animation />
+            }
             <app-editor-area-selector />
-
+            @if (subNavCurrent === 'info') {
+            <app-editor-panel-info />
+            } @else if (subNavCurrent === 'map') {
             <app-editor-panel-cells />
-
+            } @else if (subNavCurrent === 'exits') {
             <app-editor-panel-exits />
-
+            } @else if (subNavCurrent === 'items') {
             <app-editor-panel-items />
             }
           </div>
         </div>
         <div id="editor-panel-content" class="flex-grow">
-          @if(subNavCurrent === 'info' && game) {
-          <!-- PANEL: INFO -->
-          <div id="editor-content-info" class="relative flex flex-col gap-4">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              <div>
-                <label for="new-game--title" class="block text">Name</label>
-                <input
-                  id="new-game--title"
-                  type="text"
-                  [(ngModel)]="game.title"
-                />
-              </div>
-              <div>
-                <label for="new-game--itemStatus" class="block text"
-                  >Status</label
-                >
-                <select id="new-game--itemStatus" [(ngModel)]="game.itemStatus">
-                  @if(game.itemStatus === 'suspended' ) {
-                  <option value="suspended">Suspended</option>
-                  } @else {
-                  <option value="active">Active</option>
-                  <option value="draft">Draft</option>
-                  <option value="archived">Archived</option>
-                  }
-                </select>
-              </div>
-            </div>
-            <div>
-              <label for="new-game--description" class="block text"
-                >Description
-              </label>
-              <textarea
-                id="new-game--description"
-                [(ngModel)]="game.description"
-                rows="6"
-              ></textarea>
-            </div>
-            @if (isLoading) {
-            <app-loader-animation />
-            }
-          </div>
-          } @else if (subNavCurrent === 'areas') {
-          <!-- PANEL: AREA -->
           <div id="editor-content-stage" class="p-4 bg-gray-900">
             <app-editor-area />
           </div>
-          } @else if (subNavCurrent === 'misc') {
-          <div id="editor-content-misc">OK Misc</div>
-          }
         </div>
       </div>
     </div>
