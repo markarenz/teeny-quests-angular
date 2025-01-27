@@ -32,7 +32,7 @@ export class EditorPanelInfoComponent {
   inputStartingAreaPosition: string = '';
   inputStartingAreaPositionX: number = 4;
   inputStartingAreaPositionY: number = 4;
-  // inventory
+  lockouts: string[] = [];
 
   game: Game | null = null;
 
@@ -48,6 +48,9 @@ export class EditorPanelInfoComponent {
             `${this.game?.content.player.y}_${this.game?.content.player.x}` ||
             '4_4';
           this.inputStartingAreaId = this.game?.content.player.areaId || '';
+
+          const area = this.game.content.areas[this.inputStartingAreaId];
+          this.lockouts = area.items.map((item) => `${item.y}_${item.x}`);
         }
       })
     );

@@ -58,6 +58,7 @@
           id="editor-player-starting-position"
           [selectedCellPosition]="inputStartingAreaPosition"
           (onPositionSelect)="handlePlayerStartPositionChange($event)"
+          [lockouts]="lockouts"
         />
       </div>
       <div>

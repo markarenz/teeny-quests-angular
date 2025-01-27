@@ -33,7 +33,6 @@ export class EditorInventoryComponent {
   updateInventoryKeys() {
     this.inventoryKeys = Object.keys(this.inventory);
     const inventoryItemKeys = Object.keys(inventoryDefinitions);
-    console.log('inventoryItemKeys', inventoryItemKeys);
     this.itemOptions = inventoryItemKeys
       .filter((key) => !this.inventoryKeys.includes(key))
       .map((key) => ({
