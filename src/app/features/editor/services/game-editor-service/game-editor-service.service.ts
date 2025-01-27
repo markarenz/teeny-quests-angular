@@ -73,6 +73,22 @@ export class GameEditorServiceService {
     this.game.next(game);
   }
 
+  updateStarterInventory(newInventory: { [key: string]: number }) {
+    if (this.game.value) {
+      const nextGame = {
+        ...this.game.value,
+        content: {
+          ...this.game.value.content,
+          player: {
+            ...this.game.value.content.player,
+            inventory: newInventory,
+          },
+        },
+      };
+      this.game.next(nextGame);
+    }
+  }
+
   setTestValue(value: any, fieldName: string) {
     switch (fieldName) {
       case 'selectedAreaId': {
@@ -136,24 +152,6 @@ export class GameEditorServiceService {
     );
   }
 
-  findAnOpenCell(): string | null {
-    const area = this.game?.value?.content.areas[this.selectedAreaId.value];
-    if (area) {
-      const positionKeys = this.getPositionKeysForGridSize();
-      const openCell = positionKeys.find((key) => {
-        const [y, x] = key.split('_');
-        return (
-          floorDefinitions[area.map[key].floor ?? 'default'].walkable &&
-          !area.exits.some((exit) => exit.x === +x && exit.y === +y) &&
-          !area.items.some((item) => item.x === +x && item.y === +y)
-        );
-      });
-      return openCell ?? null;
-    }
-    return null;
-  }
-
-  // ITEMS --------------------------------------------------------------------
   refreshAreaItems(nextGame: Game) {
     const nextItems = [
       ...nextGame.content.areas[this.selectedAreaId.value].items,
@@ -279,7 +277,7 @@ export class GameEditorServiceService {
     return rawGameData;
   }
 
-  createGame({
+  async createGame({
     title,
     description,
     user,

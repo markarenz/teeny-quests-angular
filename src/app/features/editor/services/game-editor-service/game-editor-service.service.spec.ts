@@ -319,3 +319,91 @@ describe('resetTexturesForCurrentArea', () => {
     tick(1000);
   }));
 });
+
+describe('createGame', () => {
+  let service: GameEditorServiceService;
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(GameEditorServiceService);
+  });
+
+  it('should create game', fakeAsync(() => {
+    const url = `${gamesApiUrl}`;
+    fetchMock.mockGlobal().post(
+      url,
+      { item: gameMock },
+      {
+        delay: 0,
+      }
+    );
+
+    let checkNow = false;
+    service.gameObs.subscribe((game) => {
+      if (checkNow) {
+        expect(game).toEqual(gameMock);
+      }
+    });
+    service.createGame({
+      title: 'Test Game',
+      description: 'Test Description',
+      user: {
+        id: 'abcdefg1234',
+        name: 'Test Name',
+      },
+    });
+    tick(1000);
+    checkNow = true;
+
+    fetchMock.unmockGlobal();
+  }));
+});
+
+describe('updateStarterInventory', () => {
+  let service: GameEditorServiceService;
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(GameEditorServiceService);
+    service.setTestValue(gameMock, 'game');
+  });
+
+  it('should update starter inventory', () => {
+    service.updateStarterInventory({
+      gold: 10,
+      'silver-key': 1,
+    });
+
+    let i = 0;
+    service.gameObs.subscribe((game) => {
+      const starterInventory = game ? game.content.player.inventory : [];
+      if (i === 1) {
+        expect(starterInventory.length).toBeGreaterThan(0);
+      }
+      i += 1;
+    });
+  });
+});
+
+describe('updateGame', () => {
+  let service: GameEditorServiceService;
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(GameEditorServiceService);
+    service.setTestValue(gameMock, 'game');
+  });
+
+  it('should update game', fakeAsync(() => {
+    const service = new GameEditorServiceService();
+
+    let i = 0;
+    service.gameObs.subscribe((game) => {
+      if (i == 1) {
+        expect(game).toEqual(gameMock);
+      }
+      i += 1;
+    });
+    service.updateGame(gameMock);
+    tick(1000);
+
+    fetchMock.unmockGlobal();
+  }));
+});
