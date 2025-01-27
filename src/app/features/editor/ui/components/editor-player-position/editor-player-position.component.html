@@ -2,13 +2,9 @@
   [style.width]="width"
   [style.height]="width"
   [style.z-index]="positionStyle.z"
-  class="area-item"
+  class="player-position"
   [style.bottom]="positionStyle.bottom"
   [style.left]="positionStyle.left"
 >
-  @if (item.itemType === 'key-silver') {
-  <app-svg-item-key />
-  } @else if (item.itemType === 'coins-25') {
-  <app-svg-item-coins />
-  }
+  <app-svg-player />
 </div>

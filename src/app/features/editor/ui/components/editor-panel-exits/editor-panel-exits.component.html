@@ -1,4 +1,9 @@
-<app-collapsible-card title="Exits">
+<app-collapsible-card
+  title="Exits"
+  [isCollapsible]="false"
+  [showNewButton]="true"
+  (onNewButtonClick)="handleCreateClick()"
+>
   <div class="flex flex-col gap-8">
     <div class="flex flex-col gap-4">
       <div class="flex flex-col gap-4">
@@ -32,13 +37,6 @@
         </div>
         }
       </div>
-      <div class="flex flex-row justify-end">
-        <app-icon-button
-          icon="new"
-          label="Add Exit"
-          (click)="handleCreateClick()"
-        />
-      </div>
     </div>
     @if (selectedExitId) {
     <div class="flex flex-col gap-4">
@@ -48,6 +46,7 @@
           id="editor-cell-selector"
           [selectedCellPosition]="inputExitPosition"
           (onPositionSelect)="handlePositionSelect($event)"
+          [lockouts]="lockouts"
         />
       </div>
       <div>

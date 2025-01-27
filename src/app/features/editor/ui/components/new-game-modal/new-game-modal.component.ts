@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { ModalBgComponent } from '@main/ui/components/modal-bg/modal-bg.component';
 import { ButtonComponent } from '@app/features/main/ui/components/button/button.component';
 import { LoaderAnimationComponent } from '@app/features/main/ui/components/loader-animation/loader-animation.component';
+import { GameEditorServiceService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import { gamesApiUrl } from '@config/index';
 import { AuthGoogleService } from '@app/features/auth/services/auth-google-service';
 import { User } from '@app/features/auth/interfaces/types';
@@ -25,7 +26,11 @@ export class NewGameModalComponent {
   subscription: Subscription;
   user: User | null = null;
 
-  constructor(private _authService: AuthGoogleService, private router: Router) {
+  constructor(
+    private _authService: AuthGoogleService,
+    private _gameEditorService: GameEditorServiceService,
+    private router: Router
+  ) {
     this.subscription = Subscription.EMPTY;
   }
 
@@ -59,31 +64,20 @@ export class NewGameModalComponent {
     this.isValid = false;
     this.isLoading = false;
   }
-  handleOkClick() {
+
+  async handleOkClick() {
     this.isLoading = true;
-    // get ID from fetch
     if (this.user?.id && this.user.username) {
-      fetch(gamesApiUrl, {
-        method: 'POST',
-        headers: { Accept: 'application/json' },
-        body: JSON.stringify({
-          userId: this.user.id,
-          username: this.user.username,
-          itemStatus: 'draft',
-          title: this.title,
-          description: this.description,
-          rating: 'n/a',
-          content: '{}',
-        }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          this.resetForm();
-          this.onBgClick.emit();
-          if (data?.id) {
-            this.router.navigate(['editor', data.id]);
-          }
-        });
+      const newGameId = await this._gameEditorService.createGame({
+        title: this.title,
+        description: this.description,
+        user: this.user,
+      });
+      this.resetForm();
+      this.onBgClick.emit();
+      if (newGameId) {
+        this.router.navigate(['editor', newGameId]);
+      }
     }
   }
 }

@@ -6,7 +6,7 @@ import { ButtonComponent } from '@app/features/main/ui/components/button/button.
 import { ButtonCloseComponent } from '@app/features/main/ui/components/button-close/button-close.component';
 import { GameAreaMapCell } from '@app/features/main/interfaces/types';
 import { defaultGridSize, maxAreaCellHeight } from '@config/index';
-import { getAreaItemPositionStyle } from '@app/features/game/lib/utils';
+import { getAreaElementPositionStyle } from '@app/features/game/lib/utils';
 
 @Component({
   selector: 'app-area-cell-modal',
@@ -51,7 +51,11 @@ export class AreaCellModalComponent {
           const { x, y, h } = data ?? { x: 1, y: 1, h: 1 };
           this.inputHeight = h;
           // set left 50%
-          this.modalPosition = getAreaItemPositionStyle(defaultGridSize, y, x);
+          this.modalPosition = getAreaElementPositionStyle(
+            defaultGridSize,
+            y,
+            x
+          );
         }
       )
     );

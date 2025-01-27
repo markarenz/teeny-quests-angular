@@ -1,0 +1,46 @@
+<div class="flex flex-col gap-4">
+  @for(itemId of inventoryKeys; track itemId) {
+  <div class="flex flex-row gap-4 items-center bg-gray-800 p-2 rounded-md">
+    <div class="flex-1">
+      {{ inventoryDefinitions[itemId].name }}
+    </div>
+    <div>
+      <input
+        type="number"
+        [(ngModel)]="inventory[itemId]"
+        (change)="handleQtyInputChange()"
+      />
+    </div>
+    <div>
+      <app-icon-button
+        label="Delete Item"
+        icon="delete"
+        theme="danger"
+        (onButtonClick)="handleDeleteInventoryItem(itemId)"
+      />
+    </div>
+  </div>
+  } @if(itemOptions.length > 0) {
+
+  <label
+    >Add New Item
+    <div class="flex flex-row gap-4 items-center">
+      <div class="flex-1">
+        <select [(ngModel)]="inputAddItemId">
+          @for(item of itemOptions; track item.value) {
+          <option [value]="item.value">{{ item.label }} A</option>
+          }
+        </select>
+      </div>
+      <div>
+        <app-icon-button
+          label="Add Item"
+          icon="new"
+          [isDisabled]="!inputAddItemId"
+          (onButtonClick)="handleAddInventoryItem()"
+        />
+      </div>
+    </div>
+  </label>
+  }
+</div>

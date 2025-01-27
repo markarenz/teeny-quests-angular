@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { IconCaretComponent } from '../../../../../main/ui/components/icons/icon-caret/icon-caret.component';
+import { IconCaretComponent } from '@app/features/main/ui/components/icons/icon-caret/icon-caret.component';
 
 @Component({
   selector: 'app-header-section',

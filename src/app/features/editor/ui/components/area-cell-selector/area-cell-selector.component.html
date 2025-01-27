@@ -3,9 +3,12 @@
   <button
     role="button"
     type="button"
-    class="cell-selector-button rounded-full aspect-square transition-colors duration-300 bg-gray-500"
+    class="cell-selector-button rounded-full aspect-square transition-colors duration-300 bg-gray-500 {{
+      lockouts.includes(positionKey) ? 'locked-out' : ''
+    }}"
     (click)="handleCellButtonClick(positionKey)"
     [attr.aria-label]="positionKey.replace('_', ', ')"
+    [disabled]="lockouts.includes(positionKey)"
   >
     <svg
       viewBox="0 0 100 100"

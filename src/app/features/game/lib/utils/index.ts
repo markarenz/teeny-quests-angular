@@ -4,7 +4,7 @@ export type AreaPosition = {
   z: number;
 };
 
-export const getAreaItemPositionStyle = (
+export const getAreaElementPositionStyle = (
   gridSize: number,
   y: number,
   x: number,

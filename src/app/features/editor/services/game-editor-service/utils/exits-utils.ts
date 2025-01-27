@@ -1,7 +1,7 @@
 import { Game, GameAreaExit } from '@app/features/main/interfaces/types';
-import { findAnOpenCell } from './common-utils';
 import { Guid } from 'guid-typescript';
 import { defaultGridSize } from '@config/index';
+import { findAnOpenCell } from './common-utils';
 
 export const utilCreateExit = ({
   game,
@@ -24,25 +24,14 @@ export const utilCreateExit = ({
     exits: [],
   };
 
-  let x = 2;
-  let y = 0;
-  let validPosition = false;
-  while (!validPosition) {
-    if (area.exits?.some((exit) => exit.x === x && exit.y === y)) {
-      x += 1;
-      if (x > defaultGridSize - 1) {
-        x = 0;
-        y += 1;
-        if (y > defaultGridSize - 1) {
-          console.error('No more space for exits');
-          break;
-        }
-      }
-    } else {
-      validPosition = true;
-    }
-  }
-  if (validPosition) {
+  const openCellPosition = findAnOpenCell({ game, selectedAreaId });
+
+  if (openCellPosition) {
+    let xs = '0';
+    let ys = '0';
+    [ys, xs] = openCellPosition.split('_');
+    const x = +xs;
+    const y = +ys;
     let direction = 'north';
     if (y < 2) {
       direction = 'north';

@@ -14,3 +14,7 @@
     transition: background-color 0.2s;
   }
 }
+
+.locked-out {
+  opacity: 0.25;
+}

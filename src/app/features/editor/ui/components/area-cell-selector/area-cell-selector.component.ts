@@ -11,6 +11,7 @@ import { GameEditorServiceService } from '@app/features/editor/services/game-edi
 export class AreaCellSelectorComponent {
   constructor(private _gameEditorService: GameEditorServiceService) {}
   @Input('id') id: string = 'area-cell-selector';
+  @Input('lockouts') lockouts: string[] = [];
   @Input('disabledCells') disabledCells: string[] = [];
   @Input('selectedCellPosition') selectedCellPosition: string = '';
   @Output() onPositionSelect: EventEmitter<string> = new EventEmitter<string>();

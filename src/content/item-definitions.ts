@@ -28,6 +28,23 @@ export const itemDefinitions: { [key: string]: ItemDefinition } = {
     amount: 25,
   },
 };
+
+export type InventoryDefinition = {
+  id: string;
+  name: string;
+};
+
+export const inventoryDefinitions: { [key: string]: InventoryDefinition } = {
+  gold: {
+    id: 'gold',
+    name: 'Gold',
+  },
+  'key-silver': {
+    id: 'key-silver',
+    name: 'Silver Key',
+  },
+};
+
 export const itemOptions: SelectIUIOption[] = [
   { value: 'key-silver', label: 'Silver Key' },
   { value: 'coins-25', label: 'Coins' },

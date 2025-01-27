@@ -4,7 +4,7 @@ import { defaultExit } from '@app/features/game/lib/constants';
 import { defaultGridSize } from '@config/index';
 import {
   AreaPosition,
-  getAreaItemPositionStyle,
+  getAreaElementPositionStyle,
 } from '@app/features/game/lib/utils/index';
 import { SvgExitDefaultWComponent } from './exits/svg-exit-default-w/svg-exit-default-w.component';
 import { SvgExitDefaultNComponent } from './exits/svg-exit-default-n/svg-exit-default-n.component';
@@ -38,7 +38,7 @@ export class AreaExitComponent {
     if (this.exit) {
       const { x, y, h } = this.exit;
       const cellW = 100 / this.gridSize;
-      this.position = getAreaItemPositionStyle(this.gridSize, y, x, h);
+      this.position = getAreaElementPositionStyle(this.gridSize, y, x, h);
       this.width = `${cellW}%`;
     }
   }

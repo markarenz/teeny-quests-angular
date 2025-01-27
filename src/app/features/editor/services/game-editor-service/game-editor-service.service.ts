@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Guid } from 'guid-typescript';
 import { gamesApiUrl } from '@config/index';
 import { User } from '@app/features/auth/interfaces/types';
@@ -10,6 +10,7 @@ import {
   GameAreaExit,
   GameAreaMapCell,
   SelectIUIOption,
+  GameContent,
 } from '@app/features/main/interfaces/types';
 import { defaultGridSize } from '@config/index';
 import { floorDefinitions } from '@content/floor-definitions';
@@ -68,12 +69,25 @@ export class GameEditorServiceService {
     this.isMenuOpen.next(false);
   }
 
-  // initData({ game, selectedAreaId }: { game: Game; selectedAreaId: string }) {
-  //   this.game.next(game);
-  //   if (selectedAreaId) {
-  //     this.selectedAreaId.next(selectedAreaId);
-  //   }
-  // }
+  updateGame(game: Game) {
+    this.game.next(game);
+  }
+
+  updateStarterInventory(newInventory: { [key: string]: number }) {
+    if (this.game.value) {
+      const nextGame = {
+        ...this.game.value,
+        content: {
+          ...this.game.value.content,
+          player: {
+            ...this.game.value.content.player,
+            inventory: newInventory,
+          },
+        },
+      };
+      this.game.next(nextGame);
+    }
+  }
 
   setTestValue(value: any, fieldName: string) {
     switch (fieldName) {
@@ -138,30 +152,11 @@ export class GameEditorServiceService {
     );
   }
 
-  findAnOpenCell(): string | null {
-    const area = this.game?.value?.content.areas[this.selectedAreaId.value];
-    if (area) {
-      const positionKeys = this.getPositionKeysForGridSize();
-      const openCell = positionKeys.find((key) => {
-        const [y, x] = key.split('_');
-        return (
-          floorDefinitions[area.map[key].floor ?? 'default'].walkable &&
-          !area.exits.some((exit) => exit.x === +x && exit.y === +y) &&
-          !area.items.some((item) => item.x === +x && item.y === +y)
-        );
-      });
-      return openCell ?? null;
-    }
-    return null;
-  }
-
-  // ITEMS --------------------------------------------------------------------
   refreshAreaItems(nextGame: Game) {
     const nextItems = [
       ...nextGame.content.areas[this.selectedAreaId.value].items,
     ];
 
-    console.log(nextItems);
     this.areaItems.next(nextItems);
   }
 
@@ -282,6 +277,63 @@ export class GameEditorServiceService {
     return rawGameData;
   }
 
+  async createGame({
+    title,
+    description,
+    user,
+  }: {
+    user: User;
+    title: string;
+    description: string;
+  }): Promise<string> {
+    const { id: userId, username } = user;
+    const defaultGameContent: GameContent = {
+      areas: {
+        start: {
+          id: 'start',
+          name: 'Start',
+          map: this.getDefaultMap(),
+          exits: [],
+          items: [],
+        },
+      },
+      events: [],
+      flags: {
+        GAME_OVER: false,
+        GAME_WON: false,
+      },
+      player: {
+        x: 4,
+        y: 4,
+        areaId: 'start',
+        inventory: {
+          gold: 0,
+        },
+      },
+    };
+
+    return fetch(gamesApiUrl, {
+      method: 'POST',
+      headers: { Accept: 'application/json' },
+      body: JSON.stringify({
+        userId: userId,
+        username: username,
+        itemStatus: 'draft',
+        title: title,
+        description: description,
+        rating: 'n/a',
+        content: JSON.stringify(defaultGameContent),
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        return data?.id ?? '';
+      })
+      .catch((err) => {
+        return '';
+      });
+  }
+
   getGamesByUserId(user: User | null): void {
     if (user) {
       this.isLoading.next(true);
@@ -322,10 +374,14 @@ export class GameEditorServiceService {
           const nextGameData = this.processGameData(data?.item);
           const areaslist = Object.keys(nextGameData.content.areas);
           this.game.next(nextGameData);
-          this.selectedAreaId.next(areaslist[0]);
-          this.areaExits.next(nextGameData.content.areas[areaslist[0]].exits);
-          this.areaItems.next(nextGameData.content.areas[areaslist[0]].items);
-          this.selectedArea.next(nextGameData.content.areas[areaslist[0]]);
+          const nextSelectedAreaId =
+            nextGameData.content.player.areaId ?? areaslist[0];
+          this.selectedAreaId.next(nextSelectedAreaId);
+          const nextSelectedArea =
+            nextGameData.content.areas[nextSelectedAreaId];
+          this.areaExits.next(nextSelectedArea.exits);
+          this.areaItems.next(nextSelectedArea.items);
+          this.selectedArea.next(nextSelectedArea);
         });
     }
   }

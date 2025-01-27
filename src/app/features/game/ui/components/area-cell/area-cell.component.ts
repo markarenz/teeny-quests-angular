@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import {
   AreaPosition,
-  getAreaItemPositionStyle,
+  getAreaElementPositionStyle,
 } from '@app/features/game/lib/utils/index';
 import { GameAreaMapCell } from '@app/features/main/interfaces/types';
 import { defaultGridSize } from '@config/index';
@@ -49,7 +49,7 @@ export class AreaCellComponent {
       const { x, y, h } = this.cell;
       const cellW = 100 / this.gridSize;
       const cellH = 100 / this.gridSize / 2;
-      this.position = getAreaItemPositionStyle(this.gridSize, y, x);
+      this.position = getAreaElementPositionStyle(this.gridSize, y, x);
       this.height = `${cellH + cellH * 0.5 * h}%`;
       this.width = `${cellW}%`;
       const svgH = (h + 1) * 25;

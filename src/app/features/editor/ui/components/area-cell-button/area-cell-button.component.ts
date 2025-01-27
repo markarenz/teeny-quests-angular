@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import {
   AreaPosition,
-  getAreaItemPositionStyle,
+  getAreaElementPositionStyle,
 } from '@app/features/game/lib/utils/index';
 import { defaultGridSize } from '@config/index';
 import { GameEditorServiceService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
@@ -31,7 +31,7 @@ export class AreaCellButtonComponent {
     this.x = parseInt(positionKeyArr[1]);
     this.y = parseInt(positionKeyArr[0]);
     this.z = this.x * this.y + this.x + 100;
-    this.position = getAreaItemPositionStyle(this.gridSize, this.y, this.x);
+    this.position = getAreaElementPositionStyle(this.gridSize, this.y, this.x);
     this.height = `${cellW / 2}%`;
     this.width = `${cellW}%`;
   }

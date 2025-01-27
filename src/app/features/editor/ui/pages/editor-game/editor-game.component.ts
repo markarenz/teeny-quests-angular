@@ -1,15 +1,11 @@
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
-import {
-  Game,
-  GameArea,
-  Link,
-  SubNavItem,
-} from '@app/features/main/interfaces/types';
+import { Game, Link, SubNavItem } from '@app/features/main/interfaces/types';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MainLayoutComponent } from '@main/ui/components/main-layout/main-layout.component';
 import { ContainerComponent } from '@app/features/main/ui/components/container/container.component';
+import { EditorPanelInfoComponent } from '../../components/editor-panel-info/editor-panel-info.component';
 import { EditorPanelCellsComponent } from '../../components/editor-panel-cells/editor-panel-cells.component';
 import { EditorPanelExitsComponent } from '../../components/editor-panel-exits/editor-panel-exits.component';
 import { EditorPanelItemsComponent } from '../../components/editor-panel-items/editor-panel-items.component';
@@ -33,6 +29,7 @@ import { GameEditorServiceService } from '@app/features/editor/services/game-edi
     BreadcrumbsComponent,
     EditorAreaComponent,
     EditorAreaSelectorComponent,
+    EditorPanelInfoComponent,
     EditorPanelExitsComponent,
     EditorPanelCellsComponent,
     EditorPanelItemsComponent,
@@ -49,12 +46,8 @@ export class EditorGameComponent {
 
   title = 'Editor Game';
   isLoading: boolean = false;
-  isDirty: boolean = false;
   isValid: boolean = false;
   game: Game | null = null;
-
-  // TODO: Add type for area and areaCell
-  // Door floor height is based on the adjacent area's floor height in the direction of the door
 
   breadcrumbLinks: Link[] = [
     { label: 'Home', href: '' },
@@ -62,20 +55,17 @@ export class EditorGameComponent {
     { label: 'Editing Game' },
   ];
 
-  subNavCurrent: string = 'areas';
+  subNavCurrent: string = 'info';
   subNavLinks: SubNavItem[] = [
     { label: 'Info', slug: 'info' },
-    { label: 'Areas', slug: 'areas' },
-    { label: 'Misc', slug: 'misc' },
+    { label: 'Exits', slug: 'exits' },
+    { label: 'Items', slug: 'items' },
+    { label: 'NPCs', slug: 'npcs' },
   ];
 
   ngOnInit() {
     this.subscriptions.push(
       this._gameEditorService.gameObs.subscribe((data: Game | null) => {
-        if (this.game) {
-          this.isDirty = true;
-          this.validateForm();
-        }
         this.game = data;
         this.title = this.game?.title ?? 'Game Title';
       })
@@ -87,18 +77,6 @@ export class EditorGameComponent {
 
   ngOnDestroy() {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
-  }
-
-  validateForm() {
-    if (!this.game) {
-      this.isValid = false;
-    } else {
-      let validCheck = true;
-      if (this.game.title.length < 1 || this.game.description.length < 1) {
-        validCheck = false;
-      }
-      this.isValid = validCheck;
-    }
   }
 
   handleSaveClick() {
