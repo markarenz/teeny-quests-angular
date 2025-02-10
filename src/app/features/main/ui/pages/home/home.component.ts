@@ -4,11 +4,17 @@ import { Title, Meta } from '@angular/platform-browser';
 import { ContainerComponent } from '@main/ui/components/container/container.component';
 import { MainLayoutComponent } from '@main/ui/components/main-layout/main-layout.component';
 import { gamesApiUrl } from '@config/index';
+import { LogoMainComponent } from '../../components/logo-main/logo-main.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [ContainerComponent, MainLayoutComponent, RouterLink],
+  imports: [
+    ContainerComponent,
+    MainLayoutComponent,
+    RouterLink,
+    LogoMainComponent,
+  ],
 
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',

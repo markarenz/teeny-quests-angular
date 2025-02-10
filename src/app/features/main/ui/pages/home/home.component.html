@@ -1,16 +1,36 @@
 <app-main-layout [title]="title">
   <app-container>
-    <div class="mt-8">
-      <h2>Homepage content coming soon-ish.</h2>
+    <div class="mt-8 pb-8">
+      <div class="max-w-3xl mx-auto">
+        <app-logo-main />
+      </div>
 
-      <div class="flex flex-col gap-4 mt-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
         @for (game of games; track game.id) {
-        <a routerLink="/game/{{ game.id }}" class="rounded-md">
+        <a routerLink="/game/{{ game.id }}" class="group rounded-md">
           <div
-            class="bg-gray-600 rounded-md p-4 hover:bg-gray-700 transition-colors border-2 border-gray-500"
+            class="flex flex-col gap-4 bg-gray-600 rounded-md group-hover:bg-gray-700 transition-colors border-2 border-gray-500 group-hover:border-gray-300"
           >
-            <h3 class="text-xl">{{ game.title }}</h3>
-            <p>{{ game.description }}</p>
+            <div
+              class="px-4 py-4 flex flex-col gap-2 border-b-2 border-gray-400 group-hover:border-gray-300 border-dashed"
+            >
+              <h3 class="text-xl text-2-line-max">
+                {{ game.title }}
+              </h3>
+              <div class="text-lg font-normal font-primary">
+                by {{ game.username }}
+              </div>
+            </div>
+            <div class="px-4 text-2-line-max">
+              <p>{{ game.description }}</p>
+            </div>
+
+            <div
+              class="bg-gray-400 group-hover:bg-gray-300 px-4 py-4 flex flex-row justify-between text-sm text-gray-800"
+            >
+              <div>Plays: 1k</div>
+              <div>Rating: 3.5/5 (123)</div>
+            </div>
           </div>
         </a>
         }

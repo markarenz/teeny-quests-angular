@@ -1,0 +1,165 @@
+.glint {
+  opacity: 1;
+  mix-blend-mode: plus-lighter;
+  animation: glint-rotate 5s linear infinite;
+  width: 10%;
+  .glint-inner {
+    fill: #fff;
+    animation: glint-fade-inner 4s linear infinite;
+  }
+  .glint-outer {
+    fill: #999;
+    animation: glint-fade-outer 4s linear infinite;
+  }
+}
+
+@keyframes glint-fade-inner {
+  0% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0.25;
+  }
+}
+@keyframes glint-fade-outer {
+  0% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 0.25;
+  }
+  100% {
+    opacity: 0.7;
+  }
+}
+
+.glint-1 {
+  position: absolute;
+  left: 25%;
+  top: 8%;
+}
+.glint-wrap-1 {
+  animation: glint-fade-1 10s linear infinite;
+}
+
+@keyframes glint-fade-1 {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  30% {
+    opacity: 1;
+  }
+  40% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.glint-2 {
+  position: absolute;
+  left: 93%;
+  top: 40%;
+}
+.glint-wrap-2 {
+  animation: glint-fade-2 10s linear infinite;
+}
+
+@keyframes glint-fade-2 {
+  0% {
+    opacity: 0;
+  }
+  30% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  60% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.glint-3 {
+  position: absolute;
+  left: 33%;
+  top: 67%;
+}
+
+.glint-wrap-3 {
+  animation: glint-fade-3 10s linear infinite;
+}
+
+@keyframes glint-fade-3 {
+  0% {
+    opacity: 0;
+  }
+  60% {
+    opacity: 0;
+  }
+  70% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.glint-4 {
+  position: absolute;
+  left: 65%;
+  top: 23%;
+}
+
+.glint-wrap-4 {
+  animation: glint-fade-4 10s linear infinite;
+}
+
+@keyframes glint-fade-4 {
+  0% {
+    opacity: 1;
+  }
+  10% {
+    opacity: 1;
+  }
+  20% {
+    opacity: 0;
+  }
+  80% {
+    opacity: 0;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes glint-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

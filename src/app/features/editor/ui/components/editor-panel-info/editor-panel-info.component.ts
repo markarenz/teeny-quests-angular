@@ -26,7 +26,9 @@ export class EditorPanelInfoComponent {
   private subscriptions: Subscription[] = [];
 
   inputTitle: string = '';
+  inputTitleMaxLength: number = 128;
   inputDescription: string = '';
+  inputDescriptionMaxLength: number = 512;
   inputItemStatus: string = '';
   inputStartingAreaId: string = '';
   inputStartingAreaPosition: string = '';
