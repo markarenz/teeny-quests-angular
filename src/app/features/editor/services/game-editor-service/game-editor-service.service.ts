@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Guid } from 'guid-typescript';
+import { v4 as uuidv4 } from 'uuid';
 import { gamesApiUrl } from '@config/index';
 import { User } from '@app/features/auth/interfaces/types';
 import {
@@ -418,7 +418,7 @@ export class GameEditorServiceService {
 
   createArea() {
     if (this.game.value) {
-      const id = Guid.create().toString();
+      const id = uuidv4();
       const newArea: GameArea = {
         id,
         name: `Area ${id.slice(-5)}`,

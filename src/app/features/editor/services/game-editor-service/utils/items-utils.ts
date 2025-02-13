@@ -1,7 +1,7 @@
 import { Game, GameItem } from '@app/features/main/interfaces/types';
 import { findAnOpenCell } from './common-utils';
 import { defaultGridSize } from '@config/index';
-import { Guid } from 'guid-typescript';
+import { v4 as uuidv4 } from 'uuid';
 
 export const utilDeleteItem = ({
   game,
@@ -53,7 +53,7 @@ export const utilCreateItem = ({
 
       let h = area ? area.map[openCellPosition].h : 1;
       const newItem: GameItem = {
-        id: Guid.create().toString(),
+        id: uuidv4(),
         itemType: 'coins-25',
         areaId: selectedAreaId,
         x: +x,

@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --configuration production",
     "deploy": "aws s3 sync dist/teeny-quests-angular/browser s3://teeny-quests",
     "watch": "ng build --watch --configuration development",
     "lambda:deploy": "cd ./api/src && zip -r ../lambda-src.zip ./* && cd .. && aws lambda update-function-code --function-name TQAPILambda --zip-file fileb://lambda-src.zip --region us-east-1 && cd ..",
@@ -21,9 +21,9 @@
     "@angular/platform-browser-dynamic": "^18.2.0",
     "@angular/router": "^18.2.0",
     "angular-oauth2-oidc": "^17.0.2",
-    "guid-typescript": "^1.0.9",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
+    "uuid": "^11.0.5",
     "zone.js": "~0.14.10"
   },
   "devDependencies": {

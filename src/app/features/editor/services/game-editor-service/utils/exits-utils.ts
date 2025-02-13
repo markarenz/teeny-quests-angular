@@ -1,5 +1,5 @@
 import { Game, GameAreaExit } from '@app/features/main/interfaces/types';
-import { Guid } from 'guid-typescript';
+import { v4 as uuidv4 } from 'uuid';
 import { defaultGridSize } from '@config/index';
 import { findAnOpenCell } from './common-utils';
 
@@ -46,7 +46,7 @@ export const utilCreateExit = ({
     let h = area ? area.map[`${y}_${x}`].h : 1;
 
     const newExit: GameAreaExit = {
-      id: Guid.create().toString(),
+      id: uuidv4(),
       destinationAreaId,
       exitType: 'default',
       direction,

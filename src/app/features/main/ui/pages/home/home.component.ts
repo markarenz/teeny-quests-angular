@@ -5,7 +5,7 @@ import { ContainerComponent } from '@main/ui/components/container/container.comp
 import { MainLayoutComponent } from '@main/ui/components/main-layout/main-layout.component';
 import { gamesApiUrl } from '@config/index';
 import { LogoMainComponent } from '../../components/logo-main/logo-main.component';
-
+import { GameLinkCardComponent } from '../../components/game-link-card/game-link-card.component';
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -14,6 +14,7 @@ import { LogoMainComponent } from '../../components/logo-main/logo-main.componen
     MainLayoutComponent,
     RouterLink,
     LogoMainComponent,
+    GameLinkCardComponent,
   ],
 
   templateUrl: './home.component.html',
@@ -22,6 +23,7 @@ import { LogoMainComponent } from '../../components/logo-main/logo-main.componen
 export class HomeComponent {
   games: any[] = [];
   isLoading: boolean = true;
+  skeletons: number[] = Array.from({ length: 4 }, (_, i) => i);
   constructor(private titleService: Title, private metaService: Meta) {}
 
   title = 'Teeny Quests';
@@ -38,7 +40,7 @@ export class HomeComponent {
         setTimeout(() => {
           this.games = responseObj?.items ?? [];
           this.isLoading = false;
-        }, 100);
+        }, 1000);
       });
     this.titleService.setTitle(this.title);
     this.metaService.addTag({

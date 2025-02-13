@@ -6,34 +6,22 @@
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
-        @for (game of games; track game.id) {
+        @if (games.length > 0) { @for (game of games; track game.id) {
         <a routerLink="/game/{{ game.id }}" class="group rounded-md">
-          <div
-            class="flex flex-col gap-4 bg-gray-600 rounded-md group-hover:bg-gray-700 transition-colors border-2 border-gray-500 group-hover:border-gray-300"
-          >
-            <div
-              class="px-4 py-4 flex flex-col gap-2 border-b-2 border-gray-400 group-hover:border-gray-300 border-dashed"
-            >
-              <h3 class="text-xl text-2-line-max">
-                {{ game.title }}
-              </h3>
-              <div class="text-lg font-normal font-primary">
-                by {{ game.username }}
-              </div>
-            </div>
-            <div class="px-4 text-2-line-max">
-              <p>{{ game.description }}</p>
-            </div>
-
-            <div
-              class="bg-gray-400 group-hover:bg-gray-300 px-4 py-4 flex flex-row justify-between text-sm text-gray-800"
-            >
-              <div>Plays: 1k</div>
-              <div>Rating: 3.5/5 (123)</div>
-            </div>
-          </div>
+          <app-game-link-card
+            [title]="game.title"
+            [username]="game.username"
+            [description]="game.description"
+            [isSkeleton]="false"
+          />
         </a>
-        }
+        } } @else { @for (skeleton of skeletons; track skeletons) {
+        <div
+          class="flex flex-col gap-4 bg-gray-600 rounded-md group-hover:bg-gray-700 transition-colors border-2 border-gray-500 group-hover:border-gray-300"
+        >
+          <app-game-link-card [isSkeleton]="true" />
+        </div>
+        } }
       </div>
     </div>
   </app-container>
