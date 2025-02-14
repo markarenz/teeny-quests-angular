@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Game, Link, SubNavItem } from '@app/features/main/interfaces/types';
+import { GameROM, Link, SubNavItem } from '@app/features/main/interfaces/types';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MainLayoutComponent } from '@main/ui/components/main-layout/main-layout.component';
@@ -47,7 +47,7 @@ export class EditorGameComponent {
   title = 'Editor Game';
   isLoading: boolean = false;
   isValid: boolean = false;
-  game: Game | null = null;
+  game: GameROM | null = null;
 
   breadcrumbLinks: Link[] = [
     { label: 'Home', href: '' },
@@ -65,7 +65,7 @@ export class EditorGameComponent {
 
   ngOnInit() {
     this.subscriptions.push(
-      this._gameEditorService.gameObs.subscribe((data: Game | null) => {
+      this._gameEditorService.gameObs.subscribe((data: GameROM | null) => {
         this.game = data;
         this.title = this.game?.title ?? 'Game Title';
       })

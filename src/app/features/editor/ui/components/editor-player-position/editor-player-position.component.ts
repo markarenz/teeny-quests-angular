@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { GameEditorServiceService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
-import { Game, GameArea } from '@app/features/main/interfaces/types';
+import { GameROM, GameArea } from '@app/features/main/interfaces/types';
 import { Subscription } from 'rxjs';
 import { defaultGridSize } from '@config/index';
 import {
@@ -57,7 +57,7 @@ export class EditorPlayerPositionComponent {
           }
         }
       ),
-      this._gameEditorService.gameObs.subscribe((data: Game | null) => {
+      this._gameEditorService.gameObs.subscribe((data: GameROM | null) => {
         if (data) {
           const area = data.content.areas[this.selectedAreaId];
           if (area) {

@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 import { GameEditorServiceService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import { AreaCellComponent } from '@app/features/game/ui/components/area-cell/area-cell.component';
 import {
-  Game,
+  GameROM,
   GameArea,
   GameAreaExit,
   GameAreaMapCell,
@@ -29,7 +29,7 @@ export class EditorAreaComponent {
   constructor(private _gameEditorService: GameEditorServiceService) {}
   private subscriptions: Subscription[] = [];
 
-  game: Game | null = null;
+  game: GameROM | null = null;
   selectedAreaId: string = '';
   selectedArea: GameArea | null = null;
   selectedAreaMap: GameArea['map'] | null = null;
@@ -60,7 +60,7 @@ export class EditorAreaComponent {
 
   ngOnInit(): void {
     this.subscriptions.push(
-      this._gameEditorService.gameObs.subscribe((data: Game | null) => {
+      this._gameEditorService.gameObs.subscribe((data: GameROM | null) => {
         this.game = data;
         this.updatePlayerPosition();
       })

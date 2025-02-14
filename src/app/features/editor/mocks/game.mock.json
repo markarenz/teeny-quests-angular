@@ -1432,7 +1432,7 @@
       }
     },
     "events": [],
-    "flags": {
+    "flagValues": {
       "GAME_OVER": false,
       "GAME_WON": false
     },

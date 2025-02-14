@@ -1,4 +1,4 @@
-import { Game, GameAreaExit } from '@app/features/main/interfaces/types';
+import { GameROM, GameAreaExit } from '@app/features/main/interfaces/types';
 import { v4 as uuidv4 } from 'uuid';
 import { defaultGridSize } from '@config/index';
 import { findAnOpenCell } from './common-utils';
@@ -7,7 +7,7 @@ export const utilCreateExit = ({
   game,
   selectedAreaId,
 }: {
-  game: Game;
+  game: GameROM;
   selectedAreaId: string;
 }) => {
   let destinationAreaId = '';
@@ -56,7 +56,7 @@ export const utilCreateExit = ({
       h,
     };
 
-    const nextGame = { ...game } as Game;
+    const nextGame = { ...game } as GameROM;
     nextGame.content.areas[selectedAreaId] = {
       ...nextGame?.content.areas[selectedAreaId],
       exits: [
@@ -75,14 +75,14 @@ export const utilDeleteExit = ({
   selectedAreaId,
   exitId,
 }: {
-  game: Game;
+  game: GameROM;
   selectedAreaId: string;
   exitId: string;
 }) => {
   const exits = game.content.areas[selectedAreaId]?.exits;
   if (exits) {
     const newExits = exits.filter((exit) => exit.id !== exitId);
-    const nextGame = { ...game } as Game;
+    const nextGame = { ...game } as GameROM;
     nextGame.content.areas[selectedAreaId] = {
       ...nextGame?.content.areas[selectedAreaId],
       exits: newExits,
@@ -99,12 +99,12 @@ export const utilUpdateExit = ({
   selectedAreaId,
   updatedExit,
 }: {
-  game: Game;
+  game: GameROM;
   selectedAreaId: string;
   updatedExit: GameAreaExit;
 }) => {
   const id = updatedExit.id;
-  const nextGame = { ...game } as Game;
+  const nextGame = { ...game } as GameROM;
   const area = nextGame?.content.areas[selectedAreaId];
 
   if (area) {

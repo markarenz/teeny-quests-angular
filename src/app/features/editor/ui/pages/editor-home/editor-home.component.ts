@@ -5,7 +5,7 @@ import { ContainerComponent } from '@main/ui/components/container/container.comp
 import { MainLayoutComponent } from '@main/ui/components/main-layout/main-layout.component';
 import { TableComponent } from '@app/features/main/ui/components/table/table.component';
 import { ButtonComponent } from '@app/features/main/ui/components/button/button.component';
-import { FieldLabel, Game, Link } from '@main/interfaces/types';
+import { FieldLabel, GameROM, Link } from '@main/interfaces/types';
 import { TableCellDisplayType } from '@main/interfaces/enums';
 import { AuthGoogleService } from '@app/features/auth/services/auth-google-service';
 import { NewGameModalComponent } from '../../components/new-game-modal/new-game-modal.component';
@@ -50,7 +50,7 @@ export class EditorHomeComponent {
 
   ngOnInit(): void {
     this.subscriptions.push(
-      this._gameEditorService.gamesObs.subscribe((data: Game[]) => {
+      this._gameEditorService.gamesObs.subscribe((data: GameROM[]) => {
         this.games = data;
       })
     );

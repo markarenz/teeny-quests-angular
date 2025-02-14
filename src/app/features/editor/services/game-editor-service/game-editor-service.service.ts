@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { gamesApiUrl } from '@config/index';
 import { User } from '@app/features/auth/interfaces/types';
 import {
-  Game,
+  GameROM,
   GameArea,
   GameItem,
   GameAreaExit,
@@ -32,10 +32,10 @@ export class GameEditorServiceService {
   private isLoading = new BehaviorSubject<boolean>(false);
   isLoadingObs = this.isLoading.asObservable();
 
-  private games = new BehaviorSubject<Game[]>([]);
+  private games = new BehaviorSubject<GameROM[]>([]);
   gamesObs = this.games.asObservable();
 
-  private game = new BehaviorSubject<Game | null>(null);
+  private game = new BehaviorSubject<GameROM | null>(null);
   gameObs = this.game.asObservable();
 
   private selectedAreaId = new BehaviorSubject<string>('');
@@ -69,7 +69,7 @@ export class GameEditorServiceService {
     this.isMenuOpen.next(false);
   }
 
-  updateGame(game: Game) {
+  updateGame(game: GameROM) {
     this.game.next(game);
   }
 
@@ -109,7 +109,7 @@ export class GameEditorServiceService {
 
   setCellData(cellData: GameAreaMapCell) {
     if (this.game.value?.content.areas[this.selectedAreaId.value]) {
-      const gameObj = { ...this.game.value } as Game;
+      const gameObj = { ...this.game.value } as GameROM;
 
       const exits = gameObj?.content.areas[this.selectedAreaId.value].exits.map(
         (exit) =>
@@ -152,7 +152,7 @@ export class GameEditorServiceService {
     );
   }
 
-  refreshAreaItems(nextGame: Game) {
+  refreshAreaItems(nextGame: GameROM) {
     const nextItems = [
       ...nextGame.content.areas[this.selectedAreaId.value].items,
     ];
@@ -204,7 +204,7 @@ export class GameEditorServiceService {
 
   // EXITS --------------------------------------------------------------------
 
-  refreshAreaExits(nextGame: Game) {
+  refreshAreaExits(nextGame: GameROM) {
     this.areaExits.next(
       nextGame.content.areas[this.selectedAreaId.value].exits
     );
@@ -220,7 +220,7 @@ export class GameEditorServiceService {
       if (nextGame && newExit) {
         this.game.next(nextGame);
         this.selectedExitId.next(newExit.id);
-        this.refreshAreaExits(nextGame as Game);
+        this.refreshAreaExits(nextGame as GameROM);
         return newExit;
       }
     }
@@ -237,7 +237,7 @@ export class GameEditorServiceService {
       });
       if (nextGame) {
         this.game.next(nextGame);
-        this.refreshAreaExits(nextGame as Game);
+        this.refreshAreaExits(nextGame as GameROM);
       }
     }
   }
@@ -251,7 +251,7 @@ export class GameEditorServiceService {
       });
       if (nextGame) {
         this.game.next(nextGame);
-        this.refreshAreaExits(nextGame as Game);
+        this.refreshAreaExits(nextGame as GameROM);
       }
     }
   }
@@ -264,7 +264,7 @@ export class GameEditorServiceService {
     this.selectedCell.next(area?.map[cellPosition] ?? null);
   }
 
-  processGameData(rawGameData: Game): Game {
+  processGameData(rawGameData: GameROM): GameROM {
     try {
       const parsedContent = JSON.parse(`${rawGameData.content}`);
       return {
@@ -298,7 +298,7 @@ export class GameEditorServiceService {
         },
       },
       events: [],
-      flags: {
+      flagValues: {
         GAME_OVER: false,
         GAME_WON: false,
       },

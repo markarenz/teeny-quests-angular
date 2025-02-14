@@ -1,6 +1,6 @@
-import { Game } from '../app/features/main/interfaces/types';
+import { GameROM } from '../app/features/main/interfaces/types';
 
-const game: Game = {
+const game: GameROM = {
   id: 'abcd123',
   title: 'My first game',
   description: 'This is a simple game',
@@ -12,7 +12,6 @@ const game: Game = {
       start: {
         id: 'start',
         name: 'Start',
-        size: 3,
         map: {
           '0,0': {
             x: 0,
@@ -39,9 +38,17 @@ const game: Game = {
             wallSouth: 'default',
           },
         },
+        exits: [],
+        items: [],
       },
     },
-    items: {},
     events: [],
+    flagValues: {},
+    player: {
+      areaId: 'start',
+      x: 3,
+      y: 3,
+      inventory: {},
+    },
   },
 };

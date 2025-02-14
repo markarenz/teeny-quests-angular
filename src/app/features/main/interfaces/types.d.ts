@@ -77,14 +77,14 @@ export type Inventory = {
   [key: string]: number;
 };
 
-export type GameFlags = {
-  [key: string]: boolean;
+export type GameStateValues = {
+  [key: string]: boolean | number | string;
 };
 
 export type GameContent = {
   areas: { [key: string]: GameArea };
   events: GameEvent[];
-  flags: GameFlags;
+  flagValues: GameStateValues;
   player: {
     areaId: string;
     x: number;
@@ -94,7 +94,7 @@ export type GameContent = {
   };
 };
 
-export type Game = {
+export type GameROM = {
   id: string;
   title: string;
   description: string;
@@ -105,18 +105,24 @@ export type Game = {
   content: GameContent;
 };
 
+export type StatusEffect = {
+  effect: string;
+  expirationTurn: number;
+};
+
 export type GameState = {
   gameId: string;
   playerState: {
     area: string;
-    position: string;
+    x: number;
+    y: number;
+    numTurns: number;
     facing: string;
     health: number;
-    mapOrientation: string; // north, south, east, west
+    statusEffects: StatusEffect[];
   };
-  flags: { [key: string]: boolean };
-  inventory: { [key: string]: number };
-  itemsState: { [key: string]: GameItem };
+  flagValues: GameStateValues;
+  inventory: Inventory;
   lastUpdateDate: string;
   lastSaveDate: string;
 };
