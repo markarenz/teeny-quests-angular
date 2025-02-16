@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { GameEditorServiceService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
+import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 
 @Component({
   selector: 'app-area-cell-selector',
@@ -9,7 +9,7 @@ import { GameEditorServiceService } from '@app/features/editor/services/game-edi
   styleUrl: './area-cell-selector.component.css',
 })
 export class AreaCellSelectorComponent {
-  constructor(private _gameEditorService: GameEditorServiceService) {}
+  constructor(private _gameEditorService: GameEditorService) {}
   @Input('id') id: string = 'area-cell-selector';
   @Input('lockouts') lockouts: string[] = [];
   @Input('disabledCells') disabledCells: string[] = [];

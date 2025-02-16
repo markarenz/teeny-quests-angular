@@ -4,7 +4,7 @@ import {
   getAreaElementPositionStyle,
 } from '@app/features/game/lib/utils/index';
 import { defaultGridSize } from '@config/index';
-import { GameEditorServiceService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
+import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 
 @Component({
   selector: 'app-area-cell-button',
@@ -14,7 +14,7 @@ import { GameEditorServiceService } from '@app/features/editor/services/game-edi
   styleUrl: './area-cell-button.component.css',
 })
 export class AreaCellButtonComponent {
-  constructor(private _gameEditorService: GameEditorServiceService) {}
+  constructor(private _gameEditorService: GameEditorService) {}
 
   @Input('positionKey') positionKey: string = '';
   x: number = 0;

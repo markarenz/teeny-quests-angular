@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Game, Link, SubNavItem } from '@app/features/main/interfaces/types';
+import { GameROM, Link, SubNavItem } from '@app/features/main/interfaces/types';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MainLayoutComponent } from '@main/ui/components/main-layout/main-layout.component';
@@ -15,7 +15,7 @@ import { EditorAreaComponent } from '../../components/editor-area/editor-area.co
 import { EditorAreaSelectorComponent } from '../../components/editor-area-selector/editor-area-selector.component';
 import { ButtonComponent } from '@app/features/main/ui/components/button/button.component';
 import { BreadcrumbsComponent } from '@app/features/main/ui/components/breadcrumbs/breadcrumbs.component';
-import { GameEditorServiceService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
+import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 
 @Component({
   selector: 'app-editor-game',
@@ -40,14 +40,14 @@ import { GameEditorServiceService } from '@app/features/editor/services/game-edi
 export class EditorGameComponent {
   constructor(
     private _route: ActivatedRoute,
-    private _gameEditorService: GameEditorServiceService
+    private _gameEditorService: GameEditorService
   ) {}
   private subscriptions: Subscription[] = [];
 
   title = 'Editor Game';
   isLoading: boolean = false;
   isValid: boolean = false;
-  game: Game | null = null;
+  game: GameROM | null = null;
 
   breadcrumbLinks: Link[] = [
     { label: 'Home', href: '' },
@@ -65,7 +65,7 @@ export class EditorGameComponent {
 
   ngOnInit() {
     this.subscriptions.push(
-      this._gameEditorService.gameObs.subscribe((data: Game | null) => {
+      this._gameEditorService.gameObs.subscribe((data: GameROM | null) => {
         this.game = data;
         this.title = this.game?.title ?? 'Game Title';
       })

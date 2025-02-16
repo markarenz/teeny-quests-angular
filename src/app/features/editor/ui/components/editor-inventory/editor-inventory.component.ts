@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { GameEditorServiceService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
+import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import {
-  Game,
+  GameROM,
   Inventory,
   SelectIUIOption,
 } from '@app/features/main/interfaces/types';
@@ -21,7 +21,7 @@ import { IconButtonComponent } from '@app/features/main/ui/components/icon-butto
   styleUrl: './editor-inventory.component.css',
 })
 export class EditorInventoryComponent {
-  constructor(private _gameEditorService: GameEditorServiceService) {}
+  constructor(private _gameEditorService: GameEditorService) {}
   private subscriptions: Subscription[] = [];
   inputAddItemId: string = '';
   inventory: Inventory = {};
@@ -43,7 +43,7 @@ export class EditorInventoryComponent {
 
   ngOnInit() {
     this.subscriptions.push(
-      this._gameEditorService.gameObs.subscribe((data: Game | null) => {
+      this._gameEditorService.gameObs.subscribe((data: GameROM | null) => {
         if (data) {
           this.inventory = data.content.player.inventory;
           this.updateInventoryKeys();

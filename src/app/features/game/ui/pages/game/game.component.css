@@ -1,0 +1,8 @@
+.game-wrap {
+  background-color: var(--color-gray-900);
+  width: 100%;
+  max-width: 90vh;
+  margin: 0 auto;
+  aspect-ratio: 1 / 1;
+  position: relative;
+}

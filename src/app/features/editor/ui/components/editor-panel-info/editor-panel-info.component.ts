@@ -1,8 +1,8 @@
 import { Component, input } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { GameEditorServiceService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
+import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import { FormsModule } from '@angular/forms';
-import { Game } from '@app/features/main/interfaces/types';
+import { GameROM } from '@app/features/main/interfaces/types';
 import { AreaCellSelectorComponent } from '../area-cell-selector/area-cell-selector.component';
 import { CollapsibleCardComponent } from '@app/features/main/ui/components/collapsible-card/collapsible-card.component';
 import { EditorAreaSelectorGeneralComponent } from '../editor-area-selector-general/editor-area-selector-general.component';
@@ -22,11 +22,13 @@ import { EditorInventoryComponent } from '../editor-inventory/editor-inventory.c
   styleUrl: './editor-panel-info.component.css',
 })
 export class EditorPanelInfoComponent {
-  constructor(private _gameEditorService: GameEditorServiceService) {}
+  constructor(private _gameEditorService: GameEditorService) {}
   private subscriptions: Subscription[] = [];
 
   inputTitle: string = '';
+  inputTitleMaxLength: number = 128;
   inputDescription: string = '';
+  inputDescriptionMaxLength: number = 512;
   inputItemStatus: string = '';
   inputStartingAreaId: string = '';
   inputStartingAreaPosition: string = '';
@@ -34,11 +36,11 @@ export class EditorPanelInfoComponent {
   inputStartingAreaPositionY: number = 4;
   lockouts: string[] = [];
 
-  game: Game | null = null;
+  game: GameROM | null = null;
 
   ngOnInit() {
     this.subscriptions.push(
-      this._gameEditorService.gameObs.subscribe((data: Game | null) => {
+      this._gameEditorService.gameObs.subscribe((data: GameROM | null) => {
         if (data) {
           this.game = data;
           this.inputTitle = this.game?.title || '';

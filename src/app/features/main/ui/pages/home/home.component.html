@@ -1,19 +1,32 @@
 <app-main-layout [title]="title">
+  <div
+    class="bg-gray-900 relative border-b-2 border-gray-400 shadow-[0px_6px_16px_4px_rgba(0,0,0,0.3)]"
+  >
+    <div aria-hidden="true" class="home-logo-bg bg-maze-gradient"></div>
+    <div aria-hidden="true" class="home-logo-bg bg-maze"></div>
+    <div class="max-w-3xl mx-auto py-3 lg:py-6 px-1">
+      <app-logo-main />
+    </div>
+  </div>
   <app-container>
-    <div class="mt-8">
-      <h2>Homepage content coming soon-ish.</h2>
-
-      <div class="flex flex-col gap-4 mt-8">
-        @for (game of games; track game.id) {
-        <a routerLink="/game/{{ game.id }}" class="rounded-md">
-          <div
-            class="bg-gray-600 rounded-md p-4 hover:bg-gray-700 transition-colors border-2 border-gray-500"
-          >
-            <h3 class="text-xl">{{ game.title }}</h3>
-            <p>{{ game.description }}</p>
-          </div>
+    <div class="pb-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
+        @if (games.length > 0) { @for (game of games; track game.id) {
+        <a routerLink="/game/{{ game.id }}" class="group rounded-md">
+          <app-game-link-card
+            [title]="game.title"
+            [username]="game.username"
+            [description]="game.description"
+            [isSkeleton]="false"
+          />
         </a>
-        }
+        } } @else { @for (skeleton of skeletons; track skeletons) {
+        <div
+          class="flex flex-col gap-4 bg-gray-600 rounded-md group-hover:bg-gray-700 transition-colors border-2 border-gray-500 group-hover:border-gray-300"
+        >
+          <app-game-link-card [isSkeleton]="true" />
+        </div>
+        } }
       </div>
     </div>
   </app-container>

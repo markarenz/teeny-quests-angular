@@ -1,18 +1,18 @@
-import { Game, GameItem } from '@app/features/main/interfaces/types';
+import { GameROM, GameItem } from '@app/features/main/interfaces/types';
 import { findAnOpenCell } from './common-utils';
 import { defaultGridSize } from '@config/index';
-import { Guid } from 'guid-typescript';
+import { v4 as uuidv4 } from 'uuid';
 
 export const utilDeleteItem = ({
   game,
   selectedAreaId,
   itemId,
 }: {
-  game: Game;
+  game: GameROM;
   selectedAreaId: string;
   itemId: string;
 }) => {
-  const nextGame = { ...game } as Game;
+  const nextGame = { ...game } as GameROM;
   const items = game.content.areas[selectedAreaId].items;
   if (items) {
     const newItems = items.filter((item) => item.id !== itemId);
@@ -29,9 +29,9 @@ export const utilCreateItem = ({
   game,
   selectedAreaId,
 }: {
-  game: Game;
+  game: GameROM;
   selectedAreaId: string;
-}): { nextGame: Game | null; newItem: GameItem | null } => {
+}): { nextGame: GameROM | null; newItem: GameItem | null } => {
   const areas = game.content.areas;
   if (areas) {
     const area = areas[selectedAreaId] ?? {
@@ -53,7 +53,7 @@ export const utilCreateItem = ({
 
       let h = area ? area.map[openCellPosition].h : 1;
       const newItem: GameItem = {
-        id: Guid.create().toString(),
+        id: uuidv4(),
         itemType: 'coins-25',
         areaId: selectedAreaId,
         x: +x,
@@ -61,7 +61,7 @@ export const utilCreateItem = ({
         h,
       };
 
-      const nextGame = { ...game } as Game;
+      const nextGame = { ...game } as GameROM;
       nextGame.content.areas[selectedAreaId] = {
         ...nextGame?.content.areas[selectedAreaId],
         items: [
@@ -83,12 +83,12 @@ export const utilUpdateItem = ({
   updatedItem,
   selectedAreaId,
 }: {
-  game: Game;
+  game: GameROM;
   updatedItem: GameItem;
   selectedAreaId: string;
-}): Game => {
+}): GameROM => {
   const id = updatedItem.id;
-  const gameObj = { ...game } as Game;
+  const gameObj = { ...game } as GameROM;
   const area = gameObj?.content.areas[selectedAreaId];
 
   if (area) {

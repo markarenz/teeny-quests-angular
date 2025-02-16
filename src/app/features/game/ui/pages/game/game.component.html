@@ -1,7 +1,23 @@
 <app-main-layout [title]="title">
-  <app-container>
-    <div class="mt-8">
-      {{ game.description }}
+  <div class="my-8 min-h-[50vh] flex flex-col gap-8">
+    <app-container>
+      @if(isLoading) {
+      <div class="columns-1 md:columns-2 gap-4">
+        <app-skeleton-text [width]="100" />
+        <app-skeleton-text [width]="100" />
+        <app-skeleton-text [width]="100" />
+        <app-skeleton-text [width]="40" />
+      </div>
+
+      } @else {
+      <div class="columns-1 md:columns-2 gap-4">
+        {{ description }}
+      </div>
+      }
+    </app-container>
+    <div class="game-wrap">
+      <app-game-area />
+      <div class="absolute right-2 top-2">HUD GOES HERE</div>
     </div>
-  </app-container>
+  </div>
 </app-main-layout>

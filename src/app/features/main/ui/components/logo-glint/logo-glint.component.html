@@ -1,0 +1,44 @@
+<div class="glint-wrap glint-wrap-{{ num }}">
+  <svg
+    viewBox="0 0 100 100"
+    version="1.1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:svg="http://www.w3.org/2000/svg"
+    class="glint glint-{{ num }}"
+  >
+    <defs id="logo-glint-defs">
+      <linearGradient id="glint-gradient-1" inkscape:collect="always">
+        <stop
+          style="stop-color: #ffffff; stop-opacity: 0.5"
+          offset="0"
+          id="stop1"
+        />
+        <stop
+          style="stop-color: #f9f9f9; stop-opacity: 0"
+          offset="1"
+          id="stop2"
+        />
+      </linearGradient>
+      <radialGradient
+        inkscape:collect="always"
+        xlink:href="#glint-gradient-1"
+        id="glint-gradient-2"
+        cx="50"
+        cy="50"
+        fx="50"
+        fy="50"
+        r="50"
+        gradientUnits="userSpaceOnUse"
+      />
+    </defs>
+    <circle style="fill: url(#glint-gradient-2)" cx="50" cy="50" r="50" />
+    <path
+      class="glint-outer"
+      d="M 50.000012,99.00002 41.337946,58.662077 1,50.000032 41.337946,41.337946 50.000012,1 58.662058,41.337946 99,50.000032 58.662058,58.662077 Z"
+    />
+    <path
+      class="glint-inner"
+      d="M 25.000011,74.999998 41.161167,50.000001 25,25.00001 50.000004,41.16116 75,25 58.838833,49.99999 74.99998,75 49.999994,58.83883 Z"
+    />
+  </svg>
+</div>

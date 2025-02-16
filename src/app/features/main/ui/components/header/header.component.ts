@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
-import { RouterLinkActive } from '@angular/router';
 import { RouterLink } from '@angular/router';
 import { ContainerComponent } from '@main/ui/components/container/container.component';
 import { MenuToggleComponent } from '@main/ui/components/menu-toggle/menu-toggle.component';
+import { SvgMiniLogoComponent } from '../svg-mini-logo/svg-mini-logo.component';
 import { MainAppService } from '@main/services/main-app-service';
 import { LoginComponent } from '@app/features/auth/ui/components/login/login.component';
 import { Subscription } from 'rxjs';
@@ -15,6 +15,7 @@ import { Subscription } from 'rxjs';
     MenuToggleComponent,
     RouterLink,
     LoginComponent,
+    SvgMiniLogoComponent,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
