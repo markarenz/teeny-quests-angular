@@ -11,7 +11,7 @@ import { AuthGoogleService } from '@app/features/auth/services/auth-google-servi
 import { NewGameModalComponent } from '../../components/new-game-modal/new-game-modal.component';
 import { BreadcrumbsComponent } from '@app/features/main/ui/components/breadcrumbs/breadcrumbs.component';
 import { User } from '@app/features/auth/interfaces/types';
-import { GameEditorServiceService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
+import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 
 @Component({
   selector: 'app-editor-home',
@@ -30,7 +30,7 @@ import { GameEditorServiceService } from '@app/features/editor/services/game-edi
 export class EditorHomeComponent {
   constructor(
     private _authService: AuthGoogleService,
-    private _gameEditorService: GameEditorServiceService,
+    private _gameEditorService: GameEditorService,
     private titleService: Title,
     private metaService: Meta
   ) {}

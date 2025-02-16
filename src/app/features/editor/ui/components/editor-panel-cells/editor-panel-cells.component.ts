@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { GameEditorServiceService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
+import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import { AreaCellSelectorComponent } from '../area-cell-selector/area-cell-selector.component';
 import { CollapsibleCardComponent } from '@app/features/main/ui/components/collapsible-card/collapsible-card.component';
 import { GameAreaMapCell } from '@app/features/main/interfaces/types';
@@ -25,7 +25,7 @@ import { ButtonComponent } from '@app/features/main/ui/components/button/button.
   styleUrl: './editor-panel-cells.component.css',
 })
 export class EditorPanelCellsComponent {
-  constructor(private _gameEditorService: GameEditorServiceService) {}
+  constructor(private _gameEditorService: GameEditorService) {}
   private subscriptions: Subscription[] = [];
   isCellSelectorOpen: boolean = false;
   selectedCellPosition: string = '';

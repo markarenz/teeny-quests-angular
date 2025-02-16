@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import { gamesApiUrl } from '@config/index';
 import { User } from '@app/features/auth/interfaces/types';
@@ -13,7 +13,6 @@ import {
   GameContent,
 } from '@app/features/main/interfaces/types';
 import { defaultGridSize } from '@config/index';
-import { floorDefinitions } from '@content/floor-definitions';
 import {
   utilDeleteItem,
   utilCreateItem,
@@ -28,7 +27,7 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class GameEditorServiceService {
+export class GameEditorService {
   private isLoading = new BehaviorSubject<boolean>(false);
   isLoadingObs = this.isLoading.asObservable();
 

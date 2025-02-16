@@ -17,6 +17,12 @@
   .maze {
     fill: var(--color-primary-dark);
   }
+  .wall1 {
+    fill: none;
+  }
+  .wall2 {
+    fill: none;
+  }
 }
 
 @keyframes letter-pulse {
@@ -33,7 +39,7 @@
 
 .theme-light {
   .bg {
-    fill: none;
+    fill: #444;
   }
 
   .letter {
@@ -42,5 +48,11 @@
 
   .maze {
     fill: var(--color-gray-500);
+  }
+  .wall1 {
+    fill: var(--color-gray-800);
+  }
+  .wall2 {
+    fill: var(--color-gray-900);
   }
 }

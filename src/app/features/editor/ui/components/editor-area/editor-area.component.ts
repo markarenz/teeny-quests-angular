@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { GameEditorServiceService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
+import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import { AreaCellComponent } from '@app/features/game/ui/components/area-cell/area-cell.component';
 import {
   GameROM,
@@ -26,7 +26,7 @@ import { EditorPlayerPositionComponent } from '../editor-player-position/editor-
   styleUrl: './editor-area.component.css',
 })
 export class EditorAreaComponent {
-  constructor(private _gameEditorService: GameEditorServiceService) {}
+  constructor(private _gameEditorService: GameEditorService) {}
   private subscriptions: Subscription[] = [];
 
   game: GameROM | null = null;

@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { GameEditorServiceService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
+import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import { FormsModule } from '@angular/forms';
 import { GameROM } from '@app/features/main/interfaces/types';
 import { AreaCellSelectorComponent } from '../area-cell-selector/area-cell-selector.component';
@@ -22,7 +22,7 @@ import { EditorInventoryComponent } from '../editor-inventory/editor-inventory.c
   styleUrl: './editor-panel-info.component.css',
 })
 export class EditorPanelInfoComponent {
-  constructor(private _gameEditorService: GameEditorServiceService) {}
+  constructor(private _gameEditorService: GameEditorService) {}
   private subscriptions: Subscription[] = [];
 
   inputTitle: string = '';

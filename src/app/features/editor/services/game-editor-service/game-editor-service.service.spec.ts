@@ -3,7 +3,7 @@ import { gamesApiUrl } from '@config/index';
 import gameMockData from '@app/features/editor/mocks/game.mock.json';
 import fetchMock from 'fetch-mock';
 
-import { GameEditorServiceService } from './game-editor-service.service';
+import { GameEditorService } from './game-editor-service.service';
 
 let gameMock = { ...gameMockData };
 
@@ -15,12 +15,12 @@ afterEach(() => {
   TestBed.resetTestingModule();
 });
 
-describe('GameEditorServiceService', () => {
-  let service: GameEditorServiceService;
+describe('GameEditorService', () => {
+  let service: GameEditorService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(GameEditorServiceService);
+    service = TestBed.inject(GameEditorService);
   });
 
   it('should be created', () => {
@@ -29,10 +29,10 @@ describe('GameEditorServiceService', () => {
 });
 
 describe('getGameById', () => {
-  let service: GameEditorServiceService;
+  let service: GameEditorService;
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(GameEditorServiceService);
+    service = TestBed.inject(GameEditorService);
   });
 
   it('should get game by id', () => {
@@ -61,10 +61,10 @@ describe('getGameById', () => {
 });
 
 describe('getGamesByUserId', () => {
-  let service: GameEditorServiceService;
+  let service: GameEditorService;
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(GameEditorServiceService);
+    service = TestBed.inject(GameEditorService);
   });
 
   it('should get game by id', fakeAsync(() => {
@@ -95,11 +95,11 @@ describe('getGamesByUserId', () => {
 });
 
 describe('toggleMenu', () => {
-  let service: GameEditorServiceService;
+  let service: GameEditorService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(GameEditorServiceService);
+    service = TestBed.inject(GameEditorService);
   });
 
   it('should toggle menu', () => {
@@ -114,10 +114,10 @@ describe('toggleMenu', () => {
 });
 
 describe('setCellData', () => {
-  let service: GameEditorServiceService;
+  let service: GameEditorService;
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(GameEditorServiceService);
+    service = TestBed.inject(GameEditorService);
     service.setTestValue(gameMock, 'game');
     service.setTestValue('start', 'selectedAreaId');
   });
@@ -146,10 +146,10 @@ describe('setCellData', () => {
 });
 
 describe('setSelectedAreaId', () => {
-  let service: GameEditorServiceService;
+  let service: GameEditorService;
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(GameEditorServiceService);
+    service = TestBed.inject(GameEditorService);
     service.setTestValue(gameMock, 'game');
   });
 
@@ -168,10 +168,10 @@ describe('setSelectedAreaId', () => {
 });
 
 describe('setSelectedCellPosition', () => {
-  let service: GameEditorServiceService;
+  let service: GameEditorService;
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(GameEditorServiceService);
+    service = TestBed.inject(GameEditorService);
     service.setTestValue(gameMock, 'game');
   });
 
@@ -189,10 +189,10 @@ describe('setSelectedCellPosition', () => {
 });
 
 describe('processGameData', () => {
-  let service: GameEditorServiceService;
+  let service: GameEditorService;
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(GameEditorServiceService);
+    service = TestBed.inject(GameEditorService);
   });
 
   it('should process game data', () => {
@@ -206,10 +206,10 @@ describe('processGameData', () => {
 });
 
 describe('getAreasListOptions', () => {
-  let service: GameEditorServiceService;
+  let service: GameEditorService;
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(GameEditorServiceService);
+    service = TestBed.inject(GameEditorService);
     service.setTestValue(gameMock, 'game');
   });
 
@@ -221,10 +221,10 @@ describe('getAreasListOptions', () => {
 });
 
 describe('getDefaultMap', () => {
-  let service: GameEditorServiceService;
+  let service: GameEditorService;
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(GameEditorServiceService);
+    service = TestBed.inject(GameEditorService);
   });
 
   it('should get default map', () => {
@@ -241,10 +241,10 @@ describe('getDefaultMap', () => {
 });
 
 describe('createArea', () => {
-  let service: GameEditorServiceService;
+  let service: GameEditorService;
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(GameEditorServiceService);
+    service = TestBed.inject(GameEditorService);
     service.setTestValue(gameMock, 'game');
   });
 
@@ -267,7 +267,7 @@ describe('createArea', () => {
 
 describe('renameCurrentSelectedArea', () => {
   it('should rename current selected area', () => {
-    const service = new GameEditorServiceService();
+    const service = new GameEditorService();
     service.setTestValue(gameMock, 'game');
     service.setTestValue('start', 'selectedAreaId');
 
@@ -282,7 +282,7 @@ describe('renameCurrentSelectedArea', () => {
 
 describe('deleteCurrentSelectedArea', () => {
   it('should delete current selected area', () => {
-    const service = new GameEditorServiceService();
+    const service = new GameEditorService();
     service.setTestValue(gameMock, 'game');
     service.setTestValue('start', 'selectedAreaId');
 
@@ -296,10 +296,10 @@ describe('deleteCurrentSelectedArea', () => {
 });
 
 describe('resetTexturesForCurrentArea', () => {
-  let service: GameEditorServiceService;
+  let service: GameEditorService;
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(GameEditorServiceService);
+    service = TestBed.inject(GameEditorService);
     service.setTestValue(gameMock, 'game');
     service.setTestValue('start', 'selectedAreaId');
   });
@@ -321,10 +321,10 @@ describe('resetTexturesForCurrentArea', () => {
 });
 
 describe('createGame', () => {
-  let service: GameEditorServiceService;
+  let service: GameEditorService;
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(GameEditorServiceService);
+    service = TestBed.inject(GameEditorService);
   });
 
   it('should create game', fakeAsync(() => {
@@ -359,10 +359,10 @@ describe('createGame', () => {
 });
 
 describe('updateStarterInventory', () => {
-  let service: GameEditorServiceService;
+  let service: GameEditorService;
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(GameEditorServiceService);
+    service = TestBed.inject(GameEditorService);
     service.setTestValue(gameMock, 'game');
   });
 
@@ -384,15 +384,15 @@ describe('updateStarterInventory', () => {
 });
 
 describe('updateGame', () => {
-  let service: GameEditorServiceService;
+  let service: GameEditorService;
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(GameEditorServiceService);
+    service = TestBed.inject(GameEditorService);
     service.setTestValue(gameMock, 'game');
   });
 
   it('should update game', fakeAsync(() => {
-    const service = new GameEditorServiceService();
+    const service = new GameEditorService();
 
     let i = 0;
     service.gameObs.subscribe((game) => {

@@ -89,7 +89,6 @@ export type GameContent = {
     areaId: string;
     x: number;
     y: number;
-    areaId: string;
     inventory: Inventory;
   };
 };
@@ -112,17 +111,24 @@ export type StatusEffect = {
 
 export type GameState = {
   gameId: string;
-  playerState: {
-    area: string;
+  player: {
+    areaId: string;
     x: number;
     y: number;
-    numTurns: number;
+    inventory: Inventory;
     facing: string;
     health: number;
     statusEffects: StatusEffect[];
   };
+  numTurns: number;
   flagValues: GameStateValues;
-  inventory: Inventory;
+  areas: {
+    [key: string]: {
+      items: GameItem[];
+      exits: GameAreaExit[];
+      // FUTURE: NPCs, etc
+    };
+  };
+  firstSaveDate: string;
   lastUpdateDate: string;
-  lastSaveDate: string;
 };

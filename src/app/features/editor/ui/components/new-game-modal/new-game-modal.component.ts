@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { ModalBgComponent } from '@main/ui/components/modal-bg/modal-bg.component';
 import { ButtonComponent } from '@app/features/main/ui/components/button/button.component';
 import { LoaderAnimationComponent } from '@app/features/main/ui/components/loader-animation/loader-animation.component';
-import { GameEditorServiceService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
+import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import { gamesApiUrl } from '@config/index';
 import { AuthGoogleService } from '@app/features/auth/services/auth-google-service';
 import { User } from '@app/features/auth/interfaces/types';
@@ -28,7 +28,7 @@ export class NewGameModalComponent {
 
   constructor(
     private _authService: AuthGoogleService,
-    private _gameEditorService: GameEditorServiceService,
+    private _gameEditorService: GameEditorService,
     private router: Router
   ) {
     this.subscription = Subscription.EMPTY;

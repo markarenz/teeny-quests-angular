@@ -1,7 +1,7 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { GameEditorServiceService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
+import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import { ButtonComponent } from '@app/features/main/ui/components/button/button.component';
 import { ButtonCloseComponent } from '@app/features/main/ui/components/button-close/button-close.component';
 import { GameAreaMapCell } from '@app/features/main/interfaces/types';
@@ -17,7 +17,7 @@ import { getAreaElementPositionStyle } from '@app/features/game/lib/utils';
 })
 export class AreaCellModalComponent {
   @Output() clearCellSelection = new EventEmitter<string>();
-  constructor(private _gameEditorService: GameEditorServiceService) {}
+  constructor(private _gameEditorService: GameEditorService) {}
   private subscriptions: Subscription[] = [];
   selectedCellPosition: string = '';
   selectedCell: GameAreaMapCell | null = null;

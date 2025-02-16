@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { GameEditorServiceService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
+import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import { GameROM, GameArea } from '@app/features/main/interfaces/types';
 import { Subscription } from 'rxjs';
 import { defaultGridSize } from '@config/index';
@@ -17,7 +17,7 @@ import { SvgPlayerComponent } from '@app/features/game/ui/svg-player/svg-player.
   styleUrl: './editor-player-position.component.css',
 })
 export class EditorPlayerPositionComponent {
-  constructor(private _gameEditorService: GameEditorServiceService) {}
+  constructor(private _gameEditorService: GameEditorService) {}
   private subscriptions: Subscription[] = [];
 
   selectedAreaId: string = '';

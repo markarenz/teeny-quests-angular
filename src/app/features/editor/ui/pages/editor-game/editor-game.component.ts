@@ -15,7 +15,7 @@ import { EditorAreaComponent } from '../../components/editor-area/editor-area.co
 import { EditorAreaSelectorComponent } from '../../components/editor-area-selector/editor-area-selector.component';
 import { ButtonComponent } from '@app/features/main/ui/components/button/button.component';
 import { BreadcrumbsComponent } from '@app/features/main/ui/components/breadcrumbs/breadcrumbs.component';
-import { GameEditorServiceService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
+import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 
 @Component({
   selector: 'app-editor-game',
@@ -40,7 +40,7 @@ import { GameEditorServiceService } from '@app/features/editor/services/game-edi
 export class EditorGameComponent {
   constructor(
     private _route: ActivatedRoute,
-    private _gameEditorService: GameEditorServiceService
+    private _gameEditorService: GameEditorService
   ) {}
   private subscriptions: Subscription[] = [];
 
