@@ -36,6 +36,9 @@
   }
 }
 
+.glint-wrap {
+  mix-blend-mode: color-dodge;
+}
 .glint-1 {
   position: absolute;
   left: 25%;

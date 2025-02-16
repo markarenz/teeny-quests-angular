@@ -2,8 +2,72 @@
   class="bg-gray-700 py-6 text-gray-300 shadow-[0px_-2px_16px_4px_rgba(0,0,0,0.3)]"
 >
   <app-container>
-    <div class="text-center">
-      &copy; {{ copyrightYear }} All Rights Reserved
+    <div class="w-full grid grid-cols-1 lg:grid-cols-[3fr_1fr] gap-8">
+      <div
+        class="flex flex-col gap-4 lg:border-r-2 border-gray-400 lg:pr-8 border-dashed text-center lg:text-left"
+      >
+        <div>
+          <h2>Teeny Quests for Busy Adventurers</h2>
+          <p>
+            If you're up for a bit of exploration and mystery but don't want to
+            sink hours into a traditional adventure game, Teeny Quests has you
+            covered. This is the place to play all sorts of bite-sized quests
+            and even make your own.
+          </p>
+          <p>
+            You can find more web projects like this on
+            <b>
+              <a
+                class="text-link"
+                href="https://ridiculopathy.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                >ridiculopathy.com</a
+              ></b
+            >
+            and/or peruse thefull source code on
+            <b>
+              <a
+                class="text-link"
+                href="https://github.com/markarenz/teeny-quests-angular"
+                target="_blank"
+                rel="noopener noreferrer"
+                >GitHub.</a
+              >
+            </b>
+          </p>
+        </div>
+        <div class="flex flex-row justify-center lg:justify-end gap-8">
+          <a
+            class="icon-link"
+            href="https://github.com/markarenz/teeny-quests-angular"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="GitHub Repository"
+          >
+            <div class="w-12 h-12">
+              <app-svg-github />
+            </div>
+          </a>
+
+          <a
+            class="icon-link"
+            href="https://ridiculopathy.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="More Games"
+          >
+            <div class="w-12 h-12">
+              <app-svg-joystick />
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="w-full h-full">
+        <div class="w-full h-full max-w-lg mx-auto">
+          <app-svg-mini-logo theme="light" />
+        </div>
+      </div>
     </div>
   </app-container>
 </footer>

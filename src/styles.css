@@ -62,6 +62,13 @@ h3 {
     text-decoration-line: underline;
   }
 }
+.icon-link {
+  transition: transform 0.2s ease-in-out;
+  transform: scale(1);
+  &:hover {
+    transform: scale(1.2);
+  }
+}
 
 label {
   font-weight: 700;
@@ -94,6 +101,14 @@ select {
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
+}
+
+.text-1-line-max {
+  display: -webkit-box;
+  max-width: 100%;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .text-2-line-max {

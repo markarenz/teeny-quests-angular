@@ -1,10 +1,15 @@
 <app-main-layout [title]="title">
+  <div
+    class="bg-gray-900 relative border-b-2 border-gray-400 shadow-[0px_6px_16px_4px_rgba(0,0,0,0.3)]"
+  >
+    <div aria-hidden="true" class="home-logo-bg bg-maze-gradient"></div>
+    <div aria-hidden="true" class="home-logo-bg bg-maze"></div>
+    <div class="max-w-3xl mx-auto py-3 lg:py-6 px-1">
+      <app-logo-main />
+    </div>
+  </div>
   <app-container>
-    <div class="mt-8 pb-8">
-      <div class="max-w-3xl mx-auto">
-        <app-logo-main />
-      </div>
-
+    <div class="pb-8">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
         @if (games.length > 0) { @for (game of games; track game.id) {
         <a routerLink="/game/{{ game.id }}" class="group rounded-md">

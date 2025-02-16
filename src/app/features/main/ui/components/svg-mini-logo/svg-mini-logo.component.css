@@ -1,0 +1,46 @@
+.theme-color {
+  .bg {
+    fill: var(--color-gray-800);
+  }
+
+  .letter {
+    fill: var(--color-primary-dark);
+    animation: letter-pulse 6s infinite;
+    &.letter-t {
+      animation-delay: 0s;
+    }
+    &.letter-q {
+      animation-delay: 1.5s;
+    }
+  }
+
+  .maze {
+    fill: var(--color-primary-dark);
+  }
+}
+
+@keyframes letter-pulse {
+  0% {
+    fill: var(--color-primary-dark);
+  }
+  50% {
+    fill: var(--color-primary);
+  }
+  100% {
+    fill: var(--color-primary-dark);
+  }
+}
+
+.theme-light {
+  .bg {
+    fill: none;
+  }
+
+  .letter {
+    fill: var(--color-gray-400);
+  }
+
+  .maze {
+    fill: var(--color-gray-500);
+  }
+}
