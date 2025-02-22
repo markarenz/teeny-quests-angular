@@ -1,15 +1,6 @@
 import { GameROM } from '@app/features/main/interfaces/types';
-import { defaultGridSize } from '@config/index';
 import { floorDefinitions } from '@content/floor-definitions';
-
-export const getPositionKeysForGridSize = (): string[] => {
-  const numCells = defaultGridSize * defaultGridSize;
-  return Array.from({ length: numCells }, (_, i) => {
-    const x = i % defaultGridSize;
-    const y = Math.floor(i / defaultGridSize);
-    return `${y}_${x}`;
-  });
-};
+import { getPositionKeysForGridSize } from '@main/utils';
 
 export const findAnOpenCell = ({
   game,

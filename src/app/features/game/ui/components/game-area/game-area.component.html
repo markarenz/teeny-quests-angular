@@ -1,1 +1,49 @@
-<div id="game-area" class="game-area">GAME AREA</div>
+<div class="game-area-stage">
+  <svg
+    viewBox="0 0 100 50"
+    version="1.1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:svg="http://www.w3.org/2000/svg"
+    class="stage-base"
+  >
+    <g id="outer-ring">
+      <path class="outline" d="M 50.000003,0 100,25 50.000003,50 0,25 Z" />
+      <path class="inner" d="M 50.000003,0.5 99,25 50.000003,49.5 1,25 Z" />
+    </g>
+  </svg>
+
+  @if(areaMap) {
+  <div>
+    @for(positionKey of areaDataPositionKeys; track positionKey;) {
+    <!-- @if(area?.map[positionKey]) -->
+    <app-area-cell
+      [positionKey]="positionKey"
+      [cellData]="areaMap[positionKey]"
+    />
+    }
+
+    <!-- Area Items -->
+    @for(item of areaItems; track item.id;) {
+    <app-area-item [item]="item" />
+    }
+
+    <app-game-player
+      [playerPosition]="playerPosition"
+      [cellData]="areaMap[playerPosition]"
+    />
+
+    <!-- Area Exits -->
+    @for(exit of areaExits; track exit.id;) {
+    <app-area-exit [exit]="exit" />
+    }
+
+    <!-- Movement Option Buttons -->
+    @for(moveOption of movementOptionsKeys; track moveOption;) {
+    <app-game-movement-option-button
+      [positionKey]="moveOption"
+      [h]="areaMap[moveOption].h"
+    />
+    }
+  </div>
+  }
+</div>

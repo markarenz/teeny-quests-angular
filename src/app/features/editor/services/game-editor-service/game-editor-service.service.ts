@@ -12,7 +12,6 @@ import {
   SelectIUIOption,
   GameContent,
 } from '@app/features/main/interfaces/types';
-import { defaultGridSize } from '@config/index';
 import {
   utilDeleteItem,
   utilCreateItem,
@@ -23,6 +22,7 @@ import {
   utilDeleteExit,
   utilUpdateExit,
 } from './utils/exits-utils';
+import { getPositionKeysForGridSize } from '@main/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -385,19 +385,10 @@ export class GameEditorService {
     }
   }
 
-  getPositionKeysForGridSize(): string[] {
-    const numCells = defaultGridSize * defaultGridSize;
-    return Array.from({ length: numCells }, (_, i) => {
-      const x = i % defaultGridSize;
-      const y = Math.floor(i / defaultGridSize);
-      return `${y}_${x}`;
-    });
-  }
-
   getDefaultMap(): { [key: string]: GameAreaMapCell } {
     const newMap: { [key: string]: GameAreaMapCell } = {};
 
-    const positionKeys = this.getPositionKeysForGridSize();
+    const positionKeys = getPositionKeysForGridSize();
 
     positionKeys.forEach((key) => {
       const [y, x] = key.split('_');

@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
+import { getPositionKeysForGridSize } from '@main/utils';
 
 @Component({
   selector: 'app-area-cell-selector',
@@ -19,8 +20,7 @@ export class AreaCellSelectorComponent {
   areaDataPositionKeys: string[] = [];
 
   ngOnInit(): void {
-    this.areaDataPositionKeys =
-      this._gameEditorService.getPositionKeysForGridSize();
+    this.areaDataPositionKeys = getPositionKeysForGridSize();
   }
 
   handleCellButtonClick(position: string) {
