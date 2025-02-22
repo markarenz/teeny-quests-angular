@@ -1,5 +1,5 @@
 import { utilCreateItem, utilUpdateItem, utilDeleteItem } from './items-utils';
-import { getPositionKeysForGridSize } from './common-utils';
+import { getPositionKeysForGridSize } from '@main/utils';
 import gameMockData from '@app/features/editor/mocks/game.mock.json';
 import { GameItem } from '@app/features/main/interfaces/types';
 

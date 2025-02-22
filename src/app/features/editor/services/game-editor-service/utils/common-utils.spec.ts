@@ -1,12 +1,6 @@
-import { findAnOpenCell, getPositionKeysForGridSize } from './common-utils';
+import { findAnOpenCell } from './common-utils';
 import gameMockData from '@app/features/editor/mocks/game.mock.json';
-
-describe('getPositionKeysForGridSize', () => {
-  it('returns position keys based on grid size', () => {
-    const keys = getPositionKeysForGridSize();
-    expect(keys.length).toEqual(49);
-  });
-});
+import { getPositionKeysForGridSize } from '@main/utils';
 
 describe('findAnOpenCell', () => {
   it('return an open map cell position', () => {

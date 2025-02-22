@@ -20,6 +20,7 @@ export class AreaCellComponent {
   @Input('selectedAreaCellPosition') selectedAreaCellPosition?: string = '';
   @Input('cellData') cellData: GameAreaMapCell | null = null;
 
+  showCellPositions: boolean = false;
   gridSize: number = defaultGridSize;
 
   cell: any = {};

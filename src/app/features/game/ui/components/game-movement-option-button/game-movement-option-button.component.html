@@ -1,0 +1,39 @@
+<div
+  id="movement-option-button-{{ y }}-{{ x }}"
+  class="movement-option-button"
+  [style.bottom]="position.bottom"
+  [style.left]="position.left"
+  [style.width]="width"
+  [style.height]="height"
+  [style.z-index]="z"
+>
+  <svg
+    id="movement-option-button-{{ y }}-{{ x }}--svg"
+    viewBox="0 0 100 50"
+    version="1.1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:svg="http://www.w3.org/2000/svg"
+    style="position: absolute; top: 0; left: 0; width: 100%"
+    [attr.aria-label]="title"
+  >
+    <g class="group">
+      <polygon
+        role="button"
+        fill="none"
+        points="50,0 100,25 50,50 0,25"
+        (click)="handleMovementButtonClick()"
+        tabindex="0"
+      />
+      <ellipse
+        cx="50"
+        cy="25"
+        rx="16"
+        ry="8"
+        fill="rgba(255,255,255,0.25)"
+        stroke="var(--color-primary-dark)"
+        stroke-width="1"
+        class="transition-all duration-[0.25s] opacity-75 group-hover:opacity-100 group-hover:fill-[rgba(255,255,255,1)] group-active:fill-[var(--color-primary)]"
+      />
+    </g>
+  </svg>
+</div>

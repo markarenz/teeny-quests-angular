@@ -10,10 +10,9 @@ import {
 } from '@app/features/main/interfaces/types';
 import { AreaCellSelectorComponent } from '../area-cell-selector/area-cell-selector.component';
 import { CollapsibleCardComponent } from '@app/features/main/ui/components/collapsible-card/collapsible-card.component';
-import { ButtonComponent } from '@app/features/main/ui/components/button/button.component';
 import { exitDefinitions, exitDirections } from '@content/exit-definitions';
 import { IconButtonComponent } from '@app/features/main/ui/components/icon-button/icon-button.component';
-import { getPositionKeysForGridSize } from '@app/features/editor/services/game-editor-service/utils/common-utils';
+import { getPositionKeysForGridSize } from '@main/utils';
 import { floorDefinitions } from '@content/floor-definitions';
 
 @Component({
@@ -21,7 +20,6 @@ import { floorDefinitions } from '@content/floor-definitions';
   standalone: true,
   imports: [
     FormsModule,
-    ButtonComponent,
     CollapsibleCardComponent,
     AreaCellSelectorComponent,
     IconButtonComponent,

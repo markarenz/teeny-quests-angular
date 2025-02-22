@@ -51,10 +51,14 @@ export type GameAreaExit = {
   status?: string; // locked
 };
 
+export type GameAreaMap = {
+  [key: string]: GameAreaMapCell;
+};
+
 export type GameArea = {
   id: string;
   name: string;
-  map: { [key: string]: GameAreaMapCell };
+  map: GameAreaMap;
   exits: GameAreaExit[];
   items: GameItem[];
 };
@@ -131,4 +135,16 @@ export type GameState = {
   };
   firstSaveDate: string;
   lastUpdateDate: string;
+};
+
+export type MovementOptions = {
+  [key: string]: string[];
+};
+
+export type PathfindingGridCell = {
+  positionKey: string;
+  f: number; // total cost
+  g: number; // cost from start to current
+  h: number; // heuristic estimation of cost to end
+  parent: PathfindingGridCell | null; // parent of the current grid point
 };

@@ -3,6 +3,7 @@ import {
   getRandomInt,
   getRandomUsername,
   getInitialsFromName,
+  getPositionKeysForGridSize,
 } from './index';
 
 describe('capitalizeWords', () => {
@@ -32,5 +33,12 @@ describe('getRandomUsername', () => {
 describe('getInitialsFromName', () => {
   it('should return the initials of a name', () => {
     expect(getInitialsFromName('John Doe')).toBe('JD');
+  });
+});
+
+describe('getPositionKeysForGridSize', () => {
+  it('returns position keys based on grid size', () => {
+    const keys = getPositionKeysForGridSize();
+    expect(keys.length).toEqual(49);
   });
 });

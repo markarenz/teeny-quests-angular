@@ -1,5 +1,5 @@
 import { utilCreateExit, utilDeleteExit, utilUpdateExit } from './exits-utils';
-import { getPositionKeysForGridSize } from './common-utils';
+import { getPositionKeysForGridSize } from '@main/utils';
 import gameMockData from '@app/features/editor/mocks/game.mock.json';
 
 describe('utilCreateExit', () => {

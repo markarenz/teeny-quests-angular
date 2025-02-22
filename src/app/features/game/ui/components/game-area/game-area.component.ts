@@ -1,31 +1,66 @@
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { GameService } from '@app/features/game/services/game-service/game-service.service';
-import { GameArea, GameROM } from '@app/features/main/interfaces/types';
+import {
+  GameArea,
+  GameAreaExit,
+  GameAreaMap,
+  GameItem,
+  GameState,
+} from '@app/features/main/interfaces/types';
+import { AreaCellComponent } from '@app/features/game/ui/components/area-cell/area-cell.component';
+import { AreaExitComponent } from '@app/features/game/ui/components/area-exit/area-exit.component';
+import { AreaItemComponent } from '@app/features/game/ui/components/area-item/area-item.component';
+import { GamePlayerComponent } from '../game-player/game-player.component';
+import { GameMovementOptionButtonComponent } from '../game-movement-option-button/game-movement-option-button.component';
 
 @Component({
   selector: 'app-game-area',
   standalone: true,
-  imports: [],
+  imports: [
+    AreaCellComponent,
+    AreaExitComponent,
+    AreaItemComponent,
+    GameMovementOptionButtonComponent,
+    GamePlayerComponent,
+  ],
   templateUrl: './game-area.component.html',
   styleUrl: './game-area.component.css',
 })
 export class GameAreaComponent {
-  area: GameArea | null = null;
-  // subscribe to currentArea
-
   private subscriptions: Subscription[] = [];
   constructor(private _gameService: GameService) {}
 
+  areaId: string | null = null;
+  areaMap: GameAreaMap | null = null;
+  areaExits: GameAreaExit[] = [];
+  areaItems: GameItem[] = [];
+  movementOptions: { [key: string]: string[] } = {};
+  movementOptionsKeys: string[] = [];
+  areaDataPositionKeys: string[] = [];
+  playerPosition: string = '0_0';
+
   ngOnInit(): void {
     this.subscriptions.push(
-      this._gameService.gameROMObs.subscribe((data: GameROM | null) => {
+      this._gameService.movementOptionsObs.subscribe((data) => {
+        this.movementOptions = data;
+        this.movementOptionsKeys = Object.keys(data);
+      })
+    );
+    this.subscriptions.push(
+      this._gameService.gameStateObs.subscribe((data: GameState | null) => {
         if (data) {
-          // this.title = data.title;
-          // this.description = data.description;
-          // this.isLoading = false;
-          // GameROM, areas contain the items
-          // Do we need to abstract the items into the gameState?
+          if (data.player.areaId !== this.areaId) {
+            const areaId = data.player.areaId;
+            const area = this._gameService.getArea(areaId);
+            this.areaMap = area?.map || null;
+            this.areaExits = area?.exits || [];
+            this.areaItems = area?.items || [];
+            this.areaDataPositionKeys = this.areaMap
+              ? Object.keys(this.areaMap)
+              : [];
+          }
+          this.playerPosition = `${data.player.y}_${data.player.x}`;
         }
       })
     );

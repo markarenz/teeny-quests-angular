@@ -1,4 +1,5 @@
 import nameWordlist from '@content/nameWordList.json';
+import { defaultGridSize } from '@config/index';
 
 export const capitalizeWords = (str?: string): string =>
   !str
@@ -22,3 +23,12 @@ export const getRandomUsername = (): string => {
 
 export const getInitialsFromName = (name: string): string =>
   name.split(' ').reduce((acc, n) => acc + n[0].toUpperCase(), '');
+
+export const getPositionKeysForGridSize = (): string[] => {
+  const numCells = defaultGridSize * defaultGridSize;
+  return Array.from({ length: numCells }, (_, i) => {
+    const x = i % defaultGridSize;
+    const y = Math.floor(i / defaultGridSize);
+    return `${y}_${x}`;
+  });
+};

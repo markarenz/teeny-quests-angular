@@ -4,8 +4,10 @@ import {
   GameArea,
   GameROM,
   GameState,
+  MovementOptions,
 } from '@app/features/main/interfaces/types';
 import { gamesApiUrl } from '@config/index';
+import { getMoveOptions } from './utils/pathfinding';
 
 @Injectable({
   providedIn: 'root',
@@ -17,16 +19,19 @@ export class GameService {
   private gameState = new BehaviorSubject<GameState | null>(null);
   gameStateObs = this.gameState.asObservable();
 
-  private movementOptions = new BehaviorSubject<string[]>([]);
+  private movementOptions = new BehaviorSubject<MovementOptions>({});
   movementOptionsObs = this.movementOptions.asObservable();
 
   calculateMovementOptions(
     nextGameROM: GameROM,
     nextGameState: GameState
   ): void {
-    // nextGameROM: GameROM or use this.gameROM.value
-    // Pathfinding...
-    this.movementOptions.next([]);
+    const nextMovementOptions = getMoveOptions({
+      positionKeyStart: `${nextGameState.player.y}_${nextGameState.player.x}`,
+      areaMap: nextGameROM.content.areas[nextGameState.player.areaId].map,
+      areaItems: nextGameROM.content.areas[nextGameState.player.areaId].items,
+    });
+    this.movementOptions.next(nextMovementOptions);
   }
 
   saveLocalGameState(nextGameState: GameState): void {
@@ -109,6 +114,13 @@ export class GameService {
     }
   }
 
+  getArea(areaId: string): GameArea | null {
+    if (this.gameROM.value && this.gameROM.value.content.areas[areaId]) {
+      return this.gameROM.value.content.areas[areaId];
+    }
+
+    return null;
+  }
   processTurn(verb: string, noun: string, amount: number): void {
     if (this.gameROM.value && this.gameState.value) {
       const nextGameState = this.gameState.value;

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
-import { AreaCellComponent } from '@app/features/game/ui/components/area-cell/area-cell.component';
 import {
   GameROM,
   GameArea,
@@ -9,6 +8,7 @@ import {
   GameAreaMapCell,
   GameItem,
 } from '@app/features/main/interfaces/types';
+import { AreaCellComponent } from '@app/features/game/ui/components/area-cell/area-cell.component';
 import { AreaExitComponent } from '@app/features/game/ui/components/area-exit/area-exit.component';
 import { AreaItemComponent } from '@app/features/game/ui/components/area-item/area-item.component';
 import { EditorPlayerPositionComponent } from '../editor-player-position/editor-player-position.component';
