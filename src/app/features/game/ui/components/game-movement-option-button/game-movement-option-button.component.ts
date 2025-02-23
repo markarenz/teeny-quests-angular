@@ -1,7 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { defaultGridSize } from '@config/index';
-import { AreaPosition } from '@app/features/game/lib/utils';
-import { getAreaElementPositionStyle } from '@app/features/game/lib/utils';
+import { AreaPosition } from '@game/lib/utils';
+import { getAreaElementPositionStyle } from '@game/lib/utils';
+import { GameService } from '@game/services/game-service/game-service.service';
+import { getHeuristicDistance } from '@game/services/game-service/utils/pathfinding';
 
 @Component({
   selector: 'app-game-movement-option-button',
@@ -13,17 +15,28 @@ import { getAreaElementPositionStyle } from '@app/features/game/lib/utils';
 export class GameMovementOptionButtonComponent {
   @Input('positionKey') positionKey: string = '0_0';
   @Input('h') h: number = 1;
+  @Input('isLockedOut') isLockedOut: boolean = false;
+  @Input('playerPosition') playerPosition: string = '0_0';
+  @Output() HandleMovementClick = new EventEmitter<string>();
 
   x: number = 0;
   y: number = 0;
   z: number = 0;
+  transformDelay: string = '0s';
   title: string = '';
   gridSize: number = defaultGridSize;
   position: AreaPosition = { left: '0', bottom: '0', z: 0 };
   height: string = '0%';
   width: string = '0%';
 
+  constructor(private _gameService: GameService) {}
+
   ngOnInit() {
+    const distance = getHeuristicDistance(
+      this.positionKey,
+      this.playerPosition
+    );
+    this.transformDelay = `${distance * 0.05}s`;
     this.updateCellProps();
   }
 
@@ -45,6 +58,6 @@ export class GameMovementOptionButtonComponent {
   // -- verb: move
   // -- noun: positionKey
   handleMovementButtonClick() {
-    console.log('Move to positionKey:', this.positionKey);
+    this._gameService.processTurn({ verb: 'move', noun: this.positionKey });
   }
 }

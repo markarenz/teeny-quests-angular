@@ -1,10 +1,13 @@
 <div
   [style.width]="width"
   [style.height]="width"
-  [style.z-index]="positionStyle.z"
+  [style.z-index]="positionStyle.z + 100"
   class="player-position"
   [style.bottom]="positionStyle.bottom"
   [style.left]="positionStyle.left"
 >
   <app-svg-player />
+  <div class="absolute top-8 left-0 w-full flex justify-center text-wite-100">
+    <div>{{ playerFacing }}</div>
+  </div>
 </div>

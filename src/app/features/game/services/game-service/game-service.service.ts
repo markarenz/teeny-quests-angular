@@ -8,6 +8,7 @@ import {
 } from '@app/features/main/interfaces/types';
 import { gamesApiUrl } from '@config/index';
 import { getMoveOptions } from './utils/pathfinding';
+import { STANDARD_MOVE_DURATION } from '@config/index';
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +22,9 @@ export class GameService {
 
   private movementOptions = new BehaviorSubject<MovementOptions>({});
   movementOptionsObs = this.movementOptions.asObservable();
+
+  private isLockedOut = new BehaviorSubject<boolean>(false);
+  isLockedOutObs = this.isLockedOut.asObservable();
 
   calculateMovementOptions(
     nextGameROM: GameROM,
@@ -121,18 +125,70 @@ export class GameService {
 
     return null;
   }
-  processTurn(verb: string, noun: string, amount: number): void {
+
+  delay(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  turnActionMovePlayer = async (
+    destinationPositionKey: string
+  ): Promise<GameState> => {
+    const path = this.movementOptions.value[destinationPositionKey];
+    let nextGameState = JSON.parse(JSON.stringify(this.gameState.value));
+    if (!path || path.length < 2) {
+      return this.gameState.value as GameState;
+    }
+
+    this.isLockedOut.next(true);
+    for (let i = 1; i < path.length; i++) {
+      const [y, x] = path[i].split('_');
+      const dx = +x - nextGameState.player.x;
+      const dy = +y - nextGameState.player.y;
+      nextGameState.player.x = +x;
+      nextGameState.player.y = +y;
+      if (dx > 0) {
+        nextGameState.player.facing = 'E';
+      } else if (dx < 0) {
+        nextGameState.player.facing = 'W';
+      } else if (dy > 0) {
+        nextGameState.player.facing = 'S';
+      } else if (dy < 0) {
+        nextGameState.player.facing = 'N';
+      }
+      this.gameState.next(nextGameState);
+      await this.delay(STANDARD_MOVE_DURATION);
+      // setTimeout(() => {
+      // }, 2000);
+    }
+    this.isLockedOut.next(false);
+    return this.gameState.value as GameState;
+  };
+
+  async processTurn({
+    verb,
+    noun,
+    amount,
+  }: {
+    verb: string;
+    noun: string;
+    amount?: number;
+  }): Promise<void> {
     if (this.gameROM.value && this.gameState.value) {
-      const nextGameState = this.gameState.value;
-      // const nextGameROM = this.gameROM.value;
+      let nextGameState = JSON.parse(JSON.stringify(this.gameState.value));
+      switch (verb) {
+        case 'move':
+          // move logic
+          // -- noun is positionKey and we need to pass in the path from movement options
+          nextGameState = await this.turnActionMovePlayer(noun);
+          break;
+        default:
+          break;
+      }
 
-      // Move all logic to utility functions
-      // const nextGameState: GameState = processTurnAction();
-
+      nextGameState.numTurns += 1;
+      this.saveLocalGameState(nextGameState);
       this.gameState.next(nextGameState);
       this.calculateMovementOptions(this.gameROM.value, nextGameState);
-
-      // update gameState
     }
   }
 }

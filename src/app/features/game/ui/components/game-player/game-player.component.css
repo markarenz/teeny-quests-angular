@@ -1,4 +1,7 @@
 .player-position {
   position: absolute;
   pointer-events: none;
+  transition-property: all;
+  transition-duration: 0.1s;
+  transition-timing-function: linear;
 }

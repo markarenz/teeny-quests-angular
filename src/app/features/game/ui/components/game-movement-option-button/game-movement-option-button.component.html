@@ -1,11 +1,12 @@
 <div
   id="movement-option-button-{{ y }}-{{ x }}"
-  class="movement-option-button"
+  class="movement-option-button {{ isLockedOut ? 'locked-out' : '' }}"
   [style.bottom]="position.bottom"
   [style.left]="position.left"
   [style.width]="width"
   [style.height]="height"
   [style.z-index]="z"
+  [style.transition-delay]="transformDelay"
 >
   <svg
     id="movement-option-button-{{ y }}-{{ x }}--svg"
@@ -22,7 +23,7 @@
         fill="none"
         points="50,0 100,25 50,50 0,25"
         (click)="handleMovementButtonClick()"
-        tabindex="0"
+        [attr.tabindex]="isLockedOut ? -1 : 0"
       />
       <ellipse
         cx="50"
