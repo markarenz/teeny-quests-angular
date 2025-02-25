@@ -1,17 +1,13 @@
 .movement-option-button {
   position: absolute;
   pointer-events: none;
+  &.locked-out {
+    pointer-events: none;
+    opacity: 0.1;
+  }
+  opacity: 1;
+  transition: 0.02s opacity ease-in-out;
   polygon {
     pointer-events: all;
-    /* fill: transparent; */
-    /* stroke-width: 2px;
-    stroke: transparent; */
-    /* transition: 0.3s stroke ease-in-out; */
-
-    /* &:focus,
-    &:hover {
-      outline: none;
-      stroke: var(--color-primary);
-    } */
   }
 }

@@ -27,23 +27,29 @@
     <app-area-item [item]="item" />
     }
 
-    <app-game-player
-      [playerPosition]="playerPosition"
-      [cellData]="areaMap[playerPosition]"
-    />
-
     <!-- Area Exits -->
     @for(exit of areaExits; track exit.id;) {
     <app-area-exit [exit]="exit" />
     }
 
     <!-- Movement Option Buttons -->
-    @for(moveOption of movementOptionsKeys; track moveOption;) {
+    @for(moveOption of movementOptionsKeys; track moveOption; let idx = $index)
+    {
     <app-game-movement-option-button
       [positionKey]="moveOption"
       [h]="areaMap[moveOption].h"
+      [isLockedOut]="isLockedOut"
+      [playerPosition]="playerPosition"
     />
     }
+
+    <app-game-player
+      [playerPosition]="playerPosition"
+      [cellData]="areaMap[playerPosition]"
+      [playerFacing]="playerFacing"
+    />
+
+    <div class="absolute right-2 top-2">Turns: {{ numTurns }}</div>
   </div>
   }
 </div>

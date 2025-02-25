@@ -16,6 +16,7 @@ import { GameAreaMapCell } from '@app/features/main/interfaces/types';
 })
 export class GamePlayerComponent {
   @Input('playerPosition') playerPosition: string = '0_0';
+  @Input('playerFacing') playerFacing: string = 'n';
   @Input('cellData') cellData: GameAreaMapCell | null = null;
 
   h: number = 0;
@@ -29,7 +30,7 @@ export class GamePlayerComponent {
     if (this.cellData) {
       this.h = this.cellData.h;
     }
-    const [x, y] = this.playerPosition.split('_').map((v) => parseInt(v));
+    const [y, x] = this.playerPosition.split('_').map((v) => parseInt(v));
     const cellW = 100 / defaultGridSize;
     this.width = `${cellW}%`;
 

@@ -1,7 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { defaultGridSize } from '@config/index';
-import { AreaPosition } from '@app/features/game/lib/utils';
-import { getAreaElementPositionStyle } from '@app/features/game/lib/utils';
+import { AreaPosition } from '@game/lib/utils';
+import { getAreaElementPositionStyle } from '@game/lib/utils';
+import { GameService } from '@game/services/game-service/game-service.service';
+import { getHeuristicDistance } from '@game/services/game-service/utils/pathfinding';
 
 @Component({
   selector: 'app-game-movement-option-button',
@@ -12,16 +14,23 @@ import { getAreaElementPositionStyle } from '@app/features/game/lib/utils';
 })
 export class GameMovementOptionButtonComponent {
   @Input('positionKey') positionKey: string = '0_0';
+  @Input('destinationPositionKey') destinationPositionKey: string = '';
   @Input('h') h: number = 1;
+  @Input('isLockedOut') isLockedOut: boolean = false;
+  @Input('playerPosition') playerPosition: string = '0_0';
+  @Output() HandleMovementClick = new EventEmitter<string>();
 
   x: number = 0;
   y: number = 0;
   z: number = 0;
+  transformDelay: string = '0s';
   title: string = '';
   gridSize: number = defaultGridSize;
   position: AreaPosition = { left: '0', bottom: '0', z: 0 };
   height: string = '0%';
   width: string = '0%';
+
+  constructor(private _gameService: GameService) {}
 
   ngOnInit() {
     this.updateCellProps();
@@ -32,6 +41,7 @@ export class GameMovementOptionButtonComponent {
     this.x = parseInt(positionKeyArr[1]);
     this.y = parseInt(positionKeyArr[0]);
     this.z = this.x * this.y + this.x + 1;
+    this.transformDelay = `${this.z * 0.01}s`;
     this.title = `Move to ${this.x}, ${this.y}`;
     const cellW = 100 / this.gridSize;
     const cellH = 100 / this.gridSize / 2;
@@ -41,10 +51,9 @@ export class GameMovementOptionButtonComponent {
     const svgH = (this.h + 1) * 25;
   }
 
-  // Handle click processturn
-  // -- verb: move
-  // -- noun: positionKey
   handleMovementButtonClick() {
-    console.log('Move to positionKey:', this.positionKey);
+    if (!this.isLockedOut) {
+      this._gameService.processTurn({ verb: 'move', noun: this.positionKey });
+    }
   }
 }

@@ -7,6 +7,7 @@ import {
   GameAreaMap,
   GameItem,
   GameState,
+  MovementOptions,
 } from '@app/features/main/interfaces/types';
 import { AreaCellComponent } from '@app/features/game/ui/components/area-cell/area-cell.component';
 import { AreaExitComponent } from '@app/features/game/ui/components/area-exit/area-exit.component';
@@ -39,17 +40,28 @@ export class GameAreaComponent {
   movementOptionsKeys: string[] = [];
   areaDataPositionKeys: string[] = [];
   playerPosition: string = '0_0';
+  playerFacing: string = 'n';
+  isLockedOut: boolean = false;
+  numTurns: number = 0;
 
   ngOnInit(): void {
     this.subscriptions.push(
-      this._gameService.movementOptionsObs.subscribe((data) => {
-        this.movementOptions = data;
-        this.movementOptionsKeys = Object.keys(data);
+      this._gameService.isLockedOutObs.subscribe((data: boolean) => {
+        this.isLockedOut = data;
       })
+    );
+    this.subscriptions.push(
+      this._gameService.movementOptionsObs.subscribe(
+        (data: MovementOptions) => {
+          this.movementOptions = data;
+          this.movementOptionsKeys = Object.keys(data);
+        }
+      )
     );
     this.subscriptions.push(
       this._gameService.gameStateObs.subscribe((data: GameState | null) => {
         if (data) {
+          this.numTurns = data.numTurns;
           if (data.player.areaId !== this.areaId) {
             const areaId = data.player.areaId;
             const area = this._gameService.getArea(areaId);
@@ -61,6 +73,7 @@ export class GameAreaComponent {
               : [];
           }
           this.playerPosition = `${data.player.y}_${data.player.x}`;
+          this.playerFacing = data.player.facing;
         }
       })
     );
