@@ -9,6 +9,7 @@ import {
 import { gamesApiUrl } from '@config/index';
 import { getMoveOptions } from './utils/pathfinding';
 import { STANDARD_MOVE_DURATION } from '@config/index';
+import gameMockData from '@app/features/editor/mocks/game.mock.json';
 
 @Injectable({
   providedIn: 'root',
@@ -26,6 +27,10 @@ export class GameService {
   private isLockedOut = new BehaviorSubject<boolean>(false);
   isLockedOutObs = this.isLockedOut.asObservable();
 
+  testInit(nextGameROM: GameROM): void {
+    this.gameROM.next(nextGameROM);
+    this.initGameState(nextGameROM);
+  }
   calculateMovementOptions(
     nextGameROM: GameROM,
     nextGameState: GameState
@@ -130,10 +135,8 @@ export class GameService {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  turnActionMovePlayer = async (
-    destinationPositionKey: string
-  ): Promise<GameState> => {
-    const path = this.movementOptions.value[destinationPositionKey];
+  turnActionMovePlayer = async (destination: string): Promise<GameState> => {
+    const path = this.movementOptions.value[destination];
     let nextGameState = JSON.parse(JSON.stringify(this.gameState.value));
     if (!path || path.length < 2) {
       return this.gameState.value as GameState;
@@ -157,9 +160,8 @@ export class GameService {
       }
       this.gameState.next(nextGameState);
       await this.delay(STANDARD_MOVE_DURATION);
-      // setTimeout(() => {
-      // }, 2000);
     }
+    await this.delay(500);
     this.isLockedOut.next(false);
     return this.gameState.value as GameState;
   };
@@ -178,7 +180,6 @@ export class GameService {
       switch (verb) {
         case 'move':
           // move logic
-          // -- noun is positionKey and we need to pass in the path from movement options
           nextGameState = await this.turnActionMovePlayer(noun);
           break;
         default:

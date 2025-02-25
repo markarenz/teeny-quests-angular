@@ -14,6 +14,7 @@ import { getHeuristicDistance } from '@game/services/game-service/utils/pathfind
 })
 export class GameMovementOptionButtonComponent {
   @Input('positionKey') positionKey: string = '0_0';
+  @Input('destinationPositionKey') destinationPositionKey: string = '';
   @Input('h') h: number = 1;
   @Input('isLockedOut') isLockedOut: boolean = false;
   @Input('playerPosition') playerPosition: string = '0_0';
@@ -32,11 +33,6 @@ export class GameMovementOptionButtonComponent {
   constructor(private _gameService: GameService) {}
 
   ngOnInit() {
-    const distance = getHeuristicDistance(
-      this.positionKey,
-      this.playerPosition
-    );
-    this.transformDelay = `${distance * 0.05}s`;
     this.updateCellProps();
   }
 
@@ -45,6 +41,7 @@ export class GameMovementOptionButtonComponent {
     this.x = parseInt(positionKeyArr[1]);
     this.y = parseInt(positionKeyArr[0]);
     this.z = this.x * this.y + this.x + 1;
+    this.transformDelay = `${this.z * 0.01}s`;
     this.title = `Move to ${this.x}, ${this.y}`;
     const cellW = 100 / this.gridSize;
     const cellH = 100 / this.gridSize / 2;
@@ -54,10 +51,9 @@ export class GameMovementOptionButtonComponent {
     const svgH = (this.h + 1) * 25;
   }
 
-  // Handle click processturn
-  // -- verb: move
-  // -- noun: positionKey
   handleMovementButtonClick() {
-    this._gameService.processTurn({ verb: 'move', noun: this.positionKey });
+    if (!this.isLockedOut) {
+      this._gameService.processTurn({ verb: 'move', noun: this.positionKey });
+    }
   }
 }

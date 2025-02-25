@@ -88,3 +88,39 @@ describe('initGameState', () => {
     service.initGameState(gameMock);
   });
 });
+
+describe('processTurn', () => {
+  let service: GameService;
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(GameService);
+
+    service.testInit(gameMock);
+  });
+
+  it('should process turn', fakeAsync(() => {
+    let i = 0;
+    tick(1000);
+    service.processTurn({
+      verb: 'move',
+      noun: '6_3',
+    });
+    tick(1000);
+
+    service.isLockedOutObs.subscribe((isLockedOut) => {
+      if (i === 0) {
+        expect(isLockedOut).toEqual(false);
+      }
+      if (i === 1) {
+        expect(isLockedOut).toEqual(true);
+      }
+      i += 1;
+    });
+
+    service.gameStateObs.subscribe((gameState) => {
+      expect(gameState?.player?.x).toEqual(3);
+      expect(gameState?.player?.y).toEqual(6);
+      expect(gameState?.player?.facing).toEqual('W');
+    });
+  }));
+});
