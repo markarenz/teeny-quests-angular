@@ -58,6 +58,7 @@ export class EditorGameComponent {
   subNavCurrent: string = 'info';
   subNavLinks: SubNavItem[] = [
     { label: 'Info', slug: 'info' },
+    { label: 'Map', slug: 'map' },
     { label: 'Exits', slug: 'exits' },
     { label: 'Items', slug: 'items' },
     { label: 'NPCs', slug: 'npcs' },

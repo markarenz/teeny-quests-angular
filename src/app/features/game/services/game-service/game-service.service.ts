@@ -161,7 +161,7 @@ export class GameService {
       this.gameState.next(nextGameState);
       await this.delay(STANDARD_MOVE_DURATION);
     }
-    await this.delay(500);
+    await this.delay(250);
     this.isLockedOut.next(false);
     return this.gameState.value as GameState;
   };
