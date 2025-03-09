@@ -3,7 +3,6 @@ import { defaultGridSize } from '@config/index';
 import { AreaPosition } from '@game/lib/utils';
 import { getAreaElementPositionStyle } from '@game/lib/utils';
 import { GameService } from '@game/services/game-service/game-service.service';
-import { getHeuristicDistance } from '@game/services/game-service/utils/pathfinding';
 
 @Component({
   selector: 'app-game-movement-option-button',
@@ -41,7 +40,7 @@ export class GameMovementOptionButtonComponent {
     this.x = parseInt(positionKeyArr[1]);
     this.y = parseInt(positionKeyArr[0]);
     this.z = this.x * this.y + this.x + 1;
-    this.transformDelay = `${this.z * 0.01}s`;
+    this.transformDelay = `${this.z * 0.005}s`;
     this.title = `Move to ${this.x}, ${this.y}`;
     const cellW = 100 / this.gridSize;
     const cellH = 100 / this.gridSize / 2;
