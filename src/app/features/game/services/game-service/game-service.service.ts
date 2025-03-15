@@ -24,6 +24,9 @@ export class GameService {
   private movementOptions = new BehaviorSubject<MovementOptions>({});
   movementOptionsObs = this.movementOptions.asObservable();
 
+  private pageModalStatus = new BehaviorSubject<string>('');
+  pageModalStatusObs = this.pageModalStatus.asObservable();
+
   private isLockedOut = new BehaviorSubject<boolean>(false);
   isLockedOutObs = this.isLockedOut.asObservable();
 
@@ -129,6 +132,11 @@ export class GameService {
     }
 
     return null;
+  }
+
+  setPageModalStatus(status: string): void {
+    this.isLockedOut.next(status !== '');
+    this.pageModalStatus.next(status);
   }
 
   delay(ms: number) {

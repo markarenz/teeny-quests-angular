@@ -49,6 +49,22 @@
             (ngModelChange)="handleInfoChange()"
             rows="6"
             [maxlength]="inputDescriptionMaxLength"
+            (keydown)="onChangeNoLineBreaks($event)"
+          ></textarea>
+        </div>
+        <div>
+          <label for="new-game--introduction" class="block text"
+            >Introduction
+            <span class="text-md font-normal">
+              ({{ inputIntroduction.length }}/{{ inputIntroductionMaxLength }})
+            </span>
+          </label>
+          <textarea
+            id="new-game--introduction"
+            [(ngModel)]="inputIntroduction"
+            (ngModelChange)="handleInfoChange()"
+            rows="6"
+            [maxlength]="inputIntroductionMaxLength"
           ></textarea>
         </div>
       </div>

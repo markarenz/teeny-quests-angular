@@ -6,7 +6,6 @@ import { ModalBgComponent } from '@main/ui/components/modal-bg/modal-bg.componen
 import { ButtonComponent } from '@app/features/main/ui/components/button/button.component';
 import { LoaderAnimationComponent } from '@app/features/main/ui/components/loader-animation/loader-animation.component';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
-import { gamesApiUrl } from '@config/index';
 import { AuthGoogleService } from '@app/features/auth/services/auth-google-service';
 import { User } from '@app/features/auth/interfaces/types';
 

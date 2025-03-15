@@ -4,7 +4,7 @@ import {
   getAreaElementPositionStyle,
 } from '@app/features/game/lib/utils/index';
 import { GameAreaMapCell } from '@app/features/main/interfaces/types';
-import { defaultGridSize } from '@config/index';
+import { areaHeightFactor, defaultGridSize } from '@config/index';
 import { TexturesFloorComponent } from '@app/features/game/ui/components/textures/textures-floor/textures-floor.component';
 import { TexturesWallComponent } from '@app/features/game/ui/components/textures/textures-wall/textures-wall.component';
 
@@ -51,9 +51,13 @@ export class AreaCellComponent {
       const cellW = 100 / this.gridSize;
       const cellH = 100 / this.gridSize / 2;
       this.position = getAreaElementPositionStyle(this.gridSize, y, x);
-      this.height = `${cellH + cellH * 0.5 * h}%`;
       this.width = `${cellW}%`;
-      const svgH = (h + 1) * 25;
+
+      const hAdjusted = h * areaHeightFactor;
+      this.height = `${cellH + cellH * 0.5 * hAdjusted}%`;
+
+      const svgH = (hAdjusted + 1) * 25;
+
       this.svgViewBox = `0 0 100 ${svgH}`;
       this.svgPolygonPoints = [
         `0,0 50,25 50,${svgH} 0,${svgH - 25}`,

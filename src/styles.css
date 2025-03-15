@@ -126,3 +126,10 @@ select {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+.text-content {
+  ol {
+    list-style-type: decimal;
+    padding-left: 1rem;
+  }
+}

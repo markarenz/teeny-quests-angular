@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import { GameROM, SelectIUIOption } from '@app/features/main/interfaces/types';
-import { IconButtonComponent } from '@app/features/main/ui/components/icon-button/icon-button.component';
+import { IconButtonComponent } from '@app/features/main/ui/components/icons/icon-button/icon-button.component';
 
 @Component({
   selector: 'app-editor-area-selector-general',

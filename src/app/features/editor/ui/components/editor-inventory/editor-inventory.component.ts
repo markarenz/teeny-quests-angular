@@ -11,7 +11,7 @@ import {
   inventoryDefinitions,
   itemDefinitions,
 } from '@content/item-definitions';
-import { IconButtonComponent } from '@app/features/main/ui/components/icon-button/icon-button.component';
+import { IconButtonComponent } from '@app/features/main/ui/components/icons/icon-button/icon-button.component';
 
 @Component({
   selector: 'app-editor-inventory',

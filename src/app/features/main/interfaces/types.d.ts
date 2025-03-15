@@ -101,6 +101,7 @@ export type GameROM = {
   id: string;
   title: string;
   description: string;
+  introduction: string;
   itemStatus: string;
   userId: string;
   username: string;
@@ -147,4 +148,9 @@ export type PathfindingGridCell = {
   g: number; // cost from start to current
   h: number; // heuristic estimation of cost to end
   parent: PathfindingGridCell | null; // parent of the current grid point
+};
+
+export type Paragraph = {
+  text: string;
+  id: number;
 };

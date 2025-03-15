@@ -320,6 +320,7 @@ export class GameEditorService {
         itemStatus: 'draft',
         title: title,
         description: description,
+        introduction: '',
         rating: 'n/a',
         content: JSON.stringify(defaultGameContent),
       }),

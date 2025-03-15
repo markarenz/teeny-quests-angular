@@ -33,8 +33,8 @@ const toUrlString = (buffer) => {
 };
 
 export const createItem = async (params) => {
-  const { method, path, ip, dynamoDb, body } = params;
-  const { id: rawId, userId, username, title, description, itemStatus } = body;
+  const { path, dynamoDb, body } = params;
+  const { id: rawId } = body;
   let success = false;
   let id = null;
   let resp = null;
@@ -71,7 +71,8 @@ export const createItem = async (params) => {
 
 export const updateItem = async (params) => {
   const { method, path, ip, dynamoDb, body } = params;
-  const { id, userId, username, title, description, itemStatus } = body;
+  const { id, userId, username, title, description, introduction, itemStatus } =
+    body;
   const bodyData = getBodyData({ body, path });
 
   const command = new PutCommand({
@@ -84,7 +85,7 @@ export const updateItem = async (params) => {
   const resp = await dynamoDb.send(command);
   const success = resp["$metadata"].httpStatusCode === 200;
   return {
-    statusCode: success ? 201 : 500,
+    statusCode: success ? 204 : 500,
     body: JSON.stringify({
       path,
       message: success ? "Item updated successfully." : "Error updating item",
@@ -152,7 +153,7 @@ export const getItems = async (params) => {
   const command = new QueryCommand({
     TableName: tableNames[path],
     IndexName: "itemStatus-index",
-    ProjectionExpression: "id, title, description, username",
+    ProjectionExpression: "id, title, description, introduction, username",
     KeyConditionExpression: "itemStatus = :value",
     ExpressionAttributeValues: {
       ":value": { S: "active" },
