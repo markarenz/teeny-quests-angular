@@ -44,12 +44,14 @@
         <app-button
           variant="outlined"
           label="Cancel"
+          data-testid="new-game-cancel"
           [isDisabled]="isLoading"
           (onButtonClick)="handleCancelClick()"
         />
         <app-button
           variant="contained"
           label="OK"
+          data-testid="new-game-ok"
           [isDisabled]="isLoading || !isValid"
           (onButtonClick)="handleOkClick()"
         />

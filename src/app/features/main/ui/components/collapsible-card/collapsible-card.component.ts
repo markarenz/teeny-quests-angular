@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { IconCaretComponent } from '../icons/icon-caret/icon-caret.component';
-import { IconButtonComponent } from '../icon-button/icon-button.component';
+import { IconButtonComponent } from '../icons/icon-button/icon-button.component';
 
 @Component({
   selector: 'app-collapsible-card',

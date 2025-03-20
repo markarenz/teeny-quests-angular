@@ -1,0 +1,32 @@
+<div class="common-modal fixed top-0 left-0 w-screen h-scren">
+  <app-modal-bg (onBgClick)="handleCloseClick()" />
+  <div
+    class="fixed top-0 left-0 w-screen h-screen flex items-center justify-center"
+  >
+    <div
+      class="bg-gray-700 rounded-md w-full max-w-xl shadow-[0px_-2px_16px_4px_rgba(0,0,0,0.3)]"
+    >
+      <div class="py-4 px-8 bg-primaryDark rounded-tl-md rounded-tr-md">
+        <h2 class="text-2xl text-gray-100">{{ title }}</h2>
+      </div>
+      <div class="p-8 relative content">
+        <ng-content />
+      </div>
+      <div class="px-8 py-8 flex justify-end gap-4">
+        @if(showCancel) {
+        <app-button
+          variant="outlined"
+          label="Cancel"
+          (onButtonClick)="handleCancelClick()"
+        />
+        }
+        <app-button
+          variant="contained"
+          label="OK"
+          data-testid="common-modal-confirm"
+          (onButtonClick)="handleConfirmClick()"
+        />
+      </div>
+    </div>
+  </div>
+</div>

@@ -8,10 +8,11 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   styleUrl: './icon-button.component.css',
 })
 export class IconButtonComponent {
-  // Icons supported: Edit, Close, New
+  // Icons supported: Edit, Close, New, Info, Help
   @Input('label') label: string = 'Click';
   @Input('theme') theme: string = 'default';
   @Input('icon') icon: string = 'edit';
+  @Input('size') size: string = 'sm';
   @Input('isDisabled') isDisabled: boolean = false;
   @Output() onButtonClick = new EventEmitter<string>();
 

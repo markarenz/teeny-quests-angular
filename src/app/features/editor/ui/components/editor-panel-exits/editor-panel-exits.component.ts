@@ -11,7 +11,7 @@ import {
 import { AreaCellSelectorComponent } from '../area-cell-selector/area-cell-selector.component';
 import { CollapsibleCardComponent } from '@app/features/main/ui/components/collapsible-card/collapsible-card.component';
 import { exitDefinitions, exitDirections } from '@content/exit-definitions';
-import { IconButtonComponent } from '@app/features/main/ui/components/icon-button/icon-button.component';
+import { IconButtonComponent } from '@app/features/main/ui/components/icons/icon-button/icon-button.component';
 import { getPositionKeysForGridSize } from '@main/utils';
 import { floorDefinitions } from '@content/floor-definitions';
 

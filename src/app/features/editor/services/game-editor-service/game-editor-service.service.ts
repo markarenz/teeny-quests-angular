@@ -285,6 +285,7 @@ export class GameEditorService {
     title: string;
     description: string;
   }): Promise<string> {
+    console.log('>>>: create game 1');
     const { id: userId, username } = user;
     const defaultGameContent: GameContent = {
       areas: {
@@ -311,6 +312,7 @@ export class GameEditorService {
       },
     };
 
+    console.log('>>>: create game 2');
     return fetch(gamesApiUrl, {
       method: 'POST',
       headers: { Accept: 'application/json' },
@@ -320,15 +322,18 @@ export class GameEditorService {
         itemStatus: 'draft',
         title: title,
         description: description,
+        introduction: '',
         rating: 'n/a',
         content: JSON.stringify(defaultGameContent),
       }),
     })
       .then((res) => res.json())
       .then((data) => {
+        console.log('>>>: create game 3', data?.id, '<>?');
         return data?.id ?? '';
       })
       .catch((err) => {
+        console.log('>>>: create game 4', err);
         return '';
       });
   }

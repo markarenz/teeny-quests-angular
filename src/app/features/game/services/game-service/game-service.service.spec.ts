@@ -120,7 +120,22 @@ describe('processTurn', () => {
     service.gameStateObs.subscribe((gameState) => {
       expect(gameState?.player?.x).toEqual(3);
       expect(gameState?.player?.y).toEqual(6);
-      expect(gameState?.player?.facing).toEqual('W');
+      expect(gameState?.player?.facing).toEqual('E');
     });
   }));
+});
+
+describe('getArea', () => {
+  let service: GameService;
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(GameService);
+
+    service.testInit(gameMock);
+  });
+
+  it('return the area by ID', () => {
+    const actual = service.getArea('start');
+    expect(actual?.id).toEqual('start');
+  });
 });

@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { defaultGridSize } from '@config/index';
+import { areaHeightFactor, defaultGridSize } from '@config/index';
 import { AreaPosition } from '@game/lib/utils';
 import { getAreaElementPositionStyle } from '@game/lib/utils';
 import { GameService } from '@game/services/game-service/game-service.service';
@@ -45,9 +45,9 @@ export class GameMovementOptionButtonComponent {
     const cellW = 100 / this.gridSize;
     const cellH = 100 / this.gridSize / 2;
     this.position = getAreaElementPositionStyle(this.gridSize, this.y, this.x);
-    this.height = `${cellH + cellH * 0.5 * this.h}%`;
+    this.height = `${cellH + cellH * 0.5 * this.h * areaHeightFactor}%`;
     this.width = `${cellW}%`;
-    const svgH = (this.h + 1) * 25;
+    const svgH = (this.h * areaHeightFactor + 1) * 25;
   }
 
   handleMovementButtonClick() {

@@ -1,3 +1,5 @@
+import { areaHeightFactor } from '@config/index';
+
 export type AreaPosition = {
   left: string;
   bottom: string;
@@ -20,11 +22,13 @@ export const getAreaElementPositionStyle = (
 
   const posXRaw = (x * 0.5 + y * -0.5) * cellW;
 
+  const hAdjusted = h ? h * areaHeightFactor : 1;
+
   const posX = offset.x + posXRaw;
   const posY =
     offset.y -
     (x * 0.5 + y * 0.5) * cellH +
-    (typeof h !== 'undefined' ? h : 0) * 0.5 * cellH;
+    (typeof h !== 'undefined' ? hAdjusted : 0) * 0.5 * cellH;
 
   const position: AreaPosition = {
     left: `${posX}%`,

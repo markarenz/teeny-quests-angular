@@ -30,6 +30,10 @@ export const fieldNames = {
       required: true,
     },
     {
+      fieldName: "introduction",
+      required: true,
+    },
+    {
       fieldName: "rating",
       required: true,
     },
