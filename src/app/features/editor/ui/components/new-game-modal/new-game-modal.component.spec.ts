@@ -8,8 +8,6 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
 import gameMockData from '@app/features/editor/mocks/game.mock.json';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
-import fetchMock from 'fetch-mock';
-import { gamesApiUrl } from '@config/index';
 
 let service: GameEditorService;
 
