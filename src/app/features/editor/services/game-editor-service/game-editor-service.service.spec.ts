@@ -5,7 +5,7 @@ import fetchMock from 'fetch-mock';
 
 import { GameEditorService } from './game-editor-service.service';
 
-let gameMock = { ...gameMockData };
+let gameMock = JSON.parse(JSON.stringify(gameMockData));
 
 beforeEach(async () => {
   gameMock = await JSON.parse(JSON.stringify(gameMockData));
@@ -198,7 +198,6 @@ describe('processGameData', () => {
   it('should process game data', () => {
     const processedData = service.processGameData({
       ...gameMock,
-      //@ts-expect-error
       content: JSON.stringify(gameMock.content),
     });
     expect(processedData).toEqual(gameMock);
