@@ -55,7 +55,10 @@
         </div>
         <div id="editor-panel-content" class="flex-grow">
           <div id="editor-content-stage" class="p-4 bg-gray-900">
-            <app-editor-area />
+            <app-editor-area
+              (onSelectItem)="handleSelectItem($event)"
+              (onSelectExit)="handleSelectExit($event)"
+            />
           </div>
         </div>
       </div>

@@ -67,7 +67,7 @@ export class EditorPanelItemsComponent {
   }
   ngOnInit() {
     this.subscriptions.push(
-      this._gameEditorService.selectedExitIdObs.subscribe((data: string) => {
+      this._gameEditorService.selectedItemIdObs.subscribe((data: string) => {
         this.selectedItemId = data;
         this.items = this._gameEditorService.getItemsForCurrentArea();
       })
@@ -76,7 +76,6 @@ export class EditorPanelItemsComponent {
       this._gameEditorService.selectedAreaIdObs.subscribe((data: any) => {
         this.selectedAreaId = data;
         this.items = this._gameEditorService.getItemsForCurrentArea();
-        this.selectedItemId = '';
       })
     );
     this.subscriptions.push(
@@ -98,7 +97,7 @@ export class EditorPanelItemsComponent {
   }
 
   handleEditClick(id: string) {
-    this.selectedItemId = id;
+    this._gameEditorService.selectItem(id);
     const selectedItem = this.items.find((item) => item.id === id);
     this.inputItemPosition = selectedItem
       ? `${selectedItem.y}_${selectedItem.x}`

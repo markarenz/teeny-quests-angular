@@ -5,6 +5,7 @@
   class="area-exit"
   [style.bottom]="position.bottom"
   [style.left]="position.left"
+  id="area-exit-{{ exit.id }}"
 >
   @if (exit.direction === 'west') {
   <app-svg-exit-default-w />
@@ -14,5 +15,23 @@
   <app-svg-exit-default-s />
   } @else if (exit.direction === 'east') {
   <app-svg-exit-default-e />
+  } @if (isEditorSelected) {
+  <div
+    class="absolute {{
+      selectedIndicatorPositions[exit.direction]
+    }} w-[50%] h-[50%] bg-transparent rounded-full z-index-[100] border-4 border-red-600"
+    aria-hidden="true"
+  ></div>
+  } @if (isClickable) {
+  <button
+    role="button"
+    type="button"
+    [attr.aria-label]="ariaLabel"
+    (click)="handleClick()"
+    class="absolute {{
+      selectedIndicatorPositions[exit.direction]
+    }} w-[50%] h-[50%] cursor-pointer pointer-events-auto rounded-full"
+    [style.z-index]="position.z + 10"
+  ></button>
   }
 </div>

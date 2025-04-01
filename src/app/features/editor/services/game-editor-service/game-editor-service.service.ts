@@ -189,6 +189,10 @@ export class GameEditorService {
     }
   }
 
+  selectItem(itemId: string) {
+    this.selectedItemId.next(itemId);
+  }
+
   deleteItem(itemId: string) {
     if (this.game.value) {
       const nextGame = utilDeleteItem({
@@ -225,6 +229,10 @@ export class GameEditorService {
     }
 
     return null;
+  }
+
+  selectExit(exitId: string) {
+    this.selectedExitId.next(exitId);
   }
 
   deleteExit(exitId: string) {

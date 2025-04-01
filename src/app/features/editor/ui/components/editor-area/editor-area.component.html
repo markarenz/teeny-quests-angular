@@ -37,14 +37,24 @@
 
     <!-- Area Items -->
     @for(item of selectedAreaItems; track item.id;) {
-    <app-area-item [item]="item" />
+    <app-area-item
+      [item]="item"
+      [isEditorSelected]="selectedItemId === item.id"
+      [isClickable]="true"
+      (onClick)="handleItemClick(item.id)"
+    />
     }
 
     <app-editor-player-position [playerPosition]="playerPosition" />
 
     <!-- Area Exits -->
     @for(exit of selectedAreaExits; track exit.id;) {
-    <app-area-exit [exit]="exit" />
+    <app-area-exit
+      [exit]="exit"
+      [isEditorSelected]="selectedExitId === exit.id"
+      [isClickable]="true"
+      (onClick)="handleExitClick(exit.id)"
+    />
     }
   </div>
   }
