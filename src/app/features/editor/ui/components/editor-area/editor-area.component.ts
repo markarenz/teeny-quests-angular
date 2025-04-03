@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import {
@@ -28,6 +28,8 @@ import { EditorPlayerPositionComponent } from '../editor-player-position/editor-
 export class EditorAreaComponent {
   constructor(private _gameEditorService: GameEditorService) {}
   private subscriptions: Subscription[] = [];
+  @Output() onSelectItem = new EventEmitter<string>();
+  @Output() onSelectExit = new EventEmitter<string>();
 
   game: GameROM | null = null;
   selectedAreaId: string = '';
@@ -36,6 +38,9 @@ export class EditorAreaComponent {
   selectedAreaExits: GameArea['exits'] | null = null;
   selectedAreaItems: GameArea['items'] | null = null;
   selectedAreaCellPosition: string = '';
+  selectedItemId: string = '';
+  selectedExitId: string = '';
+  selectedExitDestination: string = '';
   selectedCell: GameAreaMapCell | null = null;
   anyCellSelected: boolean = false;
   areaDataPositionKeys: string[] = [];
@@ -63,6 +68,17 @@ export class EditorAreaComponent {
       this._gameEditorService.gameObs.subscribe((data: GameROM | null) => {
         this.game = data;
         this.updatePlayerPosition();
+      })
+    );
+    this.subscriptions.push(
+      this._gameEditorService.selectedItemIdObs.subscribe((data: string) => {
+        this.selectedItemId = data;
+      })
+    );
+    this.subscriptions.push(
+      this._gameEditorService.selectedExitIdObs.subscribe((data: string) => {
+        console.log('selectedExitId', data);
+        this.selectedExitId = data;
       })
     );
     this.subscriptions.push(
@@ -126,5 +142,13 @@ export class EditorAreaComponent {
 
   handleBackgroundClick() {
     this.clearCellSelection();
+  }
+  handleExitClick(id: string) {
+    console.log('AREA EDIT: handleExitClick', id);
+    this.onSelectExit.emit(id);
+  }
+  handleItemClick(id: string) {
+    console.log('AREA EDIT: handleItemClick', id);
+    this.onSelectItem.emit(id);
   }
 }

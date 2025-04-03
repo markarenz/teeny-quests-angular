@@ -10,5 +10,19 @@
   <app-svg-item-key />
   } @else if (item.itemType === 'coins-25') {
   <app-svg-item-coins />
+  } @if (isEditorSelected) {
+  <div
+    class="absolute top-[45%] left-[30%] w-[40%] h-[40%] bg-transparent rounded-full z-index-[100] border-4 border-primary border-dashed ring-2 ring-offset-2 ring-offset-primaryDarker ring-primaryDark"
+    aria-hidden="true"
+  ></div>
+  } @if (isClickable) {
+  <button
+    role="button"
+    type="button"
+    [attr.aria-label]="ariaLabel"
+    (click)="handleClick()"
+    class="absolute top-[45%] left-[30%] w-[40%] h-[40%] cursor-pointer pointer-events-auto rounded-full focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-offset-primaryDarker focus:ring-primaryDark"
+    [style.z-index]="positionStyle.z + 10"
+  ></button>
   }
 </div>

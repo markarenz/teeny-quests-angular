@@ -85,10 +85,11 @@ export class EditorPanelExitsComponent {
     );
     this.subscriptions.push(
       this._gameEditorService.selectedAreaIdObs.subscribe((data: any) => {
-        this.selectedAreaId = data;
-        this.exits = this._gameEditorService.getExitsForCurrentArea();
-        this.refreshUIData();
-        this.selectedExitId = '';
+        if (this.selectedAreaId !== data) {
+          this.selectedAreaId = data;
+          this.exits = this._gameEditorService.getExitsForCurrentArea();
+          this.refreshUIData();
+        }
       })
     );
     this.subscriptions.push(
@@ -109,7 +110,7 @@ export class EditorPanelExitsComponent {
     this._gameEditorService.deleteExit(id);
   }
   handleEditClick(id: string) {
-    this.selectedExitId = id;
+    this._gameEditorService.selectExit(id);
     const selectedExit = this.exits.find((exit) => exit.id === id);
     this.inputExitPosition = selectedExit
       ? `${selectedExit.y}_${selectedExit.x}`

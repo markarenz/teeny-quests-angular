@@ -98,6 +98,20 @@ export class EditorGameComponent {
   }
 
   handleSubNavClick(slug: string) {
+    this._gameEditorService.selectExit('');
+    console.log('EXIT NOW EMPTY 2');
+    this._gameEditorService.selectItem('');
     this.subNavCurrent = slug;
+  }
+
+  handleSelectItem(id: string) {
+    this._gameEditorService.selectItem(id);
+    this.subNavCurrent = 'items';
+  }
+
+  handleSelectExit(id: string) {
+    console.log('HANDLE EXIT', id);
+    this._gameEditorService.selectExit(id);
+    this.subNavCurrent = 'exits';
   }
 }
