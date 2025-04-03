@@ -44,11 +44,12 @@ describe('EditorPanelItemsComponent', () => {
   });
 
   it('should handle edit click', () => {
+    spyOn(service, 'selectItem');
     component.items = gameMock.content.areas['start'].items;
     fixture.detectChanges();
     component.handleEditClick('1234abc');
     fixture.detectChanges();
-    expect(component.inputItemType).toBe('coins-25');
+    expect(service.selectItem).toHaveBeenCalled();
   });
 
   it('should handle position select', () => {
