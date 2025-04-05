@@ -96,7 +96,6 @@ export class EditorAreaComponent {
     );
     this.subscriptions.push(
       this._gameEditorService.selectedAreaIdObs.subscribe((data: string) => {
-        console.log('SUBSCRIPTION: selectedAreaIdObs', data);
         this.selectedAreaId = data;
         this.selectedArea =
           this.game?.content.areas[this.selectedAreaId] ?? null;
@@ -144,11 +143,9 @@ export class EditorAreaComponent {
     this.clearCellSelection();
   }
   handleExitClick(id: string) {
-    console.log('AREA EDIT: handleExitClick', id);
     this.onSelectExit.emit(id);
   }
   handleItemClick(id: string) {
-    console.log('AREA EDIT: handleItemClick', id);
     this.onSelectItem.emit(id);
   }
 }
