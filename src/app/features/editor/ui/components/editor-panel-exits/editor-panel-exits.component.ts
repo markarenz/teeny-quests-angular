@@ -84,7 +84,6 @@ export class EditorPanelExitsComponent {
   ngOnInit() {
     this.subscriptions.push(
       this._gameEditorService.selectedExitIdObs.subscribe((data: string) => {
-        console.log('SUBSCRIPTION: selectedExitId', data);
         this.selectedExitId = data;
         this.exits = this._gameEditorService.getExitsForCurrentArea();
         this.updateUiAfterExitSelection(data);
@@ -92,7 +91,6 @@ export class EditorPanelExitsComponent {
     );
     this.subscriptions.push(
       this._gameEditorService.selectedAreaIdObs.subscribe((data: any) => {
-        console.log('SUBSCRIPTION: selectedAreaId', data);
         if (this.selectedAreaId !== data) {
           this.selectedAreaId = data;
           this.exits = this._gameEditorService.getExitsForCurrentArea();
