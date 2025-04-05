@@ -4,6 +4,7 @@ import gameMockData from '@app/features/editor/mocks/game.mock.json';
 import fetchMock from 'fetch-mock';
 
 import { GameEditorService } from './game-editor-service.service';
+import { GameAreaExit, GameItem } from '@app/features/main/interfaces/types';
 
 let gameMock = JSON.parse(JSON.stringify(gameMockData));
 
@@ -157,11 +158,11 @@ describe('setSelectedAreaId', () => {
     let checkNow = false;
     service.selectedAreaIdObs.subscribe((id) => {
       if (checkNow) {
-        expect(id).toEqual('test');
+        expect(id).toEqual('start');
       }
     });
 
-    service.setSelectedAreaId('test');
+    service.setSelectedAreaId('start');
     tick(1000);
     checkNow = true;
   }));
@@ -204,7 +205,7 @@ describe('processGameData', () => {
   });
 });
 
-describe('getAreasListOptions', () => {
+describe('getDestinationAreasListOptions', () => {
   let service: GameEditorService;
   beforeEach(() => {
     TestBed.configureTestingModule({});
@@ -214,7 +215,23 @@ describe('getAreasListOptions', () => {
 
   it('should get areas list options', fakeAsync(() => {
     tick(100);
-    const options = service.getAreasListOptions();
+    const options = service.getDestinationAreasListOptions();
+    expect(options.length).toBeGreaterThan(0);
+  }));
+});
+
+describe('getDestinationExitsListOptions', () => {
+  let service: GameEditorService;
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(GameEditorService);
+    service.setTestValue(gameMock, 'game');
+    service.setTestValue('start', 'selectedAreaId');
+  });
+
+  it('should get exits list options', fakeAsync(() => {
+    tick(100);
+    const options = service.getDestinationExitsListOptions('start');
     expect(options.length).toBeGreaterThan(0);
   }));
 });
@@ -405,4 +422,164 @@ describe('updateGame', () => {
 
     fetchMock.unmockGlobal();
   }));
+});
+
+describe('updateitem', () => {
+  let service: GameEditorService;
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(GameEditorService);
+    service.setTestValue(gameMock, 'game');
+    service.setTestValue('start', 'selectedAreaId');
+  });
+
+  it('should update item', () => {
+    const item: GameItem = {
+      id: '1735602762347',
+      itemType: 'coins',
+      areaId: 'start',
+      x: 0,
+      y: 0,
+      h: 1,
+    };
+
+    let i = 0;
+    service.gameObs.subscribe((game) => {
+      if (i === 1) {
+        const area = game ? game.content.areas['start'] : null;
+        const item = area ? area.items[0] : null;
+        expect(item).toEqual({
+          ...item,
+          ...gameMock.content.areas['start'].items[0],
+        });
+      }
+      i += 1;
+    });
+
+    service.updateItem(item);
+  });
+});
+
+describe('deleteItem', () => {
+  let service: GameEditorService;
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(GameEditorService);
+    service.setTestValue(gameMock, 'game');
+    service.setTestValue('start', 'selectedAreaId');
+  });
+
+  it('should delete item', () => {
+    let i = 0;
+    const expectedValues = [1, 0];
+    service.gameObs.subscribe((game) => {
+      const area = game ? game.content.areas['start'] : null;
+      expect(area?.items.length).toEqual(expectedValues[i]);
+    });
+
+    service.deleteItem('1735602762347');
+  });
+});
+
+describe('createItem', () => {
+  let service: GameEditorService;
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(GameEditorService);
+    service.setTestValue(gameMock, 'game');
+    service.setTestValue('start', 'selectedAreaId');
+  });
+
+  it('should create item', () => {
+    let i = 0;
+    const expectedValues = [1, 2];
+    service.gameObs.subscribe((game) => {
+      const area = game ? game.content.areas['start'] : null;
+      expect(area?.items.length).toEqual(expectedValues[i]);
+      i += 1;
+    });
+
+    service.createItem();
+  });
+});
+
+describe('createExit', () => {
+  let service: GameEditorService;
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(GameEditorService);
+    service.setTestValue(gameMock, 'game');
+    service.setTestValue('start', 'selectedAreaId');
+  });
+
+  it('should create exit', () => {
+    let i = 0;
+    const expectedValues = [1, 2];
+    service.gameObs.subscribe((game) => {
+      const area = game ? game.content.areas['start'] : null;
+      expect(area?.exits.length).toEqual(expectedValues[i]);
+      i += 1;
+    });
+
+    service.createExit();
+  });
+});
+
+describe('deleteExit', () => {
+  let service: GameEditorService;
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(GameEditorService);
+    service.setTestValue(gameMock, 'game');
+    service.setTestValue('start', 'selectedAreaId');
+  });
+
+  it('should delete exit', () => {
+    let i = 0;
+    const exitId = '1735602762347';
+    const expectedValues = [1, 0];
+    service.gameObs.subscribe((game) => {
+      const area = game ? game.content.areas['start'] : null;
+      expect(area?.exits.length).toEqual(expectedValues[i]);
+      i += 1;
+    });
+
+    service.deleteExit(exitId);
+  });
+});
+
+describe('updateExit', () => {
+  let service: GameEditorService;
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(GameEditorService);
+    service.setTestValue(gameMock, 'game');
+    service.setTestValue('start', 'selectedAreaId');
+  });
+
+  it('should update exit', () => {
+    const exit: GameAreaExit = {
+      id: '1735602762347',
+      destinationAreaId: '1735602762347',
+      destinationExitId: '123',
+      exitType: 'default',
+      direction: 'north',
+      areaId: 'start',
+      x: 1,
+      y: 1,
+      h: 4,
+    };
+
+    let i = 0;
+    service.gameObs.subscribe((game) => {
+      if (i === 1) {
+        const area = game ? game.content.areas['start'] : null;
+        const updatedExit = area ? area.exits[0] : null;
+        expect(updatedExit).toEqual(exit);
+      }
+      i += 1;
+    });
+
+    service.updateExit(exit);
+  });
 });

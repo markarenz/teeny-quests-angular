@@ -91,6 +91,7 @@ export class GameEditorService {
   setTestValue(value: any, fieldName: string) {
     switch (fieldName) {
       case 'selectedAreaId': {
+        console.log('SET SELECTED AREA ID', value);
         this.selectedAreaId.next(value);
         break;
       }
@@ -136,6 +137,8 @@ export class GameEditorService {
     this.selectedAreaId.next('');
     setTimeout(() => {
       this.selectedAreaId.next(areaId);
+      this.refreshAreaExits(this.game.value as GameROM);
+      this.refreshAreaItems(this.game.value as GameROM);
     }, 100);
   }
 
@@ -359,7 +362,7 @@ export class GameEditorService {
     }
   }
 
-  getAreasListOptions(): SelectIUIOption[] {
+  getDestinationAreasListOptions(): SelectIUIOption[] {
     let areasOptions: SelectIUIOption[] = [];
     if (this.game.value) {
       const areas = this.game.value.content.areas;
@@ -369,6 +372,22 @@ export class GameEditorService {
       }));
     }
     return areasOptions;
+  }
+
+  getDestinationExitsListOptions(areaId: string): SelectIUIOption[] {
+    let exitsOptions: SelectIUIOption[] = [];
+    if (this.game.value) {
+      const exits = this.game.value.content.areas[areaId]?.exits;
+      if (exits) {
+        exitsOptions = exits.map((exit) => ({
+          value: exit.id,
+          label: `X: ${exit.x}, Y: ${
+            exit.y
+          } Direction: ${exit.direction.toLocaleUpperCase()}`,
+        }));
+      }
+    }
+    return exitsOptions;
   }
 
   getGameById(gameId: string | null): void {

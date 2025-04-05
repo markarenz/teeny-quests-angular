@@ -65,6 +65,7 @@ describe('utilUpdateExit', () => {
     const updatedExit = {
       id: '1735602762347',
       destinationAreaId: '1735602762347',
+      destinationExitId: '123',
       exitType: 'default',
       direction: 'north',
       areaId: 'start',
@@ -86,6 +87,7 @@ describe('utilUpdateExit', () => {
     const updatedExit = {
       id: '1735602762347',
       destinationAreaId: '1735602762347',
+      destinationExitId: '123',
       exitType: 'default',
       direction: 'north',
       areaId: 'start',

@@ -38,10 +38,10 @@ export class AreaExitComponent {
   ariaLabel: string = '';
 
   selectedIndicatorPositions: { [key: string]: string } = {
-    north: 'top-[15%] left-[50%]',
-    south: 'top-[35%] left-[0%]',
-    east: 'top-[35%] left-[50%]',
-    west: 'top-[15%] left-[0%]',
+    north: 'top-[15%] left-[55%]',
+    south: 'top-[40%] left-[5%]',
+    east: 'top-[40%] left-[55%]',
+    west: 'top-[15%] left-[5%]',
   };
   updateExitProps() {
     if (this.exit) {

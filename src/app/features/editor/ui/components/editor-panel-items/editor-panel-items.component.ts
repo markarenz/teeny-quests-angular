@@ -70,19 +70,13 @@ export class EditorPanelItemsComponent {
       this._gameEditorService.selectedItemIdObs.subscribe((data: string) => {
         this.selectedItemId = data;
         this.items = this._gameEditorService.getItemsForCurrentArea();
+        this.updateUiAfterExitSelection(data);
       })
     );
     this.subscriptions.push(
       this._gameEditorService.selectedAreaIdObs.subscribe((data: any) => {
         this.selectedAreaId = data;
         this.items = this._gameEditorService.getItemsForCurrentArea();
-      })
-    );
-    this.subscriptions.push(
-      this._gameEditorService.gameObs.subscribe((data: any) => {
-        this.items = this._gameEditorService.getItemsForCurrentArea();
-        this.area = data.content.areas[this.selectedAreaId];
-        this.updateItemPositionLockouts();
       })
     );
   }
@@ -96,14 +90,18 @@ export class EditorPanelItemsComponent {
     this.updateItemPositionLockouts();
   }
 
-  handleEditClick(id: string) {
-    this._gameEditorService.selectItem(id);
+  updateUiAfterExitSelection(id: string) {
     const selectedItem = this.items.find((item) => item.id === id);
     this.inputItemPosition = selectedItem
       ? `${selectedItem.y}_${selectedItem.x}`
       : '';
     this.inputItemType = selectedItem ? selectedItem.itemType : '';
     this.updateItemPositionLockouts();
+  }
+
+  handleEditClick(id: string) {
+    this._gameEditorService.selectItem(id);
+    this.updateUiAfterExitSelection(id);
   }
 
   handlePositionSelect(position: string) {

@@ -26,7 +26,8 @@ export class EditorAreaSelectorComponent {
       this._gameEditorService.gameObs.subscribe((data: GameROM | null) => {
         const game = data;
         this.areasList = game ? Object.keys(game.content.areas) : [];
-        this.areasListOptions = this._gameEditorService.getAreasListOptions();
+        this.areasListOptions =
+          this._gameEditorService.getDestinationAreasListOptions();
       })
     );
     this.subscriptions.push(

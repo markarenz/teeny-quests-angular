@@ -43,9 +43,9 @@
       [isClickable]="true"
       (onClick)="handleItemClick(item.id)"
     />
-    }
-
+    } @if(playerPosition) {
     <app-editor-player-position [playerPosition]="playerPosition" />
+    }
 
     <!-- Area Exits -->
     @for(exit of selectedAreaExits; track exit.id;) {
