@@ -38,17 +38,23 @@ export class EditorPanelExitsComponent {
   inputExitDirection: string = '';
   inputExitPosition: string = '';
   inputExitDestination: string = '';
+  inputExitDestinationExit: string = '';
   selectedExitId: string = '';
   exits: GameAreaExit[] = [];
   isSelectedPositionValid: boolean = false;
   areasListOptions: SelectIUIOption[] = [];
+  exitsListOptions: SelectIUIOption[] = [];
   lockouts: string[] = [];
   area: GameArea | null = null;
 
   refreshUIData() {
     this.areasListOptions = this._gameEditorService
-      .getAreasListOptions()
+      .getDestinationAreasListOptions()
       .filter((item) => item.value !== this.selectedAreaId);
+
+    this.exitsListOptions = this._gameEditorService
+      .getDestinationExitsListOptions(this.inputExitDestination)
+      .filter((item) => item.value !== this.selectedExitId);
   }
 
   updateExitPositionLockouts() {
@@ -78,26 +84,20 @@ export class EditorPanelExitsComponent {
   ngOnInit() {
     this.subscriptions.push(
       this._gameEditorService.selectedExitIdObs.subscribe((data: string) => {
+        console.log('SUBSCRIPTION: selectedExitId', data);
         this.selectedExitId = data;
         this.exits = this._gameEditorService.getExitsForCurrentArea();
-        this.updateExitPositionLockouts();
+        this.updateUiAfterExitSelection(data);
       })
     );
     this.subscriptions.push(
       this._gameEditorService.selectedAreaIdObs.subscribe((data: any) => {
+        console.log('SUBSCRIPTION: selectedAreaId', data);
         if (this.selectedAreaId !== data) {
           this.selectedAreaId = data;
           this.exits = this._gameEditorService.getExitsForCurrentArea();
           this.refreshUIData();
         }
-      })
-    );
-    this.subscriptions.push(
-      this._gameEditorService.gameObs.subscribe((data: any) => {
-        this.exits = this._gameEditorService.getExitsForCurrentArea();
-        this.refreshUIData();
-        this.area = data.content.areas[this.selectedAreaId];
-        this.updateExitPositionLockouts();
       })
     );
   }
@@ -109,8 +109,8 @@ export class EditorPanelExitsComponent {
   handleDeleteClick(id: string) {
     this._gameEditorService.deleteExit(id);
   }
-  handleEditClick(id: string) {
-    this._gameEditorService.selectExit(id);
+
+  updateUiAfterExitSelection(id: string) {
     const selectedExit = this.exits.find((exit) => exit.id === id);
     this.inputExitPosition = selectedExit
       ? `${selectedExit.y}_${selectedExit.x}`
@@ -120,7 +120,16 @@ export class EditorPanelExitsComponent {
     this.inputExitDestination = selectedExit
       ? selectedExit.destinationAreaId
       : '';
+    this.inputExitDestinationExit = selectedExit
+      ? selectedExit.destinationExitId
+      : '';
     this.updateExitPositionLockouts();
+    this.refreshUIData();
+  }
+
+  handleEditClick(id: string) {
+    this._gameEditorService.selectExit(id);
+    this.updateUiAfterExitSelection(id);
   }
 
   handlePositionSelect(position: string) {
@@ -147,6 +156,8 @@ export class EditorPanelExitsComponent {
         exitType: this.inputExitType,
         areaId: this.selectedAreaId,
         direction: this.inputExitDirection,
+        destinationAreaId: this.inputExitDestination,
+        destinationExitId: this.inputExitDestinationExit,
         x: +x,
         y: +y,
       };

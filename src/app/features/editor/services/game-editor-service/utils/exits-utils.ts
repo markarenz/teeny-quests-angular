@@ -11,6 +11,7 @@ export const utilCreateExit = ({
   selectedAreaId: string;
 }) => {
   let destinationAreaId = '';
+  const destinationExitId = '';
   const areas = game.content.areas;
 
   if (areas) {
@@ -48,6 +49,7 @@ export const utilCreateExit = ({
     const newExit: GameAreaExit = {
       id: uuidv4(),
       destinationAreaId,
+      destinationExitId,
       exitType: 'default',
       direction,
       areaId: selectedAreaId,

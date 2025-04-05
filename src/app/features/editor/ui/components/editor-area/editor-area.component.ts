@@ -77,7 +77,6 @@ export class EditorAreaComponent {
     );
     this.subscriptions.push(
       this._gameEditorService.selectedExitIdObs.subscribe((data: string) => {
-        console.log('selectedExitId', data);
         this.selectedExitId = data;
       })
     );
@@ -97,6 +96,7 @@ export class EditorAreaComponent {
     );
     this.subscriptions.push(
       this._gameEditorService.selectedAreaIdObs.subscribe((data: string) => {
+        console.log('SUBSCRIPTION: selectedAreaIdObs', data);
         this.selectedAreaId = data;
         this.selectedArea =
           this.game?.content.areas[this.selectedAreaId] ?? null;

@@ -9,6 +9,7 @@ export const defaultExit: GameAreaExit = {
   y: 0,
   h: 1,
   destinationAreaId: '',
+  destinationExitId: '',
 };
 
 export const defaultItem: GameItem = {

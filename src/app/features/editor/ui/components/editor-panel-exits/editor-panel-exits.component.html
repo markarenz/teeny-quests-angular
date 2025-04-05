@@ -75,13 +75,25 @@
         </select>
       </div>
       <div>
-        <label for="exits-exit-destination-selector">Destination</label>
+        <label for="exits-exit-destination-selector">Destination Area</label>
         <select
-          id="exits-exit-destination-selector"
+          id="exits-exit-destination-area-selector"
           [(ngModel)]="inputExitDestination"
           (change)="handleExitInputChange()"
         >
           @for(item of areasListOptions; track item.value) {
+          <option [value]="item.value">{{ item.label }}</option>
+          }
+        </select>
+      </div>
+      <div>
+        <label for="exits-exit-destination-selector">Destination Exit</label>
+        <select
+          id="exits-exit-destination-exit-selector"
+          [(ngModel)]="inputExitDestinationExit"
+          (change)="handleExitInputChange()"
+        >
+          @for(item of exitsListOptions; track item.value) {
           <option [value]="item.value">{{ item.label }}</option>
           }
         </select>

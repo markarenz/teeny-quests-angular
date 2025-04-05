@@ -994,6 +994,7 @@
             "exitType": "default",
             "direction": "south",
             "destinationAreaId": "area2",
+            "destinationExitId": "17356027612345",
             "x": 2,
             "y": 6,
             "h": 1
@@ -1414,6 +1415,7 @@
             "exitType": "default",
             "direction": "north",
             "destinationAreaId": "start",
+            "destinationExitId": "1735602762347",
             "x": 2,
             "y": 0,
             "h": 1

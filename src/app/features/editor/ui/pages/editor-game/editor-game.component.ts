@@ -105,12 +105,13 @@ export class EditorGameComponent {
   }
 
   handleSelectItem(id: string) {
+    console.log('HANDLE ITEM SELECT FROM PAGE', id);
     this._gameEditorService.selectItem(id);
     this.subNavCurrent = 'items';
   }
 
   handleSelectExit(id: string) {
-    console.log('HANDLE EXIT', id);
+    console.log('HANDLE EXIT SELECT FROM PAGE', id);
     this._gameEditorService.selectExit(id);
     this.subNavCurrent = 'exits';
   }
