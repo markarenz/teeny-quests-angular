@@ -79,6 +79,22 @@ export class GameAreaComponent {
     );
   }
 
+  handleExitClick(exitId: string) {
+    // process turn exit destination area, destination position, destination facing (opposite of exit direction)
+    this._gameService.processTurn({
+      verb: 'exit',
+      noun: exitId,
+    });
+  }
+
+  handleItemClick(itemId: string) {
+    console.log('Item clicked:', itemId);
+  }
+
+  getIsNextToPlayer(x: number, y: number): boolean {
+    return this.playerPosition === `${y}_${x}`;
+  }
+
   ngOnDestroy() {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }

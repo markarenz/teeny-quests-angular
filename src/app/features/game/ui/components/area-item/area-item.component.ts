@@ -20,6 +20,7 @@ export class AreaItemComponent {
   @Input('item') item: GameItem = defaultItem;
   @Input('isEditorSelected') isEditorSelected: boolean = false;
   @Input('isClickable') isClickable: boolean = false;
+  @Input('isNearPlayer') isNearPlayer: boolean = false;
   @Output() onClick = new EventEmitter<string>();
 
   gridSize: number = defaultGridSize;

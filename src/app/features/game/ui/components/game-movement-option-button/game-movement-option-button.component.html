@@ -23,8 +23,12 @@
         fill="none"
         points="50,0 100,25 50,50 0,25"
         (click)="handleMovementButtonClick()"
+        (keydown.enter)="handleMovementButtonClick()"
         [attr.tabindex]="isLockedOut ? -1 : 0"
-      />
+        class="focus:fill-white/75"
+      >
+        <text x="10" y="100" style="opacity: 0">{{ title }}</text>
+      </polygon>
       <ellipse
         cx="50"
         cy="25"
@@ -33,7 +37,7 @@
         fill="var(--color-primary)"
         stroke="var(--color-primary-dark)"
         stroke-width="1"
-        class="transition-all duration-[0.25s] opacity-75 group-hover:opacity-100 group-hover:fill-[rgba(255,255,255,1)] group-active:fill-[var(--color-primary)]"
+        class="transition-all duration-[0.25s] opacity-75 group-hover:opacity-100 group-hover:fill-white group-focus:fill-white group-active:fill-[var(--color-primary)]"
       />
     </g>
   </svg>

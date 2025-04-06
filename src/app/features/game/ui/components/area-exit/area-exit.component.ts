@@ -27,6 +27,8 @@ export class AreaExitComponent {
   @Input('exit') exit: GameAreaExit = defaultExit;
   @Input('isEditorSelected') isEditorSelected: boolean = false;
   @Input('isClickable') isClickable: boolean = false;
+  @Input('isNearPlayer') isNearPlayer: boolean = false;
+  @Input('isLockedOut') isLockedOut: boolean = false;
   @Output() onClick = new EventEmitter<string>();
   gridSize: number = defaultGridSize;
 
@@ -42,6 +44,12 @@ export class AreaExitComponent {
     south: 'top-[40%] left-[5%]',
     east: 'top-[40%] left-[55%]',
     west: 'top-[15%] left-[5%]',
+  };
+  zBumpMap: { [key: string]: number } = {
+    north: -1,
+    south: 1,
+    east: 1,
+    west: -1,
   };
   updateExitProps() {
     if (this.exit) {

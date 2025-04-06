@@ -91,7 +91,6 @@ export class GameEditorService {
   setTestValue(value: any, fieldName: string) {
     switch (fieldName) {
       case 'selectedAreaId': {
-        console.log('SET SELECTED AREA ID', value);
         this.selectedAreaId.next(value);
         break;
       }
