@@ -23,12 +23,21 @@
 
     <!-- Area Items -->
     @for(item of areaItems; track item.id;) {
-    <app-area-item [item]="item" />
+    <app-area-item
+      [item]="item"
+      [isNearPlayer]="getIsNextToPlayer(item.x, item.y)"
+    />
     }
 
     <!-- Area Exits -->
     @for(exit of areaExits; track exit.id;) {
-    <app-area-exit [exit]="exit" />
+    <app-area-exit
+      [exit]="exit"
+      [isClickable]="getIsNextToPlayer(exit.x, exit.y)"
+      [isNearPlayer]="getIsNextToPlayer(exit.x, exit.y)"
+      (onClick)="handleExitClick(exit.id)"
+      [isLockedOut]="isLockedOut"
+    />
     }
 
     <!-- Movement Option Buttons -->

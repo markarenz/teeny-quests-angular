@@ -30,6 +30,9 @@ export class GameService {
   private isLockedOut = new BehaviorSubject<boolean>(false);
   isLockedOutObs = this.isLockedOut.asObservable();
 
+  // private playerPosition = new BehaviorSubject<string>('');
+  // playerPositionObs = this.playerPosition.asObservable();
+
   testInit(nextGameROM: GameROM): void {
     this.gameROM.next(nextGameROM);
     this.initGameState(nextGameROM);
@@ -55,6 +58,13 @@ export class GameService {
       })
     );
   }
+
+  // updatePlayerPosition(nextGameState: GameState): void {
+  //   const nextPlayerPosition = `${nextGameState.player.y}_${nextGameState.player.x}`;
+  //   if (nextPlayerPosition !== this.playerPosition.value) {
+  //     this.playerPosition.next(nextPlayerPosition);
+  //   }
+  // }
 
   initGameState(nextGameROM: GameROM): void {
     const nowStr = new Date().toISOString();
@@ -100,6 +110,7 @@ export class GameService {
 
     this.gameState.next(nextGameState);
     this.calculateMovementOptions(nextGameROM, nextGameState);
+    // this.updatePlayerPosition(nextGameState);
     this.saveLocalGameState(nextGameState);
   }
 
@@ -143,6 +154,73 @@ export class GameService {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
+  getOppositeDirection(direction: string): string {
+    const mappper: { [key: string]: string } = {
+      north: 'south',
+      south: 'north',
+      east: 'west',
+      west: 'east',
+    };
+    return mappper[direction] ?? direction;
+  }
+  turnActionExit = async (exitId: string): Promise<GameState> => {
+    let nextGameState = JSON.parse(JSON.stringify(this.gameState.value));
+    const areaId = nextGameState.player.areaId;
+    const area = this.getArea(areaId);
+    const exit = area?.exits.find((e) => e.id === exitId);
+    const destinationAreaId = exit?.destinationAreaId;
+    if (!destinationAreaId) {
+      return nextGameState;
+    }
+    const destinationArea = this.getArea(destinationAreaId);
+    if (!destinationArea) {
+      return nextGameState;
+    }
+    const destinationExit =
+      destinationArea?.exits.find((e) => e.id === exit.destinationExitId) ??
+      destinationArea.exits[0] ??
+      null;
+    if (!destinationExit) {
+      return nextGameState;
+    }
+
+    const destinationFacing = this.getOppositeDirection(
+      destinationExit.direction
+    );
+
+    this.isLockedOut.next(true);
+    setTimeout(() => {});
+
+    // animate player exit
+    await this.delay(250);
+
+    // fade out
+    await this.delay(250);
+
+    this.gameState.next({
+      ...nextGameState,
+      player: {
+        ...nextGameState.player,
+        areaId: '',
+        facing: '',
+        x: -1,
+        y: -1,
+      },
+    });
+
+    // move player to destination position, area, direction
+    nextGameState.player.areaId = destinationAreaId;
+    nextGameState.player.facing = destinationFacing;
+    nextGameState.player.x = destinationExit?.x;
+    nextGameState.player.y = destinationExit?.y;
+
+    // fade in
+    await this.delay(250);
+    this.isLockedOut.next(false);
+
+    return nextGameState;
+  };
+
   turnActionMovePlayer = async (destination: string): Promise<GameState> => {
     const path = this.movementOptions.value[destination];
     let nextGameState = JSON.parse(JSON.stringify(this.gameState.value));
@@ -158,13 +236,13 @@ export class GameService {
       nextGameState.player.x = +x;
       nextGameState.player.y = +y;
       if (dx > 0) {
-        nextGameState.player.facing = 'E';
+        nextGameState.player.facing = 'east';
       } else if (dx < 0) {
-        nextGameState.player.facing = 'W';
+        nextGameState.player.facing = 'west';
       } else if (dy > 0) {
-        nextGameState.player.facing = 'S';
+        nextGameState.player.facing = 'south';
       } else if (dy < 0) {
-        nextGameState.player.facing = 'N';
+        nextGameState.player.facing = 'north';
       }
       this.gameState.next(nextGameState);
       await this.delay(STANDARD_MOVE_DURATION);
@@ -190,6 +268,10 @@ export class GameService {
           // move logic
           nextGameState = await this.turnActionMovePlayer(noun);
           break;
+        case 'exit':
+          // exit logic
+          nextGameState = await this.turnActionExit(noun);
+          break;
         default:
           break;
       }
@@ -198,6 +280,7 @@ export class GameService {
       this.saveLocalGameState(nextGameState);
       this.gameState.next(nextGameState);
       this.calculateMovementOptions(this.gameROM.value, nextGameState);
+      // this.updatePlayerPosition(nextGameState);
     }
   }
 }
