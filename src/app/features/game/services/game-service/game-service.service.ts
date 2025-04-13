@@ -30,8 +30,11 @@ export class GameService {
   private isLockedOut = new BehaviorSubject<boolean>(false);
   isLockedOutObs = this.isLockedOut.asObservable();
 
-  // private playerPosition = new BehaviorSubject<string>('');
-  // playerPositionObs = this.playerPosition.asObservable();
+  private areaTransitionMode = new BehaviorSubject<string>('cover');
+  areaTransitionModeObs = this.areaTransitionMode.asObservable();
+
+  private exitingDirection = new BehaviorSubject<string>('');
+  exitingDirectionObs = this.exitingDirection.asObservable();
 
   testInit(nextGameROM: GameROM): void {
     this.gameROM.next(nextGameROM);
@@ -58,13 +61,6 @@ export class GameService {
       })
     );
   }
-
-  // updatePlayerPosition(nextGameState: GameState): void {
-  //   const nextPlayerPosition = `${nextGameState.player.y}_${nextGameState.player.x}`;
-  //   if (nextPlayerPosition !== this.playerPosition.value) {
-  //     this.playerPosition.next(nextPlayerPosition);
-  //   }
-  // }
 
   initGameState(nextGameROM: GameROM): void {
     const nowStr = new Date().toISOString();
@@ -110,12 +106,13 @@ export class GameService {
 
     this.gameState.next(nextGameState);
     this.calculateMovementOptions(nextGameROM, nextGameState);
-    // this.updatePlayerPosition(nextGameState);
     this.saveLocalGameState(nextGameState);
   }
 
   loadGameROM(gameId: string | null): void {
     if (gameId) {
+      this.areaTransitionMode.next('cover');
+      this.isLockedOut.next(true);
       fetch(`${gamesApiUrl}?id=${gameId}`, {
         method: 'GET',
         headers: { Accept: 'application/json' },
@@ -133,6 +130,7 @@ export class GameService {
             this.gameROM.next(nextGameROM);
             this.initGameState(nextGameROM);
           }
+          this.isLockedOut.next(false);
         });
     }
   }
@@ -147,6 +145,13 @@ export class GameService {
 
   setPageModalStatus(status: string): void {
     this.isLockedOut.next(status !== '');
+    console.log(
+      'page modal status:',
+      status,
+      '?',
+      status !== '' ? 'cover' : ''
+    );
+    this.areaTransitionMode.next(status !== '' ? 'cover' : '');
     this.pageModalStatus.next(status);
   }
 
@@ -163,6 +168,7 @@ export class GameService {
     };
     return mappper[direction] ?? direction;
   }
+
   turnActionExit = async (exitId: string): Promise<GameState> => {
     let nextGameState = JSON.parse(JSON.stringify(this.gameState.value));
     const areaId = nextGameState.player.areaId;
@@ -189,34 +195,34 @@ export class GameService {
     );
 
     this.isLockedOut.next(true);
-    setTimeout(() => {});
 
     // animate player exit
-    await this.delay(250);
-
-    // fade out
-    await this.delay(250);
-
+    nextGameState.player.facing = exit.direction;
     this.gameState.next({
       ...nextGameState,
       player: {
         ...nextGameState.player,
-        areaId: '',
-        facing: '',
-        x: -1,
-        y: -1,
+        facing: exit.direction,
       },
     });
+    console.log('service: turnActionExit: 0', exit.direction);
+    this.exitingDirection.next(exit.direction);
+    await this.delay(250);
+
+    // fade out
+    this.areaTransitionMode.next('cover');
+    await this.delay(250);
 
     // move player to destination position, area, direction
     nextGameState.player.areaId = destinationAreaId;
-    nextGameState.player.facing = destinationFacing;
     nextGameState.player.x = destinationExit?.x;
     nextGameState.player.y = destinationExit?.y;
+    this.exitingDirection.next('');
 
-    // fade in
     await this.delay(250);
+
     this.isLockedOut.next(false);
+    this.areaTransitionMode.next('');
 
     return nextGameState;
   };
@@ -276,11 +282,11 @@ export class GameService {
           break;
       }
 
+      console.log('processturn generate move options...');
       nextGameState.numTurns += 1;
       this.saveLocalGameState(nextGameState);
       this.gameState.next(nextGameState);
       this.calculateMovementOptions(this.gameROM.value, nextGameState);
-      // this.updatePlayerPosition(nextGameState);
     }
   }
 }

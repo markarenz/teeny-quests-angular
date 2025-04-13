@@ -2,5 +2,26 @@
   position: absolute;
   pointer-events: none;
 
+  transform: translate(0, 0);
   transition: 0.025s all linear;
+}
+
+.player-position-inner {
+  transition: 0.25s transform ease-in-out;
+}
+
+.exit-direction-north {
+  transform: translate(15%, -8%);
+}
+
+.exit-direction-south {
+  transform: translate(-15%, 8%);
+}
+
+.exit-direction-east {
+  transform: translate(15%, 8%);
+}
+
+.exit-direction-west {
+  transform: translate(-15%, -8%);
 }

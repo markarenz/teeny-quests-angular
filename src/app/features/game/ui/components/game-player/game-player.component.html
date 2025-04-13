@@ -6,8 +6,10 @@
   [style.bottom]="positionStyle.bottom"
   [style.left]="positionStyle.left"
 >
-  <app-svg-player />
-  <div class="absolute top-8 left-0 w-full flex justify-center text-wite-100">
-    <div>{{ playerFacing }}</div>
+  <div class="player-position-inner {{ exitTransitionClass }}">
+    <app-svg-player />
+    <div class="absolute top-8 left-0 w-full flex justify-center text-wite-100">
+      <div>{{ playerFacing }}</div>
+    </div>
   </div>
 </div>

@@ -26,6 +26,7 @@
           [title]="pageModalTitle"
           (onConfirm)="handlePageModalConfirm()"
           (onClose)="handlePageModalConfirm()"
+          [isLockedOut]="isLockedOut"
         >
           @if(isLoading) {
           <app-loader-animation />

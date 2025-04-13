@@ -13,6 +13,7 @@ export class CommonModalComponent {
   @Input('title') title: string = '';
   @Input('content') content: string = '';
   @Input('showCancel') showCancel: boolean = false;
+  @Input('isLockedOut') isLockedOut: boolean = false;
   @Output() onClose = new EventEmitter();
   @Output() onConfirm = new EventEmitter();
   @Output() onCancel? = new EventEmitter();

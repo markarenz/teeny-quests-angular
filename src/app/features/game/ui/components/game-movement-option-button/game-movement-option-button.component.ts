@@ -35,6 +35,10 @@ export class GameMovementOptionButtonComponent {
     this.updateCellProps();
   }
 
+  ngOnChanges() {
+    this.updateCellProps();
+  }
+
   updateCellProps() {
     const positionKeyArr = this.positionKey.split('_');
     this.x = parseInt(positionKeyArr[1]);

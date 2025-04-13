@@ -43,6 +43,7 @@ export class GameAreaComponent {
   playerFacing: string = 'n';
   isLockedOut: boolean = false;
   numTurns: number = 0;
+  areaTransitionMode: string = 'cover';
 
   ngOnInit(): void {
     this.subscriptions.push(
@@ -59,6 +60,11 @@ export class GameAreaComponent {
       )
     );
     this.subscriptions.push(
+      this._gameService.areaTransitionModeObs.subscribe((data: string) => {
+        this.areaTransitionMode = data;
+      })
+    );
+    this.subscriptions.push(
       this._gameService.gameStateObs.subscribe((data: GameState | null) => {
         if (data) {
           this.numTurns = data.numTurns;
@@ -73,6 +79,7 @@ export class GameAreaComponent {
               : [];
           }
           this.playerPosition = `${data.player.y}_${data.player.x}`;
+          console.log('SET PLAYER FACING...', data.player.facing);
           this.playerFacing = data.player.facing;
         }
       })
