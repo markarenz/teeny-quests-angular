@@ -145,12 +145,6 @@ export class GameService {
 
   setPageModalStatus(status: string): void {
     this.isLockedOut.next(status !== '');
-    console.log(
-      'page modal status:',
-      status,
-      '?',
-      status !== '' ? 'cover' : ''
-    );
     this.areaTransitionMode.next(status !== '' ? 'cover' : '');
     this.pageModalStatus.next(status);
   }
@@ -205,7 +199,6 @@ export class GameService {
         facing: exit.direction,
       },
     });
-    console.log('service: turnActionExit: 0', exit.direction);
     this.exitingDirection.next(exit.direction);
     await this.delay(250);
 
@@ -282,7 +275,6 @@ export class GameService {
           break;
       }
 
-      console.log('processturn generate move options...');
       nextGameState.numTurns += 1;
       this.saveLocalGameState(nextGameState);
       this.gameState.next(nextGameState);

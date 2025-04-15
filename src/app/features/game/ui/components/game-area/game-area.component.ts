@@ -79,7 +79,6 @@ export class GameAreaComponent {
               : [];
           }
           this.playerPosition = `${data.player.y}_${data.player.x}`;
-          console.log('SET PLAYER FACING...', data.player.facing);
           this.playerFacing = data.player.facing;
         }
       })

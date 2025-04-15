@@ -152,7 +152,9 @@ select {
     &:focus {
       stroke: var(--color-white-75);
     }
-    &:active,
+    &:active {
+      fill: var(--color-primary-75);
+    }
     &:hover {
       fill: var(--color-primary-75);
     }

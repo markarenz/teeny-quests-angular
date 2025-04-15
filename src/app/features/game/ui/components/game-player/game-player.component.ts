@@ -36,7 +36,7 @@ export class GamePlayerComponent {
     if (this.cellData) {
       this.h = this.cellData.h;
     }
-    console.log('>>>>', this.exitTransitionClass);
+
     const [y, x] = this.playerPosition.split('_').map((v) => parseInt(v));
     const cellW = 100 / defaultGridSize;
     this.width = `${cellW}%`;
