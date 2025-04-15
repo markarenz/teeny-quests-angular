@@ -43,6 +43,7 @@ export class GameAreaComponent {
   playerFacing: string = 'n';
   isLockedOut: boolean = false;
   numTurns: number = 0;
+  areaTransitionMode: string = 'cover';
 
   ngOnInit(): void {
     this.subscriptions.push(
@@ -57,6 +58,11 @@ export class GameAreaComponent {
           this.movementOptionsKeys = Object.keys(data);
         }
       )
+    );
+    this.subscriptions.push(
+      this._gameService.areaTransitionModeObs.subscribe((data: string) => {
+        this.areaTransitionMode = data;
+      })
     );
     this.subscriptions.push(
       this._gameService.gameStateObs.subscribe((data: GameState | null) => {
@@ -77,6 +83,22 @@ export class GameAreaComponent {
         }
       })
     );
+  }
+
+  handleExitClick(exitId: string) {
+    // process turn exit destination area, destination position, destination facing (opposite of exit direction)
+    this._gameService.processTurn({
+      verb: 'exit',
+      noun: exitId,
+    });
+  }
+
+  handleItemClick(itemId: string) {
+    console.log('Item clicked:', itemId);
+  }
+
+  getIsNextToPlayer(x: number, y: number): boolean {
+    return this.playerPosition === `${y}_${x}`;
   }
 
   ngOnDestroy() {

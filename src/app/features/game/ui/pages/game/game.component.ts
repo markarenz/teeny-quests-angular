@@ -29,6 +29,7 @@ export class GameComponent {
   isLoading: boolean = false;
   pageModalStatus: string = 'loading';
   pageModalTitle: string = 'Loading';
+  isLockedOut: boolean = false;
   constructor(
     private titleService: Title,
     private metaService: Meta,
@@ -62,6 +63,11 @@ export class GameComponent {
       this._gameService.pageModalStatusObs.subscribe((data: string) => {
         this.pageModalStatus = `${data}`;
         this.pageModalTitle = pageModalTitles[data];
+      })
+    );
+    this.subscriptions.push(
+      this._gameService.isLockedOutObs.subscribe((data: boolean) => {
+        this.isLockedOut = data;
       })
     );
   }

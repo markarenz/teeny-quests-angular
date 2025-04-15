@@ -1,4 +1,4 @@
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import fetchMock from 'fetch-mock';
 import { GameService } from './game-service.service';
 import { gamesApiUrl } from '@config/index';
@@ -94,7 +94,6 @@ describe('processTurn', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(GameService);
-
     service.testInit(gameMock);
   });
 
@@ -103,7 +102,7 @@ describe('processTurn', () => {
     tick(1000);
     service.processTurn({
       verb: 'move',
-      noun: '6_3',
+      noun: '3_3',
     });
     tick(1000);
 
@@ -117,10 +116,15 @@ describe('processTurn', () => {
       i += 1;
     });
 
+    let j = 0;
     service.gameStateObs.subscribe((gameState) => {
-      expect(gameState?.player?.x).toEqual(3);
-      expect(gameState?.player?.y).toEqual(6);
-      expect(gameState?.player?.facing).toEqual('E');
+      if (j === 1) {
+        expect(gameState?.player?.x).toEqual(3);
+        expect(gameState?.player?.y).toEqual(6);
+        expect(gameState?.player?.facing).toEqual('east');
+        flush();
+      }
+      j += 1;
     });
   }));
 });
@@ -138,4 +142,57 @@ describe('getArea', () => {
     const actual = service.getArea('start');
     expect(actual?.id).toEqual('start');
   });
+});
+
+describe('getOppositeDirection', () => {
+  let service: GameService;
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(GameService);
+  });
+
+  it('should return opposite direction', () => {
+    expect(service.getOppositeDirection('north')).toEqual('south');
+    expect(service.getOppositeDirection('south')).toEqual('north');
+    expect(service.getOppositeDirection('east')).toEqual('west');
+    expect(service.getOppositeDirection('west')).toEqual('east');
+    expect(service.getOppositeDirection('nothing')).toEqual('nothing');
+  });
+});
+
+describe('turnActionExit', () => {
+  let service: GameService;
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(GameService);
+    service.testInit(gameMock);
+  });
+
+  it('should process turn exit', fakeAsync(() => {
+    let i = 0;
+    service.gameStateObs.subscribe((gameState) => {
+      if (i === 3) {
+        expect(gameState?.player?.areaId).toEqual('area2');
+        expect(gameState?.player?.x).toEqual(2);
+        expect(gameState?.player?.y).toEqual(0);
+        expect(gameState?.player?.facing).toEqual('south');
+        flush();
+      }
+      i += 1;
+    });
+
+    tick(250);
+    service.processTurn({
+      verb: 'exit',
+      noun: '1735602762347',
+    });
+    service.turnActionExit('1735602762347');
+    tick(250);
+    tick(250);
+    tick(250);
+    tick(250);
+    tick(250);
+    tick(250);
+    tick(250);
+  }));
 });

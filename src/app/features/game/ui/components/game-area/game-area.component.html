@@ -23,12 +23,21 @@
 
     <!-- Area Items -->
     @for(item of areaItems; track item.id;) {
-    <app-area-item [item]="item" />
+    <app-area-item
+      [item]="item"
+      [isNearPlayer]="getIsNextToPlayer(item.x, item.y)"
+    />
     }
 
     <!-- Area Exits -->
     @for(exit of areaExits; track exit.id;) {
-    <app-area-exit [exit]="exit" />
+    <app-area-exit
+      [exit]="exit"
+      [isClickable]="getIsNextToPlayer(exit.x, exit.y)"
+      [isNearPlayer]="getIsNextToPlayer(exit.x, exit.y)"
+      (onClick)="handleExitClick(exit.id)"
+      [isLockedOut]="isLockedOut"
+    />
     }
 
     <!-- Movement Option Buttons -->
@@ -48,7 +57,14 @@
       [playerFacing]="playerFacing"
     />
 
-    <div class="absolute right-2 top-2">Turns: {{ numTurns }}</div>
+    <div
+      id="game-transition-cover"
+      class="absolute top-0 left-0 w-full h-full bg-gray-800 z-[100] transition-opacity {{
+        areaTransitionMode === 'cover' ? 'opacity-100' : 'opacity-0'
+      }} pointer-events-none"
+    ></div>
+
+    <div class="absolute right-2 top-2 z-[999]">Turns: {{ numTurns }}</div>
   </div>
   }
 </div>

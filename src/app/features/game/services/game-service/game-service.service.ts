@@ -30,6 +30,12 @@ export class GameService {
   private isLockedOut = new BehaviorSubject<boolean>(false);
   isLockedOutObs = this.isLockedOut.asObservable();
 
+  private areaTransitionMode = new BehaviorSubject<string>('cover');
+  areaTransitionModeObs = this.areaTransitionMode.asObservable();
+
+  private exitingDirection = new BehaviorSubject<string>('');
+  exitingDirectionObs = this.exitingDirection.asObservable();
+
   testInit(nextGameROM: GameROM): void {
     this.gameROM.next(nextGameROM);
     this.initGameState(nextGameROM);
@@ -105,6 +111,8 @@ export class GameService {
 
   loadGameROM(gameId: string | null): void {
     if (gameId) {
+      this.areaTransitionMode.next('cover');
+      this.isLockedOut.next(true);
       fetch(`${gamesApiUrl}?id=${gameId}`, {
         method: 'GET',
         headers: { Accept: 'application/json' },
@@ -122,6 +130,7 @@ export class GameService {
             this.gameROM.next(nextGameROM);
             this.initGameState(nextGameROM);
           }
+          this.isLockedOut.next(false);
         });
     }
   }
@@ -136,12 +145,80 @@ export class GameService {
 
   setPageModalStatus(status: string): void {
     this.isLockedOut.next(status !== '');
+    this.areaTransitionMode.next(status !== '' ? 'cover' : '');
     this.pageModalStatus.next(status);
   }
 
   delay(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
+
+  getOppositeDirection(direction: string): string {
+    const mappper: { [key: string]: string } = {
+      north: 'south',
+      south: 'north',
+      east: 'west',
+      west: 'east',
+    };
+    return mappper[direction] ?? direction;
+  }
+
+  turnActionExit = async (exitId: string): Promise<GameState> => {
+    let nextGameState = JSON.parse(JSON.stringify(this.gameState.value));
+    const areaId = nextGameState.player.areaId;
+    const area = this.getArea(areaId);
+    const exit = area?.exits.find((e) => e.id === exitId);
+    const destinationAreaId = exit?.destinationAreaId;
+    if (!destinationAreaId) {
+      return nextGameState;
+    }
+    const destinationArea = this.getArea(destinationAreaId);
+    if (!destinationArea) {
+      return nextGameState;
+    }
+    const destinationExit =
+      destinationArea?.exits.find((e) => e.id === exit.destinationExitId) ??
+      destinationArea.exits[0] ??
+      null;
+    if (!destinationExit) {
+      return nextGameState;
+    }
+
+    const destinationFacing = this.getOppositeDirection(
+      destinationExit.direction
+    );
+
+    this.isLockedOut.next(true);
+
+    // animate player exit
+    nextGameState.player.facing = exit.direction;
+    this.gameState.next({
+      ...nextGameState,
+      player: {
+        ...nextGameState.player,
+        facing: exit.direction,
+      },
+    });
+    this.exitingDirection.next(exit.direction);
+    await this.delay(250);
+
+    // fade out
+    this.areaTransitionMode.next('cover');
+    await this.delay(250);
+
+    // move player to destination position, area, direction
+    nextGameState.player.areaId = destinationAreaId;
+    nextGameState.player.x = destinationExit?.x;
+    nextGameState.player.y = destinationExit?.y;
+    this.exitingDirection.next('');
+
+    await this.delay(250);
+
+    this.isLockedOut.next(false);
+    this.areaTransitionMode.next('');
+
+    return nextGameState;
+  };
 
   turnActionMovePlayer = async (destination: string): Promise<GameState> => {
     const path = this.movementOptions.value[destination];
@@ -158,13 +235,13 @@ export class GameService {
       nextGameState.player.x = +x;
       nextGameState.player.y = +y;
       if (dx > 0) {
-        nextGameState.player.facing = 'E';
+        nextGameState.player.facing = 'east';
       } else if (dx < 0) {
-        nextGameState.player.facing = 'W';
+        nextGameState.player.facing = 'west';
       } else if (dy > 0) {
-        nextGameState.player.facing = 'S';
+        nextGameState.player.facing = 'south';
       } else if (dy < 0) {
-        nextGameState.player.facing = 'N';
+        nextGameState.player.facing = 'north';
       }
       this.gameState.next(nextGameState);
       await this.delay(STANDARD_MOVE_DURATION);
@@ -189,6 +266,10 @@ export class GameService {
         case 'move':
           // move logic
           nextGameState = await this.turnActionMovePlayer(noun);
+          break;
+        case 'exit':
+          // exit logic
+          nextGameState = await this.turnActionExit(noun);
           break;
         default:
           break;
