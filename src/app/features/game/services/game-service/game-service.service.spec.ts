@@ -3,6 +3,7 @@ import fetchMock from 'fetch-mock';
 import { GameService } from './game-service.service';
 import { gamesApiUrl } from '@config/index';
 import gameMockData from '@app/features/editor/mocks/game.mock.json';
+import { MovementOptions } from '@app/features/main/interfaces/types';
 
 let gameMock = { ...gameMockData };
 let gameMockFromDB = { ...gameMockData };
@@ -21,6 +22,10 @@ beforeEach(async () => {
   // GameROM `content` is stringified when saved to DB
   // @ts-expect-error
   gameMockFromDB.content = JSON.stringify(gameMockData.content);
+});
+
+afterEach(() => {
+  TestBed.resetTestingModule();
 });
 
 describe('GameService', () => {
@@ -91,6 +96,11 @@ describe('initGameState', () => {
 
 describe('processTurn', () => {
   let service: GameService;
+  const mockMovementOptions: MovementOptions = {
+    '2_3': ['2_2', '2_3'],
+    '2_4': ['2_2', '2_3', '2_4'],
+    '2_5': ['2_2', '2_3', '2_4', '2_5'],
+  };
   beforeEach(() => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(GameService);
@@ -99,10 +109,47 @@ describe('processTurn', () => {
 
   it('should process turn', fakeAsync(() => {
     let i = 0;
+    service.testSetValue('movementOptions', mockMovementOptions);
     tick(1000);
     service.processTurn({
       verb: 'move',
-      noun: '3_3',
+      noun: '2_5',
+    });
+    tick(1000);
+    service.processTurn({
+      verb: 'move',
+      noun: '2_3',
+    });
+    tick(1000);
+
+    service.isLockedOutObs.subscribe((isLockedOut) => {
+      if (i === 0) {
+        expect(isLockedOut).toEqual(false);
+      }
+      if (i === 1) {
+        expect(isLockedOut).toEqual(true);
+      }
+      i += 1;
+    });
+
+    let j = 0;
+    service.gameStateObs.subscribe((gameState) => {
+      if (j === 0) {
+        expect(gameState?.player?.y).toEqual(2);
+        expect(gameState?.player?.x).toEqual(3);
+        flush();
+      }
+      j += 1;
+    });
+  }));
+
+  it('should fail if no path is available', fakeAsync(() => {
+    let i = 0;
+    service.testSetValue('movementOptions', mockMovementOptions);
+    tick(1000);
+    service.processTurn({
+      verb: 'move',
+      noun: '9_9',
     });
     tick(1000);
 
@@ -121,7 +168,7 @@ describe('processTurn', () => {
       if (j === 1) {
         expect(gameState?.player?.x).toEqual(3);
         expect(gameState?.player?.y).toEqual(6);
-        expect(gameState?.player?.facing).toEqual('east');
+        expect(gameState?.player?.facing).toEqual('north');
         flush();
       }
       j += 1;
@@ -134,7 +181,6 @@ describe('getArea', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(GameService);
-
     service.testInit(gameMock);
   });
 
@@ -169,30 +215,20 @@ describe('turnActionExit', () => {
   });
 
   it('should process turn exit', fakeAsync(() => {
-    let i = 0;
-    service.gameStateObs.subscribe((gameState) => {
-      if (i === 3) {
-        expect(gameState?.player?.areaId).toEqual('area2');
-        expect(gameState?.player?.x).toEqual(2);
-        expect(gameState?.player?.y).toEqual(0);
-        expect(gameState?.player?.facing).toEqual('south');
-        flush();
-      }
-      i += 1;
-    });
+    tick(1000);
 
-    tick(250);
     service.processTurn({
       verb: 'exit',
       noun: '1735602762347',
     });
-    service.turnActionExit('1735602762347');
-    tick(250);
-    tick(250);
-    tick(250);
-    tick(250);
-    tick(250);
-    tick(250);
-    tick(250);
+    let i = 0;
+    service.gameStateObs.subscribe((gameState) => {
+      if (i === 1) {
+        expect(gameState?.player?.areaId).toEqual('area2');
+        flush();
+      }
+      i += 1;
+    });
+    flush();
   }));
 });

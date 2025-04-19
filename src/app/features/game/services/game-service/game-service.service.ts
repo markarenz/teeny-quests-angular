@@ -40,6 +40,17 @@ export class GameService {
     this.gameROM.next(nextGameROM);
     this.initGameState(nextGameROM);
   }
+
+  testSetValue(key: string, value: unknown): void {
+    switch (key) {
+      case 'movementOptions':
+        this.movementOptions.next(value as MovementOptions);
+        break;
+      default:
+        break;
+    }
+  }
+
   calculateMovementOptions(
     nextGameROM: GameROM,
     nextGameState: GameState
@@ -185,13 +196,13 @@ export class GameService {
     }
 
     const destinationFacing = this.getOppositeDirection(
-      destinationExit.direction
+      this.getOppositeDirection(destinationExit.direction)
     );
 
     this.isLockedOut.next(true);
 
     // animate player exit
-    nextGameState.player.facing = exit.direction;
+    nextGameState.player.facing = destinationFacing;
     this.gameState.next({
       ...nextGameState,
       player: {
