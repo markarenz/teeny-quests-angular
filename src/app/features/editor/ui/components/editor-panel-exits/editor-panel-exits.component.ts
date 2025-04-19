@@ -52,9 +52,12 @@ export class EditorPanelExitsComponent {
       .getDestinationAreasListOptions()
       .filter((item) => item.value !== this.selectedAreaId);
 
-    this.exitsListOptions = this._gameEditorService
-      .getDestinationExitsListOptions(this.inputExitDestination)
-      .filter((item) => item.value !== this.selectedExitId);
+    this.exitsListOptions = [
+      { value: '', label: 'None' },
+      ...this._gameEditorService
+        .getDestinationExitsListOptions(this.inputExitDestination)
+        .filter((item) => item.value !== this.selectedExitId),
+    ];
   }
 
   updateExitPositionLockouts() {
