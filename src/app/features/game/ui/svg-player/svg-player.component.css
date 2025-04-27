@@ -1,0 +1,23 @@
+.flip-h {
+  transform: scaleX(-1);
+}
+
+.fill-outline {
+  fill: #1a1a1a;
+}
+
+.fill-shoes {
+  fill: #79542e;
+}
+
+.fill-pants {
+  fill: #4d4d4d;
+}
+
+.fill-cloak {
+  fill: #597d2c;
+}
+
+.fill-skin {
+  fill: #ebb77f;
+}

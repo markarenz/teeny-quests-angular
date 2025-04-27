@@ -196,7 +196,7 @@ export class GameService {
     }
 
     const destinationFacing = this.getOppositeDirection(
-      this.getOppositeDirection(destinationExit.direction)
+      destinationExit.direction
     );
 
     this.isLockedOut.next(true);
