@@ -19,13 +19,14 @@ import { GameAreaMapCell } from '@app/features/main/interfaces/types';
 export class GamePlayerComponent {
   private subscriptions: Subscription[] = [];
   @Input('playerPosition') playerPosition: string = '0_0';
-  @Input('playerFacing') playerFacing: string = 'n';
+  @Input('playerFacing') playerFacing: string = 'north';
   @Input('cellData') cellData: GameAreaMapCell | null = null;
 
   h: number = 0;
   positionStyle: AreaPosition = { left: '0', bottom: '0', z: 0 };
   width: string = '0%';
   exitTransitionClass = '';
+  playerAnim = '';
 
   constructor(private _gameService: GameService) {}
 
@@ -54,6 +55,11 @@ export class GamePlayerComponent {
     this.subscriptions.push(
       this._gameService.exitingDirectionObs.subscribe((data: string) => {
         this.exitTransitionClass = `exit-direction-${data}`;
+      })
+    );
+    this.subscriptions.push(
+      this._gameService.playerAnimObs.subscribe((data: string) => {
+        this.playerAnim = data;
       })
     );
   }

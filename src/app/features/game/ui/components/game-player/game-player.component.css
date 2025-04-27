@@ -3,7 +3,7 @@
   pointer-events: none;
 
   transform: translate(0, 0);
-  transition: 0.025s all linear;
+  transition: 0.05s all linear;
 }
 
 .player-position-inner {
