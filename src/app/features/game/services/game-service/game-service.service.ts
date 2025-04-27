@@ -36,6 +36,9 @@ export class GameService {
   private exitingDirection = new BehaviorSubject<string>('');
   exitingDirectionObs = this.exitingDirection.asObservable();
 
+  private playerAnim = new BehaviorSubject<string>('');
+  playerAnimObs = this.playerAnim.asObservable();
+
   testInit(nextGameROM: GameROM): void {
     this.gameROM.next(nextGameROM);
     this.initGameState(nextGameROM);
@@ -254,10 +257,12 @@ export class GameService {
       } else if (dy < 0) {
         nextGameState.player.facing = 'north';
       }
+      this.playerAnim.next(`walk-${i % 2}`);
       this.gameState.next(nextGameState);
       await this.delay(STANDARD_MOVE_DURATION);
     }
     await this.delay(250);
+    this.playerAnim.next('');
     this.isLockedOut.next(false);
     return this.gameState.value as GameState;
   };

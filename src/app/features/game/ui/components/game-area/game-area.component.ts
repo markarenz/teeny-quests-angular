@@ -78,6 +78,7 @@ export class GameAreaComponent {
               ? Object.keys(this.areaMap)
               : [];
           }
+          // if moving...
           this.playerPosition = `${data.player.y}_${data.player.x}`;
           this.playerFacing = data.player.facing;
         }

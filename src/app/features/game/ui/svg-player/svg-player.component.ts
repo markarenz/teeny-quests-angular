@@ -9,5 +9,5 @@ import { Component, Input } from '@angular/core';
 })
 export class SvgPlayerComponent {
   @Input('playerFacing') playerFacing: string = 'north';
-  // @Input('playerAction') playerAction: string = 'n';
+  @Input('playerAnim') playerAnim: string = '';
 }

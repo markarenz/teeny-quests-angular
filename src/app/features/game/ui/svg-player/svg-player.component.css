@@ -21,3 +21,76 @@
 .fill-skin {
   fill: #ebb77f;
 }
+
+.shadow {
+  opacity: 0.3;
+}
+
+.anim-walk-0 {
+  .d-leg-r {
+    transform: translateY(-2%);
+  }
+
+  .d-leg-l {
+    transform: translateY(0);
+  }
+
+  .d-arm-r {
+    transform: translateX(1%);
+  }
+
+  .d-arm-l {
+    transform: translateX(0);
+  }
+
+  .u-leg-r {
+    transform: translateY(-2%);
+  }
+
+  .u-leg-l {
+    transform: translateY(0);
+  }
+}
+.anim-walk-1 {
+  .d-leg-r {
+    transform: translateY(0);
+  }
+
+  .d-leg-l {
+    transform: translateY(-2%);
+  }
+
+  .d-arm-r {
+    transform: translateX(0);
+  }
+
+  .d-arm-l {
+    transform: translateX(-1%);
+  }
+
+  .u-leg-r {
+    transform: translateY(0);
+  }
+
+  .u-leg-l {
+    transform: translateY(-2%);
+  }
+}
+
+/* IDLE */
+.anim- {
+  .head {
+    animation: 1s anim-head-bob ease-in-out infinite;
+  }
+}
+@keyframes anim-head-bob {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(2%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}

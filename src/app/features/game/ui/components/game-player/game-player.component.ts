@@ -26,6 +26,7 @@ export class GamePlayerComponent {
   positionStyle: AreaPosition = { left: '0', bottom: '0', z: 0 };
   width: string = '0%';
   exitTransitionClass = '';
+  playerAnim = '';
 
   constructor(private _gameService: GameService) {}
 
@@ -54,6 +55,11 @@ export class GamePlayerComponent {
     this.subscriptions.push(
       this._gameService.exitingDirectionObs.subscribe((data: string) => {
         this.exitTransitionClass = `exit-direction-${data}`;
+      })
+    );
+    this.subscriptions.push(
+      this._gameService.playerAnimObs.subscribe((data: string) => {
+        this.playerAnim = data;
       })
     );
   }

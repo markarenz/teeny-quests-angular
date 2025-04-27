@@ -7,9 +7,9 @@
   [style.left]="positionStyle.left"
 >
   <div class="player-position-inner {{ exitTransitionClass }}">
-    <app-svg-player [playerFacing]="playerFacing" />
-    <div class="absolute top-8 left-0 w-full flex justify-center text-wite-100">
-      <div>{{ playerFacing }}</div>
-    </div>
+    <app-svg-player [playerFacing]="playerFacing" [playerAnim]="playerAnim" />
+    <div
+      class="absolute top-8 left-0 w-full flex justify-center text-wite-100"
+    ></div>
   </div>
 </div>
