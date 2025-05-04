@@ -98,7 +98,7 @@ export class GameAreaComponent {
     console.log('Item clicked:', itemId);
   }
 
-  getIsNextToPlayer(x: number, y: number): boolean {
+  getIsNearPlayer(x: number, y: number): boolean {
     return this.playerPosition === `${y}_${x}`;
   }
 

@@ -1,11 +1,19 @@
 <div
   [style.width]="width"
   [style.height]="width"
-  [style.z-index]="positionStyle.z"
-  class="area-item"
+  [style.z-index]="isNearPlayer && !isLockedOut ? 999 : positionStyle.z"
+  class="area-item {{ isNearPlayer && !isLockedOut ? 'near-player' : '' }} {{
+    shouldDisplauHighlightBelow ? 'highlight-below' : ''
+  }}"
   [style.bottom]="positionStyle.bottom"
   [style.left]="positionStyle.left"
 >
+  <div
+    aria-hidden="=true"
+    class="highlighted-object {{
+      isNearPlayer && !isLockedOut ? 'active-highlight' : ''
+    }}"
+  ></div>
   @if (item.itemType === 'key-silver') {
   <app-svg-item-key />
   } @else if (item.itemType === 'coins-25') {
@@ -15,7 +23,7 @@
     class="absolute top-[45%] left-[30%] w-[40%] h-[40%] bg-transparent rounded-full z-index-[100] border-4 border-primary border-dashed ring-2 ring-offset-2 ring-offset-primaryDarker ring-primaryDark"
     aria-hidden="true"
   ></div>
-  } @if (isClickable) {
+  } @if (isNearPlayer && !isLockedOut) {
   <button
     role="button"
     type="button"
