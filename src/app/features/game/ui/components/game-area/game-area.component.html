@@ -25,7 +25,8 @@
     @for(item of areaItems; track item.id;) {
     <app-area-item
       [item]="item"
-      [isNearPlayer]="getIsNextToPlayer(item.x, item.y)"
+      [isNearPlayer]="getIsNearPlayer(item.x, item.y)"
+      [isLockedOut]="isLockedOut"
     />
     }
 
@@ -33,8 +34,8 @@
     @for(exit of areaExits; track exit.id;) {
     <app-area-exit
       [exit]="exit"
-      [isClickable]="getIsNextToPlayer(exit.x, exit.y)"
-      [isNearPlayer]="getIsNextToPlayer(exit.x, exit.y)"
+      [isClickable]="getIsNearPlayer(exit.x, exit.y)"
+      [isNearPlayer]="getIsNearPlayer(exit.x, exit.y)"
       (onClick)="handleExitClick(exit.id)"
       [isLockedOut]="isLockedOut"
     />

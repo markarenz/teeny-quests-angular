@@ -19,8 +19,8 @@ import { SvgItemKeyComponent } from './items/svg-item-key/svg-item-key.component
 export class AreaItemComponent {
   @Input('item') item: GameItem = defaultItem;
   @Input('isEditorSelected') isEditorSelected: boolean = false;
-  @Input('isClickable') isClickable: boolean = false;
   @Input('isNearPlayer') isNearPlayer: boolean = false;
+  @Input('isLockedOut') isLockedOut: boolean = false;
   @Output() onClick = new EventEmitter<string>();
 
   gridSize: number = defaultGridSize;
@@ -29,6 +29,7 @@ export class AreaItemComponent {
   bottom: string = '';
   height: string = '0%';
   width: string = '0%';
+  shouldDisplauHighlightBelow: boolean = false;
   positionStyle: AreaPosition = { left: '0', bottom: '0', z: 0 };
   ariaLabel: string = '';
 
@@ -39,6 +40,8 @@ export class AreaItemComponent {
       this.positionStyle = getAreaElementPositionStyle(this.gridSize, y, x, h);
       this.width = `${cellW}%`;
       this.ariaLabel = `Select Item ${this.item.y}_${this.item.x}`;
+      const b = parseFloat(this.positionStyle.bottom.replace('%', ''));
+      this.shouldDisplauHighlightBelow = b > 80;
     }
   }
 
@@ -49,7 +52,7 @@ export class AreaItemComponent {
     this.updateItemProps();
   }
   handleClick() {
-    if (this.isClickable) {
+    if (this.isLockedOut && this.isNearPlayer) {
       this.onClick.emit(this.item.id);
     }
   }
