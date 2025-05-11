@@ -1,0 +1,20 @@
+<div class="absolute">
+  <app-common-modal
+    [title]="title"
+    [isLockedOut]="isLoading"
+    (onConfirm)="handleConfirmClick()"
+    (onClose)="handleCloseClick()"
+  >
+    @if(isLoading) {
+    <app-loader-animation />
+    } @else if(pageModalStatus === 'help') {
+    <app-content-game-help />
+    } @else if(pageModalStatus === 'intro') {
+    <div class="flex flex-col gap-2">
+      @for (paragraph of introParagraphs; track paragraph.id) {
+      <p>{{ paragraph.text }}</p>
+      }
+    </div>
+    }
+  </app-common-modal>
+</div>

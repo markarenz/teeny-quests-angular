@@ -6,21 +6,18 @@ import { GameService } from '@app/features/game/services/game-service/game-servi
 import { MainLayoutComponent } from '@main/ui/components/main-layout/main-layout.component';
 import { GameROM, Paragraph } from '@app/features/main/interfaces/types';
 import { GameAreaComponent } from '../../components/game-area/game-area.component';
-import { LoaderAnimationComponent } from '@app/features/main/ui/components/loader-animation/loader-animation.component';
-import { CommonModalComponent } from '@app/features/main/ui/components/common-modal/common-modal.component';
 import { pageModalTitles } from '@content/constants';
 import { IconButtonComponent } from '@app/features/main/ui/components/icons/icon-button/icon-button.component';
-import { ContentGameHelpComponent } from '../../components/content-game-help/content-game-help.component';
+import { ModalPageComponent } from '@app/features/game/ui/components/modal-page/modal-page.component';
+
 @Component({
   selector: 'app-game',
   standalone: true,
   imports: [
     MainLayoutComponent,
     GameAreaComponent,
-    LoaderAnimationComponent,
-    CommonModalComponent,
     IconButtonComponent,
-    ContentGameHelpComponent,
+    ModalPageComponent,
   ],
   templateUrl: './game.component.html',
   styleUrl: './game.component.css',

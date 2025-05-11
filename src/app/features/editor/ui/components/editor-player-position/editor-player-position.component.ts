@@ -7,7 +7,7 @@ import {
   AreaPosition,
   getAreaElementPositionStyle,
 } from '@app/features/game/lib/utils';
-import { SvgPlayerComponent } from '@app/features/game/ui/svg-player/svg-player.component';
+import { SvgPlayerComponent } from '@app/features/game/ui/components/svg-player/svg-player.component';
 
 @Component({
   selector: 'app-editor-player-position',
