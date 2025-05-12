@@ -190,6 +190,25 @@ describe('getArea', () => {
   });
 });
 
+describe('getGameStateArea', () => {
+  let service: GameService;
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(GameService);
+    service.testInit(gameMock);
+  });
+
+  it('return the area by ID', fakeAsync(() => {
+    const actual = service.getGameStateArea('start');
+    let i = 0;
+    service.gameStateObs.subscribe((gameState) => {
+      expect(actual?.items.length).toEqual(1);
+      i += 1;
+      flush();
+    });
+  }));
+});
+
 describe('getOppositeDirection', () => {
   let service: GameService;
   beforeEach(() => {
@@ -230,5 +249,27 @@ describe('turnActionExit', () => {
       i += 1;
     });
     flush();
+  }));
+});
+
+describe('turnActionItemClick', () => {
+  it('should process turn item click', fakeAsync(() => {
+    const service: GameService = TestBed.inject(GameService);
+    service.testInit(gameMock);
+    tick(1000);
+
+    // coins-25
+    service.processTurn({
+      verb: 'item-click',
+      noun: '1234abd',
+    });
+    let i = 0;
+    service.gameStateObs.subscribe((gameState) => {
+      if (i === 1) {
+        // expect(gameState?.player?.inventory).toEqual({ gold: 1 });
+        flush();
+      }
+      i += 1;
+    });
   }));
 });

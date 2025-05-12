@@ -8,6 +8,7 @@ import {
 } from '@app/features/game/lib/utils/index';
 import { SvgItemCoinsComponent } from './items/svg-item-coins/svg-item-coins.component';
 import { SvgItemKeyComponent } from './items/svg-item-key/svg-item-key.component';
+import { itemDefinitions } from '@content/item-definitions';
 
 @Component({
   selector: 'app-area-item',
@@ -29,6 +30,7 @@ export class AreaItemComponent {
   bottom: string = '';
   height: string = '0%';
   width: string = '0%';
+  isClickable: boolean = false;
   shouldDisplauHighlightBelow: boolean = false;
   positionStyle: AreaPosition = { left: '0', bottom: '0', z: 0 };
   ariaLabel: string = '';
@@ -42,6 +44,8 @@ export class AreaItemComponent {
       this.ariaLabel = `Select Item ${this.item.y}_${this.item.x}`;
       const b = parseFloat(this.positionStyle.bottom.replace('%', ''));
       this.shouldDisplauHighlightBelow = b > 80;
+      const itemDef = itemDefinitions[this.item.itemType];
+      this.isClickable = itemDef?.action !== '';
     }
   }
 
@@ -52,7 +56,7 @@ export class AreaItemComponent {
     this.updateItemProps();
   }
   handleClick() {
-    if (this.isLockedOut && this.isNearPlayer) {
+    if (!this.isLockedOut && this.isNearPlayer && this.isClickable) {
       this.onClick.emit(this.item.id);
     }
   }

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { SvgPlayerComponent } from '../../svg-player/svg-player.component';
+import { SvgPlayerComponent } from '../svg-player/svg-player.component';
 import { Subscription } from 'rxjs';
 import { GameService } from '@app/features/game/services/game-service/game-service.service';
 import {
