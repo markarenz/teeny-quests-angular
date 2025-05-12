@@ -114,6 +114,11 @@ export type StatusEffect = {
   effect: string;
   expirationTurn: number;
 };
+export type GameStateArea = {
+  items: GameItem[];
+  exits: GameAreaExit[];
+  // FUTURE: NPCs, etc
+};
 
 export type GameState = {
   gameId: string;
@@ -129,11 +134,7 @@ export type GameState = {
   numTurns: number;
   flagValues: GameStateValues;
   areas: {
-    [key: string]: {
-      items: GameItem[];
-      exits: GameAreaExit[];
-      // FUTURE: NPCs, etc
-    };
+    [key: string]: GameStateArea;
   };
   firstSaveDate: string;
   lastUpdateDate: string;

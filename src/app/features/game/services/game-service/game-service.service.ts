@@ -2,14 +2,17 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import {
   GameArea,
+  GameItem,
   GameROM,
   GameState,
+  GameStateArea,
   MovementOptions,
 } from '@app/features/main/interfaces/types';
 import { gamesApiUrl } from '@config/index';
 import { getMoveOptions } from './utils/pathfinding';
 import { STANDARD_MOVE_DURATION } from '@config/index';
-import gameMockData from '@app/features/editor/mocks/game.mock.json';
+import { itemDefinitions } from '@content/item-definitions';
+import { logger } from '@app/features/main/utils/logger';
 
 @Injectable({
   providedIn: 'root',
@@ -149,6 +152,13 @@ export class GameService {
     }
   }
 
+  getGameStateArea(areaId: string): GameStateArea | null {
+    if (this.gameState.value && this.gameState.value.areas[areaId]) {
+      return this.gameState.value.areas[areaId];
+    }
+    return null;
+  }
+
   getArea(areaId: string): GameArea | null {
     if (this.gameROM.value && this.gameROM.value.content.areas[areaId]) {
       return this.gameROM.value.content.areas[areaId];
@@ -267,6 +277,49 @@ export class GameService {
     return this.gameState.value as GameState;
   };
 
+  turnActionItemClick = async (itemId: string): Promise<GameState> => {
+    let nextGameState = JSON.parse(JSON.stringify(this.gameState.value));
+
+    const area = this.gameState.value?.areas[nextGameState.player.areaId];
+    const item = area?.items.find((i) => i.id === itemId);
+
+    if (!item) {
+      logger({
+        message: `Item ${itemId} not found in area ${nextGameState.player.areaId}`,
+        type: 'error',
+      });
+      return nextGameState;
+    }
+
+    const itemDef = itemDefinitions[item.itemType];
+
+    if (!item) {
+      logger({
+        message: `Item ${itemId} not found in area ${nextGameState.player.areaId}`,
+        type: 'error',
+      });
+      return nextGameState;
+    }
+    switch (itemDef.action) {
+      case 'take':
+        const itemDef = itemDefinitions[item.itemType];
+        if (itemDef) {
+          // Add item to player's inventory
+          const qty = nextGameState.player.inventory[itemDef.inventoryKey] ?? 0;
+          nextGameState.player.inventory[itemDef.inventoryKey] = qty + 1;
+          // Remove item from area
+          nextGameState.areas[nextGameState.player.areaId].items =
+            nextGameState.areas[nextGameState.player.areaId].items.filter(
+              (i: GameItem) => i.id !== itemId
+            );
+        }
+        break;
+      default:
+        break;
+    }
+    return nextGameState;
+  };
+
   async processTurn({
     verb,
     noun,
@@ -286,6 +339,9 @@ export class GameService {
         case 'exit':
           // exit logic
           nextGameState = await this.turnActionExit(noun);
+          break;
+        case 'item-click':
+          nextGameState = await this.turnActionItemClick(noun);
           break;
         default:
           break;

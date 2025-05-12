@@ -71,9 +71,10 @@ export class GameAreaComponent {
           if (data.player.areaId !== this.areaId) {
             const areaId = data.player.areaId;
             const area = this._gameService.getArea(areaId);
+            const gameStateArea = this._gameService.getGameStateArea(areaId);
             this.areaMap = area?.map || null;
-            this.areaExits = area?.exits || [];
-            this.areaItems = area?.items || [];
+            this.areaExits = gameStateArea?.exits || [];
+            this.areaItems = gameStateArea?.items || [];
             this.areaDataPositionKeys = this.areaMap
               ? Object.keys(this.areaMap)
               : [];
@@ -95,7 +96,7 @@ export class GameAreaComponent {
   }
 
   handleItemClick(itemId: string) {
-    console.log('Item clicked:', itemId);
+    this._gameService.processTurn({ verb: 'item-click', noun: itemId });
   }
 
   getIsNearPlayer(x: number, y: number): boolean {

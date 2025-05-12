@@ -27,6 +27,7 @@
       [item]="item"
       [isNearPlayer]="getIsNearPlayer(item.x, item.y)"
       [isLockedOut]="isLockedOut"
+      (onClick)="handleItemClick(item.id)"
     />
     }
 
