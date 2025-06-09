@@ -2,8 +2,7 @@
   z-index: 999;
   position: relative;
   height: 100%;
-  .content {
-    max-height: calc(100vh - 12rem);
+  .modal-content {
     overflow-y: auto;
   }
 }
