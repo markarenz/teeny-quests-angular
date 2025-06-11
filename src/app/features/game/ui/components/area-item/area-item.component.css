@@ -8,6 +8,12 @@
     &.highlight-below {
       transform: translateY(50%);
     }
+    transition: 0.3s all ease-in-out;
+    &:hover {
+      .highlighted-object {
+        opacity: 1;
+      }
+    }
   }
 }
 .highlighted-object {
@@ -23,7 +29,7 @@
   top: 32%;
   &.active-highlight {
     transition: 0.3s opacity ease-in-out;
-    opacity: 0.6;
+    opacity: 0.5;
     pointer-events: all;
   }
 }

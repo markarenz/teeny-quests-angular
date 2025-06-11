@@ -4,6 +4,15 @@
       @if(!isLoading) {
       <div>
         <app-game-area />
+        <div class="absolute top-0 left-0 flex flex-row gap-4">
+          <app-icon-button
+            size="md"
+            label="Open Inventory"
+            icon="backpack"
+            (onButtonClick)="handleInventoryClick()"
+            [showDot]="showInventoryDot"
+          />
+        </div>
         <div class="absolute bottom-0 right-0 flex flex-row gap-4">
           <app-icon-button
             size="md"
@@ -19,13 +28,14 @@
       </div>
       }
 
-      <!-- Modal: Inventory Detail -->
-      <!-- Modal: Converstion -->
-      @if(['loading', 'intro', 'help'].includes(pageModalStatus)) {
+      <!-- Modal: Conversation -->
+      @if(gameModalStatus === 'inventory') {
+      <app-modal-inventory />
+      } @if(['loading', 'intro', 'help'].includes(gameModalStatus)) {
       <app-modal-page
         [isLoading]="isLoading"
         [title]="title"
-        [pageModalStatus]="pageModalStatus"
+        [gameModalStatus]="gameModalStatus"
         [introParagraphs]="introParagraphs"
         (onConfirm)="handlePageModalConfirm()"
         (onClose)="handlePageModalConfirm()"

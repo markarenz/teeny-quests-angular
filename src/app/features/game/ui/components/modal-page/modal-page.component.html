@@ -7,9 +7,9 @@
   >
     @if(isLoading) {
     <app-loader-animation />
-    } @else if(pageModalStatus === 'help') {
+    } @else if(gameModalStatus === 'help') {
     <app-content-game-help />
-    } @else if(pageModalStatus === 'intro') {
+    } @else if(gameModalStatus === 'intro') {
     <div class="flex flex-col gap-2">
       @for (paragraph of introParagraphs; track paragraph.id) {
       <p>{{ paragraph.text }}</p>

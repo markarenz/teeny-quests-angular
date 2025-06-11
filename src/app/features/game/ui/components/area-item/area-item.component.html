@@ -2,9 +2,9 @@
   [style.width]="width"
   [style.height]="width"
   [style.z-index]="isNearPlayer && !isLockedOut ? 98 : positionStyle.z"
-  class="area-item {{ isNearPlayer && !isLockedOut ? 'near-player' : '' }} {{
-    shouldDisplauHighlightBelow ? 'highlight-below' : ''
-  }}"
+  class="area-item group {{
+    isNearPlayer && !isLockedOut ? 'near-player' : ''
+  }} {{ shouldDisplauHighlightBelow ? 'highlight-below' : '' }}"
   [style.bottom]="positionStyle.bottom"
   [style.left]="positionStyle.left"
 >
@@ -30,7 +30,7 @@
     [attr.aria-label]="ariaLabel"
     (click)="handleClick()"
     [disabled]="!isClickable"
-    class="absolute top-[45%] left-[30%] w-[40%] h-[40%] cursor-pointer pointer-events-auto rounded-full focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-offset-primaryDarker focus:ring-primaryDark"
+    class="absolute top-[45%] left-[30%] w-[40%] h-[40%] cursor-pointer pointer-events-auto rounded-full focus:outline-none ring-0 group-hover:ring-4 focus:ring-4 focus:ring-offset-2 focus:ring-offset-primaryDarker ring-primaryDark transition-all"
     [style.z-index]="positionStyle.z + 10"
   ></button>
   }

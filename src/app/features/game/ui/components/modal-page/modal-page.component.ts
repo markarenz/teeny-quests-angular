@@ -17,7 +17,7 @@ import { Paragraph } from '@app/features/main/interfaces/types';
 export class ModalPageComponent {
   @Input('introParagraphs') introParagraphs: Paragraph[] = [];
   @Input('title') title: string = '';
-  @Input('pageModalStatus') pageModalStatus: string = 'loading';
+  @Input('gameModalStatus') gameModalStatus: string = 'loading';
   @Input('isLoading') isLoading: boolean = false;
 
   @Output() onClose = new EventEmitter();
