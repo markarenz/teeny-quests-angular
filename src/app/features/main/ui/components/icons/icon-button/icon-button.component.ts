@@ -13,6 +13,7 @@ export class IconButtonComponent {
   @Input('theme') theme: string = 'default';
   @Input('icon') icon: string = 'edit';
   @Input('size') size: string = 'sm';
+  @Input('showDot') showDot?: boolean = false;
   @Input('isDisabled') isDisabled: boolean = false;
   @Output() onButtonClick = new EventEmitter<string>();
 

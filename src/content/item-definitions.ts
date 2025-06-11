@@ -8,6 +8,7 @@ export type ItemDefinition = {
   action?: string; // on click in area
   use?: string; // action from Inventory
   amount?: number;
+  inventoryActions: string[]; // actions available in inventory
 };
 
 export const itemDefinitions: { [key: string]: ItemDefinition } = {
@@ -18,6 +19,7 @@ export const itemDefinitions: { [key: string]: ItemDefinition } = {
     variant: 'silver',
     action: 'take',
     use: 'unlock-door-silver',
+    inventoryActions: ['use', 'drop'],
   },
   'coins-25': {
     id: 'coins-25',
@@ -26,6 +28,16 @@ export const itemDefinitions: { [key: string]: ItemDefinition } = {
     variant: 'gold',
     action: 'take',
     amount: 25,
+    inventoryActions: ['use'],
+  },
+  gold: {
+    id: 'gold',
+    inventoryKey: 'gold',
+    name: 'Gold Coins',
+    variant: 'gold',
+    action: '',
+    amount: 1,
+    inventoryActions: ['use'],
   },
 };
 

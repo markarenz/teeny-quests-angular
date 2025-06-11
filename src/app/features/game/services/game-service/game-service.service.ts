@@ -27,8 +27,8 @@ export class GameService {
   private movementOptions = new BehaviorSubject<MovementOptions>({});
   movementOptionsObs = this.movementOptions.asObservable();
 
-  private pageModalStatus = new BehaviorSubject<string>('');
-  pageModalStatusObs = this.pageModalStatus.asObservable();
+  private gameModalStatus = new BehaviorSubject<string>('');
+  pageModalStatusObs = this.gameModalStatus.asObservable();
 
   private isLockedOut = new BehaviorSubject<boolean>(false);
   isLockedOutObs = this.isLockedOut.asObservable();
@@ -169,8 +169,8 @@ export class GameService {
 
   setPageModalStatus(status: string): void {
     this.isLockedOut.next(status !== '');
-    this.areaTransitionMode.next(status !== '' ? 'cover' : '');
-    this.pageModalStatus.next(status);
+    this.areaTransitionMode.next('');
+    this.gameModalStatus.next(status);
   }
 
   delay(ms: number) {
@@ -277,6 +277,25 @@ export class GameService {
     return this.gameState.value as GameState;
   };
 
+  turnActionDropItem = async (itemId: string): Promise<GameState> => {
+    let nextGameState = JSON.parse(JSON.stringify(this.gameState.value));
+    nextGameState.player.inventory[itemId] -= 1;
+    const area = nextGameState.areas[nextGameState.player.areaId];
+    const positionKey = `${nextGameState.player.y}_${nextGameState.player.x}`;
+    const newItem: GameItem = {
+      id: `item-${Date.now()}`,
+      areaId: nextGameState.player.areaId,
+      itemType: itemId,
+      x: nextGameState.player.x,
+      y: nextGameState.player.y,
+      h: this.gameROM.value!.content.areas[nextGameState.player.areaId].map[
+        positionKey
+      ].h,
+    };
+    area.items.push(newItem);
+    return nextGameState;
+  };
+
   turnActionItemClick = async (itemId: string): Promise<GameState> => {
     let nextGameState = JSON.parse(JSON.stringify(this.gameState.value));
 
@@ -306,7 +325,8 @@ export class GameService {
         if (itemDef) {
           // Add item to player's inventory
           const qty = nextGameState.player.inventory[itemDef.inventoryKey] ?? 0;
-          nextGameState.player.inventory[itemDef.inventoryKey] = qty + 1;
+          nextGameState.player.inventory[itemDef.inventoryKey] =
+            qty + itemDef.amount || 1;
           // Remove item from area
           nextGameState.areas[nextGameState.player.areaId].items =
             nextGameState.areas[nextGameState.player.areaId].items.filter(
@@ -342,6 +362,9 @@ export class GameService {
           break;
         case 'item-click':
           nextGameState = await this.turnActionItemClick(noun);
+          break;
+        case 'item-drop':
+          nextGameState = await this.turnActionDropItem(noun);
           break;
         default:
           break;

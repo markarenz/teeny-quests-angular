@@ -1,4 +1,5 @@
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick, flush } from '@angular/core/testing';
+import { firstValueFrom, skip, take } from 'rxjs';
 import { gamesApiUrl } from '@config/index';
 import gameMockData from '@app/features/editor/mocks/game.mock.json';
 import fetchMock from 'fetch-mock';
@@ -176,16 +177,11 @@ describe('setSelectedCellPosition', () => {
     service.setTestValue(gameMock, 'game');
   });
 
-  it('should set selected cell position', fakeAsync(() => {
-    let checkNow = false;
-    service.selectedCellPositionObs.subscribe((value) => {
-      if (checkNow) {
-        expect(value).toEqual('3_3');
-      }
-    });
+  it('should set selected cell position', fakeAsync(async () => {
     service.setSelectedCellPosition('3_3');
-    tick(1000);
-    checkNow = true;
+    tick(10);
+    const value = await firstValueFrom(service.selectedCellPositionObs);
+    expect(value).toEqual('3_3');
   }));
 });
 
@@ -320,19 +316,14 @@ describe('resetTexturesForCurrentArea', () => {
     service.setTestValue('start', 'selectedAreaId');
   });
 
-  it('should reset textures for current area', fakeAsync(() => {
-    let checkNow = false;
-    service.gameObs.subscribe((game) => {
-      if (checkNow) {
-        const area = game ? game.content.areas['start'] : null;
-        const cell = area ? area.map['6_6'] : null;
-        expect(cell?.floor).toEqual('default');
-      }
-    });
-
-    tick(1000);
+  it('should reset textures for current area', fakeAsync(async () => {
     service.resetTexturesForCurrentArea();
-    tick(1000);
+    tick(10);
+    const game = await firstValueFrom(service.gameObs);
+    const area = game ? game.content.areas['start'] : null;
+    const cell = area ? area.map['6_6'] : null;
+    expect(cell?.floor).toEqual('default');
+    flush();
   }));
 });
 
@@ -343,23 +334,17 @@ describe('createGame', () => {
     service = TestBed.inject(GameEditorService);
   });
 
-  it('should create game', fakeAsync(() => {
+  it('should create game', fakeAsync(async () => {
     const url = `${gamesApiUrl}`;
     fetchMock.mockGlobal().post(
       url,
-      { item: gameMock },
+      { ...gameMock },
       {
         delay: 0,
       }
     );
 
-    let checkNow = false;
-    service.gameObs.subscribe((game) => {
-      if (checkNow) {
-        expect(game).toEqual(gameMock);
-      }
-    });
-    service.createGame({
+    const newId = await service.createGame({
       title: 'Test Game',
       description: 'Test Description',
       user: {
@@ -367,8 +352,7 @@ describe('createGame', () => {
         name: 'Test Name',
       },
     });
-    tick(1000);
-    checkNow = true;
+    expect(newId).toBeDefined();
 
     fetchMock.unmockGlobal();
   }));
