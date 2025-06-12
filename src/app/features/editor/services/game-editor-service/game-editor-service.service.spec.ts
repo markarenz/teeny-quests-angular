@@ -1,11 +1,11 @@
-import { fakeAsync, TestBed, tick, flush } from '@angular/core/testing';
-import { firstValueFrom, skip, take } from 'rxjs';
+import { fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { gamesApiUrl } from '@config/index';
 import gameMockData from '@app/features/editor/mocks/game.mock.json';
 import fetchMock from 'fetch-mock';
 
 import { GameEditorService } from './game-editor-service.service';
 import { GameAreaExit, GameItem } from '@app/features/main/interfaces/types';
+import { firstValueFrom, skip, take } from 'rxjs';
 
 let gameMock = JSON.parse(JSON.stringify(gameMockData));
 
@@ -69,7 +69,7 @@ describe('getGamesByUserId', () => {
     service = TestBed.inject(GameEditorService);
   });
 
-  it('should get game by id', fakeAsync(() => {
+  it('should get game by id', fakeAsync(async () => {
     const url = `${gamesApiUrl}?userId=abcdefg1234`;
     fetchMock.mockGlobal().get(
       url,
@@ -79,19 +79,13 @@ describe('getGamesByUserId', () => {
       }
     );
 
-    let checkNow = false;
-    service.gamesObs.subscribe((games) => {
-      if (checkNow) {
-        expect(games).toEqual([gameMock]);
-      }
-    });
     service.getGamesByUserId({
       id: 'abcdefg1234',
       name: 'Test Name',
     });
-    tick(1000);
-    checkNow = true;
-
+    tick(10);
+    const games = await service.gamesObs.pipe(skip(1), take(1)).toPromise();
+    expect(games).toEqual([gameMock]);
     fetchMock.unmockGlobal();
   }));
 });
@@ -155,17 +149,13 @@ describe('setSelectedAreaId', () => {
     service.setTestValue(gameMock, 'game');
   });
 
-  it('should set selected area id', fakeAsync(() => {
-    let checkNow = false;
-    service.selectedAreaIdObs.subscribe((id) => {
-      if (checkNow) {
-        expect(id).toEqual('start');
-      }
-    });
-
+  it('should set selected area id', fakeAsync(async () => {
     service.setSelectedAreaId('start');
-    tick(1000);
-    checkNow = true;
+    tick(110);
+    const id = await firstValueFrom(
+      service.selectedAreaIdObs.pipe(skip(0), take(1))
+    );
+    expect(id).toEqual('start');
   }));
 });
 
@@ -179,8 +169,10 @@ describe('setSelectedCellPosition', () => {
 
   it('should set selected cell position', fakeAsync(async () => {
     service.setSelectedCellPosition('3_3');
-    tick(10);
-    const value = await firstValueFrom(service.selectedCellPositionObs);
+    tick(1000);
+    const value = await firstValueFrom(
+      service.selectedCellPositionObs.pipe(skip(0), take(1))
+    );
     expect(value).toEqual('3_3');
   }));
 });
@@ -260,20 +252,16 @@ describe('createArea', () => {
     service.setTestValue(gameMock, 'game');
   });
 
-  it('should create new area', fakeAsync(() => {
+  it('should create new area', fakeAsync(async () => {
     service.setTestValue(gameMock, 'game');
     service.setTestValue('start', 'selectedAreaId');
-    let checkNow = false;
-    service.gameObs.subscribe((game) => {
-      if (checkNow) {
-        const numAreas = game ? Object.keys(game.content.areas).length : 0;
-        expect(numAreas).toEqual(3);
-      }
-    });
-
-    tick(100);
+    tick(110);
     service.createArea();
-    tick(100);
+    tick(110);
+    const game = await firstValueFrom(service.gameObs.pipe(skip(0), take(1)));
+    flush();
+    const numAreas = game ? Object.keys(game.content.areas).length : 0;
+    expect(numAreas).toEqual(3);
   }));
 });
 
@@ -317,13 +305,21 @@ describe('resetTexturesForCurrentArea', () => {
   });
 
   it('should reset textures for current area', fakeAsync(async () => {
+    // let checkNow = false;
+    // service.gameObs.subscribe((game) => {
+    //   if (checkNow) {
+    //     const area = game ? game.content.areas['start'] : null;
+    //     const cell = area ? area.map['6_6'] : null;
+    //     expect(cell?.floor).toEqual('default');
+    //   }
+    // });
+
     service.resetTexturesForCurrentArea();
-    tick(10);
-    const game = await firstValueFrom(service.gameObs);
+    tick(1000);
+    const game = await firstValueFrom(service.gameObs.pipe(skip(0), take(1)));
     const area = game ? game.content.areas['start'] : null;
     const cell = area ? area.map['6_6'] : null;
     expect(cell?.floor).toEqual('default');
-    flush();
   }));
 });
 
@@ -332,28 +328,30 @@ describe('createGame', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(GameEditorService);
+    service.setTestValue(gameMock, 'game');
   });
 
   it('should create game', fakeAsync(async () => {
     const url = `${gamesApiUrl}`;
     fetchMock.mockGlobal().post(
       url,
-      { ...gameMock },
+      { item: gameMock },
       {
         delay: 0,
       }
     );
-
-    const newId = await service.createGame({
-      title: 'Test Game',
+    const mockTitle = 'Game 3b2';
+    service.createGame({
+      title: mockTitle,
       description: 'Test Description',
       user: {
         id: 'abcdefg1234',
         name: 'Test Name',
       },
     });
-    expect(newId).toBeDefined();
-
+    tick(10);
+    const game = await firstValueFrom(service.gameObs.pipe(skip(0), take(1)));
+    expect(game?.title).toEqual(mockTitle);
     fetchMock.unmockGlobal();
   }));
 });
@@ -366,21 +364,16 @@ describe('updateStarterInventory', () => {
     service.setTestValue(gameMock, 'game');
   });
 
-  it('should update starter inventory', () => {
+  it('should update starter inventory', fakeAsync(async () => {
     service.updateStarterInventory({
       gold: 10,
       'silver-key': 1,
     });
-
-    let i = 0;
-    service.gameObs.subscribe((game) => {
-      const starterInventory = game ? game.content.player.inventory : [];
-      if (i === 1) {
-        expect(starterInventory.length).toBeGreaterThan(0);
-      }
-      i += 1;
-    });
-  });
+    tick(10);
+    const game = await firstValueFrom(service.gameObs.pipe(skip(0), take(1)));
+    const starterInventory = game ? game.content.player.inventory : {};
+    expect(Object.keys(starterInventory).length).toBeGreaterThan(1);
+  }));
 });
 
 describe('updateGame', () => {

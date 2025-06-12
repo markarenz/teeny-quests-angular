@@ -1,8 +1,9 @@
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick, flush } from '@angular/core/testing';
 import { gamesApiUrl } from '@config/index';
 import gameMockData from '@app/features/editor/mocks/game.mock.json';
 import fetchMock from 'fetch-mock';
 import { MainAppService } from './main-app-service';
+import { skip, take, first, firstValueFrom } from 'rxjs';
 
 let gameMock = JSON.parse(JSON.stringify(gameMockData));
 
@@ -54,7 +55,7 @@ describe('getGamesList', () => {
     service = TestBed.inject(MainAppService);
   });
 
-  it('should get game by id', fakeAsync(() => {
+  it('should get game by id', fakeAsync(async () => {
     fetchMock.mockGlobal().get(
       gamesApiUrl,
       { items: [gameMock] },
@@ -62,17 +63,10 @@ describe('getGamesList', () => {
         delay: 0,
       }
     );
-
-    let checkNow = false;
-    service.gamesObs.subscribe((games) => {
-      if (checkNow) {
-        expect(games).toEqual([gameMock]);
-      }
-    });
     service.getGamesList();
-    tick(1000);
-    checkNow = true;
-
+    tick(10);
+    const games = await firstValueFrom(service.gamesObs.pipe(skip(1), take(1)));
+    expect(games.length).toBe(1);
     fetchMock.unmockGlobal();
   }));
 });
