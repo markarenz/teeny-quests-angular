@@ -39,7 +39,7 @@ export class GameAreaComponent {
   movementOptionsKeys: string[] = [];
   areaDataPositionKeys: string[] = [];
   playerPosition: string = '0_0';
-  playerFacing: string = 'n';
+  playerFacing: string = 'north';
   isLockedOut: boolean = false;
   numTurns: number = 0;
   areaTransitionMode: string = 'cover';

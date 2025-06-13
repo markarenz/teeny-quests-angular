@@ -91,7 +91,7 @@ export class GameService {
       gameId: nextGameROM.id,
       player: {
         ...nextGameROM.content.player,
-        facing: 'N',
+        facing: 'east',
         health: 100,
         statusEffects: [],
       },
