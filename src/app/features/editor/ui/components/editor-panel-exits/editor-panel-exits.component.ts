@@ -39,11 +39,17 @@ export class EditorPanelExitsComponent {
   inputExitPosition: string = '';
   inputExitDestination: string = '';
   inputExitDestinationExit: string = '';
+  inputExitLockType: string = '';
   selectedExitId: string = '';
   exits: GameAreaExit[] = [];
   isSelectedPositionValid: boolean = false;
   areasListOptions: SelectIUIOption[] = [];
   exitsListOptions: SelectIUIOption[] = [];
+  exitsLockOptions: SelectIUIOption[] = [
+    { value: '', label: 'None' },
+    { value: 'silver', label: 'Silver' },
+    { value: 'gold', label: 'Gold' },
+  ];
   lockouts: string[] = [];
   area: GameArea | null = null;
 
@@ -161,6 +167,7 @@ export class EditorPanelExitsComponent {
         destinationExitId: this.inputExitDestinationExit,
         x: +x,
         y: +y,
+        lock: this.inputExitLockType ?? '',
       };
 
       this._gameEditorService.updateExit(updatedExit);

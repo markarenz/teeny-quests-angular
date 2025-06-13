@@ -24,6 +24,8 @@
   --color-gray-800: #1f2937;
   --color-gray-900: #111827;
   --color-white-75: rgba(255, 245, 255, 0.75);
+  --color-lock-silver: #999999;
+  --color-lock-gold: #cab045;
 }
 
 html {
@@ -147,14 +149,15 @@ select {
   &.clickable {
     cursor: pointer;
     pointer-events: all;
-    fill: var(--color-primary-dark-50);
-    stroke-width: 4px;
-    stroke: var(--color-primary);
+
+    &.selected {
+      fill: var(--color-primary-dark-50);
+      stroke-width: 4px;
+      stroke: var(--color-primary);
+    }
+
     &:focus {
       stroke: var(--color-white-75);
-    }
-    &:active {
-      fill: var(--color-primary-75);
     }
     &:hover {
       fill: var(--color-primary-75);
@@ -164,4 +167,10 @@ select {
       stroke: white;
     }
   }
+}
+
+.game-wrap .exit-button.clickable {
+  fill: var(--color-primary-dark-50);
+  stroke-width: 4px;
+  stroke: var(--color-primary);
 }

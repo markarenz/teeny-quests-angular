@@ -49,7 +49,7 @@ export type GameAreaExit = {
   h: number;
   destinationAreaId: string;
   destinationExitId: string;
-  status?: string; // locked
+  lock?: string; // e.g., 'gold', 'silver', 'bronze', 'rocks'
 };
 
 export type GameAreaMap = {

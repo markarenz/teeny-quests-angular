@@ -54,9 +54,15 @@ export class ModalInventoryComponent {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
+  getCanUseItem(itemId: string): boolean {
+    return this._gameService.getCanUseItem(itemId);
+  }
   handleItemActionClick(itemId: string, action: string) {
     if (action === 'drop' && this.canDrop) {
       this._gameService.processTurn({ verb: 'item-drop', noun: itemId });
+    }
+    if (action === 'use') {
+      this._gameService.processTurn({ verb: 'item-use', noun: itemId });
     }
   }
 }

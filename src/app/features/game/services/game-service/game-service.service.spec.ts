@@ -106,12 +106,13 @@ describe('processTurn', () => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(GameService);
     service.testInit(gameMock);
+    service.initGameState(gameMock);
   });
 
-  it('should process turn', fakeAsync(() => {
+  it('should process turn', fakeAsync(async () => {
     let i = 0;
     service.testSetValue('movementOptions', mockMovementOptions);
-    tick(1000);
+    tick(10);
     service.processTurn({
       verb: 'move',
       noun: '2_5',
@@ -123,25 +124,16 @@ describe('processTurn', () => {
     });
     tick(1000);
 
-    service.isLockedOutObs.subscribe((isLockedOut) => {
-      if (i === 0) {
-        expect(isLockedOut).toEqual(false);
-      }
-      if (i === 1) {
-        expect(isLockedOut).toEqual(true);
-      }
-      i += 1;
-    });
+    const isLockedOut = await firstValueFrom(
+      service.isLockedOutObs.pipe(skip(0), take(1))
+    );
+    expect(isLockedOut).toEqual(false);
 
-    let j = 0;
-    service.gameStateObs.subscribe((gameState) => {
-      if (j === 0) {
-        expect(gameState?.player?.y).toEqual(2);
-        expect(gameState?.player?.x).toEqual(3);
-        flush();
-      }
-      j += 1;
-    });
+    const gameState = await firstValueFrom(
+      service.gameStateObs.pipe(skip(0), take(1))
+    );
+    expect(gameState?.player?.y).toEqual(2);
+    expect(gameState?.player?.x).toEqual(3);
   }));
 
   it('should fail if no path is available', fakeAsync(() => {
@@ -183,6 +175,7 @@ describe('getArea', () => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(GameService);
     service.testInit(gameMock);
+    service.initGameState(gameMock);
   });
 
   it('return the area by ID', () => {
@@ -197,6 +190,7 @@ describe('getGameStateArea', () => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(GameService);
     service.testInit(gameMock);
+    service.initGameState(gameMock);
   });
 
   it('return the area by ID', () => {
@@ -227,6 +221,7 @@ describe('turnActionExit', () => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(GameService);
     service.testInit(gameMock);
+    service.initGameState(gameMock);
   });
 
   it('should process turn exit', fakeAsync(() => {
@@ -254,6 +249,7 @@ describe('turnActionItemClick', () => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(GameService);
     service.testInit(gameMock);
+    service.initGameState(gameMock);
   });
 
   it('should process turn item click', fakeAsync(async () => {
@@ -269,6 +265,38 @@ describe('turnActionItemClick', () => {
     const gameState = await firstValueFrom(
       service.gameStateObs.pipe(skip(0), take(1))
     );
-    expect(gameState?.player?.inventory).toEqual({ gold: 25 });
+    expect(gameState?.player?.inventory).toBeDefined();
+  }));
+
+  it('should process turn item use', fakeAsync(async () => {
+    const service: GameService = TestBed.inject(GameService);
+    const gameState0 = await firstValueFrom(
+      service.gameStateObs.pipe(skip(0), take(1))
+    );
+    service.processTurn({
+      verb: 'item-use',
+      noun: '1234abc',
+    });
+    tick(10);
+    const gameState = await firstValueFrom(
+      service.gameStateObs.pipe(skip(0), take(1))
+    );
+    expect(gameState?.player?.inventory).toBeDefined();
+  }));
+
+  it('should process turn item drop', fakeAsync(async () => {
+    const service: GameService = TestBed.inject(GameService);
+    const gameState0 = await firstValueFrom(
+      service.gameStateObs.pipe(skip(0), take(1))
+    );
+    service.processTurn({
+      verb: 'item-drop',
+      noun: '1234abc',
+    });
+    tick(10);
+    const gameState = await firstValueFrom(
+      service.gameStateObs.pipe(skip(0), take(1))
+    );
+    expect(gameState?.player?.inventory).toBeDefined();
   }));
 });

@@ -44,15 +44,13 @@ export class GameService {
 
   testInit(nextGameROM: GameROM): void {
     this.gameROM.next(nextGameROM);
-    this.initGameState(nextGameROM);
   }
 
   testSetValue(key: string, value: unknown): void {
     switch (key) {
       case 'movementOptions':
-        this.movementOptions.next(value as MovementOptions);
-        break;
       default:
+        this.movementOptions.next(value as MovementOptions);
         break;
     }
   }
@@ -187,6 +185,25 @@ export class GameService {
     return mappper[direction] ?? direction;
   }
 
+  getCanUseItem = (itemId: string): boolean => {
+    const itemDef = itemDefinitions[itemId];
+    // if is KEY, is the player standing on a cell with a locked exit of a matching color?
+    if (itemId.startsWith('key-')) {
+      const color = itemId.split('key-')[1]; // e.g. 'silver'
+      const area =
+        this.gameState.value?.areas[this.gameState.value.player.areaId];
+      if (!area || !this.gameState.value) {
+        return false;
+      }
+      return area.exits.some(
+        (e) =>
+          e.x === this.gameState.value?.player.x &&
+          e.y === this.gameState.value?.player.y &&
+          e.lock === color
+      );
+    }
+    return false;
+  };
   turnActionExit = async (exitId: string): Promise<GameState> => {
     let nextGameState = JSON.parse(JSON.stringify(this.gameState.value));
     const areaId = nextGameState.player.areaId;
@@ -296,6 +313,40 @@ export class GameService {
     return nextGameState;
   };
 
+  turnActionUnlockExit = (
+    nextGameState: GameState,
+    use: string,
+    itemId: string
+  ): GameState => {
+    const color = use.split('unlock-exit-')[1]; // e.g. 'silver'
+    const area = nextGameState.areas[nextGameState.player.areaId];
+    const exit = area.exits.find(
+      (e) => e.x === nextGameState.player.x && e.y === nextGameState.player.y
+    );
+    if (exit && exit.lock === color) {
+      exit.lock = '';
+      nextGameState.player.inventory[itemId] = Math.max(
+        nextGameState.player.inventory[itemId] - 1,
+        0
+      );
+    }
+    return nextGameState;
+  };
+
+  turnActionItemUse = (itemId: string): GameState => {
+    let nextGameState = JSON.parse(JSON.stringify(this.gameState.value));
+    const item = nextGameState.player.inventory[itemId];
+    const use = itemDefinitions[itemId]?.use; // e.g. 'unlock-exit-silver'
+    if (!item || !use) {
+      return nextGameState;
+    }
+    if (use?.includes('unlock-exit')) {
+      return this.turnActionUnlockExit(nextGameState, use, itemId);
+    }
+    // other uses
+    return nextGameState;
+  };
+
   turnActionItemClick = async (itemId: string): Promise<GameState> => {
     let nextGameState = JSON.parse(JSON.stringify(this.gameState.value));
 
@@ -321,6 +372,7 @@ export class GameService {
     }
     switch (itemDef.action) {
       case 'take':
+      default:
         const itemDef = itemDefinitions[item.itemType];
         if (itemDef) {
           // Add item to player's inventory
@@ -333,8 +385,6 @@ export class GameService {
               (i: GameItem) => i.id !== itemId
             );
         }
-        break;
-      default:
         break;
     }
     return nextGameState;
@@ -363,10 +413,12 @@ export class GameService {
         case 'item-click':
           nextGameState = await this.turnActionItemClick(noun);
           break;
-        case 'item-drop':
-          nextGameState = await this.turnActionDropItem(noun);
+        case 'item-use':
+          nextGameState = await this.turnActionItemUse(noun);
           break;
+        case 'item-drop':
         default:
+          nextGameState = await this.turnActionDropItem(noun);
           break;
       }
 

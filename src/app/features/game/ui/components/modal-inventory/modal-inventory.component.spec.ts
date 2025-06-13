@@ -33,6 +33,8 @@ describe('ModalInventoryComponent', () => {
     fixture = TestBed.createComponent(ModalInventoryComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    service.testInit(gameMock);
+    service.initGameState(gameMock);
   });
 
   it('should create', () => {
@@ -58,7 +60,7 @@ describe('ModalInventoryComponent', () => {
     component.handleInventoryClose();
   }));
 
-  it('should handle action click', fakeAsync(() => {
+  it('should handle action click - drop', fakeAsync(() => {
     component.canDrop = true;
     spyOn(service, 'processTurn');
     component.handleItemActionClick('item-1', 'drop');
@@ -68,4 +70,20 @@ describe('ModalInventoryComponent', () => {
       noun: 'item-1',
     });
   }));
+
+  it('should handle action click - use', fakeAsync(() => {
+    component.canDrop = true;
+    spyOn(service, 'processTurn');
+    component.handleItemActionClick('1234abc', 'use');
+    fixture.detectChanges();
+    expect(service.processTurn).toHaveBeenCalledWith({
+      verb: 'item-use',
+      noun: '1234abc',
+    });
+  }));
+
+  it('getCanUseItem - return false when item is not usable', () => {
+    const result = component.getCanUseItem('1234abc');
+    expect(result).toBeFalse();
+  });
 });

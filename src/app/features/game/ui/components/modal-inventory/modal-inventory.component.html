@@ -28,6 +28,7 @@
           icon="use"
           size="sm"
           (onButtonClick)="handleItemActionClick(key, 'use')"
+          [isDisabled]="!getCanUseItem(key)"
         />
         }
       </div>

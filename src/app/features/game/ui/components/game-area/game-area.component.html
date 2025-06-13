@@ -35,7 +35,9 @@
     @for(exit of areaExits; track exit.id;) {
     <app-area-exit
       [exit]="exit"
-      [isClickable]="getIsNearPlayer(exit.x, exit.y)"
+      [isClickable]="
+        getIsNearPlayer(exit.x, exit.y) && (exit.lock === '' || !exit.lock)
+      "
       [isNearPlayer]="getIsNearPlayer(exit.x, exit.y)"
       (onClick)="handleExitClick(exit.id)"
       [isLockedOut]="isLockedOut"
