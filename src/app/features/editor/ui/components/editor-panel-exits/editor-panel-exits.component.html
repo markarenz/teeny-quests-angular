@@ -98,6 +98,18 @@
           }
         </select>
       </div>
+      <div>
+        <label for="exits-exit-lock-selector">Lock</label>
+        <select
+          id="exits-exit-lock-selector"
+          [(ngModel)]="inputExitLockType"
+          (change)="handleExitInputChange()"
+        >
+          @for(item of exitsLockOptions; track item.value) {
+          <option [value]="item.value">{{ item.label }}</option>
+          }
+        </select>
+      </div>
     </div>
     }
   </div>

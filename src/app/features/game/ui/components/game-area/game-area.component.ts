@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { GameService } from '@app/features/game/services/game-service/game-service.service';
 import {
-  GameArea,
   GameAreaExit,
   GameAreaMap,
   GameItem,

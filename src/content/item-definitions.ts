@@ -18,7 +18,7 @@ export const itemDefinitions: { [key: string]: ItemDefinition } = {
     name: 'Silver Key',
     variant: 'silver',
     action: 'take',
-    use: 'unlock-door-silver',
+    use: 'unlock-exit-silver',
     inventoryActions: ['use', 'drop'],
   },
   'coins-25': {

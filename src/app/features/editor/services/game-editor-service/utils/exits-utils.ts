@@ -56,6 +56,7 @@ export const utilCreateExit = ({
       x,
       y,
       h,
+      lock: '',
     };
 
     const nextGame = { ...game } as GameROM;
