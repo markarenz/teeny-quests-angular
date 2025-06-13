@@ -22,7 +22,7 @@ describe('GamePlayerComponent', () => {
 
   it('should handle position changes', () => {
     component.playerPosition = '1_2';
-    component.playerFacing = 'n';
+    component.playerFacing = 'north';
     component.cellData = {
       x: 1,
       y: 2,
