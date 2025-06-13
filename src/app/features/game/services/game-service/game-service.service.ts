@@ -44,15 +44,13 @@ export class GameService {
 
   testInit(nextGameROM: GameROM): void {
     this.gameROM.next(nextGameROM);
-    this.initGameState(nextGameROM);
   }
 
   testSetValue(key: string, value: unknown): void {
     switch (key) {
       case 'movementOptions':
-        this.movementOptions.next(value as MovementOptions);
-        break;
       default:
+        this.movementOptions.next(value as MovementOptions);
         break;
     }
   }
@@ -191,21 +189,12 @@ export class GameService {
     const itemDef = itemDefinitions[itemId];
     // if is KEY, is the player standing on a cell with a locked exit of a matching color?
     if (itemId.startsWith('key-')) {
-      console.log('>>: 1');
       const color = itemId.split('key-')[1]; // e.g. 'silver'
       const area =
         this.gameState.value?.areas[this.gameState.value.player.areaId];
       if (!area || !this.gameState.value) {
-        console.log('>>: RETURN NULL');
         return false;
       }
-      console.log(
-        '>>: area.exits',
-        area.exits,
-        this.gameState.value.player.x,
-        this.gameState.value.player.y,
-        color
-      );
       return area.exits.some(
         (e) =>
           e.x === this.gameState.value?.player.x &&
@@ -383,6 +372,7 @@ export class GameService {
     }
     switch (itemDef.action) {
       case 'take':
+      default:
         const itemDef = itemDefinitions[item.itemType];
         if (itemDef) {
           // Add item to player's inventory
@@ -395,8 +385,6 @@ export class GameService {
               (i: GameItem) => i.id !== itemId
             );
         }
-        break;
-      default:
         break;
     }
     return nextGameState;
@@ -429,9 +417,8 @@ export class GameService {
           nextGameState = await this.turnActionItemUse(noun);
           break;
         case 'item-drop':
-          nextGameState = await this.turnActionDropItem(noun);
-          break;
         default:
+          nextGameState = await this.turnActionDropItem(noun);
           break;
       }
 

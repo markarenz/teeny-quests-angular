@@ -82,7 +82,6 @@ export class EditorGameComponent {
 
   handleSaveClick() {
     this.isLoading = true;
-    console.log('Saving game:', this.game?.content.areas['start'].exits);
     fetch(gamesApiUrl, {
       method: 'POST',
       headers: { Accept: 'application/json' },
