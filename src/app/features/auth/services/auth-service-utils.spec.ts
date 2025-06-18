@@ -27,8 +27,6 @@ describe('getUserByIdOrCreateUser', () => {
 
     const result = await getUserByIdOrCreateUser({ id });
     expect(result).toEqual(userMock);
-
-    fetchMock.unmockGlobal();
   });
 
   it('should create a user if it does not exist', async () => {
@@ -55,7 +53,5 @@ describe('getUserByIdOrCreateUser', () => {
 
     const result = await getUserByIdOrCreateUser({ id });
     expect(result).toEqual(userMock);
-
-    fetchMock.unmockGlobal();
   });
 });

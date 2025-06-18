@@ -16,7 +16,7 @@ import { getAreaElementPositionStyle } from '@app/features/game/lib/utils';
   styleUrl: './area-cell-modal.component.css',
 })
 export class AreaCellModalComponent {
-  @Output() clearCellSelection = new EventEmitter<string>();
+  @Output() clearCellSelection = new EventEmitter<void>();
   constructor(private _gameEditorService: GameEditorService) {}
   private subscriptions: Subscription[] = [];
   selectedCellPosition: string = '';

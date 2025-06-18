@@ -1,24 +1,28 @@
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { AuthGoogleService } from './auth-google-service';
+import { OAuthService } from 'angular-oauth2-oidc';
 import { provideRouter } from '@angular/router';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
-
-const mockFunction = () => {};
-class OAuthService {
-  configure = mockFunction;
-  setupAutomaticSilentRefresh = mockFunction;
-  loadDiscoveryDocumentAndTryLogin = mockFunction;
-  hasValidIdToken = mockFunction;
-  getIdentityClaims = mockFunction;
-  initImplicitFlow = mockFunction;
-  revokeTokenAndLogout = mockFunction;
-}
+import { of } from 'rxjs';
 
 let service: AuthGoogleService;
+let oAuthService: OAuthService;
 
 describe('AuthGoogleService', () => {
+  const mockOAuthService = {
+    loadDiscoveryDocumentAndTryLogin(): Promise<boolean> {
+      return Promise.resolve(true); // Or Promise.reject() for failure cases
+    },
+    configure: () => of(true),
+    setupAutomaticSilentRefresh: () => of(true),
+    hasValidIdToken: () => of(true),
+    getIdentityClaims: () => of(true),
+    initImplicitFlow: () => of(true),
+    revokeTokenAndLogout: () => of(true),
+  };
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [OAuthModule.forRoot()],
@@ -26,8 +30,10 @@ describe('AuthGoogleService', () => {
         provideRouter([]),
         provideHttpClient(),
         provideHttpClientTesting(),
+        { provide: OAuthService, useValue: mockOAuthService },
       ],
     });
+    oAuthService = TestBed.inject(OAuthService);
     service = TestBed.inject(AuthGoogleService);
   });
 
@@ -35,21 +41,19 @@ describe('AuthGoogleService', () => {
     TestBed.resetTestingModule();
   });
 
-  it('should be created', () => {
+  it('should be created', fakeAsync(() => {
     expect(service).toBeTruthy();
-  });
+  }));
 
   it('should handle login', () => {
-    const oAuthServiceInstance = new OAuthService();
-    spyOn(oAuthServiceInstance, 'initImplicitFlow');
+    spyOn(oAuthService, 'initImplicitFlow').and.callThrough();
     service.login();
-    expect(service.login).toBeDefined();
+    expect(oAuthService.initImplicitFlow).toHaveBeenCalled();
   });
 
   it('should handle logout', () => {
-    const oAuthServiceInstance = new OAuthService();
-    spyOn(oAuthServiceInstance, 'revokeTokenAndLogout');
+    spyOn(oAuthService, 'revokeTokenAndLogout').and.callThrough();
     service.logout();
-    expect(service.logout).toBeDefined();
+    expect(oAuthService.revokeTokenAndLogout).toHaveBeenCalled();
   });
 });

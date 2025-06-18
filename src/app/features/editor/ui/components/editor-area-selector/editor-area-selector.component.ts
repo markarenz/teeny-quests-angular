@@ -15,7 +15,7 @@ import { IconButtonComponent } from '@app/features/main/ui/components/icons/icon
 export class EditorAreaSelectorComponent {
   constructor(private _gameEditorService: GameEditorService) {}
   private subscriptions: Subscription[] = [];
-  selectedArealocal: string = '';
+  selectedAreaLocal: string = '';
   inputAreaRename: string = '';
   areasList: string[] = [];
   areasListOptions: SelectIUIOption[] = [];
@@ -32,7 +32,7 @@ export class EditorAreaSelectorComponent {
     );
     this.subscriptions.push(
       this._gameEditorService.selectedAreaIdObs.subscribe((data: string) => {
-        this.selectedArealocal = data;
+        this.selectedAreaLocal = data;
       })
     );
   }
@@ -42,12 +42,12 @@ export class EditorAreaSelectorComponent {
   }
 
   handleSelectedAreaChange() {
-    this._gameEditorService.setSelectedAreaId(this.selectedArealocal);
+    this._gameEditorService.setSelectedAreaId(this.selectedAreaLocal);
   }
 
   handleRenameClick() {
     const selectedOption = this.areasListOptions.find(
-      (option) => option.value === this.selectedArealocal
+      (option) => option.value === this.selectedAreaLocal
     );
     if (selectedOption) {
       this.inputAreaRename = selectedOption.label;

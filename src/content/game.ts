@@ -7,6 +7,7 @@ const game: GameROM = {
   itemStatus: 'active',
   userId: 'user123',
   username: 'User Name',
+  introduction: 'Welcome',
   content: {
     areas: {
       start: {
@@ -52,3 +53,5 @@ const game: GameROM = {
     },
   },
 };
+
+export default game;
