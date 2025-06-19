@@ -45,12 +45,11 @@ export class LoginComponent {
         this.signInWithGoogle();
         break;
       }
+      default:
       case 'signOut': {
         this.signOut();
         break;
       }
-      default:
-        break;
     }
   }
 

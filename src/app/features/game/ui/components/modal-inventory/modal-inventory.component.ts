@@ -37,7 +37,12 @@ export class ModalInventoryComponent {
           JSON.stringify(data.player.inventory) !==
             JSON.stringify(this.currentInventory)
         ) {
-          this.currentInventoryKeys = Object.keys(data.player.inventory);
+          this.currentInventoryKeys = Object.keys(data.player.inventory).sort(
+            (a, b) =>
+              this.itemDefinitions[a]?.name > this.itemDefinitions[b]?.name
+                ? 1
+                : -1
+          );
           this.currentInventory = data.player.inventory;
         }
         const positionKey = `${data?.player.y}_${data?.player.x}`;

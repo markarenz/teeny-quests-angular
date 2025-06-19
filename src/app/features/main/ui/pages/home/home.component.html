@@ -20,7 +20,7 @@
             [isSkeleton]="false"
           />
         </a>
-        } } @else { @for (skeleton of skeletons; track skeletons) {
+        } } @else { @for (skeleton of skeletons; track $index) {
         <div
           class="flex flex-col gap-4 bg-gray-600 rounded-md group-hover:bg-gray-700 transition-colors border-2 border-gray-500 group-hover:border-gray-300"
         >

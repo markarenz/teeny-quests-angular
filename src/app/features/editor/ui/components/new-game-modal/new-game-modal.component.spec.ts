@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { EventEmitter } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { NewGameModalComponent } from './new-game-modal.component';
-import { provideRouter } from '@angular/router';
+import { Router } from '@angular/router';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
@@ -15,15 +15,12 @@ describe('NewGameModalComponent', () => {
   let component: NewGameModalComponent;
   let fixture: ComponentFixture<NewGameModalComponent>;
   let mockEventEmitter: EventEmitter<string>;
+  let router: Router;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [NewGameModalComponent, OAuthModule.forRoot()],
-      providers: [
-        provideRouter([]),
-        provideHttpClient(),
-        provideHttpClientTesting(),
-      ],
+      providers: [provideHttpClient(), provideHttpClientTesting()],
     }).compileComponents();
 
     mockEventEmitter = new EventEmitter<string>();
@@ -31,6 +28,7 @@ describe('NewGameModalComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     service = TestBed.inject(GameEditorService);
+    router = TestBed.inject(Router);
     service.updateGame(gameMockData);
   });
 
@@ -53,7 +51,23 @@ describe('NewGameModalComponent', () => {
     component.onBgClick = mockEventEmitter;
     spyOn(mockEventEmitter, 'emit');
     component.handleCancelClick();
+    component.validateForm();
     fixture.detectChanges();
     expect(mockEventEmitter.emit).toHaveBeenCalled();
+
+    component.resetForm();
+    expect(component.title).toBe('');
   });
+
+  it('should handle confirm click', fakeAsync(async () => {
+    spyOn(router, 'navigate').and.stub();
+    component.user = {
+      id: '123',
+      username: 'testuser',
+      name: 'Test User',
+    };
+    spyOn(service, 'createGame').and.resolveTo('12345');
+    await component.handleOkClick();
+    expect(service.createGame).toHaveBeenCalled();
+  }));
 });

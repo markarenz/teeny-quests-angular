@@ -22,7 +22,7 @@ export const userMenuData: MenuData = {
   ],
   loggedOut: [
     {
-      id: 1,
+      id: 3,
       label: 'Log In',
       action: 'signIn',
     },
