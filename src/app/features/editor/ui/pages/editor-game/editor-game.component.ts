@@ -16,6 +16,7 @@ import { EditorAreaSelectorComponent } from '../../components/editor-area-select
 import { ButtonComponent } from '@app/features/main/ui/components/button/button.component';
 import { BreadcrumbsComponent } from '@app/features/main/ui/components/breadcrumbs/breadcrumbs.component';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
+import { AuthGoogleService } from '@app/features/auth/services/auth-google-service';
 
 @Component({
   selector: 'app-editor-game',
@@ -40,7 +41,8 @@ import { GameEditorService } from '@app/features/editor/services/game-editor-ser
 export class EditorGameComponent {
   constructor(
     private _route: ActivatedRoute,
-    private _gameEditorService: GameEditorService
+    private _gameEditorService: GameEditorService,
+    private _authGoogleService: AuthGoogleService
   ) {}
   private subscriptions: Subscription[] = [];
 
@@ -80,20 +82,11 @@ export class EditorGameComponent {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
-  handleSaveClick() {
+  async handleSaveClick() {
     this.isLoading = true;
-    fetch(gamesApiUrl, {
-      method: 'POST',
-      headers: { Accept: 'application/json' },
-      body: JSON.stringify({
-        ...this.game,
-        content: this.game ? JSON.stringify(this.game.content ?? {}) : '{}',
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        this.isLoading = false;
-      });
+    const accessToken = this._authGoogleService.getAccessToken();
+    await this._gameEditorService.saveGame(this.game!, accessToken);
+    this.isLoading = false;
   }
 
   handleSubNavClick(slug: string) {

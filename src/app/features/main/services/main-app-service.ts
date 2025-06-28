@@ -30,7 +30,7 @@ export class MainAppService {
 
     fetch(gamesApiUrl, {
       method: 'GET',
-      headers: { Accept: 'application/json' },
+      headers: { Accept: 'text/plain' },
     })
       .then((res) => res.json())
       .then((responseObj) => {

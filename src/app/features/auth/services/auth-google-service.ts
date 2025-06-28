@@ -58,4 +58,8 @@ export class AuthGoogleService {
   getIsLoggedIn() {
     return this.isLoggedIn.value;
   }
+
+  getAccessToken() {
+    return this.oAuthService.getAccessToken();
+  }
 }

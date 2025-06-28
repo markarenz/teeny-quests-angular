@@ -1,9 +1,17 @@
 <app-main-layout [title]="title">
   <app-container>
     <div class="py-8 flex flex-col gap-8">
-      <div class="flex flex-row justify-between">
-        <app-breadcrumbs [links]="breadcrumbLinks" />
-        <div class="relative top-[-9px]">
+      <div class="flex flex-col lg:flex-row justify-between">
+        <div class="pb-4 lg:pb-0">
+          <app-breadcrumbs [links]="breadcrumbLinks" />
+        </div>
+        <div class="relative top:0 lg:top-[-9px] flex flex-row gap-4">
+          <app-button
+            variant="outlined"
+            label="Versions"
+            [isDisabled]="isLoading"
+            (onButtonClick)="handleSaveClick()"
+          />
           <app-button
             variant="contained"
             label="Save"
@@ -37,7 +45,9 @@
           </div>
           <div class="flex flex-col gap-8 mt-8">
             @if (isLoading) {
-            <div class="my-8">
+            <div
+              class="fixed inset-0 flex items-center justify-center bg-black-50 z-[999]"
+            >
               <app-loader-animation />
             </div>
             }

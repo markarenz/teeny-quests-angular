@@ -11,3 +11,6 @@ secret.ts
 *.notes.md
 _local-assets/
 coverage/
+
+src/config/configConstants.ts
+api/lambda-src.zip

@@ -1,8 +1,12 @@
 import { randomBytes } from "crypto";
 import { PutCommand, GetCommand } from "@aws-sdk/lib-dynamodb";
 import { unmarshall } from "@aws-sdk/util-dynamodb";
-import { QueryCommand } from "@aws-sdk/client-dynamodb";
-import { fieldNames, tableNames, indexNames } from "./constants.mjs";
+import {
+  ScanCommand,
+  UpdateItemCommand,
+  QueryCommand,
+} from "@aws-sdk/client-dynamodb";
+import { fieldNames, tableNames } from "./constants.mjs";
 
 const unmarshallArray = (items) => items.map((i) => unmarshall(i));
 
@@ -121,14 +125,14 @@ export const getItemById = async (params) => {
 };
 
 export const getItemsByUserId = async (params) => {
-  const { path, dynamoDb, searchParams, requestKey } = params;
+  const { path, dynamoDb, searchParams } = params;
   let items = [];
   // TODO: Filter by user ID for author page (FUTURE)
   if (searchParams?.userId && searchParams?.userId.length > 0) {
     const { userId } = searchParams;
     const command = new QueryCommand({
       TableName: tableNames[path],
-      IndexName: indexNames[requestKey],
+      IndexName: "userId-index",
       ProjectionExpression: "id, title, description, username, itemStatus",
       KeyConditionExpression: "userId = :value",
       ExpressionAttributeValues: {
@@ -145,14 +149,11 @@ export const getItemsByUserId = async (params) => {
 };
 
 export const getItems = async (params) => {
-  const { path, dynamoDb, requestKey } = params;
+  const { path, dynamoDb, searchParams } = params;
   const command = new QueryCommand({
     TableName: tableNames[path],
-    IndexName: indexNames[requestKey],
-    ProjectionExpression: fieldNames[path]
-      .filter((item) => !item.detailOnly)
-      .map((item) => item.fieldName)
-      .join(", "),
+    IndexName: "itemStatus-index",
+    ProjectionExpression: "id, title, description, introduction, username",
     KeyConditionExpression: "itemStatus = :value",
     ExpressionAttributeValues: {
       ":value": { S: "active" },
@@ -164,9 +165,6 @@ export const getItems = async (params) => {
 
   if (items) {
     return {
-      headers: {
-        "access-Control-Allow-Origin": "*",
-      },
       statusCode: 200,
       body: JSON.stringify({ success: true, items }),
     };

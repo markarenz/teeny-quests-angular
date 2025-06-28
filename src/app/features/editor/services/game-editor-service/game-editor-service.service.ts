@@ -361,6 +361,26 @@ export class GameEditorService {
     }
   }
 
+  async saveGame(game: GameROM, accessToken: string): Promise<void> {
+    if (this.game?.value?.content) {
+      return fetch(gamesApiUrl, {
+        method: 'POST',
+        headers: {
+          // Accept: 'application/json',
+          // 'x-api-key': 'game-editor2',
+          // 'x-access-token': accessToken,
+          // authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({
+          ...game,
+          content: JSON.stringify(this.game.value.content),
+        }),
+      }).then(() => {
+        return Promise.resolve();
+      });
+    }
+  }
+
   getDestinationAreasListOptions(): SelectIUIOption[] {
     let areasOptions: SelectIUIOption[] = [];
     if (this.game.value) {
