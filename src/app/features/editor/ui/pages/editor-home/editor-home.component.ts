@@ -7,7 +7,7 @@ import { TableComponent } from '@app/features/main/ui/components/table/table.com
 import { ButtonComponent } from '@app/features/main/ui/components/button/button.component';
 import { FieldLabel, GameROM, Link } from '@main/interfaces/types';
 import { TableCellDisplayType } from '@main/interfaces/enums';
-import { AuthGoogleService } from '@app/features/auth/services/auth-google-service';
+import { AuthProviderService } from '@app/features/auth/services/auth-provider-service';
 import { NewGameModalComponent } from '../../components/new-game-modal/new-game-modal.component';
 import { BreadcrumbsComponent } from '@app/features/main/ui/components/breadcrumbs/breadcrumbs.component';
 import { User } from '@app/features/auth/interfaces/types';
@@ -29,7 +29,7 @@ import { GameEditorService } from '@app/features/editor/services/game-editor-ser
 })
 export class EditorHomeComponent {
   constructor(
-    private _authService: AuthGoogleService,
+    private _authService: AuthProviderService,
     private _gameEditorService: GameEditorService,
     private titleService: Title,
     private metaService: Meta

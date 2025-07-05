@@ -145,6 +145,21 @@ Resources:
         ReadCapacityUnits: 0
         WriteCapacityUnits: 0
 
+  # SharedApiLambdaLayerBucket:
+  #   Type: AWS::S3::Bucket
+  #   Properties:
+  #     BucketName: tq-shared-api-lambda-layer-bucket
+  #     AccessControl: Private
+  SharedApiLambdaLayer:
+    Type: AWS::Lambda::LayerVersion
+    Properties:
+      LayerName: TQ-SharedApiLambda-layer
+      Description: Layer containing aws-jwt-verify
+      Content:
+        S3Bucket: tq-lambda-layer-bucket
+        S3Key: TQ-SharedApiLambda-layer.zip
+      CompatibleRuntimes:
+        - nodejs22.x
   SharedApiLambda:
     Type: AWS::Lambda::Function
     Properties:
@@ -152,6 +167,8 @@ Resources:
       Handler: index.handler
       Role: !GetAtt LambdaExecutionRole.Arn
       Runtime: nodejs22.x
+      Layers:
+        - !Ref SharedApiLambdaLayer
       Code:
         ZipFile: |
           exports.handler = async (event) => ({

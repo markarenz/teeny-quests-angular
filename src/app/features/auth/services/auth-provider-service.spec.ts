@@ -1,5 +1,5 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { AuthGoogleService } from './auth-google-service';
+import { AuthProviderService } from './auth-provider-service';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { provideRouter } from '@angular/router';
 import { OAuthModule } from 'angular-oauth2-oidc';
@@ -7,10 +7,10 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
 
-let service: AuthGoogleService;
+let service: AuthProviderService;
 let oAuthService: OAuthService;
 
-describe('AuthGoogleService', () => {
+describe('AuthProviderService', () => {
   const mockOAuthService = {
     loadDiscoveryDocumentAndTryLogin(): Promise<boolean> {
       return Promise.resolve(true); // Or Promise.reject() for failure cases
@@ -34,7 +34,7 @@ describe('AuthGoogleService', () => {
       ],
     });
     oAuthService = TestBed.inject(OAuthService);
-    service = TestBed.inject(AuthGoogleService);
+    service = TestBed.inject(AuthProviderService);
   });
 
   afterEach(() => {

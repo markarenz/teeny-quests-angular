@@ -2,9 +2,67 @@ import { randomBytes } from "crypto";
 import { PutCommand, GetCommand } from "@aws-sdk/lib-dynamodb";
 import { unmarshall } from "@aws-sdk/util-dynamodb";
 import { QueryCommand } from "@aws-sdk/client-dynamodb";
-import { fieldNames, tableNames, indexNames } from "./constants.mjs";
+import { JwtVerifier } from "aws-jwt-verify";
+import { SimpleJwksCache } from "aws-jwt-verify/jwk";
+import {
+  fieldNames,
+  tableNames,
+  indexNames,
+  authorizationMatchers,
+} from "./constants.mjs";
 
 const unmarshallArray = (items) => items.map((i) => unmarshall(i));
+
+const getJwksUri = async () => {
+  const response = await fetch(
+    "https://accounts.google.com/.well-known/openid-configuration"
+  );
+  const data = await response.json();
+  return data.jwks_uri;
+};
+
+async function createVerifier(jwksUri, clientId) {
+  const jwksCache = new SimpleJwksCache(); // Use a cache for better performance
+  const verifier = JwtVerifier.create(
+    {
+      issuer: "https://accounts.google.com",
+      audience: clientId,
+      jwksUri: jwksUri, // Use the retrieved JWKS URI
+    },
+    {
+      jwksCache: jwksCache,
+    }
+  );
+  return verifier;
+}
+
+async function verifyJwt(verifier, token) {
+  try {
+    const payload = await verifier.verify(token);
+    console.log("Token is valid. Payload:", payload);
+    return payload;
+  } catch (error) {
+    console.error("Token verification failed:", error);
+    throw error;
+  }
+}
+
+const getAuthorizationForRequest = async (token, params, requestKey) => {
+  const jwksUri = await getJwksUri();
+  const clientId = process.env.GOOGLE_CLIENT_ID;
+  const verifier = await createVerifier(jwksUri, clientId);
+  const payload = await verifyJwt(verifier, token);
+  // The authorization matchers obj defines which fields to match on for authorization
+  const profileFieldName = authorizationMatchers[requestKey]?.profile ?? "";
+  const paramsFieldName = authorizationMatchers[requestKey]?.params ?? "";
+  return (
+    payload[profileFieldName] &&
+    params[paramsFieldName] &&
+    payload[profileFieldName] === params[paramsFieldName]
+  );
+};
+
+// --------
 
 const getBodyData = ({ body, path }) => {
   const data = {};
@@ -28,12 +86,33 @@ const toUrlString = (buffer) => {
     .replace(/=/g, "");
 };
 
+const generateReturnPayload = (statusCode, body) => {
+  return {
+    statusCode,
+    headers: {
+      "access-Control-Allow-Origin": "*",
+    },
+    body: JSON.stringify(body),
+  };
+};
+
 export const createItem = async (params) => {
-  const { path, dynamoDb, body } = params;
+  const { path, dynamoDb, body, token, requestKey } = params;
   const { id: rawId } = body;
   let success = false;
   let id = null;
   let resp = null;
+  console.log("Creating item for path:", path);
+
+  const isAuthorized = await getAuthorizationForRequest(
+    token,
+    params,
+    requestKey
+  );
+  console.log("Request authorization:", isAuthorized);
+  if (!isAuthorized) {
+    return generateReturnPayload(403, { message: "Unauthorized request" });
+  }
 
   const bodyData = getBodyData({ body, path });
 
@@ -55,14 +134,12 @@ export const createItem = async (params) => {
     success = resp["$metadata"].httpStatusCode === 200;
   }
 
-  return {
-    statusCode: success ? 201 : 500,
-    body: JSON.stringify({
-      message: success ? "Item created successfully." : "Error creating item",
-      id: id ?? null,
-      resp: resp ? resp["$metadata"]?.httpStatusCode : null,
-    }),
-  };
+  return generateReturnPayload(success ? 201 : 500, {
+    message: success ? "Item created successfully." : "Error creating item",
+    id: id ?? null,
+    accessPayload,
+    resp: resp ? resp["$metadata"]?.httpStatusCode : null,
+  });
 };
 
 export const updateItem = async (params) => {
@@ -80,18 +157,12 @@ export const updateItem = async (params) => {
   });
   const resp = await dynamoDb.send(command);
   const success = resp["$metadata"].httpStatusCode === 200;
-  return {
-    statusCode: success ? 204 : 500,
-    headers: {
-      "access-Control-Allow-Origin": "*",
-    },
-    body: JSON.stringify({
-      path,
-      message: success ? "Item updated successfully." : "Error updating item",
-      id,
-      resp: resp["$metadata"].httpStatusCode,
-    }),
-  };
+  return generateReturnPayload(success ? 204 : 500, {
+    path,
+    message: success ? "Item updated successfully." : "Error updating item",
+    id,
+    resp: resp["$metadata"].httpStatusCode,
+  });
 };
 
 export const getItemById = async (params) => {
@@ -108,15 +179,9 @@ export const getItemById = async (params) => {
     const item = resp?.Item ? resp?.Item : null;
 
     if (item) {
-      return {
-        statusCode: 200,
-        body: JSON.stringify({ success: true, item }),
-      };
+      return generateReturnPayload(200, { success: true, item });
     }
-    return {
-      statusCode: 404,
-      body: JSON.stringify({ success: false, item: null }),
-    };
+    return generateReturnPayload(400, { success: true, item: null });
   }
 };
 
@@ -138,10 +203,7 @@ export const getItemsByUserId = async (params) => {
     const resp = await dynamoDb.send(command);
     items = resp?.Items ? unmarshallArray(resp?.Items) : null;
   }
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ success: true, items }),
-  };
+  return generateReturnPayload(200, { success: true, items });
 };
 
 export const getItems = async (params) => {
@@ -163,17 +225,7 @@ export const getItems = async (params) => {
   const items = resp?.Items ? unmarshallArray(resp?.Items) : null;
 
   if (items) {
-    return {
-      headers: {
-        "access-Control-Allow-Origin": "*",
-      },
-      statusCode: 200,
-      body: JSON.stringify({ success: true, items }),
-    };
+    return generateReturnPayload(200, { success: true, items });
   }
-
-  return {
-    statusCode: 404,
-    body: JSON.stringify({ success: false }),
-  };
+  return generateReturnPayload(404, { success: false, items: null });
 };

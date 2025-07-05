@@ -10,7 +10,7 @@ import { User } from '../interfaces/types';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthGoogleService {
+export class AuthProviderService {
   private oAuthService = inject(OAuthService);
 
   private router = inject(Router);
@@ -21,19 +21,27 @@ export class AuthGoogleService {
   private user = new BehaviorSubject<User | null>(null);
   userObs = this.user.asObservable();
 
+  private token = signal<string | null>(null);
+
   constructor() {
     this.initConfiguration();
+  }
+
+  getToken() {
+    return this.token();
   }
 
   initConfiguration() {
     this.oAuthService.configure(authConfig);
     this.oAuthService.setupAutomaticSilentRefresh();
     this.oAuthService.loadDiscoveryDocumentAndTryLogin().then(async () => {
+      this.token.set(this.oAuthService.getAccessToken());
       if (this.oAuthService.hasValidIdToken()) {
         const profileData = this.oAuthService.getIdentityClaims();
         const userId = profileData['sub'];
         const userData = await getUserByIdOrCreateUser({
           id: userId,
+          token: this.token(),
         });
         // Check status of user first...
         this.user.next({

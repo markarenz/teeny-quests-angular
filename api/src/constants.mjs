@@ -10,6 +10,13 @@ export const indexNames = {
   users_get: "itemStatusIndex",
 };
 
+export const authorizationMatchers = {
+  users_post: {
+    profile: "email",
+    params: "email",
+  },
+};
+
 // post and put for games and users REQUIRE AUTH
 // -- check token sub against designated field
 // -- game: userId

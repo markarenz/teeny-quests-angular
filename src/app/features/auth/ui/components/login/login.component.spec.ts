@@ -3,13 +3,13 @@ import { LoginComponent } from './login.component';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
-import { AuthGoogleService } from '@app/features/auth/services/auth-google-service';
+import { AuthProviderService } from '@app/features/auth/services/auth-provider-service';
 import { provideRouter } from '@angular/router';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
-  let authService: AuthGoogleService;
+  let authService: AuthProviderService;
 
   afterEach(() => {
     TestBed.resetTestingModule();
@@ -24,7 +24,7 @@ describe('LoginComponent', () => {
         provideRouter([]),
       ],
     }).compileComponents();
-    authService = TestBed.inject(AuthGoogleService);
+    authService = TestBed.inject(AuthProviderService);
 
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;

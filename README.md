@@ -13,3 +13,7 @@
   - aws cloudformation update-stack --stack-name TQCFStack --template-body file://tq-cf.yaml --capabilities CAPABILITY_IAM
 - Validation
   - aws cloudformation validate-template --template-body file://tq-cf.yaml
+
+## Update Lambda Layer Content
+
+- zip -r ../TQ-SharedApiLambda-layer.zip nodejs

@@ -1,6 +1,11 @@
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
-import { getItems, getItemsByUserId, getItemById } from "./utils.mjs";
+import {
+  getItems,
+  getItemsByUserId,
+  getItemById,
+  createItem,
+} from "./utils.mjs";
 
 const client = new DynamoDBClient({});
 const dynamoDb = DynamoDBDocumentClient.from(client);
@@ -9,6 +14,8 @@ export const handler = async (event, context) => {
   try {
     const path = event.path.replace(/^\//, ""); // Remove leading slash
     const method = `${event.httpMethod}`.toLocaleLowerCase(); // Get HTTP method
+    const headers = event.headers || {};
+    const token = headers["x-access-token"] || null;
     const body = event?.body ? JSON.parse(event?.body) : null;
     const searchParams = event?.queryStringParameters ?? {};
     const searchKeys = Object.keys(searchParams).join("-");
@@ -23,6 +30,7 @@ export const handler = async (event, context) => {
       dynamoDb,
       body,
       requestKey,
+      token,
     };
 
     const functionMap = {
@@ -32,6 +40,8 @@ export const handler = async (event, context) => {
 
       users_get: getItems,
       users_get_id: getItemById,
+      users_post: createItem,
+      games_post: createItem,
       // "POST-": createItem,
       // "PUT-": updateItem,
     };

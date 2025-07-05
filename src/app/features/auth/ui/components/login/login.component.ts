@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthGoogleService } from '@app/features/auth/services/auth-google-service';
+import { AuthProviderService } from '@app/features/auth/services/auth-provider-service';
 import { CommonModule } from '@angular/common';
 import { MenuItem, userMenuData } from '@content/menus/user-menu-data';
 import { Subscription } from 'rxjs';
@@ -15,14 +15,17 @@ import { User } from '@app/features/auth/interfaces/types';
   styleUrl: './login.component.css',
 })
 export class LoginComponent {
-  private authService = inject(AuthGoogleService);
+  private authService = inject(AuthProviderService);
 
   subscription: Subscription;
   user: User | null = null;
   isLoggedIn: boolean = false;
   menuItems: MenuItem[] = [];
 
-  constructor(private _authService: AuthGoogleService, private router: Router) {
+  constructor(
+    private _authService: AuthProviderService,
+    private router: Router
+  ) {
     this.subscription = Subscription.EMPTY;
   }
 

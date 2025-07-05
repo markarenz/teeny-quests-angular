@@ -1,10 +1,10 @@
 import { CanActivateFn, Router } from '@angular/router';
 import { inject } from '@angular/core';
-import { AuthGoogleService } from '../../services/auth-google-service';
+import { AuthProviderService } from '../../services/auth-provider-service';
 
 export const hasAuthGuard: CanActivateFn = (route, state) => {
   const router: Router = inject(Router);
-  const isLoggedIn: boolean = inject(AuthGoogleService).getIsLoggedIn();
+  const isLoggedIn: boolean = inject(AuthProviderService).getIsLoggedIn();
 
   return isLoggedIn || router.navigate(['/']);
 };
