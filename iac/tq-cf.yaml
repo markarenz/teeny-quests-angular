@@ -205,7 +205,8 @@ Resources:
             Resource: "execute-api:/*"
             Condition:
               IpAddress:
-                aws:SourceIp: ["200.200.200.200"]
+                aws:SourceIp:
+                  [!Ref AllowedIPAddresses2, !Ref AllowedIPAddresses1]
           - Effect: Allow
             Principal: "*"
             Action: "execute-api:Invoke"
@@ -422,6 +423,14 @@ Resources:
     Properties:
       RestApiId: !Ref ApiGatewayRestApi
       StageName: prod
+
+Parameters:
+  AllowedIPAddresses1:
+    Type: String
+    Description: Allowed IP addresses
+  AllowedIPAddresses2:
+    Type: String
+    Description: Allowed IP addresses
 
 Outputs:
   ApiUrl:
