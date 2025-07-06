@@ -35,15 +35,12 @@ export class AuthProviderService {
     this.oAuthService.configure(authConfig);
     this.oAuthService.setupAutomaticSilentRefresh();
     this.oAuthService.loadDiscoveryDocumentAndTryLogin().then(async () => {
-      this.token.set(this.oAuthService.getAccessToken());
       if (this.oAuthService.hasValidIdToken()) {
         const profileData = this.oAuthService.getIdentityClaims();
         const userId = profileData['sub'];
         const userData = await getUserByIdOrCreateUser({
           id: userId,
-          token: this.token(),
         });
-        // Check status of user first...
         this.user.next({
           ...userData,
           initials: getInitialsFromName(userData?.username),

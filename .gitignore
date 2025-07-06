@@ -13,5 +13,5 @@ _local-assets/
 coverage/
 
 src/config/configConstants.ts
-api/lambda-src.zip
+api/lambda.zip
 TQ-SharedApiLambda-layer.zip

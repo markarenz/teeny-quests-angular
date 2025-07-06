@@ -35,13 +35,13 @@ export const handler = async (event, context) => {
 
     const functionMap = {
       games_get: getItems,
-      games_get_userId: getItemsByUserId,
+      // games_get_userId: getItemsByUserId,
       games_get_id: getItemById,
 
-      users_get: getItems,
+      // users_get: getItems,
       users_get_id: getItemById,
       users_post: createItem,
-      games_post: createItem,
+      // games_post: createItem,
       // "POST-": createItem,
       // "PUT-": updateItem,
     };

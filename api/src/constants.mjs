@@ -12,18 +12,10 @@ export const indexNames = {
 
 export const authorizationMatchers = {
   users_post: {
-    profile: "email",
-    params: "email",
+    profile: "sub",
+    bodyParam: "id",
   },
 };
-
-// post and put for games and users REQUIRE AUTH
-// -- check token sub against designated field
-// -- game: userId
-// -- user: id
-// -- contentVersion: userId
-// content version needs a userId field for this purpose
-// NEXT - oAuth integration for x-access-token
 
 export const fieldNames = {
   games: [
