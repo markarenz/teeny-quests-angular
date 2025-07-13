@@ -17,8 +17,6 @@ export const handler = async (event, context) => {
     const method = `${event.httpMethod}`.toLocaleLowerCase(); // Get HTTP method
     const headers = event.headers || {};
     const token = headers["x-access-token"] || null;
-    console.log("EVENT:", event);
-    console.log("TOKEN:", token);
     const body = event?.body ? JSON.parse(event?.body) : null;
     const searchParams = event?.queryStringParameters ?? {};
     const searchKeys = Object.keys(searchParams).join("-");
@@ -60,9 +58,7 @@ export const handler = async (event, context) => {
       // "POST-": createItem,
       // "PUT-": updateItem,
     };
-    if (requestKey.startsWith("users_post")) {
-      console.log("params:", event);
-    }
+
     if (functionMap[requestKey]) {
       return functionMap[requestKey](params);
     }
