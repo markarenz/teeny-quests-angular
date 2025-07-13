@@ -2,7 +2,13 @@ import { usersApiUrl } from '@config/index';
 import { logger } from '@app/features/main/utils/logger';
 import { getRandomUsername } from '@app/features/main/utils';
 
-export const getUserByIdOrCreateUser = async ({ id }: { id: string }) => {
+export const getUserByIdOrCreateUser = async ({
+  id,
+  token,
+}: {
+  id: string;
+  token: string | null;
+}) => {
   let userDataResponse = null;
   userDataResponse = await fetch(`${usersApiUrl}?id=${id}`, {
     method: 'GET',
@@ -26,6 +32,7 @@ export const getUserByIdOrCreateUser = async ({ id }: { id: string }) => {
       method: 'POST',
       headers: {
         Accept: 'application/json',
+        'X-Access-Token': token || '',
       },
       body: JSON.stringify(newUser),
     }).then((res) => res.json());

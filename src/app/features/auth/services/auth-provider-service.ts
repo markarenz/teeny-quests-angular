@@ -36,10 +36,12 @@ export class AuthProviderService {
     this.oAuthService.setupAutomaticSilentRefresh();
     this.oAuthService.loadDiscoveryDocumentAndTryLogin().then(async () => {
       if (this.oAuthService.hasValidIdToken()) {
+        this.token.set(this.oAuthService.getIdToken());
         const profileData = this.oAuthService.getIdentityClaims();
         const userId = profileData['sub'];
         const userData = await getUserByIdOrCreateUser({
           id: userId,
+          token: this.token(),
         });
         this.user.next({
           ...userData,

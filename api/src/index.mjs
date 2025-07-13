@@ -5,6 +5,7 @@ import {
   getItemsByUserId,
   getItemById,
   createItem,
+  getOptionsResponse,
 } from "./utils.mjs";
 
 const client = new DynamoDBClient({});
@@ -16,6 +17,8 @@ export const handler = async (event, context) => {
     const method = `${event.httpMethod}`.toLocaleLowerCase(); // Get HTTP method
     const headers = event.headers || {};
     const token = headers["x-access-token"] || null;
+    console.log("EVENT:", event);
+    console.log("TOKEN:", token);
     const body = event?.body ? JSON.parse(event?.body) : null;
     const searchParams = event?.queryStringParameters ?? {};
     const searchKeys = Object.keys(searchParams).join("-");
@@ -41,10 +44,25 @@ export const handler = async (event, context) => {
       // users_get: getItems,
       users_get_id: getItemById,
       users_post: createItem,
+      users_options: () => {
+        return {
+          statusCode: 200,
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type, X-Access-Token",
+          },
+          body: JSON.stringify({ message: "CORS preflight response" }),
+        };
+      },
+      // getOptionsResponse,
       // games_post: createItem,
       // "POST-": createItem,
       // "PUT-": updateItem,
     };
+    if (requestKey.startsWith("users_post")) {
+      console.log("params:", event);
+    }
     if (functionMap[requestKey]) {
       return functionMap[requestKey](params);
     }
