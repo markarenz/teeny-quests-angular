@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
-import { Title, Meta } from '@angular/platform-browser';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GameService } from '@app/features/game/services/game-service/game-service.service';
 import { MainLayoutComponent } from '@main/ui/components/main-layout/main-layout.component';
 import {
@@ -15,6 +14,7 @@ import { pageModalTitles } from '@content/constants';
 import { IconButtonComponent } from '@app/features/main/ui/components/icons/icon-button/icon-button.component';
 import { ModalPageComponent } from '@app/features/game/ui/components/modal-page/modal-page.component';
 import { ModalInventoryComponent } from '../../components/modal-inventory/modal-inventory.component';
+import { AuthProviderService } from '@app/features/auth/services/auth-provider-service';
 
 @Component({
   selector: 'app-game',
@@ -37,10 +37,10 @@ export class GameComponent {
   showInventoryDot: boolean = false;
   previousInventory: Inventory | null = null;
   constructor(
-    private titleService: Title,
-    private metaService: Meta,
     private _route: ActivatedRoute,
-    private _gameService: GameService
+    private _gameService: GameService,
+    private _authGoogleService: AuthProviderService,
+    private router: Router
   ) {}
 
   private subscriptions: Subscription[] = [];
@@ -56,6 +56,19 @@ export class GameComponent {
     this.subscriptions.push(
       this._gameService.gameROMObs.subscribe((data: GameROM | null) => {
         if (data) {
+          const userId = this._authGoogleService.getUserId();
+          if (
+            // TODO: use enum for itemStatus
+            data.itemStatus !== 'active' &&
+            data &&
+            data.userId !== userId
+          ) {
+            // TODO: use logger instead of console.error
+            console.error('Unauthorized access to game data');
+            this.router.navigate(['/']);
+            return;
+          }
+
           this.title = data.title;
           this.introParagraphs = data.introduction
             .split('\n')

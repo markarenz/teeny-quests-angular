@@ -5,7 +5,8 @@ import {
   getItemsByUserId,
   getItemById,
   createItem,
-  getOptionsResponse,
+  updateItem,
+  returnOptionsResponse,
 } from "./utils.mjs";
 
 const client = new DynamoDBClient({});
@@ -36,33 +37,20 @@ export const handler = async (event, context) => {
 
     const functionMap = {
       games_get: getItems,
-      // games_get_userId: getItemsByUserId,
+      games_get_userId: getItemsByUserId,
       games_get_id: getItemById,
-
-      // users_get: getItems,
       users_get_id: getItemById,
       users_post: createItem,
-      users_options: () => {
-        return {
-          statusCode: 200,
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-            "Access-Control-Allow-Headers": "Content-Type, X-Access-Token",
-          },
-          body: JSON.stringify({ message: "CORS preflight response" }),
-        };
-      },
-      // getOptionsResponse,
-      // games_post: createItem,
-      // "POST-": createItem,
-      // "PUT-": updateItem,
+      users_options: returnOptionsResponse,
+      games_post: createItem,
+      games_put: updateItem,
+      games_options: returnOptionsResponse,
     };
 
     if (functionMap[requestKey]) {
       return functionMap[requestKey](params);
     }
-
+    console.error(`Invalid request: ${requestKey} not found in functionMap`);
     return {
       statusCode: 400,
       body: `Invalid method or path provided. Please check your request: ${requestKey}`,

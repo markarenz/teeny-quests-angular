@@ -18,6 +18,8 @@ export class AuthProviderService {
   private isLoggedIn = new BehaviorSubject<boolean>(false);
   isLoggedInObs = this.isLoggedIn.asObservable();
 
+  private userId = signal<string | null>(null);
+
   private user = new BehaviorSubject<User | null>(null);
   userObs = this.user.asObservable();
 
@@ -29,6 +31,10 @@ export class AuthProviderService {
 
   getToken() {
     return this.token();
+  }
+
+  getUserId() {
+    return this.userId() ?? null;
   }
 
   initConfiguration() {
@@ -43,6 +49,8 @@ export class AuthProviderService {
           id: userId,
           token: this.token(),
         });
+        this.userId.set(userId);
+        console.log('User data:', userId);
         this.user.next({
           ...userData,
           initials: getInitialsFromName(userData?.username),

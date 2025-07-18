@@ -67,7 +67,6 @@ async function createVerifier(jwksUri, clientId) {
 async function verifyJwt(verifier, token) {
   try {
     const payload = await verifier.verify(token);
-    console.info("Token is valid. Payload:", payload);
     return payload;
   } catch (error) {
     console.error("Token verification failed:", error);
@@ -170,22 +169,28 @@ const generateReturnPayload = (statusCode, body) => {
  * @returns {object} The response object containing statusCode, headers, and body for CORS preflight.
  */
 
-export const getOptionsResponse = (_params) => {
+export const returnOptionsResponse = (_params) => {
   return {
     statusCode: 200,
     headers: {
       "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+      "Access-Control-Allow-Methods": "GET, POST, PUT, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type, X-Access-Token",
     },
     body: JSON.stringify({ message: "CORS preflight response" }),
   };
 };
 
-// For creating games, users, and versions we require:
-// - A valid token
-// - A given value in the auth payload MUST match the value in the request body
-// - The matchng logic comes from the authorizationMatchers object in constants.mjs
+/**
+ * Creates a new item in the DynamoDB table specified by the path.
+ * Authorizes the request, processes the body data, generates a unique ID if necessary,
+ * and inserts the item with creation and update timestamps.
+ *
+ * @async
+ * @function createItem
+ * @param {Object} params - The parameters for item creation.
+ * @returns {Promise<Object>} The response payload containing status, message, item ID, and HTTP status code.
+ */
 
 export const createItem = async (params) => {
   console.info("creteItem");
@@ -194,7 +199,7 @@ export const createItem = async (params) => {
   let success = false;
   let id = null;
   let resp = null;
-
+  console.log("createItem params:", params);
   const isAuthorized = await getAuthorizationForRequest(
     token,
     params,
@@ -238,9 +243,7 @@ export const createItem = async (params) => {
  * @async
  * @function getItems
  * @param {Object} params - The parameters for the query.
- * @param {string} params.path - The key to determine which table and fields to use.
  * @param {import('@aws-sdk/client-dynamodb').DynamoDBClient} params.dynamoDb - The DynamoDB client instance.
- * @param {string} params.requestKey - The key to determine which index to use.
  * @returns {Promise<Object>} The response payload containing a success flag and the list of items (if found).
  */
 
@@ -275,11 +278,7 @@ export const getItems = async (params) => {
  * @async
  * @function getItemsByUserId
  * @param {Object} params - The parameters for the query.
- * @param {string} params.path - The path used to determine the table name.
  * @param {import('@aws-sdk/client-dynamodb').DynamoDBClient} params.dynamoDb - The DynamoDB client instance.
- * @param {Object} params.searchParams - The search parameters, including userId.
- * @param {string} params.searchParams.userId - The user ID to filter items by.
- * @param {string} params.requestKey - The key used to determine the index name.
  * @returns {Promise<Object>} The response payload containing the items and success status.
  */
 
@@ -310,9 +309,7 @@ export const getItemsByUserId = async (params) => {
  *
  * @async
  * @param {Object} params - The parameters for the function.
- * @param {string} params.path - The key to determine the DynamoDB table name.
  * @param {import('@aws-sdk/lib-dynamodb').DynamoDBDocumentClient} params.dynamoDb - The DynamoDB DocumentClient instance.
- * @param {Object} params.searchParams - The search parameters containing the item ID.
  * @param {string} [params.searchParams.id] - The ID of the item to retrieve.
  * @returns {Promise<Object|undefined>} A promise that resolves to a payload object containing the item if found, or null if not found.
  */
@@ -343,27 +340,22 @@ export const getItemById = async (params) => {
  *
  * @async
  * @param {Object} params - The parameters for updating the item.
- * @param {string} params.method - The HTTP method used for the request.
- * @param {string} params.path - The API path indicating the table to update.
- * @param {string} params.ip - The IP address of the requester.
- * @param {Object} params.dynamoDb - The DynamoDB client instance.
- * @param {Object} params.body - The request body containing item data.
- * @param {string} params.body.id - The ID of the item to update.
- * @param {string} params.body.userId - The user ID associated with the item.
- * @param {string} params.body.username - The username associated with the item.
- * @param {string} params.body.title - The title of the item.
- * @param {string} params.body.description - The description of the item.
- * @param {string} params.body.introduction - The introduction of the item.
- * @param {string} params.body.itemStatus - The status of the item.
  * @returns {Promise<Object>} The response payload indicating success or failure of the update operation.
  */
 
 export const updateItem = async (params) => {
-  console.info("updateItem");
-  const { method, path, ip, dynamoDb, body } = params;
-  const { id, userId, username, title, description, introduction, itemStatus } =
-    body;
+  const { path, dynamoDb, body, token, requestKey } = params;
+  const { id } = body;
+
   const bodyData = getBodyData({ body, path });
+  const isAuthorized = await getAuthorizationForRequest(
+    token,
+    params,
+    requestKey
+  );
+  if (!isAuthorized) {
+    return generateReturnPayload(403, { message: "Unauthorized request" });
+  }
 
   const command = new PutCommand({
     TableName: tableNames[path],

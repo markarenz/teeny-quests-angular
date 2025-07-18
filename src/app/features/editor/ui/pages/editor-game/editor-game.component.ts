@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { GameROM, Link, SubNavItem } from '@app/features/main/interfaces/types';
 import { ActivatedRoute } from '@angular/router';
@@ -9,7 +10,6 @@ import { EditorPanelInfoComponent } from '../../components/editor-panel-info/edi
 import { EditorPanelCellsComponent } from '../../components/editor-panel-cells/editor-panel-cells.component';
 import { EditorPanelExitsComponent } from '../../components/editor-panel-exits/editor-panel-exits.component';
 import { EditorPanelItemsComponent } from '../../components/editor-panel-items/editor-panel-items.component';
-import { gamesApiUrl } from '@config/index';
 import { LoaderAnimationComponent } from '@app/features/main/ui/components/loader-animation/loader-animation.component';
 import { EditorAreaComponent } from '../../components/editor-area/editor-area.component';
 import { EditorAreaSelectorComponent } from '../../components/editor-area-selector/editor-area-selector.component';
@@ -42,7 +42,8 @@ export class EditorGameComponent {
   constructor(
     private _route: ActivatedRoute,
     private _gameEditorService: GameEditorService,
-    private _authGoogleService: AuthProviderService
+    private _authGoogleService: AuthProviderService,
+    private router: Router
   ) {}
   private subscriptions: Subscription[] = [];
 
@@ -69,6 +70,12 @@ export class EditorGameComponent {
   ngOnInit() {
     this.subscriptions.push(
       this._gameEditorService.gameObs.subscribe((data: GameROM | null) => {
+        const userId = this._authGoogleService.getUserId();
+        if (data && data.userId !== userId) {
+          console.log('Unauthorized access to game data');
+          this.router.navigate(['/']);
+          return;
+        }
         this.game = data;
         this.title = this.game?.title ?? 'Game Title';
       })
@@ -84,8 +91,7 @@ export class EditorGameComponent {
 
   async handleSaveClick() {
     this.isLoading = true;
-    const accessToken = this._authGoogleService.getAccessToken();
-    await this._gameEditorService.saveGame(this.game!, accessToken);
+    await this._gameEditorService.saveGame(this.game!);
     this.isLoading = false;
   }
 

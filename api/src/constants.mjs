@@ -15,6 +15,14 @@ export const authorizationMatchers = {
     profile: "sub",
     bodyParam: "id",
   },
+  games_post: {
+    profile: "sub",
+    bodyParam: "userId",
+  },
+  games_put: {
+    profile: "sub",
+    bodyParam: "userId",
+  },
 };
 
 export const fieldNames = {
