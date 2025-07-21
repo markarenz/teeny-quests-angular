@@ -6,7 +6,7 @@ import { ModalBgComponent } from '@main/ui/components/modal-bg/modal-bg.componen
 import { ButtonComponent } from '@app/features/main/ui/components/button/button.component';
 import { LoaderAnimationComponent } from '@app/features/main/ui/components/loader-animation/loader-animation.component';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
-import { AuthGoogleService } from '@app/features/auth/services/auth-google-service';
+import { AuthProviderService } from '@app/features/auth/services/auth-provider-service';
 import { User } from '@app/features/auth/interfaces/types';
 
 @Component({
@@ -26,7 +26,7 @@ export class NewGameModalComponent {
   user: User | null = null;
 
   constructor(
-    private _authService: AuthGoogleService,
+    private _authService: AuthProviderService,
     private _gameEditorService: GameEditorService,
     private router: Router
   ) {

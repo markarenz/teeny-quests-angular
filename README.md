@@ -1,49 +1,24 @@
 # TeenyQuestsAngular
 
-## Tasks
+## Start
 
-### TQ1: Initual UI & Auth
+- Install dependencies `npm i`
+- Create a file `src/config/configConstants.ts` to contain your apiGatewayId. This is imported by the app configuration.
 
-- Branch: TQ1-frontend-ui-setup-auth
-- [x] Set up basic pages with Angular
-- [x] Set up Tailwind and basic styling
-- [x] Set up Google authentication
-- [x] Add user menu, log in and logout
+## IaC
 
-### TQ2: Infra and API Setup
+- This projects uses AWS CloudFormation for IaC
+- To deploy CF changes, use the `create-stack` command to create a fresh CF stack, use `update-stack` to issue changes:
+  - use "create-stack" or "update-stack" depending on the circumstances
+- Example: `aws cloudformation update-stack --stack-name TQCFStack01 --template-body file://tq-cf.yaml --capabilities CAPABILITY_IAM --parameters ParameterKey=AllowedIPAddresses1,ParameterValue=IP_ADDRESS_1 ParameterKey=AllowedIPAddresses2,ParameterValue=IP_ADDRESS_2`
+- aws cloudformation validate-template --template-body file://tq-cf.yaml
 
-- Branch: TQ2-API-setup
-- [x] API: Create AWS elements necessary for the API: API Gateway, IAM user Policy and Role, Lambda, and Dynamo DB Tables.
-- [x] API: Build out a Lambda that can handle GET, POST and PUT requests for both tables (games and users)
-- [x] API: Set up a collection in Postman to test the API
-- [x] API: add field-based validation to queries
-- [x] API: add a query for games by userId with secondary index
-- [x] Frontend: add function to create or update user records when logged in and give the user a random name
-- [x] Frontend: Use user.name for profile initials
-- [x] Frontend: Add title for avatar with "Logged in as"
-- [x] Frontend: Replace Profile observable with user data from DDB
+- For IaC Setup, create a parameters.yml file in the /iac directory with the values for `AllowedIPAddresses`
+  ```
+    - ParameterKey: AllowedIPAddresses
+      ParameterValue: ["200.200.200.200", "100.100.100.100"]
+  ```
 
-### TQ3: Game Editing Basics
+## Update Lambda Layer Content
 
-- Branch: TQ3-Editor-Basics
-- [x] Common table component
-- [x] Common button component
-- [x] Editor page with a list of the logged in user with links to each
-- [x] New game button and modal that triggers a create API call
-- [x] Simple game detail page `editor/:id` with an edit form
-- [x] If the game is suspended, the status cannot change
-- [x] Build lambda deploy NPM script for convenience
-- [x] Form layout 2-col split
-- [x] Loading animation for editor game page, bake into table with `isLoading` prop
-
-### TQ4: Game Basics
-
-- Branch: TQ4-Game-Basics
-- [x] Update style to use dark gray backgrounds
-- [ ] API: for get multiple, do not return content
-- [ ] On the homepage, list games that are active and sort by last update. Link to a /play:id page for each.
-- [ ] On the /play/:id page, pull in the basic info and display it.
-
-Update types for all
-Start pulling in the simple POC game components and port them to Angular
-Rethink exits - we need more variety than N/S/E/W exits
+- zip -r ../TQ-SharedApiLambda-layer.zip nodejs

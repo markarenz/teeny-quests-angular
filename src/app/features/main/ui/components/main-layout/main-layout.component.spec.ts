@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MainLayoutComponent } from './main-layout.component';
 import { provideRouter } from '@angular/router';
-import { AuthGoogleService } from '@app/features/auth/services/auth-google-service';
+import { AuthProviderService } from '@app/features/auth/services/auth-provider-service';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
@@ -15,7 +15,7 @@ describe('MainLayoutComponent', () => {
       imports: [MainLayoutComponent, OAuthModule.forRoot()],
       providers: [
         provideRouter([]),
-        AuthGoogleService,
+        AuthProviderService,
         provideHttpClient(),
         provideHttpClientTesting(),
       ],

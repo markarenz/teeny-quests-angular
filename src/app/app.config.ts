@@ -4,7 +4,7 @@ import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
 import { provideOAuthClient } from 'angular-oauth2-oidc';
 import { MainAppService } from './features/main/services/main-app-service';
-import { AuthGoogleService } from './features/auth/services/auth-google-service';
+import { AuthProviderService } from './features/auth/services/auth-provider-service';
 import { GameEditorService } from './features/editor/services/game-editor-service/game-editor-service.service';
 
 export const appConfig: ApplicationConfig = {
@@ -13,7 +13,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(),
     provideOAuthClient(),
-    AuthGoogleService,
+    AuthProviderService,
     MainAppService,
     GameEditorService,
   ],

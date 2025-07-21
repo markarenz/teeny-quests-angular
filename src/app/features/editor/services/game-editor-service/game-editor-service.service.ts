@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import { gamesApiUrl } from '@config/index';
+import { AuthProviderService } from '@app/features/auth/services/auth-provider-service';
 import { User } from '@app/features/auth/interfaces/types';
 import {
   GameROM,
@@ -64,7 +65,7 @@ export class GameEditorService {
   private areaItems = new BehaviorSubject<GameItem[]>([]);
   areaItemsObs = this.areaItems.asObservable();
 
-  constructor() {
+  constructor(private authProviderService: AuthProviderService) {
     this.isMenuOpen.next(false);
   }
 
@@ -321,16 +322,17 @@ export class GameEditorService {
       },
     };
 
+    const token = this.authProviderService.getToken();
     return fetch(gamesApiUrl, {
       method: 'POST',
-      headers: { Accept: 'application/json' },
+      headers: { Accept: 'application/json', 'X-Access-Token': token || '' },
       body: JSON.stringify({
         userId: userId,
         username: username,
         itemStatus: 'draft',
         title: title,
         description: description,
-        introduction: '',
+        introduction: '...',
         rating: 'n/a',
         content: JSON.stringify(defaultGameContent),
       }),
@@ -358,6 +360,25 @@ export class GameEditorService {
             this.isLoading.next(false);
           }, 100);
         });
+    }
+  }
+
+  async saveGame(game: GameROM): Promise<void> {
+    const token = this.authProviderService.getToken();
+    if (this.game?.value?.content) {
+      return fetch(gamesApiUrl, {
+        method: 'PUT',
+        headers: {
+          Accept: 'application/json',
+          'X-Access-Token': token || '',
+        },
+        body: JSON.stringify({
+          ...game,
+          content: JSON.stringify(this.game.value.content),
+        }),
+      }).then(() => {
+        return Promise.resolve();
+      });
     }
   }
 

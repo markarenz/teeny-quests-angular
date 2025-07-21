@@ -10,7 +10,7 @@ import { User } from '../interfaces/types';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthGoogleService {
+export class AuthProviderService {
   private oAuthService = inject(OAuthService);
 
   private router = inject(Router);
@@ -18,11 +18,23 @@ export class AuthGoogleService {
   private isLoggedIn = new BehaviorSubject<boolean>(false);
   isLoggedInObs = this.isLoggedIn.asObservable();
 
+  private userId = signal<string | null>(null);
+
   private user = new BehaviorSubject<User | null>(null);
   userObs = this.user.asObservable();
 
+  private token = signal<string | null>(null);
+
   constructor() {
     this.initConfiguration();
+  }
+
+  getToken() {
+    return this.token();
+  }
+
+  getUserId() {
+    return this.userId() ?? null;
   }
 
   initConfiguration() {
@@ -30,12 +42,15 @@ export class AuthGoogleService {
     this.oAuthService.setupAutomaticSilentRefresh();
     this.oAuthService.loadDiscoveryDocumentAndTryLogin().then(async () => {
       if (this.oAuthService.hasValidIdToken()) {
+        this.token.set(this.oAuthService.getIdToken());
         const profileData = this.oAuthService.getIdentityClaims();
         const userId = profileData['sub'];
         const userData = await getUserByIdOrCreateUser({
           id: userId,
+          token: this.token(),
         });
-        // Check status of user first...
+        this.userId.set(userId);
+        console.log('User data:', userId);
         this.user.next({
           ...userData,
           initials: getInitialsFromName(userData?.username),
@@ -57,5 +72,9 @@ export class AuthGoogleService {
 
   getIsLoggedIn() {
     return this.isLoggedIn.value;
+  }
+
+  getAccessToken() {
+    return this.oAuthService.getAccessToken();
   }
 }
