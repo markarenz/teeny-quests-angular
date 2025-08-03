@@ -1,0 +1,32 @@
+<app-common-modal
+  title="Content Versions"
+  [isLockedOut]="false"
+  [showCancel]="false"
+  (onConfirm)="handleModalClose()"
+>
+  <div class="flex flex-col gap-4">
+    <div>
+      Save and manage different versions of your game's content. To save the
+      current content as a new version, select "Create Version". Manage your
+      versions in the list below. You can delete versions or load a version to
+      replace your current content.
+    </div>
+    <div class="flex w-full justify-center">
+      <app-button
+        variant="contained"
+        label="Create Version"
+        (onButtonClick)="handleSaveVersion()"
+        [isDisabled]="isSaving"
+      />
+    </div>
+    <div class="mt-2">
+      <app-table
+        title="Versions"
+        [rows]="contentVersions"
+        [tableFields]="tableFields"
+        linkFormat=""
+        [isLoading]="isLoading"
+      />
+    </div>
+  </div>
+</app-common-modal>

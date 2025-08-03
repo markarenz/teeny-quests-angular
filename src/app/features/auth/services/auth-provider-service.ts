@@ -50,7 +50,6 @@ export class AuthProviderService {
           token: this.token(),
         });
         this.userId.set(userId);
-        console.log('User data:', userId);
         this.user.next({
           ...userData,
           initials: getInitialsFromName(userData?.username),
@@ -72,9 +71,5 @@ export class AuthProviderService {
 
   getIsLoggedIn() {
     return this.isLoggedIn.value;
-  }
-
-  getAccessToken() {
-    return this.oAuthService.getAccessToken();
   }
 }

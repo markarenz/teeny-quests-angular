@@ -4,6 +4,7 @@ export const baseApiUrl = `https://${apiGatewayId}.execute-api.us-east-1.amazona
 
 export const usersApiUrl = `${baseApiUrl}/users`;
 export const gamesApiUrl = `${baseApiUrl}/games`;
+export const versionsApiUrl = `${baseApiUrl}/versions`;
 export const defaultGridSize = 7;
 export const maxAreaCellHeight = 26;
 export const areaHeightFactor = 0.5;

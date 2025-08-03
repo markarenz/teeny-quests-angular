@@ -1,5 +1,5 @@
 import { randomBytes } from "crypto";
-import { PutCommand, GetCommand } from "@aws-sdk/lib-dynamodb";
+import { PutCommand, GetCommand, DeleteCommand } from "@aws-sdk/lib-dynamodb";
 import { unmarshall } from "@aws-sdk/util-dynamodb";
 import { QueryCommand } from "@aws-sdk/client-dynamodb";
 import { JwtVerifier } from "aws-jwt-verify";
@@ -174,7 +174,7 @@ export const returnOptionsResponse = (_params) => {
     statusCode: 200,
     headers: {
       "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, POST, PUT, OPTIONS",
+      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type, X-Access-Token",
     },
     body: JSON.stringify({ message: "CORS preflight response" }),
@@ -193,24 +193,24 @@ export const returnOptionsResponse = (_params) => {
  */
 
 export const createItem = async (params) => {
-  console.info("creteItem");
+  console.info("createItem");
   const { path, dynamoDb, body, token, requestKey } = params;
   const { id: rawId } = body;
   let success = false;
   let id = null;
   let resp = null;
-  console.log("createItem params:", params);
   const isAuthorized = await getAuthorizationForRequest(
     token,
     params,
     requestKey
   );
+  console.error("isAuthorized", isAuthorized);
   if (!isAuthorized) {
+    console.error("Unauthorized request for createItem");
     return generateReturnPayload(403, { message: "Unauthorized request" });
   }
 
   const bodyData = getBodyData({ body, path });
-
   if (bodyData) {
     // For Users, we pull in the sub ID from authentication
     // Otherwise, we create a new ID
@@ -305,6 +305,42 @@ export const getItemsByUserId = async (params) => {
 };
 
 /**
+ * Retrieves items by game ID, optionally filtering by user ID if provided in searchParams.
+ *
+ * @async
+ * @function getItemsByGameId
+ * @param {Object} params - The parameters for the query.
+ * @param {string} params.path - The path used to determine the table name.
+ * @param {Object} params.dynamoDb - The DynamoDB client instance.
+ * @param {Object} params.searchParams - Search parameters, may include userId for filtering.
+ * @param {string} params.requestKey - Key used to determine the index name.
+ * @param {string} params.gameId - The game ID to filter items by.
+ * @returns {Promise<Object>} The response payload containing the items.
+ */
+
+export const getItemsByGameId = async (params) => {
+  console.info("getItemsByGameId");
+  const { path, dynamoDb, searchParams, requestKey } = params;
+  let items = [];
+  if (searchParams?.gameId && searchParams?.gameId.length > 0) {
+    const { gameId } = searchParams;
+    console.info("getItemsByGameId gameId: ", gameId);
+    const command = new QueryCommand({
+      TableName: tableNames[path],
+      IndexName: indexNames[requestKey],
+      ProjectionExpression: "id, gameId, userId, dateCreated, dateUpdated",
+      KeyConditionExpression: "gameId = :value",
+      ExpressionAttributeValues: {
+        ":value": { S: gameId },
+      },
+    });
+    const resp = await dynamoDb.send(command);
+    items = resp?.Items ? unmarshallArray(resp?.Items) : null;
+  }
+  return generateReturnPayload(200, { success: true, items });
+};
+
+/**
  * Retrieves an item by its ID from a DynamoDB table.
  *
  * @async
@@ -372,4 +408,21 @@ export const updateItem = async (params) => {
     id,
     resp: resp["$metadata"].httpStatusCode,
   });
+};
+
+export const deleteItemById = async (params) => {
+  console.info("deleteItemById");
+  const { path, dynamoDb, searchParams } = params;
+  const id = searchParams?.id ?? null;
+  if (searchParams?.id && id.length > 0) {
+    const command = new DeleteCommand({
+      TableName: tableNames[path],
+      Key: {
+        id,
+      },
+    });
+    await dynamoDb.send(command);
+    return generateReturnPayload(200, { success: true, item: null });
+  }
+  return generateReturnPayload(200, { success: false, item: null });
 };

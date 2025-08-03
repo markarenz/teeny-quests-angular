@@ -1,13 +1,14 @@
 export const tableNames = {
   games: "TQ_Games",
   users: "TQ_Users",
-  contentVersions: "TQ_ContentVersions",
+  versions: "TQ_ContentVersions",
 };
 
 export const indexNames = {
   games_get: "itemStatusIndex",
   games_get_userId: "gamesByUserIndex",
   users_get: "itemStatusIndex",
+  versions_get_gameId: "versionsByGameIndex",
 };
 
 export const authorizationMatchers = {
@@ -20,6 +21,10 @@ export const authorizationMatchers = {
     bodyParam: "userId",
   },
   games_put: {
+    profile: "sub",
+    bodyParam: "userId",
+  },
+  versions_post: {
     profile: "sub",
     bodyParam: "userId",
   },
@@ -73,7 +78,7 @@ export const fieldNames = {
       detailOnly: true,
     },
   ],
-  contentVersions: [
+  versions: [
     {
       fieldName: "id",
       required: false,
@@ -85,7 +90,7 @@ export const fieldNames = {
       detailOnly: false,
     },
     {
-      fieldName: "version",
+      fieldName: "userId",
       required: true,
       detailOnly: false,
     },

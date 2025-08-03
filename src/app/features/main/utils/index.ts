@@ -32,3 +32,5 @@ export const getPositionKeysForGridSize = (): string[] => {
     return `${y}_${x}`;
   });
 };
+
+export const formatDate = (date: string): string => new Date(date).toString();

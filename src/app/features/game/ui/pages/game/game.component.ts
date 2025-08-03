@@ -15,6 +15,7 @@ import { IconButtonComponent } from '@app/features/main/ui/components/icons/icon
 import { ModalPageComponent } from '@app/features/game/ui/components/modal-page/modal-page.component';
 import { ModalInventoryComponent } from '../../components/modal-inventory/modal-inventory.component';
 import { AuthProviderService } from '@app/features/auth/services/auth-provider-service';
+import { logger } from '@app/features/main/utils/logger';
 
 @Component({
   selector: 'app-game',
@@ -63,8 +64,10 @@ export class GameComponent {
             data &&
             data.userId !== userId
           ) {
-            // TODO: use logger instead of console.error
-            console.error('Unauthorized access to game data');
+            logger({
+              message: 'Unauthorized access to game data',
+              type: 'error',
+            });
             this.router.navigate(['/']);
             return;
           }

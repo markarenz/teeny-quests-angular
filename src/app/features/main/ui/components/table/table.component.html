@@ -11,10 +11,8 @@
       <table class="w-full text-sm text-left rtl:text-right text-gray-500">
         <thead class="text-md text-gray-800 bg-primary">
           <tr>
-            @for (label of labels; track label.label) {
-            <th scope="col" class="px-6 py-3">
-              {{ label.label }}
-            </th>
+            @for (tableField of tableFields; track tableField.label) {
+            <th scope="col" class="px-6 py-3">{{ tableField.label }}</th>
             }
           </tr>
         </thead>
@@ -33,18 +31,49 @@
               idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-700'
             }} "
           >
-            @for (label of labels; track label.field) {
+            @for (tableField of tableFields; track tableField.field) {
             <td class="px-6 py-4 text-gray-300">
+              @if(tableField.isLink) {
               <a
                 class="text-link decoration-gray-300"
                 routerLink="{{ linkFormat.replace(':id', row.id) }}"
               >
-                @if(label.displayType === 'string') {
-                {{ row[label.field] }}
-                } @if(label.displayType === 'status-chip') {
-                <app-status-chip [itemStatus]="row[label.field]" />
-                }
+                {{ row[tableField.field] }}
               </a>
+
+              }
+              <!-- NON-LINK -->
+              @if(!tableField.isLink) {
+              <!-- STRING -->
+              @if(tableField.displayType === 'string') {
+              {{ row[tableField.field] }}
+              }
+              <!-- STATUS CHIP -->
+              @if(tableField.displayType === 'status-chip') {
+              <app-status-chip [itemStatus]="row[tableField.field]" />
+              }
+              <!-- DATE -->
+              @if(tableField.displayType === 'date') {
+              {{ formatDate(row[tableField.field]) }}
+              }
+              <!-- ACTIONS -->
+              @if(tableField.displayType === 'actions') {
+              <!-- ACTION ITEMS -->
+              <div class="flex items-center gap-2">
+                @for (action of tableField.actions; track action.label) {
+                <app-icon-button
+                  [icon]="action.icon"
+                  [label]="action.label"
+                  [theme]="action.theme"
+                  size="sm"
+                  (onButtonClick)="action.onClick(row)"
+                />
+                }
+              </div>
+              <!-- /ACTION ITEMS -->
+              }
+              <!-- /NON-LINK -->
+              }
             </td>
             }
           </tr>
