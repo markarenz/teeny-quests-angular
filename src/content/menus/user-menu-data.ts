@@ -3,6 +3,7 @@ export type MenuItem = {
   label: string;
   href?: string;
   action?: string;
+  isLoggedInOnly?: boolean;
 };
 
 export type MenuData = { [key: string]: MenuItem[] };

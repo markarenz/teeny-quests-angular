@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
-import { gamesApiUrl } from '@config/index';
+import { gamesApiUrl, versionsApiUrl } from '@config/index';
 import { AuthProviderService } from '@app/features/auth/services/auth-provider-service';
 import { User } from '@app/features/auth/interfaces/types';
 import {
@@ -12,6 +12,7 @@ import {
   GameAreaMapCell,
   SelectIUIOption,
   GameContent,
+  ContentVersionListItem,
 } from '@app/features/main/interfaces/types';
 import {
   utilDeleteItem,
@@ -24,6 +25,7 @@ import {
   utilUpdateExit,
 } from './utils/exits-utils';
 import { getPositionKeysForGridSize } from '@main/utils';
+import { logger } from '@app/features/main/utils/logger';
 
 @Injectable({
   providedIn: 'root',
@@ -65,6 +67,9 @@ export class GameEditorService {
   private areaItems = new BehaviorSubject<GameItem[]>([]);
   areaItemsObs = this.areaItems.asObservable();
 
+  private contentVersions = new BehaviorSubject<ContentVersionListItem[]>([]);
+  contentVersionsObs = this.contentVersions.asObservable();
+
   constructor(private authProviderService: AuthProviderService) {
     this.isMenuOpen.next(false);
   }
@@ -93,6 +98,10 @@ export class GameEditorService {
     switch (fieldName) {
       case 'selectedAreaId': {
         this.selectedAreaId.next(value);
+        break;
+      }
+      case 'versions': {
+        this.contentVersions.next(value);
         break;
       }
       case 'game':
@@ -282,7 +291,10 @@ export class GameEditorService {
         content: parsedContent,
       };
     } catch (err) {
-      console.error(`${JSON.stringify(err)}`);
+      logger({
+        message: `processGameData: ${JSON.stringify(err)}`,
+        type: 'error',
+      });
     }
     return rawGameData;
   }
@@ -419,10 +431,10 @@ export class GameEditorService {
         .then((res) => res.json())
         .then((data) => {
           const nextGameData = this.processGameData(data?.item);
-          const areaslist = Object.keys(nextGameData.content.areas);
+          const areasList = Object.keys(nextGameData.content.areas);
           this.game.next(nextGameData);
           const nextSelectedAreaId =
-            nextGameData.content.player.areaId ?? areaslist[0];
+            nextGameData.content.player.areaId ?? areasList[0];
           this.selectedAreaId.next(nextSelectedAreaId);
           const nextSelectedArea =
             nextGameData.content.areas[nextSelectedAreaId];
@@ -506,8 +518,8 @@ export class GameEditorService {
       };
       delete nextGameData.content.areas[this.selectedAreaId.value];
 
-      const areaslist = Object.keys(nextGameData.content.areas);
-      this.setSelectedAreaId(areaslist[0]);
+      const areasList = Object.keys(nextGameData.content.areas);
+      this.setSelectedAreaId(areasList[0]);
       this.game.next(nextGameData);
     }
   }
@@ -545,4 +557,84 @@ export class GameEditorService {
       }, 100);
     }
   }
+
+  public getContentVersionsForGame = (): void => {
+    if (this.game.value) {
+      const gameId = this.game.value.id;
+      fetch(`${versionsApiUrl}?gameId=${gameId}`, {
+        method: 'GET',
+        headers: { Accept: 'application/json' },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          this.contentVersions.next(data?.items ?? []);
+        });
+    }
+  };
+
+  public loadContentVersion = (id: string): void => {
+    if (this.game.value) {
+      fetch(`${versionsApiUrl}?id=${id}`, {
+        method: 'GET',
+        headers: { Accept: 'application/json' },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (this.game.value) {
+            const nextGameData: GameROM = {
+              ...this.game.value,
+              content: JSON.parse(data?.item?.content || '{}') as GameContent,
+            };
+            const areasList = Object.keys(nextGameData.content.areas);
+            this.game.next(nextGameData);
+            const nextSelectedAreaId =
+              nextGameData.content.player.areaId ?? areasList[0];
+            this.selectedAreaId.next(nextSelectedAreaId);
+            const nextSelectedArea =
+              nextGameData.content.areas[nextSelectedAreaId];
+            this.areaExits.next(nextSelectedArea.exits);
+            this.areaItems.next(nextSelectedArea.items);
+            this.selectedArea.next(nextSelectedArea);
+          }
+        });
+    }
+  };
+
+  public createContentVersion = async () => {
+    if (this.game.value) {
+      const token = this.authProviderService.getToken();
+      return fetch(`${versionsApiUrl}`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'X-Access-Token': token || '',
+        },
+        body: JSON.stringify({
+          gameId: this.game.value.id,
+          userId: this.game.value.userId,
+          content: JSON.stringify(this.game.value.content),
+        }),
+      })
+        .then((res) => res.json())
+        .then(() => {
+          return;
+        });
+    }
+  };
+  public deleteContentVersion = async (versionId: string) => {
+    if (this.game.value) {
+      const token = this.authProviderService.getToken();
+      return fetch(`${versionsApiUrl}?id=${versionId}`, {
+        method: 'DELETE',
+        headers: {
+          Accept: 'application/json',
+          'X-Access-Token': token || '',
+        },
+      })
+        .then((res) => res.json())
+        .then(() => {
+          return;
+        });
+    }
+  };
 }

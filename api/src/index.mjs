@@ -3,10 +3,12 @@ import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 import {
   getItems,
   getItemsByUserId,
+  getItemsByGameId,
   getItemById,
   createItem,
   updateItem,
   returnOptionsResponse,
+  deleteItemById,
 } from "./utils.mjs";
 
 const client = new DynamoDBClient({});
@@ -45,8 +47,13 @@ export const handler = async (event, context) => {
       games_post: createItem,
       games_put: updateItem,
       games_options: returnOptionsResponse,
+      versions_options: returnOptionsResponse,
+      versions_options_id: returnOptionsResponse,
+      versions_get_gameId: getItemsByGameId,
+      versions_get_id: getItemById,
+      versions_post: createItem,
+      versions_delete_id: deleteItemById,
     };
-
     if (functionMap[requestKey]) {
       return functionMap[requestKey](params);
     }

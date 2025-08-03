@@ -34,6 +34,7 @@ describe('AuthProviderService', () => {
       ],
     });
     oAuthService = TestBed.inject(OAuthService);
+    oAuthService.getIdToken = () => 'ABC123';
     service = TestBed.inject(AuthProviderService);
   });
 

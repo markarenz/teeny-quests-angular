@@ -24,7 +24,7 @@ describe('getUserByIdOrCreateUser', () => {
         delay: 10,
       }
     );
-    const result = await getUserByIdOrCreateUser({ id });
+    const result = await getUserByIdOrCreateUser({ id, token: 'testToken' });
     expect(result).toBeDefined();
   });
 
@@ -50,7 +50,7 @@ describe('getUserByIdOrCreateUser', () => {
         }
       );
 
-    const result = await getUserByIdOrCreateUser({ id });
+    const result = await getUserByIdOrCreateUser({ id, token: 'testtoken' });
     expect(result).toBeDefined();
   });
 });

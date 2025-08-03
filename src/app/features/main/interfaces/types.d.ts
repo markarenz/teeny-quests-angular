@@ -14,12 +14,6 @@ export type SubNavItem = {
   slug: string;
 };
 
-export type FieldLabel = {
-  label: string;
-  field: string;
-  displayType: TableCellDisplayType;
-};
-
 export type GameAreaMapCell = {
   x: number;
   y: number;
@@ -155,4 +149,44 @@ export type PathfindingGridCell = {
 export type Paragraph = {
   text: string;
   id: number;
+};
+
+export type ContentVersionListItem = {
+  id: string;
+  gameId: string;
+  userId: string;
+  dateCreated: string;
+  dateUpdated: string;
+};
+
+export type ContentVersionListItem = {
+  id: string;
+  gameId: string;
+  userId: string;
+  dateCreated: string;
+  dateUpdated: string;
+};
+
+export type ContentVersion = {
+  id: string;
+  gameId: string;
+  userId: string;
+  dateCreated: string;
+  dateUpdated: string;
+  content: string;
+};
+
+export type TableAction = {
+  label: string;
+  onClick: Function;
+  theme: string;
+  icon: IconButtonIconType;
+};
+
+export type TableField = {
+  label: string;
+  field: string;
+  displayType: TableCellDisplayType;
+  isLink?: boolean;
+  actions?: TableAction[];
 };

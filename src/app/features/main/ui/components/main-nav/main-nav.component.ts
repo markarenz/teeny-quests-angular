@@ -3,9 +3,11 @@ import { RouterLinkActive } from '@angular/router';
 import { RouterLink } from '@angular/router';
 import { ContainerComponent } from '@main/ui/components/container/container.component';
 import { MainAppService } from '@main/services/main-app-service';
+import { AuthProviderService } from '@app/features/auth/services/auth-provider-service';
 import { Subscription } from 'rxjs';
 import { ModalBgComponent } from '../modal-bg/modal-bg.component';
 import { mainMenuData } from '@content/menus/main-menu-data';
+import { MenuItem } from '@content/menus/user-menu-data';
 
 @Component({
   selector: 'app-main-nav',
@@ -15,27 +17,45 @@ import { mainMenuData } from '@content/menus/main-menu-data';
   styleUrl: './main-nav.component.css',
 })
 export class MainNavComponent {
-  private subscription: Subscription;
+  public menuItems: MenuItem[] = [];
+  private isLoggedIn: boolean = false;
+  private subscriptions: Subscription[] = [];
   isMenuOpen: boolean = false;
 
-  constructor(private _mainAppService: MainAppService) {
-    this.subscription = Subscription.EMPTY;
+  constructor(
+    private _mainAppService: MainAppService,
+    private _authProviderService: AuthProviderService
+  ) {}
+
+  private setNavMenuData() {
+    this.menuItems = mainMenuData.filter((item) => {
+      if (item.isLoggedInOnly && !this.isLoggedIn) {
+        return false;
+      }
+      return true;
+    });
   }
 
   ngOnInit() {
-    this.subscription = this._mainAppService.isMenuOpenObs.subscribe(
-      (data: boolean) => {
+    this.subscriptions.push(
+      this._mainAppService.isMenuOpenObs.subscribe((data: boolean) => {
         this.isMenuOpen = data;
-      }
+      })
     );
+    this.subscriptions.push(
+      this._authProviderService.isLoggedInObs.subscribe((data: boolean) => {
+        this.isLoggedIn = data;
+        this.setNavMenuData();
+      })
+    );
+    this.setNavMenuData();
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
   handleToggleMenu() {
     this._mainAppService.toggleMenu();
   }
-  menuItems = mainMenuData;
 }

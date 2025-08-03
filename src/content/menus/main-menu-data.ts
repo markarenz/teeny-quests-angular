@@ -1,4 +1,6 @@
-export const mainMenuData = [
+import { MenuItem } from './user-menu-data';
+
+export const mainMenuData: MenuItem[] = [
   {
     id: 1,
     label: 'Home',
@@ -18,10 +20,12 @@ export const mainMenuData = [
     id: 4,
     label: 'Game Editor',
     href: '/editor',
+    isLoggedInOnly: true,
   },
   {
     id: 5,
     label: 'Profile',
     href: '/profile',
+    isLoggedInOnly: true,
   },
 ];

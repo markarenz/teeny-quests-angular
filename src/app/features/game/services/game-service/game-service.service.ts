@@ -111,7 +111,10 @@ export class GameService {
       try {
         localGameState = JSON.parse(localGameStateString);
       } catch (err) {
-        console.error('Error parsing local storage game save:', err);
+        logger({
+          message: 'Error parsing local storage game save',
+          type: 'error',
+        });
       }
     }
 

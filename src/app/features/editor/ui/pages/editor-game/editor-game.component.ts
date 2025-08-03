@@ -17,6 +17,7 @@ import { ButtonComponent } from '@app/features/main/ui/components/button/button.
 import { BreadcrumbsComponent } from '@app/features/main/ui/components/breadcrumbs/breadcrumbs.component';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import { AuthProviderService } from '@app/features/auth/services/auth-provider-service';
+import { ContentVersionsModalComponent } from '../../components/content-versions-modal/content-versions-modal.component';
 
 @Component({
   selector: 'app-editor-game',
@@ -34,18 +35,21 @@ import { AuthProviderService } from '@app/features/auth/services/auth-provider-s
     EditorPanelExitsComponent,
     EditorPanelCellsComponent,
     EditorPanelItemsComponent,
+    ContentVersionsModalComponent,
   ],
   templateUrl: './editor-game.component.html',
   styleUrl: './editor-game.component.css',
 })
 export class EditorGameComponent {
+  private subscriptions: Subscription[] = [];
+  public isContentVersionModalOpen: boolean = false;
+
   constructor(
     private _route: ActivatedRoute,
     private _gameEditorService: GameEditorService,
     private _authGoogleService: AuthProviderService,
     private router: Router
   ) {}
-  private subscriptions: Subscription[] = [];
 
   title = 'Editor Game';
   isLoading: boolean = false;
@@ -72,7 +76,6 @@ export class EditorGameComponent {
       this._gameEditorService.gameObs.subscribe((data: GameROM | null) => {
         const userId = this._authGoogleService.getUserId();
         if (data && data.userId !== userId) {
-          console.log('Unauthorized access to game data');
           this.router.navigate(['/']);
           return;
         }
@@ -111,5 +114,11 @@ export class EditorGameComponent {
     this._gameEditorService.selectItem('');
     this._gameEditorService.selectExit(id);
     this.subNavCurrent = 'exits';
+  }
+  public handleContentVersionModalToggle(isOpen: boolean) {
+    this.isContentVersionModalOpen = isOpen;
+    if (isOpen) {
+      this._gameEditorService.getContentVersionsForGame();
+    }
   }
 }
