@@ -8,7 +8,7 @@ import {
   GameStateArea,
   MovementOptions,
 } from '@app/features/main/interfaces/types';
-import { gamesApiUrl } from '@config/index';
+import { gamesApiUrl, versionsApiUrl } from '@config/index';
 import { getMoveOptions } from './utils/pathfinding';
 import { STANDARD_MOVE_DURATION } from '@config/index';
 import { itemDefinitions } from '@content/item-definitions';
@@ -18,6 +18,7 @@ import { logger } from '@app/features/main/utils/logger';
   providedIn: 'root',
 })
 export class GameService {
+  public v: string | null = null; // game version
   private gameROM = new BehaviorSubject<GameROM | null>(null);
   gameROMObs = this.gameROM.asObservable();
 
@@ -67,9 +68,12 @@ export class GameService {
     this.movementOptions.next(nextMovementOptions);
   }
 
+  public getLocalSaveKey = (gameId: string) =>
+    `save--${gameId}${this.v ? `--v${this.v}` : ''}`;
+
   saveLocalGameState(nextGameState: GameState): void {
     localStorage.setItem(
-      `save--${nextGameState.gameId}`,
+      this.getLocalSaveKey(nextGameState.gameId),
       JSON.stringify({
         ...nextGameState,
         lastUpdateDate: new Date().toISOString(),
@@ -103,7 +107,7 @@ export class GameService {
     };
 
     const localGameStateString = localStorage.getItem(
-      `save--${nextGameROM.id}`
+      this.getLocalSaveKey(nextGameROM.id)
     );
     let localGameState = null;
 
@@ -127,7 +131,7 @@ export class GameService {
     this.saveLocalGameState(nextGameState);
   }
 
-  loadGameROM(gameId: string | null): void {
+  loadGameROM(gameId: string | null, v?: string | null): void {
     if (gameId) {
       this.areaTransitionMode.next('cover');
       this.isLockedOut.next(true);
@@ -138,17 +142,36 @@ export class GameService {
         .then((res) => res.json())
         .then((data) => {
           const nextGameROM = data?.item;
+          if (!!v) {
+            this.v = v;
+            fetch(`${versionsApiUrl}?id=${v}`, {
+              method: 'GET',
+              headers: { Accept: 'application/json' },
+            })
+              .then((res) => res.json())
+              .then((versionData) => {
+                if (typeof versionData.item.content === 'string') {
+                  nextGameROM.content = JSON.parse(versionData.item.content);
+                }
+                if (nextGameROM) {
+                  this.gameROM.next(nextGameROM);
+                  this.initGameState(nextGameROM);
+                }
+                this.isLockedOut.next(false);
+              });
+          } else {
+            this.v = null;
+            if (typeof data.item.content === 'string') {
+              const contentStr: string = nextGameROM.content;
+              nextGameROM.content = JSON.parse(contentStr);
+            }
 
-          if (typeof data.item.content === 'string') {
-            const contentStr: string = nextGameROM.content;
-            nextGameROM.content = JSON.parse(contentStr);
+            if (nextGameROM) {
+              this.gameROM.next(nextGameROM);
+              this.initGameState(nextGameROM);
+            }
+            this.isLockedOut.next(false);
           }
-
-          if (nextGameROM) {
-            this.gameROM.next(nextGameROM);
-            this.initGameState(nextGameROM);
-          }
-          this.isLockedOut.next(false);
         });
     }
   }

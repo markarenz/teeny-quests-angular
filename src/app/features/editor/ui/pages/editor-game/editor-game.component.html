@@ -77,6 +77,7 @@
   </app-container>
   @if (isContentVersionModalOpen) {
   <app-content-versions-modal
+    gameId="{{ game?.id }}"
     (onCloseModal)="handleContentVersionModalToggle(false)"
   ></app-content-versions-modal>
   }

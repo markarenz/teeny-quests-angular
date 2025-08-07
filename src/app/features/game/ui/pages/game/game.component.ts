@@ -50,9 +50,10 @@ export class GameComponent {
   introParagraphs: Paragraph[] = [];
 
   ngOnInit(): void {
-    this._gameService.setPageModalStatus('loading');
+    const v = this._route.snapshot.queryParamMap.get('v');
     const id = this._route.snapshot.paramMap.get('id');
-    this._gameService.loadGameROM(id);
+    this._gameService.setPageModalStatus('loading');
+    this._gameService.loadGameROM(id, v);
     this.isLoading = true;
     this.subscriptions.push(
       this._gameService.gameROMObs.subscribe((data: GameROM | null) => {
@@ -60,7 +61,7 @@ export class GameComponent {
           const userId = this._authGoogleService.getUserId();
           if (
             // TODO: use enum for itemStatus
-            data.itemStatus !== 'active' &&
+            (data.itemStatus !== 'active' || !!v) &&
             data &&
             data.userId !== userId
           ) {
