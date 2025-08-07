@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CommonModalComponent } from '@app/features/main/ui/components/common-modal/common-modal.component';
 import { ButtonComponent } from '@app/features/main/ui/components/button/button.component';
@@ -13,6 +13,7 @@ import {
   TableCellDisplayType,
 } from '@app/features/main/interfaces/enums';
 import { TableComponent } from '@app/features/main/ui/components/table/table.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-content-versions-modal',
@@ -22,12 +23,13 @@ import { TableComponent } from '@app/features/main/ui/components/table/table.com
   styleUrl: './content-versions-modal.component.css',
 })
 export class ContentVersionsModalComponent {
+  @Input() gameId: string = '';
+  @Output() onCloseModal = new EventEmitter<void>();
   private subscriptions: Subscription[] = [];
   public isLoading = true;
   public isSaving = false;
   public contentVersions: ContentVersionListItem[] = [];
   public contentVersionsTotal = 0;
-  @Output() onCloseModal = new EventEmitter<void>();
   public handleModalClose = () => {
     this.onCloseModal.emit();
   };
@@ -46,6 +48,13 @@ export class ContentVersionsModalComponent {
       theme: 'danger',
       onClick: (item: ContentVersionListItem) =>
         this.handleDeleteVersion(item.id),
+    },
+    {
+      label: 'Play',
+      icon: IconButtonIconType.Help,
+      theme: 'secondary',
+      onClick: (item: ContentVersionListItem) =>
+        this.handlePlayVersion(item.id),
     },
   ];
 
@@ -68,7 +77,10 @@ export class ContentVersionsModalComponent {
     },
   ];
 
-  constructor(private _gameEditorService: GameEditorService) {}
+  constructor(
+    private _gameEditorService: GameEditorService,
+    private router: Router
+  ) {}
 
   public handleSaveVersion = async () => {
     this.isSaving = true;
@@ -89,6 +101,11 @@ export class ContentVersionsModalComponent {
   public handleLoadVersion = (versionId: string) => {
     this._gameEditorService.loadContentVersion(versionId);
     this.handleModalClose();
+  };
+
+  public handlePlayVersion = (versionId: string) => {
+    this.handleModalClose();
+    http: this.router.navigateByUrl(`/game/${this.gameId}?v=${versionId}`);
   };
 
   ngOnInit() {
