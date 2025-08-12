@@ -21,6 +21,7 @@ export class AreaItemComponent {
   @Input('item') item: GameItem = defaultItem;
   @Input('isEditorSelected') isEditorSelected: boolean = false;
   @Input('isNearPlayer') isNearPlayer: boolean = false;
+  @Input('isEditorMode') isEditorMode: boolean = false;
   @Input('isLockedOut') isLockedOut: boolean = false;
   @Output() onClick = new EventEmitter<string>();
 
@@ -56,7 +57,18 @@ export class AreaItemComponent {
     this.updateItemProps();
   }
   handleClick() {
-    if (!this.isLockedOut && this.isNearPlayer && this.isClickable) {
+    console.log(
+      'Item clicked:',
+      this.item.id,
+      this.isLockedOut,
+      this.isNearPlayer,
+      this.isClickable
+    );
+    if (
+      !this.isLockedOut &&
+      (this.isNearPlayer || this.isEditorMode) &&
+      this.isClickable
+    ) {
       this.onClick.emit(this.item.id);
     }
   }

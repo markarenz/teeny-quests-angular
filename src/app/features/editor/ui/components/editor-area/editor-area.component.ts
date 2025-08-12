@@ -30,6 +30,7 @@ export class EditorAreaComponent {
   private subscriptions: Subscription[] = [];
   @Output() onSelectItem = new EventEmitter<string>();
   @Output() onSelectExit = new EventEmitter<string>();
+  @Output() onSelectMapCell = new EventEmitter<string>();
 
   game: GameROM | null = null;
   selectedAreaId: string = '';
@@ -147,5 +148,9 @@ export class EditorAreaComponent {
   }
   handleItemClick(id: string) {
     this.onSelectItem.emit(id);
+  }
+  handleMapCellClick(id: string) {
+    console.log('Map cell clicked:', id);
+    this.onSelectMapCell.emit(id);
   }
 }

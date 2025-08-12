@@ -1,4 +1,7 @@
 .area-cell {
   position: absolute;
   pointer-events: none;
+  &.editor-mode {
+    pointer-events: auto;
+  }
 }
