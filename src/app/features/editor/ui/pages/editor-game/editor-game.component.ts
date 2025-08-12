@@ -115,6 +115,14 @@ export class EditorGameComponent {
     this._gameEditorService.selectExit(id);
     this.subNavCurrent = 'exits';
   }
+
+  handleSelectMapCell(id: string) {
+    this._gameEditorService.selectExit('');
+    this._gameEditorService.selectItem('');
+    this._gameEditorService.setSelectedCellPosition(id);
+    this.subNavCurrent = 'map';
+  }
+
   public handleContentVersionModalToggle(isOpen: boolean) {
     this.isContentVersionModalOpen = isOpen;
     if (isOpen) {

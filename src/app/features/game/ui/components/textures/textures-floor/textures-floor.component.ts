@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-textures-floor',
@@ -10,4 +10,11 @@ import { Component, Input } from '@angular/core';
 export class TexturesFloorComponent {
   @Input('floorType') floorType: string = 'default';
   @Input('isFlat') isFlat: boolean = false;
+  @Input('positionKey') positionKey: string = '';
+  @Input('isEditorMode') isEditorMode: boolean = false;
+  @Output() onClick = new EventEmitter<string>();
+
+  public handleClick() {
+    this.onClick.emit(this.positionKey);
+  }
 }

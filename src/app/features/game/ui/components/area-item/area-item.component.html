@@ -23,7 +23,7 @@
     class="absolute top-[45%] left-[30%] w-[40%] h-[40%] bg-transparent rounded-full z-index-[100] border-4 border-primary border-dashed ring-2 ring-offset-2 ring-offset-primaryDarker ring-primaryDark"
     aria-hidden="true"
   ></div>
-  } @if (isNearPlayer && !isLockedOut) {
+  } @if ((isNearPlayer || isEditorMode) && !isLockedOut) {
   <button
     role="button"
     type="button"

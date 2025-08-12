@@ -25,7 +25,9 @@
     <app-area-cell
       [positionKey]="positionKey"
       [cellData]="selectedAreaMap[positionKey]"
+      [isEditorMode]="true"
       [selectedAreaCellPosition]="selectedAreaCellPosition"
+      (onClick)="handleMapCellClick($event)"
     />
     }
 
@@ -40,6 +42,7 @@
     <app-area-item
       [item]="item"
       [isEditorSelected]="selectedItemId === item.id"
+      [isEditorMode]="true"
       (onClick)="handleItemClick(item.id)"
     />
     } @if(playerPosition) {

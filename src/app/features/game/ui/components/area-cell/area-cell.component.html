@@ -1,6 +1,6 @@
 <div
   id="area-cell-{{ cell?.y }}-{{ cell?.x }}"
-  class="area-cell"
+  class="area-cell {{ isEditorMode ? 'editor-mode' : '' }}"
   [style.bottom]="position.bottom"
   [style.left]="position.left"
   [style.z-index]="isSelected ? 300 : position.z"
@@ -27,7 +27,12 @@
   }
   <!-- FLOOR -->
   @if(cell && displayElements.top) {
-  <app-textures-floor [floorType]="cell.floor" />
+  <app-textures-floor
+    [floorType]="cell.floor"
+    [isEditorMode]="isEditorMode"
+    [positionKey]="positionKey"
+    (onClick)="handleClick()"
+  />
   @if(showCellPositions) {
   <div
     class="w-full h-full z-[99999] absolute top-left text-gray-900 flex justify-center items-start"

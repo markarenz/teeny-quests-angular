@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import {
   AreaPosition,
   getAreaElementPositionStyle,
@@ -17,8 +17,11 @@ import { TexturesWallComponent } from '@app/features/game/ui/components/textures
 })
 export class AreaCellComponent {
   @Input('positionKey') positionKey: string = '';
-  @Input('selectedAreaCellPosition') selectedAreaCellPosition?: string = '';
+  @Input('isEditorMode') isEditorMode: boolean = false;
+  @Input('selectedAreaCellPosition')
+  selectedAreaCellPosition?: string = '';
   @Input('cellData') cellData: GameAreaMapCell | null = null;
+  @Output() onClick = new EventEmitter<string>();
 
   showCellPositions: boolean = false;
   gridSize: number = defaultGridSize;
@@ -75,6 +78,11 @@ export class AreaCellComponent {
     }
   }
 
+  public handleClick() {
+    if (this.isEditorMode) {
+      this.onClick.emit(this.positionKey);
+    }
+  }
   ngOnChanges() {
     this.cell = this.cellData;
     this.isSelected = this.selectedAreaCellPosition === this.positionKey;
