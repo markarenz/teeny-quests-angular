@@ -51,6 +51,11 @@ export class AreaExitComponent {
     east: 1,
     west: -1,
   };
+
+  public getZIndex(): number {
+    return Math.max(this.position.z + this.zBumpMap[this.exit.direction], 0);
+  }
+
   updateExitProps() {
     if (this.exit) {
       const { x, y, h } = this.exit;

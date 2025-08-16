@@ -43,10 +43,14 @@ export class MainNavComponent {
       })
     );
     this.subscriptions.push(
-      this._authProviderService.isLoggedInObs.subscribe((data: boolean) => {
-        this.isLoggedIn = data;
-        this.setNavMenuData();
-      })
+      this._authProviderService.isLoggedInObs.subscribe(
+        (data: boolean | null) => {
+          if (data !== null) {
+            this.isLoggedIn = data;
+            this.setNavMenuData();
+          }
+        }
+      )
     );
     this.setNavMenuData();
   }

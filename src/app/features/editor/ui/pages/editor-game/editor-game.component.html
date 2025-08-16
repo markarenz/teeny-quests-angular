@@ -9,6 +9,12 @@
         <div class="relative top:0 lg:top-[-9px] flex flex-row gap-4">
           <app-button
             variant="outlined"
+            label="Play"
+            [isDisabled]="isLoading"
+            (onButtonClick)="handlePlayClick()"
+          />
+          <app-button
+            variant="outlined"
             label="Versions"
             [isDisabled]="isLoading"
             (onButtonClick)="handleContentVersionModalToggle(true)"

@@ -32,11 +32,15 @@ import { logger } from '@app/features/main/utils/logger';
 })
 export class GameComponent {
   isLoading: boolean = false;
+  gameStatus: string = '';
+  gameAuthorId: string = '';
   gameModalStatus: string = 'loading';
   pageModalTitle: string = 'Loading';
   isLockedOut: boolean = false;
   showInventoryDot: boolean = false;
   previousInventory: Inventory | null = null;
+  private userId: string | null = null;
+
   constructor(
     private _route: ActivatedRoute,
     private _gameService: GameService,
@@ -49,6 +53,22 @@ export class GameComponent {
   title: string = '';
   introParagraphs: Paragraph[] = [];
 
+  private authorizationCheck() {
+    if (this.title !== '' && this.userId !== null) {
+      const v = this._route.snapshot.queryParamMap.get('v');
+      if (
+        (this.gameStatus !== 'active' || !!v) &&
+        this.gameAuthorId !== this.userId
+      ) {
+        logger({
+          message: 'Unauthorized access to game data',
+          type: 'error',
+        });
+        this.router.navigate(['/']);
+      }
+    }
+  }
+
   ngOnInit(): void {
     const v = this._route.snapshot.queryParamMap.get('v');
     const id = this._route.snapshot.paramMap.get('id');
@@ -56,29 +76,26 @@ export class GameComponent {
     this._gameService.loadGameROM(id, v);
     this.isLoading = true;
     this.subscriptions.push(
+      this._authGoogleService.isLoggedInObs.subscribe((isLoggedIn) => {
+        if (isLoggedIn === null) {
+          return;
+        }
+        this.userId = isLoggedIn ? this._authGoogleService.getUserId() : '';
+        this.authorizationCheck();
+      })
+    );
+    this.subscriptions.push(
       this._gameService.gameROMObs.subscribe((data: GameROM | null) => {
         if (data) {
-          const userId = this._authGoogleService.getUserId();
-          if (
-            // TODO: use enum for itemStatus
-            (data.itemStatus !== 'active' || !!v) &&
-            data &&
-            data.userId !== userId
-          ) {
-            logger({
-              message: 'Unauthorized access to game data',
-              type: 'error',
-            });
-            this.router.navigate(['/']);
-            return;
-          }
-
           this.title = data.title;
           this.introParagraphs = data.introduction
             .split('\n')
             .map((p, idx) => ({ text: p, id: idx }));
+          this.gameStatus = data.itemStatus;
+          this.gameAuthorId = data.userId;
           this.isLoading = false;
           this._gameService.setPageModalStatus('intro');
+          this.authorizationCheck();
         }
       })
     );
