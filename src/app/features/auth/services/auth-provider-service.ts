@@ -15,7 +15,7 @@ export class AuthProviderService {
 
   private router = inject(Router);
 
-  private isLoggedIn = new BehaviorSubject<boolean>(false);
+  private isLoggedIn = new BehaviorSubject<boolean | null>(null);
   isLoggedInObs = this.isLoggedIn.asObservable();
 
   private userId = signal<string | null>(null);
@@ -55,6 +55,9 @@ export class AuthProviderService {
           initials: getInitialsFromName(userData?.username),
         });
         this.isLoggedIn.next(true);
+      } else {
+        this.isLoggedIn.next(false);
+        this.userId.set(null);
       }
     });
   }

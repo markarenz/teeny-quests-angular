@@ -4,7 +4,8 @@ import { AuthProviderService } from '../../services/auth-provider-service';
 
 export const hasAuthGuard: CanActivateFn = (route, state) => {
   const router: Router = inject(Router);
-  const isLoggedIn: boolean = inject(AuthProviderService).getIsLoggedIn();
+  const isLoggedIn: boolean | null =
+    inject(AuthProviderService).getIsLoggedIn();
 
   return isLoggedIn || router.navigate(['/']);
 };

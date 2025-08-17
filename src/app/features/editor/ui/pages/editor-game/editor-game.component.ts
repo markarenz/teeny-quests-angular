@@ -122,6 +122,10 @@ export class EditorGameComponent {
     this._gameEditorService.setSelectedCellPosition(id);
     this.subNavCurrent = 'map';
   }
+  handlePlayClick() {
+    localStorage.removeItem(`save--${this.game?.id ?? ''}`);
+    this.router.navigate([`/game/${this.game?.id ?? ''}`]);
+  }
 
   public handleContentVersionModalToggle(isOpen: boolean) {
     this.isContentVersionModalOpen = isOpen;

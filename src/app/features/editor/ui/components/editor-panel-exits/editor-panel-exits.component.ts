@@ -171,6 +171,7 @@ export class EditorPanelExitsComponent {
       };
 
       this._gameEditorService.updateExit(updatedExit);
+      this.refreshUIData();
     }
   }
 }

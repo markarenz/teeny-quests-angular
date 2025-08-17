@@ -1,7 +1,7 @@
 <div
   [style.width]="width"
   [style.height]="width"
-  [style.z-index]="position.z + zBumpMap[exit.direction]"
+  [style.z-index]="getZIndex()"
   class="area-exit {{ isNearPlayer ? 'near-player' : '' }}"
   [style.bottom]="position.bottom"
   [style.left]="position.left"
