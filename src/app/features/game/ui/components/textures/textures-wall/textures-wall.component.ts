@@ -10,15 +10,18 @@ import { Component, Input } from '@angular/core';
 export class TexturesWallComponent {
   @Input('wallType') wallType: string = 'default';
   @Input('wallPosition') wallPosition: string = 'l';
+  @Input('positionKey') positionKey: string = '';
   @Input('svgViewBox') svgViewBox: string = '';
   @Input('svgPolygonPoints') svgPolygonPoints: string[] = [];
   @Input('isFlat') isFlat: boolean = false;
-  h: number = 100;
-  w: number = 100;
+  @Input('h') h: number = 1;
+
+  textureYOffset: number = 0;
   wallTexture: string = '';
 
   updateProps() {
-    this.wallTexture = `url(#texture_${this.wallType}_${this.wallPosition}_${
+    this.textureYOffset = this.h % 2 === 0 ? 0.5 : 0;
+    this.wallTexture = `url(#texture_${this.positionKey}_${this.wallPosition}_${
       this.isFlat ? 'flat' : 'wall'
     })`;
   }

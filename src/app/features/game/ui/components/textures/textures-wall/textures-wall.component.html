@@ -11,7 +11,7 @@
     <pattern
       [id]="
         'texture_' +
-        wallType +
+        positionKey +
         '_' +
         wallPosition +
         '_' +
@@ -35,14 +35,14 @@
     <pattern
       [id]="
         'texture_' +
-        wallType +
+        positionKey +
         '_' +
         wallPosition +
         '_' +
         (isFlat ? 'flat' : 'wall')
       "
       x="0"
-      y="0"
+      [attr.y]="textureYOffset"
       width="1"
       height="1"
     >
