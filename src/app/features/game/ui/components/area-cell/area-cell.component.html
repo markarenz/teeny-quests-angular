@@ -12,6 +12,8 @@
   <app-textures-wall
     [wallType]="cell.wallSouth"
     wallPosition="l"
+    [h]="cell.h"
+    [positionKey]="positionKey"
     [svgPolygonPoints]="svgPolygonPoints"
     [svgViewBox]="svgViewBox"
   />
@@ -21,6 +23,8 @@
   <app-textures-wall
     [wallType]="cell.wallEast"
     wallPosition="r"
+    [h]="cell.h"
+    [positionKey]="positionKey"
     [svgPolygonPoints]="svgPolygonPoints"
     [svgViewBox]="svgViewBox"
   />
