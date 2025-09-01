@@ -8,9 +8,9 @@ describe('SvgItemCoinsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SvgItemCoinsComponent]
-    })
-    .compileComponents();
+      imports: [SvgItemCoinsComponent],
+      teardown: { destroyAfterEach: false },
+    }).compileComponents();
 
     fixture = TestBed.createComponent(SvgItemCoinsComponent);
     component = fixture.componentInstance;

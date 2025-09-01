@@ -8,9 +8,9 @@ describe('HeaderSectionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HeaderSectionComponent]
-    })
-    .compileComponents();
+      imports: [HeaderSectionComponent],
+      teardown: { destroyAfterEach: false },
+    }).compileComponents();
 
     fixture = TestBed.createComponent(HeaderSectionComponent);
     component = fixture.componentInstance;

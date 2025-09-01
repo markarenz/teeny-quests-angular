@@ -11,6 +11,7 @@ describe('CommonModalComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CommonModalComponent],
+      teardown: { destroyAfterEach: false },
     }).compileComponents();
 
     mockEventEmitter = new EventEmitter<string>();

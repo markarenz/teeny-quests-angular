@@ -8,9 +8,9 @@ describe('EditorAreaSelectorGeneralComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EditorAreaSelectorGeneralComponent]
-    })
-    .compileComponents();
+      imports: [EditorAreaSelectorGeneralComponent],
+      teardown: { destroyAfterEach: false },
+    }).compileComponents();
 
     fixture = TestBed.createComponent(EditorAreaSelectorGeneralComponent);
     component = fixture.componentInstance;

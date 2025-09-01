@@ -14,6 +14,7 @@ describe('EditorPanelItemsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [EditorPanelItemsComponent],
+      teardown: { destroyAfterEach: false },
     }).compileComponents();
 
     fixture = TestBed.createComponent(EditorPanelItemsComponent);

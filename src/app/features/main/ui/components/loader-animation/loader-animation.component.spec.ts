@@ -8,9 +8,9 @@ describe('LoaderAnimationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LoaderAnimationComponent]
-    })
-    .compileComponents();
+      imports: [LoaderAnimationComponent],
+      teardown: { destroyAfterEach: false },
+    }).compileComponents();
 
     fixture = TestBed.createComponent(LoaderAnimationComponent);
     component = fixture.componentInstance;

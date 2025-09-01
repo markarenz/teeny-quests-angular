@@ -8,9 +8,9 @@ describe('IconButtonComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [IconButtonComponent]
-    })
-    .compileComponents();
+      imports: [IconButtonComponent],
+      teardown: { destroyAfterEach: false },
+    }).compileComponents();
 
     fixture = TestBed.createComponent(IconButtonComponent);
     component = fixture.componentInstance;

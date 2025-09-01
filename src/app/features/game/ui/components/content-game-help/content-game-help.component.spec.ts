@@ -8,9 +8,9 @@ describe('ContentGameHelpComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ContentGameHelpComponent]
-    })
-    .compileComponents();
+      imports: [ContentGameHelpComponent],
+      teardown: { destroyAfterEach: false },
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ContentGameHelpComponent);
     component = fixture.componentInstance;

@@ -17,6 +17,7 @@ describe('EditorPanelExitsComponent', () => {
     mockEventEmitter = new EventEmitter<string>();
     await TestBed.configureTestingModule({
       imports: [EditorPanelExitsComponent],
+      teardown: { destroyAfterEach: false },
     }).compileComponents();
 
     fixture = TestBed.createComponent(EditorPanelExitsComponent);

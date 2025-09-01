@@ -12,6 +12,7 @@ describe('EditorInventoryComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [EditorInventoryComponent],
+      teardown: { destroyAfterEach: false },
     }).compileComponents();
 
     fixture = TestBed.createComponent(EditorInventoryComponent);

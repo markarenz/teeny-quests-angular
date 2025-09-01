@@ -169,22 +169,6 @@ export class GameEditorService {
   }
 
   getPanelsForCurrentArea(): GamePanelDeco[] {
-    console.log(
-      'getPanelsForCurrentArea: areas:',
-      this.game.value?.content.areas
-    );
-    console.log(
-      'getPanelsForCurrentArea: selectedAreaId: ',
-      this.selectedAreaId.value
-    );
-    console.log(
-      'getPanelsForCurrentArea: area:',
-      this.game.value?.content.areas[this.selectedAreaId.value]
-    );
-    console.log(
-      'getPanelsForCurrentArea: panels:',
-      this.game.value?.content.areas[this.selectedAreaId.value]?.panels
-    );
     return (
       this.game.value?.content.areas[this.selectedAreaId.value]?.panels ?? []
     );

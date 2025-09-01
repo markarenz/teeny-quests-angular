@@ -33,7 +33,9 @@ describe('GameService', () => {
   let service: GameService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      teardown: { destroyAfterEach: false },
+    });
     service = TestBed.inject(GameService);
   });
 
@@ -45,7 +47,7 @@ describe('GameService', () => {
 describe('loadGameROM', () => {
   let service: GameService;
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({ teardown: { destroyAfterEach: false } });
     service = TestBed.inject(GameService);
   });
 
@@ -75,7 +77,7 @@ describe('loadGameROM', () => {
 describe('initGameState', () => {
   let service: GameService;
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({ teardown: { destroyAfterEach: false } });
     service = TestBed.inject(GameService);
   });
 
@@ -103,7 +105,7 @@ describe('processTurn', () => {
     '2_5': ['2_2', '2_3', '2_4', '2_5'],
   };
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({ teardown: { destroyAfterEach: false } });
     service = TestBed.inject(GameService);
     service.testInit(gameMock);
     service.initGameState(gameMock);
@@ -172,7 +174,7 @@ describe('processTurn', () => {
 describe('getArea', () => {
   let service: GameService;
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({ teardown: { destroyAfterEach: false } });
     service = TestBed.inject(GameService);
     service.testInit(gameMock);
     service.initGameState(gameMock);
@@ -187,7 +189,7 @@ describe('getArea', () => {
 describe('getGameStateArea', () => {
   let service: GameService;
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({ teardown: { destroyAfterEach: false } });
     service = TestBed.inject(GameService);
     service.testInit(gameMock);
     service.initGameState(gameMock);
@@ -202,7 +204,7 @@ describe('getGameStateArea', () => {
 describe('getOppositeDirection', () => {
   let service: GameService;
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({ teardown: { destroyAfterEach: false } });
     service = TestBed.inject(GameService);
   });
 
@@ -218,7 +220,7 @@ describe('getOppositeDirection', () => {
 describe('turnActionExit', () => {
   let service: GameService;
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({ teardown: { destroyAfterEach: false } });
     service = TestBed.inject(GameService);
     service.testInit(gameMock);
     service.initGameState(gameMock);
@@ -246,7 +248,7 @@ describe('turnActionExit', () => {
 describe('turnActionItemClick', () => {
   let service: GameService;
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({ teardown: { destroyAfterEach: false } });
     service = TestBed.inject(GameService);
     service.testInit(gameMock);
     service.initGameState(gameMock);

@@ -27,6 +27,7 @@ describe('ModalInventoryComponent', () => {
     );
     await TestBed.configureTestingModule({
       imports: [ModalInventoryComponent],
+      teardown: { destroyAfterEach: false },
     }).compileComponents();
     service = TestBed.inject(GameService);
 

@@ -8,9 +8,9 @@ describe('SvgPlayerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SvgPlayerComponent]
-    })
-    .compileComponents();
+      imports: [SvgPlayerComponent],
+      teardown: { destroyAfterEach: false },
+    }).compileComponents();
 
     fixture = TestBed.createComponent(SvgPlayerComponent);
     component = fixture.componentInstance;

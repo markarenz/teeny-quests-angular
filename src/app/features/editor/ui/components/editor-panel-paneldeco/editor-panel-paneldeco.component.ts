@@ -145,11 +145,6 @@ export class EditorPanelPanelDecoComponent {
     );
     this.subscriptions.push(
       this._gameEditorService.selectedAreaIdObs.subscribe((data: any) => {
-        console.log(
-          '...Area change detected in panel deco editor',
-          data,
-          this.selectedAreaId
-        );
         if (this.selectedAreaId !== data) {
           this.selectedAreaId = data;
           this.panels = this._gameEditorService.getPanelsForCurrentArea();

@@ -20,6 +20,7 @@ describe('EditorGameComponent', () => {
         provideHttpClient(),
         provideHttpClientTesting(),
       ],
+      teardown: { destroyAfterEach: false },
     }).compileComponents();
 
     fixture = TestBed.createComponent(EditorGameComponent);

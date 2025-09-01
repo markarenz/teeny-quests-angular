@@ -23,6 +23,7 @@ describe('LoginComponent', () => {
         provideHttpClientTesting(),
         provideRouter([]),
       ],
+      teardown: { destroyAfterEach: false },
     }).compileComponents();
     authService = TestBed.inject(AuthProviderService);
 

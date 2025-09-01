@@ -13,6 +13,7 @@ describe('EditorAreaSelectorComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [EditorAreaSelectorComponent],
+      teardown: { destroyAfterEach: false },
     }).compileComponents();
 
     gameMock = <GameROM>JSON.parse(JSON.stringify(gameMockData));

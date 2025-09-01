@@ -21,6 +21,7 @@ describe('NewGameModalComponent', () => {
     await TestBed.configureTestingModule({
       imports: [NewGameModalComponent, OAuthModule.forRoot()],
       providers: [provideHttpClient(), provideHttpClientTesting()],
+      teardown: { destroyAfterEach: false },
     }).compileComponents();
 
     mockEventEmitter = new EventEmitter<string>();

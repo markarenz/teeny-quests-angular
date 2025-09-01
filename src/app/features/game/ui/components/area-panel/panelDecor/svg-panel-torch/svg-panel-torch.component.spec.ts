@@ -8,9 +8,9 @@ describe('SvgPanelTorchComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SvgPanelTorchComponent]
-    })
-    .compileComponents();
+      imports: [SvgPanelTorchComponent],
+      teardown: { destroyAfterEach: false },
+    }).compileComponents();
 
     fixture = TestBed.createComponent(SvgPanelTorchComponent);
     component = fixture.componentInstance;

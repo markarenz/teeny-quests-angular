@@ -19,6 +19,7 @@ describe('MainLayoutComponent', () => {
         provideHttpClient(),
         provideHttpClientTesting(),
       ],
+      teardown: { destroyAfterEach: false },
     }).compileComponents();
 
     fixture = TestBed.createComponent(MainLayoutComponent);

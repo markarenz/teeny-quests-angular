@@ -17,6 +17,7 @@ describe('HeaderComponent', () => {
         provideHttpClient(),
         provideHttpClientTesting(),
       ],
+      teardown: { destroyAfterEach: false },
     }).compileComponents();
 
     fixture = TestBed.createComponent(HeaderComponent);

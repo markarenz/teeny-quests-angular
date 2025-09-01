@@ -10,6 +10,7 @@ describe('SvgExitDefaultEComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [SvgExitDefaultEComponent],
+      teardown: { destroyAfterEach: false },
     }).compileComponents();
 
     mockEventEmitter = new EventEmitter<string>();

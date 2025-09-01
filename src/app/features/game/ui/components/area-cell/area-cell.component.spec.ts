@@ -9,6 +9,7 @@ describe('AreaCellComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AreaCellComponent],
+      teardown: { destroyAfterEach: false },
     }).compileComponents();
 
     fixture = TestBed.createComponent(AreaCellComponent);

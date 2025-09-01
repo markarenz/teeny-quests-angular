@@ -9,6 +9,7 @@ describe('SvgPanelSwitchComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [SvgPanelSwitchComponent],
+      teardown: { destroyAfterEach: false },
     }).compileComponents();
 
     fixture = TestBed.createComponent(SvgPanelSwitchComponent);

@@ -19,6 +19,7 @@ describe('EditorPanelPanelDecoComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [EditorPanelPanelDecoComponent],
+      teardown: { destroyAfterEach: false },
     }).compileComponents();
 
     fixture = TestBed.createComponent(EditorPanelPanelDecoComponent);
@@ -85,7 +86,6 @@ describe('EditorPanelPanelDecoComponent', () => {
     };
     spyOn(service, 'updatePanel');
     component.panels = gameMock.content.areas['start'].panels;
-    console.log('...>>>?', component.panels);
     component.selectedPanelId = 'panel1';
     component.inputPanelPosition = '2_2';
     component.handlePanelInputChange();
@@ -95,9 +95,6 @@ describe('EditorPanelPanelDecoComponent', () => {
   });
 
   it('should handle area change', fakeAsync(async () => {
-    console.log(
-      '...area change test.............................................'
-    );
     spyOn(service, 'getPanelsForCurrentArea');
     fixture.detectChanges();
     service.setSelectedAreaId('area2');

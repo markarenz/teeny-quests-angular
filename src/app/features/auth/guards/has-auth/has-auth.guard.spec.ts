@@ -23,6 +23,7 @@ describe('hasAuthGuard', () => {
         provideHttpClient(),
         provideHttpClientTesting(),
       ],
+      teardown: { destroyAfterEach: false },
     });
   });
 

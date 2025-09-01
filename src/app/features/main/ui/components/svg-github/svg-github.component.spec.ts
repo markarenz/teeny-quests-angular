@@ -8,9 +8,9 @@ describe('SvgGithubComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SvgGithubComponent]
-    })
-    .compileComponents();
+      imports: [SvgGithubComponent],
+      teardown: { destroyAfterEach: false },
+    }).compileComponents();
 
     fixture = TestBed.createComponent(SvgGithubComponent);
     component = fixture.componentInstance;

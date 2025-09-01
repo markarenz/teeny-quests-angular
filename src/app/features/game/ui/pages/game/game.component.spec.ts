@@ -21,12 +21,12 @@ describe('GameComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [GameComponent, OAuthModule.forRoot()],
-      teardown: { destroyAfterEach: false },
       providers: [
         provideRouter([]),
         provideHttpClient(),
         provideHttpClientTesting(),
       ],
+      teardown: { destroyAfterEach: false },
     }).compileComponents();
 
     gameMockDataClean = await JSON.parse(

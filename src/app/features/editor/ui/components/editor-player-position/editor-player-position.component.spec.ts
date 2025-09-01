@@ -13,6 +13,7 @@ describe('EditorPlayerPositionComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [EditorPlayerPositionComponent],
+      teardown: { destroyAfterEach: false },
     }).compileComponents();
     gameMock = <GameROM>JSON.parse(JSON.stringify(gameMockData));
 

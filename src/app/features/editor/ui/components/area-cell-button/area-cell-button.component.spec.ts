@@ -8,9 +8,9 @@ describe('AreaCellButtonComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AreaCellButtonComponent]
-    })
-    .compileComponents();
+      imports: [AreaCellButtonComponent],
+      teardown: { destroyAfterEach: false },
+    }).compileComponents();
 
     fixture = TestBed.createComponent(AreaCellButtonComponent);
     component = fixture.componentInstance;

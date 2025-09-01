@@ -9,6 +9,7 @@ describe('AreaPanelComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AreaPanelComponent],
+      teardown: { destroyAfterEach: false },
     }).compileComponents();
 
     fixture = TestBed.createComponent(AreaPanelComponent);
