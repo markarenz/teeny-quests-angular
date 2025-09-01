@@ -89,6 +89,7 @@ export class GameService {
       areas[areaId] = {
         exits: nextGameROM.content.areas[areaId].exits,
         items: nextGameROM.content.areas[areaId].items,
+        panels: nextGameROM.content.areas[areaId].panels,
       };
     });
     nextGameState = {
