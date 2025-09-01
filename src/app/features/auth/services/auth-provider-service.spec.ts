@@ -32,6 +32,7 @@ describe('AuthProviderService', () => {
         provideHttpClientTesting(),
         { provide: OAuthService, useValue: mockOAuthService },
       ],
+      teardown: { destroyAfterEach: false },
     });
     oAuthService = TestBed.inject(OAuthService);
     oAuthService.getIdToken = () => 'ABC123';
