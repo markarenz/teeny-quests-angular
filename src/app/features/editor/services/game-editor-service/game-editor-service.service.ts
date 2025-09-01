@@ -13,6 +13,7 @@ import {
   SelectIUIOption,
   GameContent,
   ContentVersionListItem,
+  GamePanelDeco,
 } from '@app/features/main/interfaces/types';
 import {
   utilDeleteItem,
@@ -24,6 +25,11 @@ import {
   utilDeleteExit,
   utilUpdateExit,
 } from './utils/exits-utils';
+import {
+  utilCreatePanel,
+  utilDeletePanel,
+  utilUpdatePanel,
+} from './utils/panel-utils';
 import { getPositionKeysForGridSize } from '@main/utils';
 import { logger } from '@app/features/main/utils/logger';
 
@@ -58,6 +64,9 @@ export class GameEditorService {
   private selectedExitId = new BehaviorSubject<string>('');
   selectedExitIdObs = this.selectedExitId.asObservable();
 
+  private selectedPanelId = new BehaviorSubject<string>('');
+  selectedPanelIdObs = this.selectedPanelId.asObservable();
+
   private selectedItemId = new BehaviorSubject<string>('');
   selectedItemIdObs = this.selectedItemId.asObservable();
 
@@ -66,6 +75,9 @@ export class GameEditorService {
 
   private areaItems = new BehaviorSubject<GameItem[]>([]);
   areaItemsObs = this.areaItems.asObservable();
+
+  private areaPanels = new BehaviorSubject<GamePanelDeco[]>([]);
+  areaPanelsObs = this.areaPanels.asObservable();
 
   private contentVersions = new BehaviorSubject<ContentVersionListItem[]>([]);
   contentVersionsObs = this.contentVersions.asObservable();
@@ -142,13 +154,40 @@ export class GameEditorService {
     }
   }
 
+  getAreaById(areaId: string): GameArea | null {
+    return this.game.value?.content.areas[areaId] ?? null;
+  }
+
   setSelectedAreaId(areaId: string) {
     this.selectedAreaId.next('');
     setTimeout(() => {
       this.selectedAreaId.next(areaId);
       this.refreshAreaExits(this.game.value as GameROM);
       this.refreshAreaItems(this.game.value as GameROM);
+      this.refreshAreaPanels(this.game.value as GameROM);
     }, 100);
+  }
+
+  getPanelsForCurrentArea(): GamePanelDeco[] {
+    console.log(
+      'getPanelsForCurrentArea: areas:',
+      this.game.value?.content.areas
+    );
+    console.log(
+      'getPanelsForCurrentArea: selectedAreaId: ',
+      this.selectedAreaId.value
+    );
+    console.log(
+      'getPanelsForCurrentArea: area:',
+      this.game.value?.content.areas[this.selectedAreaId.value]
+    );
+    console.log(
+      'getPanelsForCurrentArea: panels:',
+      this.game.value?.content.areas[this.selectedAreaId.value]?.panels
+    );
+    return (
+      this.game.value?.content.areas[this.selectedAreaId.value]?.panels ?? []
+    );
   }
 
   getItemsForCurrentArea(): GameItem[] {
@@ -163,6 +202,7 @@ export class GameEditorService {
     );
   }
 
+  // ITEMS -------------------------------------------------------------------
   refreshAreaItems(nextGame: GameROM) {
     const nextItems = [
       ...nextGame.content.areas[this.selectedAreaId.value].items,
@@ -171,11 +211,12 @@ export class GameEditorService {
     this.areaItems.next(nextItems);
   }
 
-  createItem(): GameItem | null {
+  createItem(lockouts: string[]): GameItem | null {
     if (this.game.value && this.selectedAreaId.value) {
       const { nextGame, newItem } = utilCreateItem({
         game: this.game.value,
         selectedAreaId: this.selectedAreaId.value,
+        lockouts,
       });
 
       if (nextGame && newItem) {
@@ -217,6 +258,63 @@ export class GameEditorService {
     }
   }
 
+  // PANELS -------------------------------------------------------------------
+  refreshAreaPanels(nextGame: GameROM) {
+    const nextPanels = [
+      ...nextGame.content.areas[this.selectedAreaId.value].panels,
+    ];
+
+    this.areaPanels.next(nextPanels);
+  }
+
+  createPanel(lockouts: string[]): GamePanelDeco | null {
+    if (this.game.value && this.selectedAreaId.value) {
+      const { nextGame, newPanel } = utilCreatePanel({
+        game: this.game.value,
+        selectedAreaId: this.selectedAreaId.value,
+        lockouts,
+      });
+
+      if (nextGame && newPanel) {
+        this.game.next(nextGame);
+        this.refreshAreaPanels(nextGame);
+        this.selectedPanelId.next(newPanel.id);
+      }
+    }
+    return null;
+  }
+
+  updatePanel(updatedPanel: GamePanelDeco) {
+    if (this.game.value) {
+      const nextGame = utilUpdatePanel({
+        game: this.game.value,
+        selectedAreaId: this.selectedAreaId.value,
+        updatedPanel,
+      });
+      if (nextGame) {
+        this.game.next(nextGame);
+        this.refreshAreaPanels(nextGame);
+      }
+    }
+  }
+
+  selectPanel(panelId: string) {
+    this.selectedPanelId.next(panelId);
+  }
+
+  deletePanel(panelId: string) {
+    if (this.game.value) {
+      const nextGame = utilDeletePanel({
+        game: this.game.value,
+        selectedAreaId: this.selectedAreaId.value,
+        panelId,
+      });
+      this.selectPanel('');
+      this.game.next(nextGame);
+      this.refreshAreaPanels(nextGame);
+    }
+  }
+
   // EXITS --------------------------------------------------------------------
 
   refreshAreaExits(nextGame: GameROM) {
@@ -254,6 +352,7 @@ export class GameEditorService {
         selectedAreaId: this.selectedAreaId.value,
         exitId,
       });
+      this.selectExit('');
       if (nextGame) {
         this.game.next(nextGame);
         this.refreshAreaExits(nextGame as GameROM);
@@ -317,6 +416,7 @@ export class GameEditorService {
           map: this.getDefaultMap(),
           exits: [],
           items: [],
+          panels: [],
         },
       },
       events: [],
@@ -440,6 +540,7 @@ export class GameEditorService {
             nextGameData.content.areas[nextSelectedAreaId];
           this.areaExits.next(nextSelectedArea.exits);
           this.areaItems.next(nextSelectedArea.items);
+          this.areaPanels.next(nextSelectedArea.panels);
           this.selectedArea.next(nextSelectedArea);
         });
     }
@@ -475,6 +576,7 @@ export class GameEditorService {
         map: this.getDefaultMap(),
         exits: [],
         items: [],
+        panels: [],
       };
       const nextGameData = {
         ...this.game.value,

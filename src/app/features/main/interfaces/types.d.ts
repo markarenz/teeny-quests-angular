@@ -14,6 +14,45 @@ export type SubNavItem = {
   slug: string;
 };
 
+export enum EventAction {
+  UPDATE_MAP_CELL = 'updateMapCell',
+
+  SET_FLAG = 'setFlag',
+  UNSET_FLAG = 'unsetFlag',
+  ADD_ITEM = 'addItem',
+  REMOVE_ITEM = 'removeItem',
+  TELEPORT_PLAYER = 'teleportPlayer',
+  CHANGE_AREA = 'changeArea',
+}
+
+export type EventEffect = {
+  action: EventAction;
+  areaId?: string;
+  positionKey?: string;
+  h?: number;
+  floor?: string; // for map cell updates
+  wallSouth?: string; // for map cell updates
+  wallEast?: string; // for map cell updates
+  itemId?: string;
+  flagName?: string;
+  value?: boolean | number | string;
+};
+
+export type GameStatusEffects = {
+  [key: string]: EventEffect[];
+};
+
+export type GamePanelDeco = {
+  id: string;
+  panelDecoType: string; // e.g., 'torch', 'painting', 'switch'
+  areaId: string;
+  x: number;
+  y: number;
+  h: number;
+  wall: string;
+  status?: string; // e.g., 'on', 'off', 'activated'
+  statusEffects: GameStatusEffects;
+};
 export type GameAreaMapCell = {
   x: number;
   y: number;
@@ -56,6 +95,7 @@ export type GameArea = {
   map: GameAreaMap;
   exits: GameAreaExit[];
   items: GameItem[];
+  panels: GamePanelDeco[];
 };
 
 export type GameEventCondition = {
@@ -111,7 +151,7 @@ export type StatusEffect = {
 export type GameStateArea = {
   items: GameItem[];
   exits: GameAreaExit[];
-  // FUTURE: NPCs, etc
+  panels: GamePanelDeco[];
 };
 
 export type GameState = {

@@ -77,6 +77,8 @@ export class EditorPanelItemsComponent {
       this._gameEditorService.selectedAreaIdObs.subscribe((data: any) => {
         this.selectedAreaId = data;
         this.items = this._gameEditorService.getItemsForCurrentArea();
+        this.area = this._gameEditorService.getAreaById(this.selectedAreaId);
+        this.updateItemPositionLockouts();
       })
     );
   }
@@ -110,7 +112,9 @@ export class EditorPanelItemsComponent {
   }
 
   handleCreateClick() {
-    const item: GameItem | null = this._gameEditorService.createItem();
+    const item: GameItem | null = this._gameEditorService.createItem(
+      this.lockouts
+    );
     if (item) {
       this.handleEditClick(item.id);
       this.updateItemPositionLockouts();

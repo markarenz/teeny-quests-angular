@@ -460,7 +460,7 @@ describe('createItem', () => {
       i += 1;
     });
 
-    service.createItem();
+    service.createItem([]);
   });
 });
 

@@ -1,31 +1,30 @@
-import { GameROM, GameItem } from '@app/features/main/interfaces/types';
+import { GameROM, GamePanelDeco } from '@app/features/main/interfaces/types';
 import { findAnOpenCell } from './common-utils';
-import { defaultGridSize } from '@config/index';
 import { v4 as uuidv4 } from 'uuid';
 
-export const utilDeleteItem = ({
+export const utilDeletePanel = ({
   game,
   selectedAreaId,
-  itemId,
+  panelId,
 }: {
   game: GameROM;
   selectedAreaId: string;
-  itemId: string;
+  panelId: string;
 }) => {
   const nextGame = { ...game } as GameROM;
-  const items = game.content.areas[selectedAreaId].items;
-  if (items) {
-    const newItems = items.filter((item) => item.id !== itemId);
+  const panels = game.content.areas[selectedAreaId].panels;
+  if (panels) {
+    const newPanels = panels.filter((panel) => panel.id !== panelId);
     nextGame.content.areas[selectedAreaId] = {
       ...nextGame?.content.areas[selectedAreaId],
-      items: newItems,
+      panels: newPanels,
     };
   }
 
   return nextGame;
 };
 
-export const utilCreateItem = ({
+export const utilCreatePanel = ({
   game,
   selectedAreaId,
   lockouts,
@@ -33,31 +32,24 @@ export const utilCreateItem = ({
   game: GameROM;
   selectedAreaId: string;
   lockouts: string[];
-}): { nextGame: GameROM | null; newItem: GameItem | null } => {
+}): { nextGame: GameROM | null; newPanel: GamePanelDeco | null } => {
   const areas = game.content.areas;
   if (areas) {
     const area = areas[selectedAreaId] ?? {
-      items: [],
+      panels: [],
     };
     const openCellPosition = findAnOpenCell({ game, selectedAreaId, lockouts });
     if (openCellPosition) {
       const [y, x] = openCellPosition.split('_');
-      let direction = 'north';
-      if (+y < 2) {
-        direction = 'north';
-      } else if (+y > defaultGridSize - 3) {
-        direction = 'south';
-      } else if (+x < 2) {
-        direction = 'east';
-      } else if (+x > defaultGridSize - 3) {
-        direction = 'west';
-      }
-
       let h = area ? area.map[openCellPosition].h : 1;
-      const newItem: GameItem = {
+
+      const newPanel: GamePanelDeco = {
         id: uuidv4(),
-        itemType: 'coins-25',
+        panelDecoType: 'torch',
+        wall: 'north',
+        statusEffects: {},
         areaId: selectedAreaId,
+        status: '',
         x: +x,
         y: +y,
         h,
@@ -66,45 +58,44 @@ export const utilCreateItem = ({
       const nextGame = { ...game } as GameROM;
       nextGame.content.areas[selectedAreaId] = {
         ...nextGame?.content.areas[selectedAreaId],
-        items: [
-          ...(nextGame?.content.areas[selectedAreaId].items ?? []),
-          newItem,
+        panels: [
+          ...(nextGame?.content.areas[selectedAreaId].panels ?? []),
+          newPanel,
         ],
       };
-      return { nextGame, newItem };
+      return { nextGame, newPanel };
     }
   }
   return {
     nextGame: null,
-    newItem: null,
+    newPanel: null,
   };
 };
 
-export const utilUpdateItem = ({
+export const utilUpdatePanel = ({
   game,
-  updatedItem,
+  updatedPanel,
   selectedAreaId,
 }: {
   game: GameROM;
-  updatedItem: GameItem;
+  updatedPanel: GamePanelDeco;
   selectedAreaId: string;
 }): GameROM => {
-  const id = updatedItem.id;
+  const id = updatedPanel.id;
   const gameObj = { ...game } as GameROM;
   const area = gameObj?.content.areas[selectedAreaId];
 
   if (area) {
-    const newItems = area.items.map((item) =>
-      item.id === id
+    const newPanels = area.panels.map((panel) =>
+      panel.id === id
         ? {
-            ...updatedItem,
-            h: area.map[`${updatedItem.y}_${updatedItem.x}`].h,
+            ...updatedPanel,
           }
-        : item
+        : panel
     );
     gameObj.content.areas[selectedAreaId] = {
       ...gameObj?.content.areas[selectedAreaId],
-      items: newItems,
+      panels: newPanels,
     };
   }
 

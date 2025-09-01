@@ -1,4 +1,8 @@
-import { GameAreaExit, GameItem } from '@app/features/main/interfaces/types';
+import {
+  GameAreaExit,
+  GameItem,
+  GamePanelDeco,
+} from '@app/features/main/interfaces/types';
 
 export const defaultExit: GameAreaExit = {
   id: 'test',
@@ -19,4 +23,16 @@ export const defaultItem: GameItem = {
   x: 2,
   y: 0,
   h: 1,
+};
+
+export const defaultPanelDeco: GamePanelDeco = {
+  id: 'test',
+  panelDecoType: 'torch',
+  areaId: 'start',
+  wall: 'north',
+  x: 2,
+  y: 2,
+  h: 1,
+  statusEffects: {},
+  status: '',
 };
