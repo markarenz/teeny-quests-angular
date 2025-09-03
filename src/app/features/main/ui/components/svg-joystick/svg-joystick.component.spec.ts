@@ -8,9 +8,9 @@ describe('SvgJoystickComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SvgJoystickComponent]
-    })
-    .compileComponents();
+      imports: [SvgJoystickComponent],
+      teardown: { destroyAfterEach: false },
+    }).compileComponents();
 
     fixture = TestBed.createComponent(SvgJoystickComponent);
     component = fixture.componentInstance;

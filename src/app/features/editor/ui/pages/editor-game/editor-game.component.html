@@ -67,6 +67,8 @@
             <app-editor-panel-exits />
             } @else if (subNavCurrent === 'items') {
             <app-editor-panel-items />
+            } @else if (subNavCurrent === 'paneldeco') {
+            <app-editor-panel-paneldeco />
             }
           </div>
         </div>
@@ -75,6 +77,7 @@
             <app-editor-area
               (onSelectItem)="handleSelectItem($event)"
               (onSelectExit)="handleSelectExit($event)"
+              (onSelectPanel)="handleSelectPanel($event)"
               (onSelectMapCell)="handleSelectMapCell($event)"
             />
           </div>

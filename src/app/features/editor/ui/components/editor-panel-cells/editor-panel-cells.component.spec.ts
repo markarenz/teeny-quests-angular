@@ -18,6 +18,7 @@ describe('EditorPanelCellsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [EditorPanelCellsComponent],
+      teardown: { destroyAfterEach: false },
     }).compileComponents();
 
     gameEditorService = TestBed.inject(GameEditorService);

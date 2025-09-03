@@ -8,9 +8,9 @@ describe('GameMovementOptionButtonComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GameMovementOptionButtonComponent]
-    })
-    .compileComponents();
+      imports: [GameMovementOptionButtonComponent],
+      teardown: { destroyAfterEach: false },
+    }).compileComponents();
 
     fixture = TestBed.createComponent(GameMovementOptionButtonComponent);
     component = fixture.componentInstance;

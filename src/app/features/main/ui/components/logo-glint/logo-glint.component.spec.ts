@@ -8,9 +8,9 @@ describe('LogoGlintComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LogoGlintComponent]
-    })
-    .compileComponents();
+      imports: [LogoGlintComponent],
+      teardown: { destroyAfterEach: false },
+    }).compileComponents();
 
     fixture = TestBed.createComponent(LogoGlintComponent);
     component = fixture.componentInstance;

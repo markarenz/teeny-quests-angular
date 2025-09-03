@@ -5,9 +5,11 @@ import { getPositionKeysForGridSize } from '@main/utils';
 export const findAnOpenCell = ({
   game,
   selectedAreaId,
+  lockouts = [],
 }: {
   game: GameROM;
   selectedAreaId: string;
+  lockouts?: string[];
 }): string | null => {
   const area = game.content.areas[selectedAreaId];
   if (area) {
@@ -15,6 +17,7 @@ export const findAnOpenCell = ({
     const openCell = positionKeys.find((key) => {
       const [y, x] = key.split('_');
       return (
+        !lockouts.includes(key) &&
         floorDefinitions[area.map[key].floor ?? 'default'].walkable &&
         !area.exits.some((exit) => exit.x === +x && exit.y === +y) &&
         !area.items.some((item) => item.x === +x && item.y === +y)

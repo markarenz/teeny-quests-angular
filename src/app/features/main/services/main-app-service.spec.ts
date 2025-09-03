@@ -15,7 +15,7 @@ describe('GameEditorService', () => {
   let service: MainAppService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({ teardown: { destroyAfterEach: false } });
     service = TestBed.inject(MainAppService);
   });
 
@@ -27,7 +27,7 @@ describe('GameEditorService', () => {
 describe('toggleMenu', () => {
   let service: MainAppService;
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({ teardown: { destroyAfterEach: false } });
     service = TestBed.inject(MainAppService);
   });
 
@@ -51,7 +51,7 @@ describe('toggleMenu', () => {
 describe('getGamesList', () => {
   let service: MainAppService;
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({ teardown: { destroyAfterEach: false } });
     service = TestBed.inject(MainAppService);
   });
 

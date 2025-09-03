@@ -8,9 +8,9 @@ describe('SkeletonTextComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SkeletonTextComponent]
-    })
-    .compileComponents();
+      imports: [SkeletonTextComponent],
+      teardown: { destroyAfterEach: false },
+    }).compileComponents();
 
     fixture = TestBed.createComponent(SkeletonTextComponent);
     component = fixture.componentInstance;

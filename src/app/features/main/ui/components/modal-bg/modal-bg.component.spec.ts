@@ -11,6 +11,7 @@ describe('ModalBgComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ModalBgComponent],
+      teardown: { destroyAfterEach: false },
     }).compileComponents();
 
     mockEventEmitter = new EventEmitter<string>();

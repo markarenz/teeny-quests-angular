@@ -48,6 +48,18 @@
     } @if(playerPosition) {
     <app-editor-player-position [playerPosition]="playerPosition" />
     }
+    <!-- Area PanelDeco -->
+    @for(panel of selectedAreaPanels; track panel.id;) {
+    <app-area-panel
+      [panel]="panel"
+      [isPanelSelected]="selectedPanelId === panel.id"
+      [isClickable]="true"
+      [isEditorMode]="true"
+      (onClick)="handlePanelClick(panel.id)"
+      [isNearPlayer]="true"
+      [isLockedOut]="false"
+    />
+    }
 
     <!-- Area Exits -->
     @for(exit of selectedAreaExits; track exit.id;) {

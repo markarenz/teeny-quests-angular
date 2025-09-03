@@ -8,9 +8,9 @@ describe('IconCaretComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [IconCaretComponent]
-    })
-    .compileComponents();
+      imports: [IconCaretComponent],
+      teardown: { destroyAfterEach: false },
+    }).compileComponents();
 
     fixture = TestBed.createComponent(IconCaretComponent);
     component = fixture.componentInstance;

@@ -9,6 +9,7 @@ describe('GamePlayerComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [GamePlayerComponent],
+      teardown: { destroyAfterEach: false },
     }).compileComponents();
 
     fixture = TestBed.createComponent(GamePlayerComponent);

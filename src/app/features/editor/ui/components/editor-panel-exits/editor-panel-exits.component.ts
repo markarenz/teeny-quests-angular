@@ -103,6 +103,7 @@ export class EditorPanelExitsComponent {
         if (this.selectedAreaId !== data) {
           this.selectedAreaId = data;
           this.exits = this._gameEditorService.getExitsForCurrentArea();
+          this.area = this._gameEditorService.getAreaById(this.selectedAreaId);
           this.refreshUIData();
         }
       })

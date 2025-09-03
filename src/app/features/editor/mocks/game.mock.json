@@ -1000,6 +1000,19 @@
             "h": 1
           }
         ],
+        "panels": [
+          {
+            "id": "panel1",
+            "panelDecoType": "torch",
+            "areaId": "start",
+            "statusEffects": {},
+            "wall": "north",
+            "status": "",
+            "x": 2,
+            "y": 2,
+            "h": 1
+          }
+        ],
         "items": [
           {
             "id": "1234abc",
@@ -1408,6 +1421,7 @@
             "wallSouth": "default"
           }
         },
+        "panels": [],
         "exits": [
           {
             "id": "17356027612345",

@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import gameMockData from '@app/features/editor/mocks/game.mock.json';
 import { EditorPanelItemsComponent } from './editor-panel-items.component';
-import { GameAreaExit, GameItem } from '@app/features/main/interfaces/types';
+import { GameItem } from '@app/features/main/interfaces/types';
 
 let service: GameEditorService;
 let gameMock = JSON.parse(JSON.stringify(gameMockData));
@@ -14,6 +14,7 @@ describe('EditorPanelItemsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [EditorPanelItemsComponent],
+      teardown: { destroyAfterEach: false },
     }).compileComponents();
 
     fixture = TestBed.createComponent(EditorPanelItemsComponent);

@@ -8,6 +8,7 @@ import { MainLayoutComponent } from '@main/ui/components/main-layout/main-layout
 import { ContainerComponent } from '@app/features/main/ui/components/container/container.component';
 import { EditorPanelInfoComponent } from '../../components/editor-panel-info/editor-panel-info.component';
 import { EditorPanelCellsComponent } from '../../components/editor-panel-cells/editor-panel-cells.component';
+import { EditorPanelPanelDecoComponent } from '../../components/editor-panel-paneldeco/editor-panel-paneldeco.component';
 import { EditorPanelExitsComponent } from '../../components/editor-panel-exits/editor-panel-exits.component';
 import { EditorPanelItemsComponent } from '../../components/editor-panel-items/editor-panel-items.component';
 import { LoaderAnimationComponent } from '@app/features/main/ui/components/loader-animation/loader-animation.component';
@@ -35,6 +36,7 @@ import { ContentVersionsModalComponent } from '../../components/content-versions
     EditorPanelExitsComponent,
     EditorPanelCellsComponent,
     EditorPanelItemsComponent,
+    EditorPanelPanelDecoComponent,
     ContentVersionsModalComponent,
   ],
   templateUrl: './editor-game.component.html',
@@ -68,7 +70,7 @@ export class EditorGameComponent {
     { label: 'Map', slug: 'map' },
     { label: 'Exits', slug: 'exits' },
     { label: 'Items', slug: 'items' },
-    { label: 'NPCs', slug: 'npcs' },
+    { label: 'Panels', slug: 'paneldeco' },
   ];
 
   ngOnInit() {
@@ -116,6 +118,12 @@ export class EditorGameComponent {
     this.subNavCurrent = 'exits';
   }
 
+  handleSelectPanel(id: string) {
+    this._gameEditorService.selectExit('');
+    this._gameEditorService.selectItem('');
+    this._gameEditorService.selectPanel(id);
+    this.subNavCurrent = 'paneldeco';
+  }
   handleSelectMapCell(id: string) {
     this._gameEditorService.selectExit('');
     this._gameEditorService.selectItem('');

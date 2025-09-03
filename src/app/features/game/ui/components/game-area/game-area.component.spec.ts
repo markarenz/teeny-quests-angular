@@ -14,6 +14,7 @@ describe('GameAreaComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [GameAreaComponent],
+      teardown: { destroyAfterEach: false },
     }).compileComponents();
 
     gameMockDataClean = await JSON.parse(

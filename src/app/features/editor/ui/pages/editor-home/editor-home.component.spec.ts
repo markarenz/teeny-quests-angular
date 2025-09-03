@@ -17,6 +17,7 @@ describe('EditorHomeComponent', () => {
         provideHttpClient(),
         provideHttpClientTesting(),
       ],
+      teardown: { destroyAfterEach: false },
     }).compileComponents();
 
     fixture = TestBed.createComponent(EditorHomeComponent);

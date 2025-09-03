@@ -7,10 +7,12 @@ import {
   GameAreaExit,
   GameAreaMapCell,
   GameItem,
+  GamePanelDeco,
 } from '@app/features/main/interfaces/types';
 import { AreaCellComponent } from '@app/features/game/ui/components/area-cell/area-cell.component';
 import { AreaExitComponent } from '@app/features/game/ui/components/area-exit/area-exit.component';
 import { AreaItemComponent } from '@app/features/game/ui/components/area-item/area-item.component';
+import { AreaPanelComponent } from '@app/features/game/ui/components/area-panel/area-panel.component';
 import { EditorPlayerPositionComponent } from '../editor-player-position/editor-player-position.component';
 
 @Component({
@@ -20,6 +22,7 @@ import { EditorPlayerPositionComponent } from '../editor-player-position/editor-
     AreaCellComponent,
     AreaExitComponent,
     AreaItemComponent,
+    AreaPanelComponent,
     EditorPlayerPositionComponent,
   ],
   templateUrl: './editor-area.component.html',
@@ -29,6 +32,7 @@ export class EditorAreaComponent {
   constructor(private _gameEditorService: GameEditorService) {}
   private subscriptions: Subscription[] = [];
   @Output() onSelectItem = new EventEmitter<string>();
+  @Output() onSelectPanel = new EventEmitter<string>();
   @Output() onSelectExit = new EventEmitter<string>();
   @Output() onSelectMapCell = new EventEmitter<string>();
 
@@ -38,9 +42,11 @@ export class EditorAreaComponent {
   selectedAreaMap: GameArea['map'] | null = null;
   selectedAreaExits: GameArea['exits'] | null = null;
   selectedAreaItems: GameArea['items'] | null = null;
+  selectedAreaPanels: GameArea['panels'] | null = null;
   selectedAreaCellPosition: string = '';
   selectedItemId: string = '';
   selectedExitId: string = '';
+  selectedPanelId: string = '';
   selectedExitDestination: string = '';
   selectedCell: GameAreaMapCell | null = null;
   anyCellSelected: boolean = false;
@@ -82,6 +88,11 @@ export class EditorAreaComponent {
       })
     );
     this.subscriptions.push(
+      this._gameEditorService.selectedPanelIdObs.subscribe((data: string) => {
+        this.selectedPanelId = data;
+      })
+    );
+    this.subscriptions.push(
       this._gameEditorService.selectedCellObs.subscribe(
         (data: GameAreaMapCell | null) => {
           this.anyCellSelected = data !== null;
@@ -107,6 +118,13 @@ export class EditorAreaComponent {
       this._gameEditorService.areaExitsObs.subscribe((data: GameAreaExit[]) => {
         this.selectedAreaExits = data;
       })
+    );
+    this.subscriptions.push(
+      this._gameEditorService.areaPanelsObs.subscribe(
+        (data: GamePanelDeco[]) => {
+          this.selectedAreaPanels = data;
+        }
+      )
     );
     this.subscriptions.push(
       this._gameEditorService.areaItemsObs.subscribe((data: GameItem[]) => {
@@ -149,8 +167,10 @@ export class EditorAreaComponent {
   handleItemClick(id: string) {
     this.onSelectItem.emit(id);
   }
+  handlePanelClick(id: string) {
+    this.onSelectPanel.emit(id);
+  }
   handleMapCellClick(id: string) {
-    console.log('Map cell clicked:', id);
     this.onSelectMapCell.emit(id);
   }
 }

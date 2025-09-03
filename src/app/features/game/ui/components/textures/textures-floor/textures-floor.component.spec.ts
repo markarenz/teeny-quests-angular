@@ -8,9 +8,9 @@ describe('TexturesFloorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TexturesFloorComponent]
-    })
-    .compileComponents();
+      imports: [TexturesFloorComponent],
+      teardown: { destroyAfterEach: false },
+    }).compileComponents();
 
     fixture = TestBed.createComponent(TexturesFloorComponent);
     component = fixture.componentInstance;

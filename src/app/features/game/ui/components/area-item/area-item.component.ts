@@ -57,13 +57,6 @@ export class AreaItemComponent {
     this.updateItemProps();
   }
   handleClick() {
-    console.log(
-      'Item clicked:',
-      this.item.id,
-      this.isLockedOut,
-      this.isNearPlayer,
-      this.isClickable
-    );
     if (
       !this.isLockedOut &&
       (this.isNearPlayer || this.isEditorMode) &&

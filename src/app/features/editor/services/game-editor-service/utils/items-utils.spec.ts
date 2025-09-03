@@ -33,6 +33,7 @@ describe('utilCreateItem', () => {
     const { nextGame, newItem } = utilCreateItem({
       game: gameMock,
       selectedAreaId: 'start',
+      lockouts: [],
     });
     expect(nextGame?.content.areas['start'].items.length).toBeGreaterThan(1);
     expect(newItem?.id).toBeTruthy();
@@ -49,6 +50,7 @@ describe('utilCreateItem', () => {
     const { nextGame, newItem } = utilCreateItem({
       game: gameMock,
       selectedAreaId: 'start',
+      lockouts: [],
     });
     expect(newItem?.id).toBeFalsy();
   });

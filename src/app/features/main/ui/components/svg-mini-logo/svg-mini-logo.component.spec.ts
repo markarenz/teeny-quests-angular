@@ -8,9 +8,9 @@ describe('SvgMiniLogoComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SvgMiniLogoComponent]
-    })
-    .compileComponents();
+      imports: [SvgMiniLogoComponent],
+      teardown: { destroyAfterEach: false },
+    }).compileComponents();
 
     fixture = TestBed.createComponent(SvgMiniLogoComponent);
     component = fixture.componentInstance;

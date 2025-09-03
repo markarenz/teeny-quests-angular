@@ -10,6 +10,7 @@ describe('CollapsibleCardComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CollapsibleCardComponent],
+      teardown: { destroyAfterEach: false },
     }).compileComponents();
 
     fixture = TestBed.createComponent(CollapsibleCardComponent);

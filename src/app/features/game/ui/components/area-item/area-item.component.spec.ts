@@ -8,9 +8,9 @@ describe('AreaItemComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AreaItemComponent]
-    })
-    .compileComponents();
+      imports: [AreaItemComponent],
+      teardown: { destroyAfterEach: false },
+    }).compileComponents();
 
     fixture = TestBed.createComponent(AreaItemComponent);
     component = fixture.componentInstance;

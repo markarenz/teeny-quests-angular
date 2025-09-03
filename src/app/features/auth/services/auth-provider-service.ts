@@ -1,4 +1,4 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { Injectable, inject, signal, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { authConfig } from './auth.config';
@@ -10,7 +10,7 @@ import { User } from '../interfaces/types';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthProviderService {
+export class AuthProviderService implements OnDestroy {
   private oAuthService = inject(OAuthService);
 
   private router = inject(Router);
@@ -27,6 +27,11 @@ export class AuthProviderService {
 
   constructor() {
     this.initConfiguration();
+  }
+
+  ngOnDestroy(): void {
+    this.isLoggedIn.complete();
+    this.user.complete();
   }
 
   getToken() {

@@ -20,6 +20,7 @@ describe('ContentVersionsModalComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ContentVersionsModalComponent],
+      teardown: { destroyAfterEach: false },
     }).compileComponents();
     gameEditorService = TestBed.inject(GameEditorService);
     gameEditorService.setTestValue(gameMock, 'game');

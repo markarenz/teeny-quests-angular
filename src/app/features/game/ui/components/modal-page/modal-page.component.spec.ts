@@ -11,6 +11,7 @@ describe('ModalPageComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ModalPageComponent],
+      teardown: { destroyAfterEach: false },
     }).compileComponents();
 
     mockEventEmitter = new EventEmitter<void>();

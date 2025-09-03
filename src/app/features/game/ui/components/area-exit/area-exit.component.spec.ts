@@ -8,9 +8,9 @@ describe('AreaExitComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AreaExitComponent]
-    })
-    .compileComponents();
+      imports: [AreaExitComponent],
+      teardown: { destroyAfterEach: false },
+    }).compileComponents();
 
     fixture = TestBed.createComponent(AreaExitComponent);
     component = fixture.componentInstance;

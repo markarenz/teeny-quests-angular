@@ -8,9 +8,9 @@ describe('AreaCellSelectorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AreaCellSelectorComponent]
-    })
-    .compileComponents();
+      imports: [AreaCellSelectorComponent],
+      teardown: { destroyAfterEach: false },
+    }).compileComponents();
 
     fixture = TestBed.createComponent(AreaCellSelectorComponent);
     component = fixture.componentInstance;

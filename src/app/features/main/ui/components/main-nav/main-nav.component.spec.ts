@@ -10,6 +10,7 @@ describe('MainNavComponent', () => {
     await TestBed.configureTestingModule({
       imports: [MainNavComponent],
       providers: [provideRouter([])],
+      teardown: { destroyAfterEach: false },
     }).compileComponents();
 
     fixture = TestBed.createComponent(MainNavComponent);

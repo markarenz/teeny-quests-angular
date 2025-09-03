@@ -8,9 +8,9 @@ describe('MenuToggleComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MenuToggleComponent]
-    })
-    .compileComponents();
+      imports: [MenuToggleComponent],
+      teardown: { destroyAfterEach: false },
+    }).compileComponents();
 
     fixture = TestBed.createComponent(MenuToggleComponent);
     component = fixture.componentInstance;

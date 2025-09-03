@@ -19,6 +19,7 @@ describe('AreaCellModalComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AreaCellModalComponent],
+      teardown: { destroyAfterEach: false },
     }).compileComponents();
 
     mockEventEmitter = new EventEmitter<void>();

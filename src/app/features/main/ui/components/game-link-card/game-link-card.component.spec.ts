@@ -8,9 +8,9 @@ describe('GameLinkCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GameLinkCardComponent]
-    })
-    .compileComponents();
+      imports: [GameLinkCardComponent],
+      teardown: { destroyAfterEach: false },
+    }).compileComponents();
 
     fixture = TestBed.createComponent(GameLinkCardComponent);
     component = fixture.componentInstance;

@@ -28,16 +28,18 @@ export const utilDeleteItem = ({
 export const utilCreateItem = ({
   game,
   selectedAreaId,
+  lockouts,
 }: {
   game: GameROM;
   selectedAreaId: string;
+  lockouts: string[];
 }): { nextGame: GameROM | null; newItem: GameItem | null } => {
   const areas = game.content.areas;
   if (areas) {
     const area = areas[selectedAreaId] ?? {
       items: [],
     };
-    const openCellPosition = findAnOpenCell({ game, selectedAreaId });
+    const openCellPosition = findAnOpenCell({ game, selectedAreaId, lockouts });
     if (openCellPosition) {
       const [y, x] = openCellPosition.split('_');
       let direction = 'north';

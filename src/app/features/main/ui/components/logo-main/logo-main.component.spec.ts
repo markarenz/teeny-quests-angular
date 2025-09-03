@@ -8,9 +8,9 @@ describe('LogoMainComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LogoMainComponent]
-    })
-    .compileComponents();
+      imports: [LogoMainComponent],
+      teardown: { destroyAfterEach: false },
+    }).compileComponents();
 
     fixture = TestBed.createComponent(LogoMainComponent);
     component = fixture.componentInstance;

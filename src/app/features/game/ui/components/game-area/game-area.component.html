@@ -31,6 +31,17 @@
     />
     }
 
+    <!-- Area PanelDeco -->
+    @for(panel of areaPanels; track panel.id;) {
+    <app-area-panel
+      [panel]="panel"
+      [isClickable]="false"
+      (onClick)="handlePanelClick(panel.id)"
+      [isNearPlayer]="getIsNearPlayer(panel.x, panel.y)"
+      [isLockedOut]="isLockedOut"
+    />
+    }
+
     <!-- Area Exits -->
     @for(exit of areaExits; track exit.id;) {
     <app-area-exit

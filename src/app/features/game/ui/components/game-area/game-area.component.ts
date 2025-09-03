@@ -5,12 +5,14 @@ import {
   GameAreaExit,
   GameAreaMap,
   GameItem,
+  GamePanelDeco,
   GameState,
   MovementOptions,
 } from '@app/features/main/interfaces/types';
 import { AreaCellComponent } from '@app/features/game/ui/components/area-cell/area-cell.component';
 import { AreaExitComponent } from '@app/features/game/ui/components/area-exit/area-exit.component';
 import { AreaItemComponent } from '@app/features/game/ui/components/area-item/area-item.component';
+import { AreaPanelComponent } from '../area-panel/area-panel.component';
 import { GamePlayerComponent } from '../game-player/game-player.component';
 import { GameMovementOptionButtonComponent } from '../game-movement-option-button/game-movement-option-button.component';
 
@@ -21,6 +23,7 @@ import { GameMovementOptionButtonComponent } from '../game-movement-option-butto
     AreaCellComponent,
     AreaExitComponent,
     AreaItemComponent,
+    AreaPanelComponent,
     GameMovementOptionButtonComponent,
     GamePlayerComponent,
   ],
@@ -35,6 +38,7 @@ export class GameAreaComponent {
   areaMap: GameAreaMap | null = null;
   areaExits: GameAreaExit[] = [];
   areaItems: GameItem[] = [];
+  areaPanels: GamePanelDeco[] = [];
   movementOptions: { [key: string]: string[] } = {};
   movementOptionsKeys: string[] = [];
   areaDataPositionKeys: string[] = [];
@@ -74,6 +78,7 @@ export class GameAreaComponent {
             this.areaMap = area?.map || null;
             this.areaExits = gameStateArea?.exits || [];
             this.areaItems = gameStateArea?.items || [];
+            this.areaPanels = gameStateArea?.panels || [];
             this.areaDataPositionKeys = this.areaMap
               ? Object.keys(this.areaMap)
               : [];
@@ -94,6 +99,9 @@ export class GameAreaComponent {
     });
   }
 
+  handlePanelClick(panelId: string) {
+    // this._gameService.processTurn({ verb: 'item-click', noun: itemId });
+  }
   handleItemClick(itemId: string) {
     this._gameService.processTurn({ verb: 'item-click', noun: itemId });
   }

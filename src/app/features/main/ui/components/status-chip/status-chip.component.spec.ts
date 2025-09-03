@@ -8,9 +8,9 @@ describe('StatusChipComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StatusChipComponent]
-    })
-    .compileComponents();
+      imports: [StatusChipComponent],
+      teardown: { destroyAfterEach: false },
+    }).compileComponents();
 
     fixture = TestBed.createComponent(StatusChipComponent);
     component = fixture.componentInstance;

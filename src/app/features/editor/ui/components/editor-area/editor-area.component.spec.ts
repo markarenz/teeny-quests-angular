@@ -8,9 +8,9 @@ describe('EditorAreaComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EditorAreaComponent]
-    })
-    .compileComponents();
+      imports: [EditorAreaComponent],
+      teardown: { destroyAfterEach: false },
+    }).compileComponents();
 
     fixture = TestBed.createComponent(EditorAreaComponent);
     component = fixture.componentInstance;

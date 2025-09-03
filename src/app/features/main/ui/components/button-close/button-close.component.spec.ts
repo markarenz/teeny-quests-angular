@@ -10,6 +10,7 @@ describe('ButtonCloseComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ButtonCloseComponent],
+      teardown: { destroyAfterEach: false },
     }).compileComponents();
 
     fixture = TestBed.createComponent(ButtonCloseComponent);

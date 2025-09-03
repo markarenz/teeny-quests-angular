@@ -9,6 +9,7 @@ describe('TexturesWallComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TexturesWallComponent],
+      teardown: { destroyAfterEach: false },
     }).compileComponents();
 
     fixture = TestBed.createComponent(TexturesWallComponent);
