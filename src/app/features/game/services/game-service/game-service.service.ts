@@ -98,7 +98,7 @@ export class GameService {
         ...nextGameROM.content.player,
         facing: 'east',
         health: 100,
-        statusEffects: [],
+        statusActions: [],
       },
       numTurns: 0,
       flagValues: {},

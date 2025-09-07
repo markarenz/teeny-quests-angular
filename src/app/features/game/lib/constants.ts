@@ -33,6 +33,6 @@ export const defaultPanelDeco: GamePanelDeco = {
   x: 2,
   y: 2,
   h: 1,
-  statusEffects: {},
+  statusActions: {},
   status: '',
 };

@@ -14,9 +14,16 @@ export type SubNavItem = {
   slug: string;
 };
 
+export type ActionCondition = {
+  conditionType: string; // 'flag', 'item', 'position', etc.
+  identifier: string; // flagId, itemId, positionKey, etc.
+  subIdentifier?: string; // for map cell conditions, e.g., 'floor', 'wallSouth', 'wallEast'
+  comparison: string; // 'equals', 'not equals', 'greater than', 'less than', etc.
+  value: boolean | number | string;
+};
+
 export enum EventAction {
   UPDATE_MAP_CELL = 'updateMapCell',
-
   SET_FLAG = 'setFlag',
   UNSET_FLAG = 'unsetFlag',
   ADD_ITEM = 'addItem',
@@ -25,21 +32,20 @@ export enum EventAction {
   CHANGE_AREA = 'changeArea',
 }
 
-export type EventEffect = {
-  action: EventAction;
+export type ActionEffect = {
   areaId?: string;
-  positionKey?: string;
-  h?: number;
-  floor?: string; // for map cell updates
-  wallSouth?: string; // for map cell updates
-  wallEast?: string; // for map cell updates
-  itemId?: string;
-  flagName?: string;
-  value?: boolean | number | string;
+  action: EventAction;
+  conditions: ActionCondition[];
+  actionObject: {
+    areaId?: string;
+    identifier?: string; // itemId, exitId, panelDecoId, positionKey, flagId, etc.
+    subIdentifier?: string; // for map cell updates, e.g., 'floor', 'wallSouth', 'wallEast'
+  };
+  actionValue: boolean | number | string;
 };
 
-export type GameStatusEffects = {
-  [key: string]: EventEffect[];
+export type GameActionEffects = {
+  [key: string]: ActionEffect[];
 };
 
 export type GamePanelDeco = {
@@ -51,7 +57,7 @@ export type GamePanelDeco = {
   h: number;
   wall: string;
   status?: string; // e.g., 'on', 'off', 'activated'
-  statusEffects: GameStatusEffects;
+  statusActions: GameActionEffects;
 };
 export type GameAreaMapCell = {
   x: number;
@@ -148,6 +154,7 @@ export type StatusEffect = {
   effect: string;
   expirationTurn: number;
 };
+
 export type GameStateArea = {
   items: GameItem[];
   exits: GameAreaExit[];
@@ -163,7 +170,7 @@ export type GameState = {
     inventory: Inventory;
     facing: string;
     health: number;
-    statusEffects: StatusEffect[];
+    statusActions: StatusEffect[];
   };
   numTurns: number;
   flagValues: GameStateValues;

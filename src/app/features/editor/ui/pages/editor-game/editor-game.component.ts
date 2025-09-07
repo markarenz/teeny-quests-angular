@@ -115,6 +115,7 @@ export class EditorGameComponent {
   handleSelectExit(id: string) {
     this._gameEditorService.selectItem('');
     this._gameEditorService.selectExit(id);
+    this._gameEditorService.selectPanel('');
     this.subNavCurrent = 'exits';
   }
 
@@ -127,6 +128,7 @@ export class EditorGameComponent {
   handleSelectMapCell(id: string) {
     this._gameEditorService.selectExit('');
     this._gameEditorService.selectItem('');
+    this._gameEditorService.selectPanel('');
     this._gameEditorService.setSelectedCellPosition(id);
     this.subNavCurrent = 'map';
   }

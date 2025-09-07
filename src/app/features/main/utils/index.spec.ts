@@ -4,6 +4,7 @@ import {
   getRandomUsername,
   getInitialsFromName,
   getPositionKeysForGridSize,
+  getLabelFromSlug,
 } from './index';
 
 describe('capitalizeWords', () => {
@@ -40,5 +41,11 @@ describe('getPositionKeysForGridSize', () => {
   it('returns position keys based on grid size', () => {
     const keys = getPositionKeysForGridSize();
     expect(keys.length).toEqual(49);
+  });
+});
+
+describe('getLabelFromSlug', () => {
+  it('should convert a slug to a label', () => {
+    expect(getLabelFromSlug('hello-world')).toBe('Hello World');
   });
 });

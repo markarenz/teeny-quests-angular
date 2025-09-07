@@ -34,3 +34,9 @@ export const getPositionKeysForGridSize = (): string[] => {
 };
 
 export const formatDate = (date: string): string => new Date(date).toString();
+
+export const getLabelFromSlug = (slug: string): string =>
+  slug
+    .split('-')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');

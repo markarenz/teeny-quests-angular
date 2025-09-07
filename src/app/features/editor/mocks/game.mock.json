@@ -1005,7 +1005,7 @@
             "id": "panel1",
             "panelDecoType": "torch",
             "areaId": "start",
-            "statusEffects": {},
+            "statusActions": {},
             "wall": "north",
             "status": "",
             "x": 2,

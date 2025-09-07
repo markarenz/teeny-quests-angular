@@ -84,6 +84,19 @@
           }
         </select>
       </div>
+      } @if (panelStatusOptions.length > 0) {
+      <div>
+        <label for="panel-height-selector">Status</label>
+        <select
+          id="panel-status-selector"
+          [(ngModel)]="inputPanelStatus"
+          (change)="handlePanelInputChange()"
+        >
+          @for(item of panelStatusOptions; track item.value) {
+          <option [value]="item.value">{{ item.label }}</option>
+          }
+        </select>
+      </div>
       }
     </div>
     }

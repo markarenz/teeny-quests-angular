@@ -6,14 +6,16 @@ import {
   GameArea,
   GamePanelDeco,
   SelectIUIOption,
-  GameStatusEffects,
+  GameActionEffects,
 } from '@app/features/main/interfaces/types';
 import { AreaCellSelectorComponent } from '../area-cell-selector/area-cell-selector.component';
 import { CollapsibleCardComponent } from '@app/features/main/ui/components/collapsible-card/collapsible-card.component';
 import { IconButtonComponent } from '@app/features/main/ui/components/icons/icon-button/icon-button.component';
-import { getPositionKeysForGridSize } from '@main/utils';
+import { getLabelFromSlug, getPositionKeysForGridSize } from '@main/utils';
 import { floorDefinitions } from '@content/floor-definitions';
+import { EditorInputActionsComponent } from '../editor-input-actions/editor-input-actions.component';
 import {
+  PanelDecoDefinition,
   panelDecoDefinitions,
   panelDecoOptions,
   panelDecoWallOptions,
@@ -27,6 +29,7 @@ import {
     CollapsibleCardComponent,
     AreaCellSelectorComponent,
     IconButtonComponent,
+    EditorInputActionsComponent,
   ],
   templateUrl: './editor-panel-paneldeco.component.html',
   styleUrl: './editor-panel-paneldeco.component.css',
@@ -37,12 +40,13 @@ export class EditorPanelPanelDecoComponent {
   selectedAreaId: string = '';
   panelTypeOptions: SelectIUIOption[] = panelDecoOptions;
 
+  selectedPanelDefinition: PanelDecoDefinition | null = null;
   inputPanelType: string = '';
   inputPanelPosition: string = '1_1';
   inputPanelWall: string = 'west';
   inputPanelHeight = '1';
   inputPanelStatus: string = '';
-  inputPanelStatusEffects: GameStatusEffects = {};
+  inputPanelStatusEffects: GameActionEffects = {};
 
   canSetHeight: boolean = true;
   selectedPanelId: string = '';
@@ -52,6 +56,7 @@ export class EditorPanelPanelDecoComponent {
   lockouts: string[] = [];
   area: GameArea | null = null;
   panelWallOptions = panelDecoWallOptions;
+  panelStatusOptions: SelectIUIOption[] = [];
   panelHeightOptions: SelectIUIOption[] = [];
 
   getNeighbors(position: string): { neighborN: any; neighborW: any } {
@@ -70,13 +75,23 @@ export class EditorPanelPanelDecoComponent {
         this.inputPanelPosition.length > 0 ? this.inputPanelPosition : '1_1';
       const map = this.area.map;
       const currentH = map[position].h;
-      const panelDef = panelDecoDefinitions[this.inputPanelType];
-      if (panelDef) {
-        this.canSetHeight = panelDef.canSetHeight;
-        if (!this.canSetHeight) {
-          this.inputPanelHeight = currentH.toString();
-        }
+      this.selectedPanelDefinition =
+        panelDecoDefinitions[this.inputPanelType] ?? null;
+      if (!this.selectedPanelDefinition) {
+        console.error('ERROR: Panel has no definition', this.inputPanelType);
+        return;
       }
+
+      this.canSetHeight = this.selectedPanelDefinition.canSetHeight;
+      if (!this.canSetHeight) {
+        this.inputPanelHeight = currentH.toString();
+      }
+
+      this.panelStatusOptions = this.selectedPanelDefinition?.statuses
+        ? this.selectedPanelDefinition?.statuses.map((status) => {
+            return { value: status, label: getLabelFromSlug(status) };
+          })
+        : [];
 
       const { neighborN, neighborW } = this.getNeighbors(position);
       const neighborWValid = neighborW && neighborW.h > currentH + 3;
@@ -177,6 +192,7 @@ export class EditorPanelPanelDecoComponent {
     this.inputPanelType = selectedPanel ? selectedPanel.panelDecoType : '';
     this.inputPanelWall = selectedPanel ? selectedPanel.wall : 'north';
     this.inputPanelHeight = selectedPanel ? `${selectedPanel.h}` : '1';
+    this.inputPanelStatus = selectedPanel ? `${selectedPanel.status}` : '';
     this.updatePanelPositionLockouts();
     this.refreshUIData();
   }
@@ -222,6 +238,7 @@ export class EditorPanelPanelDecoComponent {
         panelDecoType: this.inputPanelType,
         areaId: this.selectedAreaId,
         wall,
+        status: this.inputPanelStatus,
         x: +x,
         y: +y,
         h: parseInt(this.inputPanelHeight, 10),
