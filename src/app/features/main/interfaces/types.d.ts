@@ -1,4 +1,10 @@
-import { TableCellDisplayType } from './enums';
+import { Action } from 'rxjs/internal/scheduler/Action';
+import {
+  TableCellDisplayType,
+  EventAction,
+  ActionObjectType,
+  ActionValueType,
+} from './enums';
 
 export type SelectIUIOption = {
   value: string;
@@ -22,18 +28,8 @@ export type ActionCondition = {
   value: boolean | number | string;
 };
 
-export enum EventAction {
-  UPDATE_MAP_CELL = 'updateMapCell',
-  SET_FLAG = 'setFlag',
-  UNSET_FLAG = 'unsetFlag',
-  ADD_ITEM = 'addItem',
-  REMOVE_ITEM = 'removeItem',
-  TELEPORT_PLAYER = 'teleportPlayer',
-  CHANGE_AREA = 'changeArea',
-}
-
 export type ActionEffect = {
-  areaId?: string;
+  id: string;
   action: EventAction;
   conditions: ActionCondition[];
   actionObject: {
@@ -59,6 +55,7 @@ export type GamePanelDeco = {
   status?: string; // e.g., 'on', 'off', 'activated'
   statusActions: GameActionEffects;
 };
+
 export type GameAreaMapCell = {
   x: number;
   y: number;
@@ -105,11 +102,11 @@ export type GameArea = {
 };
 
 export type GameEventCondition = {
-  //
+  // TODO: define conditions
 };
 
 export type GameEventAction = {
-  //
+  // TODO: define actions
 };
 
 export type GameEvent = {
@@ -156,6 +153,7 @@ export type StatusEffect = {
 };
 
 export type GameStateArea = {
+  map: GameAreaMap;
   items: GameItem[];
   exits: GameAreaExit[];
   panels: GamePanelDeco[];
@@ -236,4 +234,21 @@ export type TableField = {
   displayType: TableCellDisplayType;
   isLink?: boolean;
   actions?: TableAction[];
+};
+
+export type PanelDecoDefinition = {
+  id: string;
+  name: string;
+  canSetHeight: boolean;
+  hasStatusEffects: boolean;
+  isClickable: boolean;
+  statuses?: string[];
+};
+
+export type ActionTypeDefinition = {
+  requiresAreaId: boolean;
+  objectType: ActionObjectType;
+  valueType: ActionValueType;
+  numMin?: number;
+  numMax?: number;
 };

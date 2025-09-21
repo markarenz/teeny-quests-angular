@@ -7,6 +7,8 @@ import {
   GamePanelDeco,
   SelectIUIOption,
   GameActionEffects,
+  ActionEffect,
+  PanelDecoDefinition,
 } from '@app/features/main/interfaces/types';
 import { AreaCellSelectorComponent } from '../area-cell-selector/area-cell-selector.component';
 import { CollapsibleCardComponent } from '@app/features/main/ui/components/collapsible-card/collapsible-card.component';
@@ -15,7 +17,6 @@ import { getLabelFromSlug, getPositionKeysForGridSize } from '@main/utils';
 import { floorDefinitions } from '@content/floor-definitions';
 import { EditorInputActionsComponent } from '../editor-input-actions/editor-input-actions.component';
 import {
-  PanelDecoDefinition,
   panelDecoDefinitions,
   panelDecoOptions,
   panelDecoWallOptions,
@@ -41,6 +42,7 @@ export class EditorPanelPanelDecoComponent {
   panelTypeOptions: SelectIUIOption[] = panelDecoOptions;
 
   selectedPanelDefinition: PanelDecoDefinition | null = null;
+  selectedPanelActions: GameActionEffects = {};
   inputPanelType: string = '';
   inputPanelPosition: string = '1_1';
   inputPanelWall: string = 'west';
@@ -88,15 +90,18 @@ export class EditorPanelPanelDecoComponent {
       }
 
       this.panelStatusOptions = this.selectedPanelDefinition?.statuses
-        ? this.selectedPanelDefinition?.statuses.map((status) => {
+        ? this.selectedPanelDefinition?.statuses.map(status => {
             return { value: status, label: getLabelFromSlug(status) };
           })
         : [];
 
+      const selectedPanel = this.panels.find(
+        panel => panel.id === this.selectedPanelId
+      );
       const { neighborN, neighborW } = this.getNeighbors(position);
       const neighborWValid = neighborW && neighborW.h > currentH + 3;
       const neighborNValid = neighborN && neighborN.h > currentH + 3;
-      this.panelWallOptions = panelDecoWallOptions.filter((option) => {
+      this.panelWallOptions = panelDecoWallOptions.filter(option => {
         if (option.value === 'west' && !neighborWValid) {
           return false;
         }
@@ -156,6 +161,12 @@ export class EditorPanelPanelDecoComponent {
         this.selectedPanelId = data;
         this.panels = this._gameEditorService.getPanelsForCurrentArea();
         this.updateUiAfterPanelSelection(data);
+        const selectedPanel = this.panels.find(
+          panel => panel.id === this.selectedPanelId
+        );
+        if (selectedPanel) {
+          this.selectedPanelActions = selectedPanel.statusActions || {};
+        }
       })
     );
     this.subscriptions.push(
@@ -164,6 +175,7 @@ export class EditorPanelPanelDecoComponent {
           this.selectedAreaId = data;
           this.panels = this._gameEditorService.getPanelsForCurrentArea();
           this.area = this._gameEditorService.getAreaById(this.selectedAreaId);
+
           this.updatePanelPositionLockouts();
           this.refreshUIData();
         }
@@ -177,7 +189,7 @@ export class EditorPanelPanelDecoComponent {
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   handleDeleteClick(id: string) {
@@ -185,7 +197,7 @@ export class EditorPanelPanelDecoComponent {
   }
 
   updateUiAfterPanelSelection(id: string) {
-    const selectedPanel = this.panels.find((panel) => panel.id === id);
+    const selectedPanel = this.panels.find(panel => panel.id === id);
     this.inputPanelPosition = selectedPanel
       ? `${selectedPanel.y}_${selectedPanel.x}`
       : '';
@@ -219,13 +231,13 @@ export class EditorPanelPanelDecoComponent {
   handlePanelInputChange() {
     this.refreshUIData();
     const selectedPanel = this.panels.find(
-      (panel) => panel.id === this.selectedPanelId
+      panel => panel.id === this.selectedPanelId
     );
     const [y, x] = this.inputPanelPosition.split('_');
 
     if (selectedPanel) {
       const wall = this.panelWallOptions
-        .map((option) => option.value)
+        .map(option => option.value)
         .includes(this.inputPanelWall)
         ? this.inputPanelWall
         : this.panelWallOptions[0].value;
@@ -238,15 +250,19 @@ export class EditorPanelPanelDecoComponent {
         panelDecoType: this.inputPanelType,
         areaId: this.selectedAreaId,
         wall,
-        status: this.inputPanelStatus,
         x: +x,
         y: +y,
         h: parseInt(this.inputPanelHeight, 10),
+        status: this.inputPanelStatus,
+        statusActions: this.selectedPanelActions,
       };
-
       this._gameEditorService.updatePanel(updatedPanel);
 
       this.refreshUIData();
     }
+  }
+  handlePanelActionInputChange(actions: ActionEffect[], status: string) {
+    this.selectedPanelActions[status] = actions;
+    this.handlePanelInputChange();
   }
 }

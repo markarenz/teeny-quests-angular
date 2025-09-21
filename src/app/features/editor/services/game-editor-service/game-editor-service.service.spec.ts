@@ -55,7 +55,7 @@ describe('getGameById', () => {
     );
 
     let i = 0;
-    service.gameObs.subscribe((game) => {
+    service.gameObs.subscribe(game => {
       if (i === 0) {
         expect(game).toBeNull();
       } else {
@@ -106,7 +106,7 @@ describe('toggleMenu', () => {
   it('should toggle menu', () => {
     let i = 0;
     const expectedValues = [false, true];
-    service.isMenuOpenObs.subscribe((isOpen) => {
+    service.isMenuOpenObs.subscribe(isOpen => {
       expect(isOpen).toEqual(expectedValues[i]);
       i += 1;
     });
@@ -124,7 +124,7 @@ describe('setCellData', () => {
 
   it('should set cell data', () => {
     let i = 0;
-    service.gameObs.subscribe((game) => {
+    service.gameObs.subscribe(game => {
       if (i === 1) {
         const cell = game
           ? game.content.areas['start'].map['6_6']
@@ -194,7 +194,7 @@ describe('processGameData', () => {
   });
 });
 
-describe('getDestinationAreasListOptions', () => {
+describe('getAreasListOptions', () => {
   let service: GameEditorService;
   beforeEach(() => {
     service = TestBed.inject(GameEditorService);
@@ -203,7 +203,7 @@ describe('getDestinationAreasListOptions', () => {
 
   it('should get areas list options', fakeAsync(() => {
     tick(100);
-    const options = service.getDestinationAreasListOptions();
+    const options = service.getAreasListOptions();
     expect(options.length).toBeGreaterThan(0);
   }));
 });
@@ -271,7 +271,7 @@ describe('renameCurrentSelectedArea', () => {
 
     service.renameCurrentSelectedArea('New Name');
 
-    service.gameObs.subscribe((game) => {
+    service.gameObs.subscribe(game => {
       const area = game ? game.content.areas['start'] : null;
       expect(area?.name).toEqual('New Name');
     });
@@ -287,7 +287,7 @@ describe('deleteCurrentSelectedArea', () => {
 
     service.deleteCurrentSelectedArea();
 
-    service.gameObs.subscribe((game) => {
+    service.gameObs.subscribe(game => {
       const numAreas = game ? Object.keys(game.content.areas).length : 0;
       expect(numAreas).toEqual(1);
     });
@@ -375,7 +375,7 @@ describe('updateGame', () => {
     const service = new GameEditorService(authProviderService);
 
     let i = 0;
-    service.gameObs.subscribe((game) => {
+    service.gameObs.subscribe(game => {
       if (i == 1) {
         expect(game).toEqual(gameMock);
       }
@@ -407,7 +407,7 @@ describe('updateitem', () => {
     };
 
     let i = 0;
-    service.gameObs.subscribe((game) => {
+    service.gameObs.subscribe(game => {
       if (i === 1) {
         const area = game ? game.content.areas['start'] : null;
         const item = area ? area.items[0] : null;
@@ -434,7 +434,7 @@ describe('deleteItem', () => {
   it('should delete item', () => {
     let i = 0;
     const expectedValues = [1, 0];
-    service.gameObs.subscribe((game) => {
+    service.gameObs.subscribe(game => {
       const area = game ? game.content.areas['start'] : null;
       expect(area?.items.length).toEqual(expectedValues[i]);
     });
@@ -454,7 +454,7 @@ describe('createItem', () => {
   it('should create item', () => {
     let i = 0;
     const expectedValues = [1, 2];
-    service.gameObs.subscribe((game) => {
+    service.gameObs.subscribe(game => {
       const area = game ? game.content.areas['start'] : null;
       expect(area?.items.length).toEqual(expectedValues[i]);
       i += 1;
@@ -475,7 +475,7 @@ describe('createExit', () => {
   it('should create exit', () => {
     let i = 0;
     const expectedValues = [1, 2];
-    service.gameObs.subscribe((game) => {
+    service.gameObs.subscribe(game => {
       const area = game ? game.content.areas['start'] : null;
       expect(area?.exits.length).toEqual(expectedValues[i]);
       i += 1;
@@ -497,7 +497,7 @@ describe('deleteExit', () => {
     let i = 0;
     const exitId = '1735602762347';
     const expectedValues = [1, 0];
-    service.gameObs.subscribe((game) => {
+    service.gameObs.subscribe(game => {
       const area = game ? game.content.areas['start'] : null;
       expect(area?.exits.length).toEqual(expectedValues[i]);
       i += 1;
@@ -529,7 +529,7 @@ describe('updateExit', () => {
     };
 
     let i = 0;
-    service.gameObs.subscribe((game) => {
+    service.gameObs.subscribe(game => {
       if (i === 1) {
         const area = game ? game.content.areas['start'] : null;
         const updatedExit = area ? area.exits[0] : null;
@@ -554,7 +554,7 @@ describe('deleteContentVersion', () => {
     let i = 0;
     const exitId = '1735602762347';
     const expectedValues = [1, 0];
-    service.gameObs.subscribe((game) => {
+    service.gameObs.subscribe(game => {
       const area = game ? game.content.areas['start'] : null;
       expect(area?.exits.length).toEqual(expectedValues[i]);
       i += 1;

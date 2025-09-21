@@ -12,7 +12,9 @@ import { gamesApiUrl, versionsApiUrl } from '@config/index';
 import { getMoveOptions } from './utils/pathfinding';
 import { STANDARD_MOVE_DURATION } from '@config/index';
 import { itemDefinitions } from '@content/item-definitions';
+import { panelDecoDefinitions } from '@content/panelDeco-definitions';
 import { logger } from '@app/features/main/utils/logger';
+import { processTurnActions } from './utils/turn-actions';
 
 @Injectable({
   providedIn: 'root',
@@ -56,14 +58,11 @@ export class GameService {
     }
   }
 
-  calculateMovementOptions(
-    nextGameROM: GameROM,
-    nextGameState: GameState
-  ): void {
+  calculateMovementOptions(nextGameState: GameState): void {
     const nextMovementOptions = getMoveOptions({
       positionKeyStart: `${nextGameState.player.y}_${nextGameState.player.x}`,
-      areaMap: nextGameROM.content.areas[nextGameState.player.areaId].map,
-      areaItems: nextGameROM.content.areas[nextGameState.player.areaId].items,
+      areaMap: nextGameState.areas[nextGameState.player.areaId].map,
+      areaItems: nextGameState.areas[nextGameState.player.areaId].items,
     });
     this.movementOptions.next(nextMovementOptions);
   }
@@ -90,6 +89,7 @@ export class GameService {
         exits: nextGameROM.content.areas[areaId].exits,
         items: nextGameROM.content.areas[areaId].items,
         panels: nextGameROM.content.areas[areaId].panels,
+        map: nextGameROM.content.areas[areaId].map,
       };
     });
     nextGameState = {
@@ -128,7 +128,7 @@ export class GameService {
     }
 
     this.gameState.next(nextGameState);
-    this.calculateMovementOptions(nextGameROM, nextGameState);
+    this.calculateMovementOptions(nextGameState);
     this.saveLocalGameState(nextGameState);
   }
 
@@ -140,8 +140,8 @@ export class GameService {
         method: 'GET',
         headers: { Accept: 'application/json' },
       })
-        .then((res) => res.json())
-        .then((data) => {
+        .then(res => res.json())
+        .then(data => {
           const nextGameROM = data?.item;
           if (!!v) {
             this.v = v;
@@ -149,8 +149,8 @@ export class GameService {
               method: 'GET',
               headers: { Accept: 'application/json' },
             })
-              .then((res) => res.json())
-              .then((versionData) => {
+              .then(res => res.json())
+              .then(versionData => {
                 if (typeof versionData.item.content === 'string') {
                   nextGameROM.content = JSON.parse(versionData.item.content);
                 }
@@ -199,7 +199,7 @@ export class GameService {
   }
 
   delay(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   getOppositeDirection(direction: string): string {
@@ -223,7 +223,7 @@ export class GameService {
         return false;
       }
       return area.exits.some(
-        (e) =>
+        e =>
           e.x === this.gameState.value?.player.x &&
           e.y === this.gameState.value?.player.y &&
           e.lock === color
@@ -235,7 +235,7 @@ export class GameService {
     let nextGameState = JSON.parse(JSON.stringify(this.gameState.value));
     const areaId = nextGameState.player.areaId;
     const area = this.getArea(areaId);
-    const exit = area?.exits.find((e) => e.id === exitId);
+    const exit = area?.exits.find(e => e.id === exitId);
     const destinationAreaId = exit?.destinationAreaId;
     if (!destinationAreaId) {
       return nextGameState;
@@ -245,7 +245,7 @@ export class GameService {
       return nextGameState;
     }
     const destinationExit =
-      destinationArea?.exits.find((e) => e.id === exit.destinationExitId) ??
+      destinationArea?.exits.find(e => e.id === exit.destinationExitId) ??
       destinationArea.exits[0] ??
       null;
     if (!destinationExit) {
@@ -348,7 +348,7 @@ export class GameService {
     const color = use.split('unlock-exit-')[1]; // e.g. 'silver'
     const area = nextGameState.areas[nextGameState.player.areaId];
     const exit = area.exits.find(
-      (e) => e.x === nextGameState.player.x && e.y === nextGameState.player.y
+      e => e.x === nextGameState.player.x && e.y === nextGameState.player.y
     );
     if (exit && exit.lock === color) {
       exit.lock = '';
@@ -374,11 +374,62 @@ export class GameService {
     return nextGameState;
   };
 
+  turnActionPanelClick = async (panelId: string): Promise<GameState> => {
+    let nextGameState = <GameState>(
+      JSON.parse(JSON.stringify(this.gameState.value))
+    );
+    if (this.gameState.value === null) {
+      return nextGameState;
+    }
+    const panel = nextGameState.areas[nextGameState.player.areaId].panels.find(
+      p => p.id === panelId
+    );
+    if (panel) {
+      const panelDef = panelDecoDefinitions[panel.panelDecoType];
+      // Increment status
+      if (panelDef) {
+        const max = panelDef.statuses?.length ?? 2;
+        let idx = panelDef.statuses?.indexOf(panel.status ?? '') ?? 0;
+        idx += 1;
+        if (idx >= max) {
+          idx = 0;
+        }
+        panel.status = panelDef.statuses ? panelDef.statuses[idx] : '';
+      }
+      nextGameState = {
+        ...nextGameState,
+        areas: {
+          ...nextGameState.areas,
+          [nextGameState.player.areaId]: {
+            ...nextGameState.areas[nextGameState.player.areaId],
+            panels: nextGameState.areas[nextGameState.player.areaId].panels.map(
+              p => (p.id === panelId ? panel : p)
+            ),
+          },
+        },
+      };
+
+      nextGameState = processTurnActions(
+        nextGameState,
+        panel.statusActions[panel.status ?? ''] ?? []
+      );
+
+      // Process actions
+      return nextGameState;
+    }
+
+    logger({
+      message: `Panel ${panelId} not found in area ${nextGameState.player.areaId} or panel def not found.`,
+      type: 'error',
+    });
+    return nextGameState;
+  };
+
   turnActionItemClick = async (itemId: string): Promise<GameState> => {
     let nextGameState = JSON.parse(JSON.stringify(this.gameState.value));
 
     const area = this.gameState.value?.areas[nextGameState.player.areaId];
-    const item = area?.items.find((i) => i.id === itemId);
+    const item = area?.items.find(i => i.id === itemId);
 
     if (!item) {
       logger({
@@ -440,6 +491,9 @@ export class GameService {
         case 'item-click':
           nextGameState = await this.turnActionItemClick(noun);
           break;
+        case 'panel-click':
+          nextGameState = await this.turnActionPanelClick(noun);
+          break;
         case 'item-use':
           nextGameState = await this.turnActionItemUse(noun);
           break;
@@ -452,7 +506,7 @@ export class GameService {
       nextGameState.numTurns += 1;
       this.saveLocalGameState(nextGameState);
       this.gameState.next(nextGameState);
-      this.calculateMovementOptions(this.gameROM.value, nextGameState);
+      this.calculateMovementOptions(nextGameState);
     }
   }
 }

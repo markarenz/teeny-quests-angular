@@ -1,11 +1,6 @@
 <div class="game-area-stage">
-  <svg
-    viewBox="0 0 100 50"
-    version="1.1"
-    xmlns="http://www.w3.org/2000/svg"
-    xmlns:svg="http://www.w3.org/2000/svg"
-    class="stage-base"
-  >
+  <svg viewBox="0 0 100 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"
+    class="stage-base">
     <g id="outer-ring">
       <path class="inner" d="M 50,0.5 99,25 50,49.5 1,25 Z" />
     </g>
@@ -15,68 +10,41 @@
   <div>
     @for(positionKey of areaDataPositionKeys; track positionKey;) {
     <!-- @if(area?.map[positionKey]) -->
-    <app-area-cell
-      [positionKey]="positionKey"
-      [cellData]="areaMap[positionKey]"
-    />
+    <app-area-cell [positionKey]="positionKey" [cellData]="areaMap[positionKey]" />
     }
 
     <!-- Area Items -->
     @for(item of areaItems; track item.id;) {
-    <app-area-item
-      [item]="item"
-      [isNearPlayer]="getIsNearPlayer(item.x, item.y)"
-      [isLockedOut]="isLockedOut"
-      (onClick)="handleItemClick(item.id)"
-    />
+    <app-area-item [item]="item" [isNearPlayer]="getIsNearPlayer(item.x, item.y)" [isLockedOut]="isLockedOut"
+      (onClick)="handleItemClick(item.id)" />
     }
 
     <!-- Area PanelDeco -->
     @for(panel of areaPanels; track panel.id;) {
-    <app-area-panel
-      [panel]="panel"
-      [isClickable]="false"
-      (onClick)="handlePanelClick(panel.id)"
-      [isNearPlayer]="getIsNearPlayer(panel.x, panel.y)"
-      [isLockedOut]="isLockedOut"
-    />
+    <app-area-panel [panel]="panel" [isClickable]="false" (onClick)="handlePanelClick(panel.id)"
+      [isNearPlayer]="getIsNearPlayer(panel.x, panel.y)" [isLockedOut]="isLockedOut" />
     }
 
     <!-- Area Exits -->
     @for(exit of areaExits; track exit.id;) {
-    <app-area-exit
-      [exit]="exit"
-      [isClickable]="
+    <app-area-exit [exit]="exit" [isClickable]="
         getIsNearPlayer(exit.x, exit.y) && (exit.lock === '' || !exit.lock)
-      "
-      [isNearPlayer]="getIsNearPlayer(exit.x, exit.y)"
-      (onClick)="handleExitClick(exit.id)"
-      [isLockedOut]="isLockedOut"
-    />
+      " [isNearPlayer]="getIsNearPlayer(exit.x, exit.y)" (onClick)="handleExitClick(exit.id)"
+      [isLockedOut]="isLockedOut" />
     }
 
     <!-- Movement Option Buttons -->
     @for(moveOption of movementOptionsKeys; track moveOption; let idx = $index)
     {
-    <app-game-movement-option-button
-      [positionKey]="moveOption"
-      [h]="areaMap[moveOption].h"
-      [isLockedOut]="isLockedOut"
-      [playerPosition]="playerPosition"
-    />
+    <app-game-movement-option-button [positionKey]="moveOption" [h]="areaMap[moveOption].h" [isLockedOut]="isLockedOut"
+      [playerPosition]="playerPosition" />
     }
 
-    <app-game-player
-      [playerPosition]="playerPosition"
-      [cellData]="areaMap[playerPosition]"
-      [playerFacing]="playerFacing"
-    />
-    <div
-      id="game-transition-cover"
-      class="absolute top-0 left-0 w-full h-full bg-gray-800 z-[100] transition-opacity {{
+    <app-game-player [playerPosition]="playerPosition" [cellData]="areaMap[playerPosition]"
+      [playerFacing]="playerFacing" />
+    <div id="game-transition-cover" class="absolute top-0 left-0 w-full h-full bg-gray-800 z-[100] transition-opacity {{
         areaTransitionMode === 'cover' ? 'opacity-100' : 'opacity-0'
-      }} pointer-events-none"
-    ></div>
+      }} pointer-events-none"></div>
     <div class="absolute right-2 top-2 z-[999]">Turns: {{ numTurns }}</div>
   </div>
   }

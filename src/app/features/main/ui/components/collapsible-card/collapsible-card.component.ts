@@ -16,6 +16,7 @@ export class CollapsibleCardComponent {
   @Input('showNewButton') showNewButton: boolean = false;
   @Input('title') title: string = '';
   @Input('defaultOpen') defaultOpen: boolean = false;
+  @Input('titleType') titleType: string = 'primary';
 
   @Output() onNewButtonClick = new EventEmitter();
   @Output() onCollapse = new EventEmitter();

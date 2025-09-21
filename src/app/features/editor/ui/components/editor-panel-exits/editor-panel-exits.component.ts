@@ -55,14 +55,14 @@ export class EditorPanelExitsComponent {
 
   refreshUIData() {
     this.areasListOptions = this._gameEditorService
-      .getDestinationAreasListOptions()
-      .filter((item) => item.value !== this.selectedAreaId);
+      .getAreasListOptions()
+      .filter(item => item.value !== this.selectedAreaId);
 
     this.exitsListOptions = [
       { value: '', label: 'None' },
       ...this._gameEditorService
         .getDestinationExitsListOptions(this.inputExitDestination)
-        .filter((item) => item.value !== this.selectedExitId),
+        .filter(item => item.value !== this.selectedExitId),
     ];
   }
 
@@ -111,7 +111,7 @@ export class EditorPanelExitsComponent {
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   handleDeleteClick(id: string) {
@@ -119,7 +119,7 @@ export class EditorPanelExitsComponent {
   }
 
   updateUiAfterExitSelection(id: string) {
-    const selectedExit = this.exits.find((exit) => exit.id === id);
+    const selectedExit = this.exits.find(exit => exit.id === id);
     this.inputExitPosition = selectedExit
       ? `${selectedExit.y}_${selectedExit.x}`
       : '';
@@ -154,7 +154,7 @@ export class EditorPanelExitsComponent {
 
   handleExitInputChange() {
     const selectedExit = this.exits.find(
-      (exit) => exit.id === this.selectedExitId
+      exit => exit.id === this.selectedExitId
     );
     const [y, x] = this.inputExitPosition.split('_');
     if (selectedExit) {

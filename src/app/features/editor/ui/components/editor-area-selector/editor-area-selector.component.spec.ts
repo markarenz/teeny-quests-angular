@@ -40,8 +40,7 @@ describe('EditorAreaSelectorComponent', () => {
   it('should handle rename click', () => {
     const areaId = 'start';
     component.selectedAreaLocal = areaId;
-    component.areasListOptions =
-      gameEditorService.getDestinationAreasListOptions();
+    component.areasListOptions = gameEditorService.getAreasListOptions();
     component.handleRenameClick();
     expect(component.inputAreaRename).toBe('Start Area');
     expect(component.uiMode).toBe('rename');

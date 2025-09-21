@@ -14,7 +14,7 @@ export const utilDeletePanel = ({
   const nextGame = { ...game } as GameROM;
   const panels = game.content.areas[selectedAreaId].panels;
   if (panels) {
-    const newPanels = panels.filter((panel) => panel.id !== panelId);
+    const newPanels = panels.filter(panel => panel.id !== panelId);
     nextGame.content.areas[selectedAreaId] = {
       ...nextGame?.content.areas[selectedAreaId],
       panels: newPanels,
@@ -86,7 +86,7 @@ export const utilUpdatePanel = ({
   const area = gameObj?.content.areas[selectedAreaId];
 
   if (area) {
-    const newPanels = area.panels.map((panel) =>
+    const newPanels = area.panels.map(panel =>
       panel.id === id
         ? {
             ...updatedPanel,
