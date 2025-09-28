@@ -125,10 +125,10 @@ export class EditorInputActionsComponent {
   }
 
   public handlePositionSelect(positionKey: string) {
-    this.inputActionPosition = positionKey;
     if (!this.selectedActionId || !this.selectedAction) {
       return;
     }
+    this.inputActionPosition = positionKey;
     const updatedAction: ActionEffect = {
       ...this.selectedAction,
       actionObject: {

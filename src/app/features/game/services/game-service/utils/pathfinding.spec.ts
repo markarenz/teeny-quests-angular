@@ -6,7 +6,6 @@ import {
   getMoveOptions,
 } from './pathfinding';
 import gameMockData from '@app/features/editor/mocks/game.mock.json';
-import { defaultGridSize } from '@config/index';
 
 describe('getHeuristicDistance', () => {
   it('should return the correct distance', () => {

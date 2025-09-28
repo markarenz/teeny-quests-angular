@@ -83,7 +83,6 @@ export class EditorPanelPanelDecoComponent {
         console.error('ERROR: Panel has no definition', this.inputPanelType);
         return;
       }
-
       this.canSetHeight = this.selectedPanelDefinition.canSetHeight;
       if (!this.canSetHeight) {
         this.inputPanelHeight = currentH.toString();
@@ -158,14 +157,16 @@ export class EditorPanelPanelDecoComponent {
     this.updatePanelPositionLockouts();
     this.subscriptions.push(
       this._gameEditorService.selectedPanelIdObs.subscribe((data: string) => {
-        this.selectedPanelId = data;
-        this.panels = this._gameEditorService.getPanelsForCurrentArea();
-        this.updateUiAfterPanelSelection(data);
-        const selectedPanel = this.panels.find(
-          panel => panel.id === this.selectedPanelId
-        );
-        if (selectedPanel) {
-          this.selectedPanelActions = selectedPanel.statusActions || {};
+        if (data && data.length > 0) {
+          this.selectedPanelId = data;
+          this.panels = this._gameEditorService.getPanelsForCurrentArea();
+          this.updateUiAfterPanelSelection(data);
+          const selectedPanel = this.panels.find(
+            panel => panel.id === this.selectedPanelId
+          );
+          if (selectedPanel) {
+            this.selectedPanelActions = selectedPanel.statusActions || {};
+          }
         }
       })
     );
@@ -202,6 +203,7 @@ export class EditorPanelPanelDecoComponent {
       ? `${selectedPanel.y}_${selectedPanel.x}`
       : '';
     this.inputPanelType = selectedPanel ? selectedPanel.panelDecoType : '';
+
     this.inputPanelWall = selectedPanel ? selectedPanel.wall : 'north';
     this.inputPanelHeight = selectedPanel ? `${selectedPanel.h}` : '1';
     this.inputPanelStatus = selectedPanel ? `${selectedPanel.status}` : '';
@@ -261,6 +263,7 @@ export class EditorPanelPanelDecoComponent {
       this.refreshUIData();
     }
   }
+
   handlePanelActionInputChange(actions: ActionEffect[], status: string) {
     this.selectedPanelActions[status] = actions;
     this.handlePanelInputChange();

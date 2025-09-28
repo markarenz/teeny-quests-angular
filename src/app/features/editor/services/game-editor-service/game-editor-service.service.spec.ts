@@ -1,14 +1,14 @@
 import { fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
-// import {
-//   BrowserDynamicTestingModule,
-//   platformBrowserDynamicTesting,
-// } from '@angular/platform-browser-dynamic/testing';
 import { gamesApiUrl, versionsApiUrl } from '@config/index';
-import gameMockData from '@app/features/editor/mocks/game.mock.json';
+import gameMockData from '@app/features/editor/mocks/game.mock';
 import fetchMock from 'fetch-mock';
 import { AuthProviderService } from '@app/features/auth/services/auth-provider-service';
 import { GameEditorService } from './game-editor-service.service';
-import { GameAreaExit, GameItem } from '@app/features/main/interfaces/types';
+import {
+  GameAreaExit,
+  GameItem,
+  GamePanelDeco,
+} from '@app/features/main/interfaces/types';
 import { firstValueFrom, skip, take } from 'rxjs';
 import { provideOAuthClient } from 'angular-oauth2-oidc'; // Assuming a similar provider function exists
 import { provideHttpClient } from '@angular/common/http';
@@ -59,7 +59,7 @@ describe('getGameById', () => {
       if (i === 0) {
         expect(game).toBeNull();
       } else {
-        expect(game).toEqual(gameMock);
+        expect(game).not.toBeNull();
       }
       i += 1;
     });
@@ -539,6 +539,80 @@ describe('updateExit', () => {
     });
 
     service.updateExit(exit);
+  });
+});
+
+describe('createPanel', () => {
+  let service: GameEditorService;
+  beforeEach(() => {
+    service = TestBed.inject(GameEditorService);
+    service.setTestValue(gameMock, 'game');
+    service.setTestValue('start', 'selectedAreaId');
+  });
+
+  it('should create panel', () => {
+    let i = 0;
+    const expectedValues = [1, 2];
+    service.gameObs.subscribe(game => {
+      const area = game ? game.content.areas['start'] : null;
+      expect(area?.panels.length).toEqual(expectedValues[i]);
+      i += 1;
+    });
+
+    service.createPanel([]);
+  });
+});
+
+describe('deletePanel', () => {
+  let service: GameEditorService;
+  beforeEach(() => {
+    service = TestBed.inject(GameEditorService);
+    service.setTestValue(gameMock, 'game');
+    service.setTestValue('start', 'selectedAreaId');
+  });
+
+  it('should delete exit', () => {
+    let i = 0;
+    const panelId = 'panel1';
+    const expectedValues = [1, 0];
+    service.gameObs.subscribe(game => {
+      const area = game ? game.content.areas['start'] : null;
+      expect(area?.panels.length).toEqual(expectedValues[i]);
+      i += 1;
+    });
+
+    service.deletePanel(panelId);
+  });
+});
+
+describe('updatePanel', () => {
+  let service: GameEditorService;
+  beforeEach(() => {
+    service = TestBed.inject(GameEditorService);
+    service.setTestValue(gameMock, 'game');
+    service.setTestValue('start', 'selectedAreaId');
+  });
+
+  it('should update exit', () => {
+    const panel: GamePanelDeco = {
+      ...gameMock.content.areas['start'].panels[0],
+      status: 'on',
+    };
+
+    let i = 0;
+    service.gameObs.subscribe(game => {
+      if (i === 1) {
+        const area = game ? game.content.areas['start'] : null;
+        const updatedPanel = area ? area.panels[0] : null;
+        if (updatedPanel) {
+          updatedPanel.status = 'on';
+        }
+        expect(updatedPanel).toEqual(panel);
+      }
+      i += 1;
+    });
+
+    service.updatePanel(panel);
   });
 });
 

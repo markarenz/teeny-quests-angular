@@ -408,7 +408,6 @@ export class GameService {
           },
         },
       };
-
       nextGameState = processTurnActions(
         nextGameState,
         panel.statusActions[panel.status ?? ''] ?? []

@@ -31,7 +31,7 @@ export type ActionCondition = {
 export type ActionEffect = {
   id: string;
   action: EventAction;
-  conditions: ActionCondition[];
+  conditions?: ActionCondition[];
   actionObject: {
     areaId?: string;
     identifier?: string; // itemId, exitId, panelDecoId, positionKey, flagId, etc.
