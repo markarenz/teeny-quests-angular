@@ -1,4 +1,10 @@
-import { TableCellDisplayType } from './enums';
+import { Action } from 'rxjs/internal/scheduler/Action';
+import {
+  TableCellDisplayType,
+  EventAction,
+  ActionObjectType,
+  ActionValueType,
+} from './enums';
 
 export type SelectIUIOption = {
   value: string;
@@ -14,32 +20,28 @@ export type SubNavItem = {
   slug: string;
 };
 
-export enum EventAction {
-  UPDATE_MAP_CELL = 'updateMapCell',
-
-  SET_FLAG = 'setFlag',
-  UNSET_FLAG = 'unsetFlag',
-  ADD_ITEM = 'addItem',
-  REMOVE_ITEM = 'removeItem',
-  TELEPORT_PLAYER = 'teleportPlayer',
-  CHANGE_AREA = 'changeArea',
-}
-
-export type EventEffect = {
-  action: EventAction;
-  areaId?: string;
-  positionKey?: string;
-  h?: number;
-  floor?: string; // for map cell updates
-  wallSouth?: string; // for map cell updates
-  wallEast?: string; // for map cell updates
-  itemId?: string;
-  flagName?: string;
-  value?: boolean | number | string;
+export type ActionCondition = {
+  conditionType: string; // 'flag', 'item', 'position', etc.
+  identifier: string; // flagId, itemId, positionKey, etc.
+  subIdentifier?: string; // for map cell conditions, e.g., 'floor', 'wallSouth', 'wallEast'
+  comparison: string; // 'equals', 'not equals', 'greater than', 'less than', etc.
+  value: boolean | number | string;
 };
 
-export type GameStatusEffects = {
-  [key: string]: EventEffect[];
+export type ActionEffect = {
+  id: string;
+  action: EventAction;
+  conditions?: ActionCondition[];
+  actionObject: {
+    areaId?: string;
+    identifier?: string; // itemId, exitId, panelDecoId, positionKey, flagId, etc.
+    subIdentifier?: string; // for map cell updates, e.g., 'floor', 'wallSouth', 'wallEast'
+  };
+  actionValue: boolean | number | string;
+};
+
+export type GameActionEffects = {
+  [key: string]: ActionEffect[];
 };
 
 export type GamePanelDeco = {
@@ -51,8 +53,9 @@ export type GamePanelDeco = {
   h: number;
   wall: string;
   status?: string; // e.g., 'on', 'off', 'activated'
-  statusEffects: GameStatusEffects;
+  statusActions: GameActionEffects;
 };
+
 export type GameAreaMapCell = {
   x: number;
   y: number;
@@ -99,11 +102,11 @@ export type GameArea = {
 };
 
 export type GameEventCondition = {
-  //
+  // TODO: define conditions
 };
 
 export type GameEventAction = {
-  //
+  // TODO: define actions
 };
 
 export type GameEvent = {
@@ -148,7 +151,9 @@ export type StatusEffect = {
   effect: string;
   expirationTurn: number;
 };
+
 export type GameStateArea = {
+  map: GameAreaMap;
   items: GameItem[];
   exits: GameAreaExit[];
   panels: GamePanelDeco[];
@@ -163,7 +168,7 @@ export type GameState = {
     inventory: Inventory;
     facing: string;
     health: number;
-    statusEffects: StatusEffect[];
+    statusActions: StatusEffect[];
   };
   numTurns: number;
   flagValues: GameStateValues;
@@ -229,4 +234,21 @@ export type TableField = {
   displayType: TableCellDisplayType;
   isLink?: boolean;
   actions?: TableAction[];
+};
+
+export type PanelDecoDefinition = {
+  id: string;
+  name: string;
+  canSetHeight: boolean;
+  hasStatusEffects: boolean;
+  isClickable: boolean;
+  statuses?: string[];
+};
+
+export type ActionTypeDefinition = {
+  requiresAreaId: boolean;
+  objectType: ActionObjectType;
+  valueType: ActionValueType;
+  numMin?: number;
+  numMax?: number;
 };

@@ -133,7 +133,7 @@ export class GameEditorService {
       const gameObj = { ...this.game.value } as GameROM;
 
       const exits = gameObj?.content.areas[this.selectedAreaId.value].exits.map(
-        (exit) =>
+        exit =>
           exit.x === cellData.x && exit.y === cellData.y
             ? { ...exit, h: cellData.h }
             : exit
@@ -433,11 +433,11 @@ export class GameEditorService {
         content: JSON.stringify(defaultGameContent),
       }),
     })
-      .then((res) => res.json())
-      .then((data) => {
+      .then(res => res.json())
+      .then(data => {
         return data?.id ?? '';
       })
-      .catch((err) => {
+      .catch(err => {
         return '';
       });
   }
@@ -449,8 +449,8 @@ export class GameEditorService {
         method: 'GET',
         headers: { Accept: 'application/json' },
       })
-        .then((res) => res.json())
-        .then((responseObj) => {
+        .then(res => res.json())
+        .then(responseObj => {
           setTimeout(() => {
             this.games.next(responseObj?.items ?? []);
             this.isLoading.next(false);
@@ -478,11 +478,11 @@ export class GameEditorService {
     }
   }
 
-  getDestinationAreasListOptions(): SelectIUIOption[] {
+  getAreasListOptions(): SelectIUIOption[] {
     let areasOptions: SelectIUIOption[] = [];
     if (this.game.value) {
       const areas = this.game.value.content.areas;
-      areasOptions = Object.keys(areas).map((areaId) => ({
+      areasOptions = Object.keys(areas).map(areaId => ({
         value: areaId,
         label: areas[areaId].name,
       }));
@@ -495,7 +495,7 @@ export class GameEditorService {
     if (this.game.value) {
       const exits = this.game.value.content.areas[areaId]?.exits;
       if (exits) {
-        exitsOptions = exits.map((exit) => ({
+        exitsOptions = exits.map(exit => ({
           value: exit.id,
           label: `X: ${exit.x}, Y: ${
             exit.y
@@ -512,8 +512,8 @@ export class GameEditorService {
         method: 'GET',
         headers: { Accept: 'application/json' },
       })
-        .then((res) => res.json())
-        .then((data) => {
+        .then(res => res.json())
+        .then(data => {
           const nextGameData = this.processGameData(data?.item);
           const areasList = Object.keys(nextGameData.content.areas);
           this.game.next(nextGameData);
@@ -535,7 +535,7 @@ export class GameEditorService {
 
     const positionKeys = getPositionKeysForGridSize();
 
-    positionKeys.forEach((key) => {
+    positionKeys.forEach(key => {
       const [y, x] = key.split('_');
       const cell: GameAreaMapCell = {
         x: +x,
@@ -614,7 +614,7 @@ export class GameEditorService {
     const area = this.game.value?.content.areas[this.selectedAreaId.value];
     if (area && this.game.value) {
       const newMap = { ...area.map };
-      Object.keys(newMap).forEach((key) => {
+      Object.keys(newMap).forEach(key => {
         newMap[key] = {
           ...newMap[key],
           floor: 'default',
@@ -651,8 +651,8 @@ export class GameEditorService {
         method: 'GET',
         headers: { Accept: 'application/json' },
       })
-        .then((res) => res.json())
-        .then((data) => {
+        .then(res => res.json())
+        .then(data => {
           this.contentVersions.next(data?.items ?? []);
         });
     }
@@ -664,8 +664,8 @@ export class GameEditorService {
         method: 'GET',
         headers: { Accept: 'application/json' },
       })
-        .then((res) => res.json())
-        .then((data) => {
+        .then(res => res.json())
+        .then(data => {
           if (this.game.value) {
             const nextGameData: GameROM = {
               ...this.game.value,
@@ -701,7 +701,7 @@ export class GameEditorService {
           content: JSON.stringify(this.game.value.content),
         }),
       })
-        .then((res) => res.json())
+        .then(res => res.json())
         .then(() => {
           return;
         });
@@ -717,7 +717,7 @@ export class GameEditorService {
           'X-Access-Token': token || '',
         },
       })
-        .then((res) => res.json())
+        .then(res => res.json())
         .then(() => {
           return;
         });

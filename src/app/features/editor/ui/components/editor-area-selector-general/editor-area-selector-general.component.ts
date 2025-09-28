@@ -28,8 +28,7 @@ export class EditorAreaSelectorGeneralComponent {
       this._gameEditorService.gameObs.subscribe((data: GameROM | null) => {
         const game = data;
         this.areasList = game ? Object.keys(game.content.areas) : [];
-        this.areasListOptions =
-          this._gameEditorService.getDestinationAreasListOptions();
+        this.areasListOptions = this._gameEditorService.getAreasListOptions();
       })
     );
   }
@@ -39,7 +38,7 @@ export class EditorAreaSelectorGeneralComponent {
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   handleSelectedAreaChange() {

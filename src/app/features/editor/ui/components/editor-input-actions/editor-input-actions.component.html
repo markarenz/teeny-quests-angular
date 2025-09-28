@@ -1,0 +1,67 @@
+<app-collapsible-card [title]="title" [isCollapsible]="false" [showNewButton]="true" titleType="secondary"
+  (onNewButtonClick)="handleCreateClick()">
+  <div class="flex flex-col gap-8">
+    <div class="flex flex-col gap-4">
+      <div class="flex flex-col gap-4">
+        @if(actions.length < 1) { <div>No actions.</div>
+      } @for(action of actions; track action.id; let idx = $index) {
+      <div class="rounded-md flex flex-row items-center p-2 {{
+              selectedActionId === action.id ? 'bg-green-900' : 'bg-gray-800'
+            }}">
+        <div class="flex-grow">
+          {{ getActionLabel(action) }}
+        </div>
+        <div class="flex flex-row gap-2">
+          <app-icon-button icon="edit" label="Edit Action" (click)="handleEditClick(action.id)" />
+          <app-icon-button icon="delete" theme="danger" label="Delete Action" (click)="handleDeleteClick(action.id)" />
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+  @if (selectedActionId) {
+  <div class="flex flex-col gap-4">
+    <div>
+      <label for="action-type-selector">Action Type: {{selectedAction ? getActionLabel(selectedAction) : ''}}</label>
+      <select id="action-type-selector" [(ngModel)]="inputActionType" (change)="handleActionInputChange()">
+        @for(item of actionTypeOptions; track item.value) {
+        <option [value]="item.value">{{ item.label }}</option>
+        }
+      </select>
+    </div>
+
+
+    @if(selectedActionTypeDefinition?.requiresAreaId) {
+    <div>
+      <label for="action-area-id-input">Area ID:</label>
+
+      <select id="action-area-id-input" [(ngModel)]="inputActionAreaId" (change)="handleActionInputChange()">
+        @for(item of areasListOptions; track item.value) {
+        <option [value]="item.value">{{ item.label }}</option>
+        }
+      </select>
+    </div>
+    }
+
+    @if(shouldShowPositionSelector) {
+    <div>
+      <label for="action-cell-selector">Value: </label>
+      <app-area-cell-selector id="action-cell-selector" [selectedCellPosition]="inputActionPosition"
+        (onPositionSelect)="handlePositionSelect($event)" [lockouts]="[]" />
+    </div>
+    }
+
+    @if(shouldShowNumberInput) {
+    <div>
+      <label for="action-input-number">Position: </label>
+      <input id="action-input-number" [(ngModel)]="inputNumberValue" type="number"
+        [min]="selectedActionTypeDefinition?.numMin ?? 0" [max]="selectedActionTypeDefinition?.numMax ?? 100"
+        (change)="handleActionInputNumberChange()" />
+    </div>
+    }
+
+  </div>
+  }
+  </div>
+
+</app-collapsible-card>

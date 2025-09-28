@@ -18,9 +18,10 @@ export class TexturesWallComponent {
 
   textureYOffset: number = 0;
   wallTexture: string = '';
+  halfUnits: number[] = [];
 
   updateProps() {
-    this.textureYOffset = this.h % 2 === 0 ? 0.5 : 0;
+    this.textureYOffset = this.h % 2 === 0 ? 0.055 : 0;
     this.wallTexture = `url(#texture_${this.positionKey}_${this.wallPosition}_${
       this.isFlat ? 'flat' : 'wall'
     })`;
@@ -30,6 +31,9 @@ export class TexturesWallComponent {
     this.updateProps();
   }
   ngOnInit() {
+    for (let i = 0; i < 26; i++) {
+      this.halfUnits.push((i - 1) * 12.5);
+    }
     this.updateProps();
   }
 }

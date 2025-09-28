@@ -26,8 +26,7 @@ export class EditorAreaSelectorComponent {
       this._gameEditorService.gameObs.subscribe((data: GameROM | null) => {
         const game = data;
         this.areasList = game ? Object.keys(game.content.areas) : [];
-        this.areasListOptions =
-          this._gameEditorService.getDestinationAreasListOptions();
+        this.areasListOptions = this._gameEditorService.getAreasListOptions();
       })
     );
     this.subscriptions.push(
@@ -38,7 +37,7 @@ export class EditorAreaSelectorComponent {
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   handleSelectedAreaChange() {
@@ -47,7 +46,7 @@ export class EditorAreaSelectorComponent {
 
   handleRenameClick() {
     const selectedOption = this.areasListOptions.find(
-      (option) => option.value === this.selectedAreaLocal
+      option => option.value === this.selectedAreaLocal
     );
     if (selectedOption) {
       this.inputAreaRename = selectedOption.label;

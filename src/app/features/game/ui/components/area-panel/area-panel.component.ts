@@ -8,6 +8,7 @@ import {
 } from '@app/features/game/lib/utils/index';
 import { SvgPanelTorchComponent } from './panelDecor/svg-panel-torch/svg-panel-torch.component';
 import { SvgPanelSwitchComponent } from './panelDecor/svg-panel-switch/svg-panel-switch.component';
+import { panelDecoDefinitions } from '@content/panelDeco-definitions';
 
 @Component({
   selector: 'app-area-panel',
@@ -40,6 +41,8 @@ export class AreaPanelComponent {
       this.position = getAreaElementPositionStyle(this.gridSize, y, x, h);
       this.width = `${cellW}%`;
       this.ariaLabel = `Select Panel/Decor ${this.panel.y}_${this.panel.x}`;
+      this.isClickable =
+        panelDecoDefinitions[this.panel.panelDecoType]?.isClickable ?? false;
     }
   }
 
@@ -51,7 +54,7 @@ export class AreaPanelComponent {
     this.updatePanelProps();
   }
   handleClick() {
-    if (this.isClickable) {
+    if (this.isClickable || this.isEditorMode) {
       this.onClick.emit(this.panel.id);
     }
   }

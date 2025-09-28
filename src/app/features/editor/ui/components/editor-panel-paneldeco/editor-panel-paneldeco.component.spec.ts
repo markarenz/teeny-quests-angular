@@ -5,7 +5,7 @@ import {
   tick,
 } from '@angular/core/testing';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
-import gameMockData from '@app/features/editor/mocks/game.mock.json';
+import gameMockData from '@app/features/editor/mocks/game.mock';
 import { GamePanelDeco } from '@app/features/main/interfaces/types';
 import { EditorPanelPanelDecoComponent } from './editor-panel-paneldeco.component';
 
@@ -27,6 +27,7 @@ describe('EditorPanelPanelDecoComponent', () => {
     fixture.detectChanges();
     service = TestBed.inject(GameEditorService);
     service.updateGame(gameMock);
+    service.setSelectedAreaId('start');
   });
   afterEach(() => {
     fixture.destroy();
@@ -70,7 +71,7 @@ describe('EditorPanelPanelDecoComponent', () => {
   it('should handle create click', () => {
     const mockPanel: GamePanelDeco = {
       ...gameMock.content.areas['start'].panels[0],
-      id: '12345',
+      id: 'panel1',
     };
     spyOn(service, 'createPanel').and.returnValue(mockPanel);
     component.area = gameMock.content.areas['start'];
@@ -82,7 +83,7 @@ describe('EditorPanelPanelDecoComponent', () => {
   it('should handle input update', () => {
     const mockPanel: GamePanelDeco = {
       ...gameMock.content.areas['start'].panels[0],
-      id: '12345',
+      id: 'panel',
     };
     spyOn(service, 'updatePanel');
     component.panels = gameMock.content.areas['start'].panels;
@@ -101,5 +102,35 @@ describe('EditorPanelPanelDecoComponent', () => {
     fixture.detectChanges();
     tick(500);
     expect(service.getPanelsForCurrentArea).toHaveBeenCalled();
+  }));
+
+  it('should handle action input change', fakeAsync(async () => {
+    service.setTestValue(gameMock, 'game');
+    service.setTestValue('start', 'selectedAreaId');
+    fixture.detectChanges();
+    component.area = gameMock.content.areas['start'];
+    component.selectedAreaId = 'start';
+    component.panels = gameMockData.content.areas['start'].panels;
+    fixture.detectChanges();
+    const actions =
+      gameMockData.content.areas['start'].panels[0].statusActions['on'];
+    actions[0].actionObject = {
+      ...actions[0].actionObject,
+      identifier: '5_5',
+    };
+    component.selectedPanelId = 'panel1';
+    component.inputPanelType = 'torch';
+    component.inputPanelPosition = '1_1';
+    component.refreshUIData();
+    fixture.detectChanges();
+
+    spyOn(component, 'refreshUIData');
+    component.handlePanelActionInputChange(actions, 'on');
+    fixture.detectChanges();
+    tick(500);
+
+    component.updateUiAfterPanelSelection('panel1');
+    fixture.detectChanges();
+    expect(component.refreshUIData).toHaveBeenCalled();
   }));
 });

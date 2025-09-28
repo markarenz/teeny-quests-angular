@@ -6,13 +6,16 @@ import {
   GameArea,
   GamePanelDeco,
   SelectIUIOption,
-  GameStatusEffects,
+  GameActionEffects,
+  ActionEffect,
+  PanelDecoDefinition,
 } from '@app/features/main/interfaces/types';
 import { AreaCellSelectorComponent } from '../area-cell-selector/area-cell-selector.component';
 import { CollapsibleCardComponent } from '@app/features/main/ui/components/collapsible-card/collapsible-card.component';
 import { IconButtonComponent } from '@app/features/main/ui/components/icons/icon-button/icon-button.component';
-import { getPositionKeysForGridSize } from '@main/utils';
+import { getLabelFromSlug, getPositionKeysForGridSize } from '@main/utils';
 import { floorDefinitions } from '@content/floor-definitions';
+import { EditorInputActionsComponent } from '../editor-input-actions/editor-input-actions.component';
 import {
   panelDecoDefinitions,
   panelDecoOptions,
@@ -27,6 +30,7 @@ import {
     CollapsibleCardComponent,
     AreaCellSelectorComponent,
     IconButtonComponent,
+    EditorInputActionsComponent,
   ],
   templateUrl: './editor-panel-paneldeco.component.html',
   styleUrl: './editor-panel-paneldeco.component.css',
@@ -37,12 +41,14 @@ export class EditorPanelPanelDecoComponent {
   selectedAreaId: string = '';
   panelTypeOptions: SelectIUIOption[] = panelDecoOptions;
 
+  selectedPanelDefinition: PanelDecoDefinition | null = null;
+  selectedPanelActions: GameActionEffects = {};
   inputPanelType: string = '';
   inputPanelPosition: string = '1_1';
   inputPanelWall: string = 'west';
   inputPanelHeight = '1';
   inputPanelStatus: string = '';
-  inputPanelStatusEffects: GameStatusEffects = {};
+  inputPanelStatusEffects: GameActionEffects = {};
 
   canSetHeight: boolean = true;
   selectedPanelId: string = '';
@@ -52,6 +58,7 @@ export class EditorPanelPanelDecoComponent {
   lockouts: string[] = [];
   area: GameArea | null = null;
   panelWallOptions = panelDecoWallOptions;
+  panelStatusOptions: SelectIUIOption[] = [];
   panelHeightOptions: SelectIUIOption[] = [];
 
   getNeighbors(position: string): { neighborN: any; neighborW: any } {
@@ -70,18 +77,30 @@ export class EditorPanelPanelDecoComponent {
         this.inputPanelPosition.length > 0 ? this.inputPanelPosition : '1_1';
       const map = this.area.map;
       const currentH = map[position].h;
-      const panelDef = panelDecoDefinitions[this.inputPanelType];
-      if (panelDef) {
-        this.canSetHeight = panelDef.canSetHeight;
-        if (!this.canSetHeight) {
-          this.inputPanelHeight = currentH.toString();
-        }
+      this.selectedPanelDefinition =
+        panelDecoDefinitions[this.inputPanelType] ?? null;
+      if (!this.selectedPanelDefinition) {
+        console.error('ERROR: Panel has no definition', this.inputPanelType);
+        return;
+      }
+      this.canSetHeight = this.selectedPanelDefinition.canSetHeight;
+      if (!this.canSetHeight) {
+        this.inputPanelHeight = currentH.toString();
       }
 
+      this.panelStatusOptions = this.selectedPanelDefinition?.statuses
+        ? this.selectedPanelDefinition?.statuses.map(status => {
+            return { value: status, label: getLabelFromSlug(status) };
+          })
+        : [];
+
+      const selectedPanel = this.panels.find(
+        panel => panel.id === this.selectedPanelId
+      );
       const { neighborN, neighborW } = this.getNeighbors(position);
       const neighborWValid = neighborW && neighborW.h > currentH + 3;
       const neighborNValid = neighborN && neighborN.h > currentH + 3;
-      this.panelWallOptions = panelDecoWallOptions.filter((option) => {
+      this.panelWallOptions = panelDecoWallOptions.filter(option => {
         if (option.value === 'west' && !neighborWValid) {
           return false;
         }
@@ -138,9 +157,17 @@ export class EditorPanelPanelDecoComponent {
     this.updatePanelPositionLockouts();
     this.subscriptions.push(
       this._gameEditorService.selectedPanelIdObs.subscribe((data: string) => {
-        this.selectedPanelId = data;
-        this.panels = this._gameEditorService.getPanelsForCurrentArea();
-        this.updateUiAfterPanelSelection(data);
+        if (data && data.length > 0) {
+          this.selectedPanelId = data;
+          this.panels = this._gameEditorService.getPanelsForCurrentArea();
+          this.updateUiAfterPanelSelection(data);
+          const selectedPanel = this.panels.find(
+            panel => panel.id === this.selectedPanelId
+          );
+          if (selectedPanel) {
+            this.selectedPanelActions = selectedPanel.statusActions || {};
+          }
+        }
       })
     );
     this.subscriptions.push(
@@ -149,6 +176,7 @@ export class EditorPanelPanelDecoComponent {
           this.selectedAreaId = data;
           this.panels = this._gameEditorService.getPanelsForCurrentArea();
           this.area = this._gameEditorService.getAreaById(this.selectedAreaId);
+
           this.updatePanelPositionLockouts();
           this.refreshUIData();
         }
@@ -162,7 +190,7 @@ export class EditorPanelPanelDecoComponent {
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   handleDeleteClick(id: string) {
@@ -170,13 +198,15 @@ export class EditorPanelPanelDecoComponent {
   }
 
   updateUiAfterPanelSelection(id: string) {
-    const selectedPanel = this.panels.find((panel) => panel.id === id);
+    const selectedPanel = this.panels.find(panel => panel.id === id);
     this.inputPanelPosition = selectedPanel
       ? `${selectedPanel.y}_${selectedPanel.x}`
       : '';
     this.inputPanelType = selectedPanel ? selectedPanel.panelDecoType : '';
+
     this.inputPanelWall = selectedPanel ? selectedPanel.wall : 'north';
     this.inputPanelHeight = selectedPanel ? `${selectedPanel.h}` : '1';
+    this.inputPanelStatus = selectedPanel ? `${selectedPanel.status}` : '';
     this.updatePanelPositionLockouts();
     this.refreshUIData();
   }
@@ -203,13 +233,13 @@ export class EditorPanelPanelDecoComponent {
   handlePanelInputChange() {
     this.refreshUIData();
     const selectedPanel = this.panels.find(
-      (panel) => panel.id === this.selectedPanelId
+      panel => panel.id === this.selectedPanelId
     );
     const [y, x] = this.inputPanelPosition.split('_');
 
     if (selectedPanel) {
       const wall = this.panelWallOptions
-        .map((option) => option.value)
+        .map(option => option.value)
         .includes(this.inputPanelWall)
         ? this.inputPanelWall
         : this.panelWallOptions[0].value;
@@ -225,11 +255,17 @@ export class EditorPanelPanelDecoComponent {
         x: +x,
         y: +y,
         h: parseInt(this.inputPanelHeight, 10),
+        status: this.inputPanelStatus,
+        statusActions: this.selectedPanelActions,
       };
-
       this._gameEditorService.updatePanel(updatedPanel);
 
       this.refreshUIData();
     }
+  }
+
+  handlePanelActionInputChange(actions: ActionEffect[], status: string) {
+    this.selectedPanelActions[status] = actions;
+    this.handlePanelInputChange();
   }
 }

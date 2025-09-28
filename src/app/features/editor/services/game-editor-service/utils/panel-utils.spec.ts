@@ -20,7 +20,7 @@ describe('utilDeletePanel', () => {
         y: 5,
         h: 1,
         status: '',
-        statusEffects: {},
+        statusActions: {},
       },
     ];
     const selectedAreaId = 'start';
@@ -55,7 +55,7 @@ describe('utilUpdatePanel', () => {
       id: panelId,
       panelDecoType: 'switch',
       areaId: 'start',
-      statusEffects: {},
+      statusActions: {},
       wall: 'east',
       status: 'off',
       x: 5,

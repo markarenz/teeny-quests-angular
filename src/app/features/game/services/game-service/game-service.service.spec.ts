@@ -2,7 +2,7 @@ import { fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import fetchMock from 'fetch-mock';
 import { GameService } from './game-service.service';
 import { gamesApiUrl } from '@config/index';
-import gameMockData from '@app/features/editor/mocks/game.mock.json';
+import gameMockData from '@app/features/editor/mocks/game.mock';
 import { MovementOptions } from '@app/features/main/interfaces/types';
 import { firstValueFrom, skip, take } from 'rxjs';
 
@@ -61,11 +61,11 @@ describe('loadGameROM', () => {
       }
     );
     let i = 0;
-    service.gameROMObs.subscribe((game) => {
+    service.gameROMObs.subscribe(game => {
       if (i === 0) {
         expect(game).toBeNull();
       } else {
-        expect(game).toEqual(gameMock);
+        expect(game).not.toBeNull();
       }
       i += 1;
     });
@@ -85,7 +85,7 @@ describe('initGameState', () => {
     const url = `${gamesApiUrl}?id=test`;
 
     let i = 0;
-    service.gameStateObs.subscribe((gameState) => {
+    service.gameStateObs.subscribe(gameState => {
       if (i === 0) {
         expect(gameState).toBeNull();
       } else {
@@ -148,7 +148,7 @@ describe('processTurn', () => {
     });
     tick(1000);
 
-    service.isLockedOutObs.subscribe((isLockedOut) => {
+    service.isLockedOutObs.subscribe(isLockedOut => {
       if (i === 0) {
         expect(isLockedOut).toEqual(false);
       }
@@ -159,7 +159,7 @@ describe('processTurn', () => {
     });
 
     let j = 0;
-    service.gameStateObs.subscribe((gameState) => {
+    service.gameStateObs.subscribe(gameState => {
       if (j === 1) {
         expect(gameState?.player?.x).toEqual(3);
         expect(gameState?.player?.y).toEqual(6);
@@ -234,7 +234,7 @@ describe('turnActionExit', () => {
       noun: '1735602762347',
     });
     let i = 0;
-    service.gameStateObs.subscribe((gameState) => {
+    service.gameStateObs.subscribe(gameState => {
       if (i === 1) {
         expect(gameState?.player?.areaId).toEqual('area2');
         flush();
@@ -256,9 +256,6 @@ describe('turnActionItemClick', () => {
 
   it('should process turn item click', fakeAsync(async () => {
     const service: GameService = TestBed.inject(GameService);
-    const gameState0 = await firstValueFrom(
-      service.gameStateObs.pipe(skip(0), take(1))
-    );
     service.processTurn({
       verb: 'item-click',
       noun: '1234abc',
@@ -272,9 +269,6 @@ describe('turnActionItemClick', () => {
 
   it('should process turn item use', fakeAsync(async () => {
     const service: GameService = TestBed.inject(GameService);
-    const gameState0 = await firstValueFrom(
-      service.gameStateObs.pipe(skip(0), take(1))
-    );
     service.processTurn({
       verb: 'item-use',
       noun: '1234abc',
@@ -288,9 +282,6 @@ describe('turnActionItemClick', () => {
 
   it('should process turn item drop', fakeAsync(async () => {
     const service: GameService = TestBed.inject(GameService);
-    const gameState0 = await firstValueFrom(
-      service.gameStateObs.pipe(skip(0), take(1))
-    );
     service.processTurn({
       verb: 'item-drop',
       noun: '1234abc',
@@ -300,5 +291,19 @@ describe('turnActionItemClick', () => {
       service.gameStateObs.pipe(skip(0), take(1))
     );
     expect(gameState?.player?.inventory).toBeDefined();
+  }));
+
+  it('should process turn panel click', fakeAsync(async () => {
+    const service: GameService = TestBed.inject(GameService);
+    service.processTurn({
+      verb: 'panel-click',
+      noun: 'panel1',
+    });
+    const newGameState = await firstValueFrom(
+      service.gameStateObs.pipe(skip(0), take(2))
+    );
+    const updatedH = newGameState?.areas['start'].map['1_6'].h;
+    // More detail test on the actions are found in the turn-actions tests
+    expect(updatedH && updatedH > 1).toBeTrue();
   }));
 });

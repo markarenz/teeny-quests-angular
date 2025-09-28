@@ -17,3 +17,27 @@ export enum IconButtonIconType {
   Drop = 'drop',
   Use = 'use',
 }
+
+export enum EventAction {
+  UPDATE_MAP_CELL_HEIGHT = 'update-map-cell-height',
+  UPDATE_MAP_CELL_FLOOR = 'update-map-cell-floor',
+  SET_FLAG = 'setFlag',
+  UNSET_FLAG = 'unsetFlag',
+  ADD_ITEM = 'addItem',
+  REMOVE_ITEM = 'removeItem',
+  TELEPORT_PLAYER = 'teleportPlayer',
+  CHANGE_AREA = 'changeArea',
+}
+
+export enum ActionObjectType {
+  MAP_CELL = 'map-cell',
+  ITEM = 'item',
+  EXIT = 'exit',
+  PANEL_DECO = 'panel-deco',
+  FLAG = 'flag',
+}
+export enum ActionValueType {
+  NUMBER = 'number',
+  STRING = 'string',
+  BOOLEAN = 'boolean',
+}

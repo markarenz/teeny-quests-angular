@@ -73,9 +73,8 @@ export class GameAreaComponent {
           this.numTurns = data.numTurns;
           if (data.player.areaId !== this.areaId) {
             const areaId = data.player.areaId;
-            const area = this._gameService.getArea(areaId);
             const gameStateArea = this._gameService.getGameStateArea(areaId);
-            this.areaMap = area?.map || null;
+            this.areaMap = gameStateArea?.map || null;
             this.areaExits = gameStateArea?.exits || [];
             this.areaItems = gameStateArea?.items || [];
             this.areaPanels = gameStateArea?.panels || [];
@@ -100,7 +99,7 @@ export class GameAreaComponent {
   }
 
   handlePanelClick(panelId: string) {
-    // this._gameService.processTurn({ verb: 'item-click', noun: itemId });
+    this._gameService.processTurn({ verb: 'panel-click', noun: panelId });
   }
   handleItemClick(itemId: string) {
     this._gameService.processTurn({ verb: 'item-click', noun: itemId });
@@ -111,6 +110,6 @@ export class GameAreaComponent {
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }

@@ -1,17 +1,17 @@
-import { randomBytes } from "crypto";
-import { PutCommand, GetCommand, DeleteCommand } from "@aws-sdk/lib-dynamodb";
-import { unmarshall } from "@aws-sdk/util-dynamodb";
-import { QueryCommand } from "@aws-sdk/client-dynamodb";
-import { JwtVerifier } from "aws-jwt-verify";
-import { SimpleJwksCache } from "aws-jwt-verify/jwk";
+import { randomBytes } from 'crypto';
+import { PutCommand, GetCommand, DeleteCommand } from '@aws-sdk/lib-dynamodb';
+import { unmarshall } from '@aws-sdk/util-dynamodb';
+import { QueryCommand } from '@aws-sdk/client-dynamodb';
+import { JwtVerifier } from 'aws-jwt-verify';
+import { SimpleJwksCache } from 'aws-jwt-verify/jwk';
 import {
   fieldNames,
   tableNames,
   indexNames,
   authorizationMatchers,
-} from "./constants.mjs";
+} from './constants.mjs';
 
-const unmarshallArray = (items) => items.map((i) => unmarshall(i));
+const unmarshallArray = items => items.map(i => unmarshall(i));
 
 /* JWT FUNCTIONS FOR AUTHORIZATION */
 /**
@@ -23,7 +23,7 @@ const unmarshallArray = (items) => items.map((i) => unmarshall(i));
  */
 const getJwksUri = async () => {
   const response = await fetch(
-    "https://accounts.google.com/.well-known/openid-configuration"
+    'https://accounts.google.com/.well-known/openid-configuration'
   );
   const data = await response.json();
   return data.jwks_uri;
@@ -42,8 +42,8 @@ async function createVerifier(jwksUri, clientId) {
   const jwksCache = new SimpleJwksCache(); // Use a cache for better performance
   const verifier = JwtVerifier.create(
     {
-      issuer: "https://accounts.google.com",
-      tokenUse: "id",
+      issuer: 'https://accounts.google.com',
+      tokenUse: 'id',
       audience: clientId,
       jwksUri: jwksUri, // Use the retrieved JWKS URI
     },
@@ -69,7 +69,7 @@ async function verifyJwt(verifier, token) {
     const payload = await verifier.verify(token);
     return payload;
   } catch (error) {
-    console.error("Token verification failed:", error);
+    console.error('Token verification failed:', error);
     throw error;
   }
 }
@@ -92,8 +92,8 @@ const getAuthorizationForRequest = async (token, params, requestKey) => {
   let isAuthorized = false;
   // The authorization matchers obj defines which fields to match on for authorization
   const authorizationMatcher = authorizationMatchers[requestKey];
-  const profileFieldName = authorizationMatcher?.profile ?? "";
-  const paramsFieldName = authorizationMatcher?.bodyParam ?? "";
+  const profileFieldName = authorizationMatcher?.profile ?? '';
+  const paramsFieldName = authorizationMatcher?.bodyParam ?? '';
   if (
     !!payload[profileFieldName] &&
     !!params.body[paramsFieldName] &&
@@ -116,10 +116,9 @@ const getAuthorizationForRequest = async (token, params, requestKey) => {
 const getBodyData = ({ body, path }) => {
   const data = {};
   let valid = true;
-  fieldNames[path].forEach((item) => {
+  fieldNames[path].forEach(item => {
     const { fieldName, required } = item;
     if (!body[fieldName] && required) {
-      console.error("Invalid input:", fieldName);
       valid = false;
     }
     data[fieldName] = body[fieldName] ?? null;
@@ -136,12 +135,12 @@ const getBodyData = ({ body, path }) => {
  * @returns {string} The URL-safe base64 encoded string.
  */
 
-const toUrlString = (buffer) => {
+const toUrlString = buffer => {
   return buffer
-    .toString("base64")
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=/g, "");
+    .toString('base64')
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=/g, '');
 };
 
 /**
@@ -156,7 +155,7 @@ const generateReturnPayload = (statusCode, body) => {
   return {
     statusCode,
     headers: {
-      "access-Control-Allow-Origin": "*",
+      'access-Control-Allow-Origin': '*',
     },
     body: JSON.stringify(body),
   };
@@ -169,15 +168,15 @@ const generateReturnPayload = (statusCode, body) => {
  * @returns {object} The response object containing statusCode, headers, and body for CORS preflight.
  */
 
-export const returnOptionsResponse = (_params) => {
+export const returnOptionsResponse = _params => {
   return {
     statusCode: 200,
     headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type, X-Access-Token",
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, X-Access-Token',
     },
-    body: JSON.stringify({ message: "CORS preflight response" }),
+    body: JSON.stringify({ message: 'CORS preflight response' }),
   };
 };
 
@@ -192,8 +191,7 @@ export const returnOptionsResponse = (_params) => {
  * @returns {Promise<Object>} The response payload containing status, message, item ID, and HTTP status code.
  */
 
-export const createItem = async (params) => {
-  console.info("createItem");
+export const createItem = async params => {
   const { path, dynamoDb, body, token, requestKey } = params;
   const { id: rawId } = body;
   let success = false;
@@ -204,10 +202,10 @@ export const createItem = async (params) => {
     params,
     requestKey
   );
-  console.error("isAuthorized", isAuthorized);
+  console.error('isAuthorized', isAuthorized);
   if (!isAuthorized) {
-    console.error("Unauthorized request for createItem");
-    return generateReturnPayload(403, { message: "Unauthorized request" });
+    console.error('Unauthorized request for createItem');
+    return generateReturnPayload(403, { message: 'Unauthorized request' });
   }
 
   const bodyData = getBodyData({ body, path });
@@ -227,13 +225,13 @@ export const createItem = async (params) => {
     });
 
     resp = await dynamoDb.send(command);
-    success = resp["$metadata"].httpStatusCode === 200;
+    success = resp['$metadata'].httpStatusCode === 200;
   }
 
   return generateReturnPayload(success ? 201 : 500, {
-    message: success ? "Item created successfully." : "Error creating item",
+    message: success ? 'Item created successfully.' : 'Error creating item',
     id: id ?? null,
-    resp: resp ? resp["$metadata"]?.httpStatusCode : null,
+    resp: resp ? resp['$metadata']?.httpStatusCode : null,
   });
 };
 
@@ -247,19 +245,18 @@ export const createItem = async (params) => {
  * @returns {Promise<Object>} The response payload containing a success flag and the list of items (if found).
  */
 
-export const getItems = async (params) => {
-  console.info("getItems");
+export const getItems = async params => {
   const { path, dynamoDb, requestKey } = params;
   const command = new QueryCommand({
     TableName: tableNames[path],
     IndexName: indexNames[requestKey],
     ProjectionExpression: fieldNames[path]
-      .filter((item) => !item.detailOnly)
-      .map((item) => item.fieldName)
-      .join(", "),
-    KeyConditionExpression: "itemStatus = :value",
+      .filter(item => !item.detailOnly)
+      .map(item => item.fieldName)
+      .join(', '),
+    KeyConditionExpression: 'itemStatus = :value',
     ExpressionAttributeValues: {
-      ":value": { S: "active" },
+      ':value': { S: 'active' },
     },
   });
 
@@ -282,8 +279,7 @@ export const getItems = async (params) => {
  * @returns {Promise<Object>} The response payload containing the items and success status.
  */
 
-export const getItemsByUserId = async (params) => {
-  console.info("getItemsByUserId");
+export const getItemsByUserId = async params => {
   const { path, dynamoDb, searchParams, requestKey } = params;
   let items = [];
   // TODO: Filter by user ID for author page (FUTURE)
@@ -292,10 +288,10 @@ export const getItemsByUserId = async (params) => {
     const command = new QueryCommand({
       TableName: tableNames[path],
       IndexName: indexNames[requestKey],
-      ProjectionExpression: "id, title, description, username, itemStatus",
-      KeyConditionExpression: "userId = :value",
+      ProjectionExpression: 'id, title, description, username, itemStatus',
+      KeyConditionExpression: 'userId = :value',
       ExpressionAttributeValues: {
-        ":value": { S: userId },
+        ':value': { S: userId },
       },
     });
     const resp = await dynamoDb.send(command);
@@ -318,20 +314,18 @@ export const getItemsByUserId = async (params) => {
  * @returns {Promise<Object>} The response payload containing the items.
  */
 
-export const getItemsByGameId = async (params) => {
-  console.info("getItemsByGameId");
+export const getItemsByGameId = async params => {
   const { path, dynamoDb, searchParams, requestKey } = params;
   let items = [];
   if (searchParams?.gameId && searchParams?.gameId.length > 0) {
     const { gameId } = searchParams;
-    console.info("getItemsByGameId gameId: ", gameId);
     const command = new QueryCommand({
       TableName: tableNames[path],
       IndexName: indexNames[requestKey],
-      ProjectionExpression: "id, gameId, userId, dateCreated, dateUpdated",
-      KeyConditionExpression: "gameId = :value",
+      ProjectionExpression: 'id, gameId, userId, dateCreated, dateUpdated',
+      KeyConditionExpression: 'gameId = :value',
       ExpressionAttributeValues: {
-        ":value": { S: gameId },
+        ':value': { S: gameId },
       },
     });
     const resp = await dynamoDb.send(command);
@@ -350,8 +344,7 @@ export const getItemsByGameId = async (params) => {
  * @returns {Promise<Object|undefined>} A promise that resolves to a payload object containing the item if found, or null if not found.
  */
 
-export const getItemById = async (params) => {
-  console.info("getItemById");
+export const getItemById = async params => {
   const { path, dynamoDb, searchParams } = params;
   const id = searchParams?.id ?? null;
   if (searchParams?.id && id.length > 0) {
@@ -379,7 +372,7 @@ export const getItemById = async (params) => {
  * @returns {Promise<Object>} The response payload indicating success or failure of the update operation.
  */
 
-export const updateItem = async (params) => {
+export const updateItem = async params => {
   const { path, dynamoDb, body, token, requestKey } = params;
   const { id } = body;
 
@@ -390,7 +383,7 @@ export const updateItem = async (params) => {
     requestKey
   );
   if (!isAuthorized) {
-    return generateReturnPayload(403, { message: "Unauthorized request" });
+    return generateReturnPayload(403, { message: 'Unauthorized request' });
   }
 
   const command = new PutCommand({
@@ -401,17 +394,16 @@ export const updateItem = async (params) => {
     },
   });
   const resp = await dynamoDb.send(command);
-  const success = resp["$metadata"].httpStatusCode === 200;
+  const success = resp['$metadata'].httpStatusCode === 200;
   return generateReturnPayload(success ? 204 : 500, {
     path,
-    message: success ? "Item updated successfully." : "Error updating item",
+    message: success ? 'Item updated successfully.' : 'Error updating item',
     id,
-    resp: resp["$metadata"].httpStatusCode,
+    resp: resp['$metadata'].httpStatusCode,
   });
 };
 
-export const deleteItemById = async (params) => {
-  console.info("deleteItemById");
+export const deleteItemById = async params => {
   const { path, dynamoDb, searchParams } = params;
   const id = searchParams?.id ?? null;
   if (searchParams?.id && id.length > 0) {
