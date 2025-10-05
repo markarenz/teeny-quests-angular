@@ -414,10 +414,10 @@ const gameMockData: GameROM = {
             h: 1,
           },
         ],
-        panels: [
+        props: [
           {
-            id: 'panel1',
-            panelDecoType: 'torch',
+            id: 'prop1',
+            propType: 'torch',
             areaId: 'start',
             statusActions: {
               on: [
@@ -870,7 +870,7 @@ const gameMockData: GameROM = {
             wallSouth: 'default',
           },
         },
-        panels: [],
+        props: [],
         exits: [
           {
             id: '17356027612345',

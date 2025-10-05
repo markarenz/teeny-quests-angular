@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EditorPlayerPositionComponent } from './editor-player-position.component';
-import gameMockData from '@app/features/editor/mocks/game.mock.json';
+import gameMockData from '@app/features/editor/mocks/game.mock';
 import { GameROM } from '@app/features/main/interfaces/types';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 

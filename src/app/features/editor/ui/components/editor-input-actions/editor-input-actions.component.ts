@@ -2,7 +2,6 @@ import { Component, Input, Output, EventEmitter, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ActionEffect,
-  ActionTypeDefinition,
   SelectIUIOption,
 } from '@app/features/main/interfaces/types';
 import {
@@ -14,11 +13,16 @@ import { CollapsibleCardComponent } from '@app/features/main/ui/components/colla
 import { IconButtonComponent } from '@app/features/main/ui/components/icons/icon-button/icon-button.component';
 import { AreaCellSelectorComponent } from '../area-cell-selector/area-cell-selector.component';
 import { getLabelFromSlug } from '@app/features/main/utils';
+import { propDecoDefinitions } from '@content/prop-definitions';
 import {
-  actionTypeOptions,
-  actionTypeDefinitions,
-} from '@content/panelDeco-definitions';
+  ActionDefinition,
+  actionDefinitions,
+  actionOptions,
+} from '@content/action-definitions';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
+import { floorOptionsData } from '@content/floor-definitions';
+import { maxAreaCellHeight } from '@config/index';
+import { logger } from '@app/features/main/utils/logger';
 
 @Component({
   selector: 'app-editor-input-actions',
@@ -44,34 +48,80 @@ export class EditorInputActionsComponent {
 
   public selectedAction: ActionEffect | null = null;
   public selectedActionId: string | null = null;
-  public actionTypeOptions = actionTypeOptions;
-  public selectedActionTypeDefinition: ActionTypeDefinition | null = null;
+  public actionTypeOptions = actionOptions;
+  public selectedActionTypeDefinition: ActionDefinition | null = null;
   public areasListOptions: SelectIUIOption[] = [];
+  public objectIdentifierOptions: SelectIUIOption[] = [];
+  public valueOptions: SelectIUIOption[] = [];
+  public objectIdentifierInputLabel: string = 'Object Identifier';
+  public valueInputLabel: string = 'Value';
 
   public inputActionType: string = 'map-cell-height';
-  public inputActionPosition: string = '0_0';
   public inputActionAreaId: string = this.selectedAreaId;
-  public inputNumberValue: string = '0';
-
+  public inputActionObjectId: string = '';
+  public inputActionValue: string = '';
   public shouldShowPositionSelector: boolean = false;
-  public shouldShowNumberInput: boolean = false;
 
   public refreshUIData() {
     if (this.selectedAction) {
       this.inputActionType = this.selectedAction.action;
-      const def = actionTypeDefinitions[this.selectedAction.action];
-      this.selectedActionTypeDefinition = def ? def : null;
-
+      this.inputActionAreaId =
+        this.selectedAction.actionObject.areaId || this.selectedAreaId;
+      const def = actionDefinitions[this.selectedAction.action];
+      if (!def) {
+        logger({
+          message: `No action definition found for action type: ${this.selectedAction.action}`,
+          type: 'error',
+        });
+        return;
+      }
+      this.selectedActionTypeDefinition = def ?? null;
       this.areasListOptions = this._gameEditorService.getAreasListOptions();
+
+      this.inputActionObjectId =
+        this.selectedAction.actionObject.identifier ?? '';
+      this.inputActionValue = <string>this.selectedAction.actionValue ?? '';
+
+      this.valueInputLabel = getLabelFromSlug(def.valueType || '');
+      this.objectIdentifierInputLabel = getLabelFromSlug(def.objectType || '');
+
       this.shouldShowPositionSelector =
         def.objectType === ActionObjectType.MAP_CELL;
-      if (this.shouldShowPositionSelector) {
-        this.inputActionPosition =
-          this.selectedAction.actionObject.identifier || '0_0';
+
+      // set object options based on type and sub type
+      if (!this.shouldShowPositionSelector) {
+        if (def.objectType === ActionObjectType.PROP_ID) {
+          this.objectIdentifierOptions =
+            this._gameEditorService.getPropsListOptions(this.inputActionAreaId);
+        }
       }
-      if (def.valueType === ActionValueType.NUMBER) {
-        this.shouldShowNumberInput = true;
-        this.inputNumberValue = <string>this.selectedAction.actionValue;
+      // set value options based on type and sub type
+      if (def.valueType === ActionValueType.FLOOR_TYPE) {
+        this.valueOptions = floorOptionsData;
+      }
+      if (def.valueType === ActionValueType.CELL_HEIGHT) {
+        this.valueOptions = Array.from(
+          { length: maxAreaCellHeight + 1 },
+          (_, i) => ({
+            value: i.toString(),
+            label: i.toString(),
+          })
+        );
+      }
+      if (def.valueType === ActionValueType.PROP_STATUS) {
+        const prop = this._gameEditorService.getPropById(
+          this.inputActionObjectId,
+          this.inputActionAreaId
+        );
+        if (prop) {
+          const propDef = propDecoDefinitions[prop.propType];
+          if (propDef && propDef.statuses) {
+            this.valueOptions = propDef.statuses.map(status => ({
+              value: status,
+              label: getLabelFromSlug(status),
+            }));
+          }
+        }
       }
     }
   }
@@ -95,6 +145,17 @@ export class EditorInputActionsComponent {
     return getLabelFromSlug(action.action);
   }
 
+  public handleActionTypeChange() {
+    if (!this.selectedActionId || !this.selectedAction) {
+      return;
+    }
+    this.selectedAction = {
+      ...this.selectedAction,
+      action: this.inputActionType as EventAction,
+    };
+
+    this.handleActionInputChange();
+  }
   public handleActionInputChange() {
     if (!this.selectedActionId || !this.selectedAction) {
       return;
@@ -103,32 +164,26 @@ export class EditorInputActionsComponent {
       ...this.selectedAction,
       id: this.selectedActionId,
       action: this.inputActionType as EventAction,
+      actionObject: {
+        ...this.selectedAction.actionObject,
+        areaId: this.inputActionAreaId,
+        identifier: this.inputActionObjectId,
+      },
+      actionValue: this.inputActionValue,
     };
     const newActions = (this.actions ?? []).map(action =>
       action.id === this.selectedActionId ? updatedAction : action
     );
+    this.selectedAction = updatedAction;
     this.onActionsChange.emit(newActions);
-  }
-
-  public handleActionInputNumberChange() {
-    if (!this.selectedActionId || !this.selectedAction) {
-      return;
-    }
-    const updatedAction: ActionEffect = {
-      ...this.selectedAction,
-      actionValue: this.inputNumberValue || '0',
-    };
-    const newActions = (this.actions ?? []).map(action =>
-      action.id === this.selectedActionId ? updatedAction : action
-    );
-    this.onActionsChange.emit(newActions);
+    this.refreshUIData();
   }
 
   public handlePositionSelect(positionKey: string) {
     if (!this.selectedActionId || !this.selectedAction) {
       return;
     }
-    this.inputActionPosition = positionKey;
+    this.inputActionObjectId = positionKey;
     const updatedAction: ActionEffect = {
       ...this.selectedAction,
       actionObject: {
@@ -143,6 +198,12 @@ export class EditorInputActionsComponent {
   }
 
   public handleEditClick(actionId: string) {
+    if (this.selectedActionId === actionId) {
+      this.selectedAction = null;
+      this.selectedActionId = null;
+      return;
+    }
+
     this.selectedAction =
       this.actions?.find(action => action.id === actionId) ?? null;
     this.selectedActionId = this.selectedAction ? actionId : null;

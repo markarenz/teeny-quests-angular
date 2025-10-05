@@ -13,7 +13,7 @@ import {
   SelectIUIOption,
   GameContent,
   ContentVersionListItem,
-  GamePanelDeco,
+  GameProp,
 } from '@app/features/main/interfaces/types';
 import {
   utilDeleteItem,
@@ -26,11 +26,11 @@ import {
   utilUpdateExit,
 } from './utils/exits-utils';
 import {
-  utilCreatePanel,
-  utilDeletePanel,
-  utilUpdatePanel,
-} from './utils/panel-utils';
-import { getPositionKeysForGridSize } from '@main/utils';
+  utilCreateProp,
+  utilDeleteProp,
+  utilUpdateProp,
+} from './utils/prop-utils';
+import { getLabelFromSlug, getPositionKeysForGridSize } from '@main/utils';
 import { logger } from '@app/features/main/utils/logger';
 
 @Injectable({
@@ -64,8 +64,8 @@ export class GameEditorService {
   private selectedExitId = new BehaviorSubject<string>('');
   selectedExitIdObs = this.selectedExitId.asObservable();
 
-  private selectedPanelId = new BehaviorSubject<string>('');
-  selectedPanelIdObs = this.selectedPanelId.asObservable();
+  private selectedPropId = new BehaviorSubject<string>('');
+  selectedPropIdObs = this.selectedPropId.asObservable();
 
   private selectedItemId = new BehaviorSubject<string>('');
   selectedItemIdObs = this.selectedItemId.asObservable();
@@ -76,8 +76,8 @@ export class GameEditorService {
   private areaItems = new BehaviorSubject<GameItem[]>([]);
   areaItemsObs = this.areaItems.asObservable();
 
-  private areaPanels = new BehaviorSubject<GamePanelDeco[]>([]);
-  areaPanelsObs = this.areaPanels.asObservable();
+  private areaPanels = new BehaviorSubject<GameProp[]>([]);
+  areaPropsObs = this.areaPanels.asObservable();
 
   private contentVersions = new BehaviorSubject<ContentVersionListItem[]>([]);
   contentVersionsObs = this.contentVersions.asObservable();
@@ -168,9 +168,9 @@ export class GameEditorService {
     }, 100);
   }
 
-  getPanelsForCurrentArea(): GamePanelDeco[] {
+  getPropsForCurrentArea(): GameProp[] {
     return (
-      this.game.value?.content.areas[this.selectedAreaId.value]?.panels ?? []
+      this.game.value?.content.areas[this.selectedAreaId.value]?.props ?? []
     );
   }
 
@@ -245,35 +245,35 @@ export class GameEditorService {
   // PANELS -------------------------------------------------------------------
   refreshAreaPanels(nextGame: GameROM) {
     const nextPanels = [
-      ...nextGame.content.areas[this.selectedAreaId.value].panels,
+      ...nextGame.content.areas[this.selectedAreaId.value].props,
     ];
 
     this.areaPanels.next(nextPanels);
   }
 
-  createPanel(lockouts: string[]): GamePanelDeco | null {
+  createProp(lockouts: string[]): GameProp | null {
     if (this.game.value && this.selectedAreaId.value) {
-      const { nextGame, newPanel } = utilCreatePanel({
+      const { nextGame, newProp } = utilCreateProp({
         game: this.game.value,
         selectedAreaId: this.selectedAreaId.value,
         lockouts,
       });
 
-      if (nextGame && newPanel) {
+      if (nextGame && newProp) {
         this.game.next(nextGame);
         this.refreshAreaPanels(nextGame);
-        this.selectedPanelId.next(newPanel.id);
+        this.selectedPropId.next(newProp.id);
       }
     }
     return null;
   }
 
-  updatePanel(updatedPanel: GamePanelDeco) {
+  updateProp(updatedProp: GameProp) {
     if (this.game.value) {
-      const nextGame = utilUpdatePanel({
+      const nextGame = utilUpdateProp({
         game: this.game.value,
         selectedAreaId: this.selectedAreaId.value,
-        updatedPanel,
+        updatedProp,
       });
       if (nextGame) {
         this.game.next(nextGame);
@@ -282,18 +282,18 @@ export class GameEditorService {
     }
   }
 
-  selectPanel(panelId: string) {
-    this.selectedPanelId.next(panelId);
+  selectProp(propId: string) {
+    this.selectedPropId.next(propId);
   }
 
-  deletePanel(panelId: string) {
+  deleteProp(propId: string) {
     if (this.game.value) {
-      const nextGame = utilDeletePanel({
+      const nextGame = utilDeleteProp({
         game: this.game.value,
         selectedAreaId: this.selectedAreaId.value,
-        panelId,
+        propId,
       });
-      this.selectPanel('');
+      this.selectProp('');
       this.game.next(nextGame);
       this.refreshAreaPanels(nextGame);
     }
@@ -400,7 +400,7 @@ export class GameEditorService {
           map: this.getDefaultMap(),
           exits: [],
           items: [],
-          panels: [],
+          props: [],
         },
       },
       events: [],
@@ -524,7 +524,7 @@ export class GameEditorService {
             nextGameData.content.areas[nextSelectedAreaId];
           this.areaExits.next(nextSelectedArea.exits);
           this.areaItems.next(nextSelectedArea.items);
-          this.areaPanels.next(nextSelectedArea.panels);
+          this.areaPanels.next(nextSelectedArea.props);
           this.selectedArea.next(nextSelectedArea);
         });
     }
@@ -560,7 +560,7 @@ export class GameEditorService {
         map: this.getDefaultMap(),
         exits: [],
         items: [],
-        panels: [],
+        props: [],
       };
       const nextGameData = {
         ...this.game.value,
@@ -722,5 +722,30 @@ export class GameEditorService {
           return;
         });
     }
+  };
+
+  public getPropsListOptions = (areaId: string): SelectIUIOption[] => {
+    let propsOptions: SelectIUIOption[] = [];
+    if (this.game.value) {
+      const props = this.game.value.content.areas[areaId]?.props;
+      if (props) {
+        propsOptions = props.map(prop => ({
+          value: prop.id,
+          label: `${getLabelFromSlug(prop.propType)} X: ${prop.x}, Y: ${prop.y}`,
+        }));
+      }
+    }
+    return propsOptions;
+  };
+
+  public getPropById = (propId: string, areaId: string): GameProp | null => {
+    if (this.game.value) {
+      const prop =
+        this.game.value.content.areas[areaId]?.props.find(
+          p => p.id === propId
+        ) ?? null;
+      return prop;
+    }
+    return null;
   };
 }

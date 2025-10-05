@@ -1,0 +1,78 @@
+<app-collapsible-card title="Props" [isCollapsible]="false" [showNewButton]="true"
+  (onNewButtonClick)="handleCreateClick()">
+  <div class="flex flex-col gap-8">
+    <div class="flex flex-col gap-4">
+      <div class="flex flex-col gap-4">
+        @if(props.length < 1) { <div>No panels or decor.</div>
+      } @for(prop of props; track prop.id; let idx = $index) {
+      <div class="rounded-md flex flex-row items-center p-2 {{
+            selectedPropId === prop.id ? 'bg-green-900' : 'bg-gray-800'
+          }}">
+        <div class="flex-grow">
+          Prop #{{ idx + 1 }} - X:{{ prop.x }}, Y:{{ prop.y }},
+          Type:{{ prop.propType }}
+        </div>
+        <div class="flex flex-row gap-2">
+          <app-icon-button icon="edit" label="Edit Prop" (click)="handleEditClick(prop.id)" />
+          <app-icon-button icon="delete" theme="danger" label="Delete Prop" (click)="handleDeleteClick(prop.id)" />
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+  @if (selectedPropId) {
+  <div class="flex flex-col gap-4">
+    <div>
+      <label>Position: </label>
+      <app-area-cell-selector id="editor-cell-selector" [selectedCellPosition]="inputPropPosition"
+        (onPositionSelect)="handlePositionSelect($event)" [lockouts]="lockouts" />
+    </div>
+    <div>
+      <label for="prop-type-selector">Prop Type</label>
+      <select id="prop-type-selector" [(ngModel)]="inputPropType" (change)="handlePropInputChange()">
+        @for(item of propTypeOptions; track item.value) {
+        <option [value]="item.value">{{ item.label }}</option>
+        }
+      </select>
+    </div>
+    <div>
+      <label for="prop-wall-selector">Wall</label>
+      <select id="prop-wall-selector" [(ngModel)]="inputPropWall" (change)="handlePropInputChange()">
+        @for(item of propWallOptions; track item.value) {
+        <option [value]="item.value">{{ item.label }}</option>
+        }
+      </select>
+    </div>
+    @if (canSetHeight) {
+    <div>
+      <label for="prop-height-selector">Height</label>
+      <select id="prop-helight-selector" [(ngModel)]="inputPropHeight" (change)="handlePropInputChange()">
+        @for(item of propHeightOptions; track item.value) {
+        <option [value]="item.value">{{ item.label }}</option>
+        }
+      </select>
+    </div>
+    } @if (propStatusOptions.length > 0) {
+    <div>
+      <label for="prop-height-selector">Status</label>
+      <select id="prop-status-selector" [(ngModel)]="inputPropStatus" (change)="handlePropInputChange()">
+        @for(item of propStatusOptions; track item.value) {
+        <option [value]="item.value">{{ item.label }}</option>
+        }
+      </select>
+    </div>
+    }
+
+    @if(selectedPropDefinition?.isClickable && propStatusOptions.length > 0) {
+    <div class="flex flex-col gap-4">
+      @for(item of propStatusOptions; track item.value) {
+      <app-editor-input-actions [actions]="selectedPropActions[item.value]"
+        (onActionsChange)="handlePropActionInputChange($event, item.value)"
+        [title]="'Actions for Status: ' + item.label" [selectedAreaId]="selectedAreaId" />
+      }
+    </div>
+    }
+  </div>
+  }
+  </div>
+</app-collapsible-card>

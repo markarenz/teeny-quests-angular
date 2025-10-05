@@ -60,9 +60,9 @@ describe('EditorGameComponent', () => {
     expect(component.subNavCurrent).toBe('exits');
   });
 
-  it('should handle select panel', () => {
-    component.handleSelectPanel('panel1');
-    expect(component.subNavCurrent).toBe('paneldeco');
+  it('should handle select prop', () => {
+    component.handleSelectPanel('prop1');
+    expect(component.subNavCurrent).toBe('props');
   });
   it('should handle select map cell', () => {
     component.handleSelectMapCell('5_5');

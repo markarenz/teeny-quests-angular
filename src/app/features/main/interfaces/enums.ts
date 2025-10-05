@@ -21,6 +21,7 @@ export enum IconButtonIconType {
 export enum EventAction {
   UPDATE_MAP_CELL_HEIGHT = 'update-map-cell-height',
   UPDATE_MAP_CELL_FLOOR = 'update-map-cell-floor',
+  SET_PROP_STATUS = 'set-prop-status',
   SET_FLAG = 'setFlag',
   UNSET_FLAG = 'unsetFlag',
   ADD_ITEM = 'addItem',
@@ -31,13 +32,14 @@ export enum EventAction {
 
 export enum ActionObjectType {
   MAP_CELL = 'map-cell',
-  ITEM = 'item',
-  EXIT = 'exit',
-  PANEL_DECO = 'panel-deco',
-  FLAG = 'flag',
+  ITEM_ID = 'item-id',
+  EXIT_ID = 'exit-id',
+  PROP_ID = 'prop-id',
+  FLAG_ID = 'flag-id',
 }
+
 export enum ActionValueType {
-  NUMBER = 'number',
-  STRING = 'string',
-  BOOLEAN = 'boolean',
+  CELL_HEIGHT = 'cell-height',
+  FLOOR_TYPE = 'floor-type',
+  PROP_STATUS = 'prop-status]',
 }

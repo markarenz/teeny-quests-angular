@@ -1,7 +1,7 @@
 import {
   GameAreaExit,
   GameItem,
-  GamePanelDeco,
+  GameProp,
 } from '@app/features/main/interfaces/types';
 
 export const defaultExit: GameAreaExit = {
@@ -25,9 +25,9 @@ export const defaultItem: GameItem = {
   h: 1,
 };
 
-export const defaultPanelDeco: GamePanelDeco = {
+export const defaultProp: GameProp = {
   id: 'test',
-  panelDecoType: 'torch',
+  propType: 'torch',
   areaId: 'start',
   wall: 'north',
   x: 2,

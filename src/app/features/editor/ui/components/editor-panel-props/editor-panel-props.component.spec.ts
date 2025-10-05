@@ -6,23 +6,23 @@ import {
 } from '@angular/core/testing';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import gameMockData from '@app/features/editor/mocks/game.mock';
-import { GamePanelDeco } from '@app/features/main/interfaces/types';
-import { EditorPanelPanelDecoComponent } from './editor-panel-paneldeco.component';
+import { GameProp } from '@app/features/main/interfaces/types';
+import { EditorPanelPropsComponent } from './editor-panel-props.component';
 
 let service: GameEditorService;
 let gameMock = JSON.parse(JSON.stringify(gameMockData));
 
-describe('EditorPanelPanelDecoComponent', () => {
-  let component: EditorPanelPanelDecoComponent;
-  let fixture: ComponentFixture<EditorPanelPanelDecoComponent>;
+describe('EditorPanelPropsComponent', () => {
+  let component: EditorPanelPropsComponent;
+  let fixture: ComponentFixture<EditorPanelPropsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EditorPanelPanelDecoComponent],
+      imports: [EditorPanelPropsComponent],
       teardown: { destroyAfterEach: false },
     }).compileComponents();
 
-    fixture = TestBed.createComponent(EditorPanelPanelDecoComponent);
+    fixture = TestBed.createComponent(EditorPanelPropsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
     service = TestBed.inject(GameEditorService);
@@ -40,68 +40,68 @@ describe('EditorPanelPanelDecoComponent', () => {
   it('should handle position lockouts', () => {
     component.area = gameMock.content.areas['start'];
     fixture.detectChanges();
-    component.updatePanelPositionLockouts();
+    component.updatePropPositionLockouts();
     fixture.detectChanges();
     expect(component.lockouts.length).toBeGreaterThan(0);
   });
 
   it('should handle delete click', () => {
-    spyOn(service, 'deletePanel');
+    spyOn(service, 'deleteProp');
     component.area = gameMock.content.areas['start'];
     fixture.detectChanges();
-    component.handleDeleteClick('panel1');
-    expect(service.deletePanel).toHaveBeenCalled();
+    component.handleDeleteClick('prop1');
+    expect(service.deleteProp).toHaveBeenCalled();
   });
 
   it('should handle edit click', () => {
-    spyOn(service, 'selectPanel');
-    component.panels = gameMock.content.areas['start'].panels;
+    spyOn(service, 'selectProp');
+    component.props = gameMock.content.areas['start'].props;
     fixture.detectChanges();
-    component.handleEditClick('panel1');
+    component.handleEditClick('prop1');
     fixture.detectChanges();
-    expect(service.selectPanel).toHaveBeenCalled();
+    expect(service.selectProp).toHaveBeenCalled();
   });
 
   it('should handle position select', () => {
     component.handlePositionSelect('1_1');
     fixture.detectChanges();
-    expect(component.inputPanelPosition).toBe('1_1');
+    expect(component.inputPropPosition).toBe('1_1');
   });
 
   it('should handle create click', () => {
-    const mockPanel: GamePanelDeco = {
-      ...gameMock.content.areas['start'].panels[0],
-      id: 'panel1',
+    const mockPanel: GameProp = {
+      ...gameMock.content.areas['start'].props[0],
+      id: 'prop1',
     };
-    spyOn(service, 'createPanel').and.returnValue(mockPanel);
+    spyOn(service, 'createProp').and.returnValue(mockPanel);
     component.area = gameMock.content.areas['start'];
     fixture.detectChanges();
     component.handleCreateClick();
-    expect(service.createPanel).toHaveBeenCalled();
+    expect(service.createProp).toHaveBeenCalled();
   });
 
   it('should handle input update', () => {
-    const mockPanel: GamePanelDeco = {
-      ...gameMock.content.areas['start'].panels[0],
+    const mockPanel: GameProp = {
+      ...gameMock.content.areas['start'].props[0],
       id: 'panel',
     };
-    spyOn(service, 'updatePanel');
-    component.panels = gameMock.content.areas['start'].panels;
-    component.selectedPanelId = 'panel1';
-    component.inputPanelPosition = '2_2';
-    component.handlePanelInputChange();
+    spyOn(service, 'updateProp');
+    component.props = gameMock.content.areas['start'].props;
+    component.selectedPropId = 'prop1';
+    component.inputPropPosition = '2_2';
+    component.handlePropInputChange();
     component.area = gameMock.content.areas['start'];
     fixture.detectChanges();
-    expect(service.updatePanel).toHaveBeenCalled();
+    expect(service.updateProp).toHaveBeenCalled();
   });
 
   it('should handle area change', fakeAsync(async () => {
-    spyOn(service, 'getPanelsForCurrentArea');
+    spyOn(service, 'getPropsForCurrentArea');
     fixture.detectChanges();
     service.setSelectedAreaId('area2');
     fixture.detectChanges();
     tick(500);
-    expect(service.getPanelsForCurrentArea).toHaveBeenCalled();
+    expect(service.getPropsForCurrentArea).toHaveBeenCalled();
   }));
 
   it('should handle action input change', fakeAsync(async () => {
@@ -110,26 +110,26 @@ describe('EditorPanelPanelDecoComponent', () => {
     fixture.detectChanges();
     component.area = gameMock.content.areas['start'];
     component.selectedAreaId = 'start';
-    component.panels = gameMockData.content.areas['start'].panels;
+    component.props = gameMockData.content.areas['start'].props;
     fixture.detectChanges();
     const actions =
-      gameMockData.content.areas['start'].panels[0].statusActions['on'];
+      gameMockData.content.areas['start'].props[0].statusActions['on'];
     actions[0].actionObject = {
       ...actions[0].actionObject,
       identifier: '5_5',
     };
-    component.selectedPanelId = 'panel1';
-    component.inputPanelType = 'torch';
-    component.inputPanelPosition = '1_1';
+    component.selectedPropId = 'prop1';
+    component.inputPropType = 'torch';
+    component.inputPropPosition = '1_1';
     component.refreshUIData();
     fixture.detectChanges();
 
     spyOn(component, 'refreshUIData');
-    component.handlePanelActionInputChange(actions, 'on');
+    component.handlePropActionInputChange(actions, 'on');
     fixture.detectChanges();
     tick(500);
 
-    component.updateUiAfterPanelSelection('panel1');
+    component.updateUiAfterPropSelection('prop1');
     fixture.detectChanges();
     expect(component.refreshUIData).toHaveBeenCalled();
   }));

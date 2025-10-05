@@ -7,7 +7,7 @@ import { GameEditorService } from './game-editor-service.service';
 import {
   GameAreaExit,
   GameItem,
-  GamePanelDeco,
+  GameProp,
 } from '@app/features/main/interfaces/types';
 import { firstValueFrom, skip, take } from 'rxjs';
 import { provideOAuthClient } from 'angular-oauth2-oidc'; // Assuming a similar provider function exists
@@ -542,7 +542,7 @@ describe('updateExit', () => {
   });
 });
 
-describe('createPanel', () => {
+describe('createProp', () => {
   let service: GameEditorService;
   beforeEach(() => {
     service = TestBed.inject(GameEditorService);
@@ -550,20 +550,20 @@ describe('createPanel', () => {
     service.setTestValue('start', 'selectedAreaId');
   });
 
-  it('should create panel', () => {
+  it('should create prop', () => {
     let i = 0;
     const expectedValues = [1, 2];
     service.gameObs.subscribe(game => {
       const area = game ? game.content.areas['start'] : null;
-      expect(area?.panels.length).toEqual(expectedValues[i]);
+      expect(area?.props.length).toEqual(expectedValues[i]);
       i += 1;
     });
 
-    service.createPanel([]);
+    service.createProp([]);
   });
 });
 
-describe('deletePanel', () => {
+describe('deleteProp', () => {
   let service: GameEditorService;
   beforeEach(() => {
     service = TestBed.inject(GameEditorService);
@@ -573,19 +573,19 @@ describe('deletePanel', () => {
 
   it('should delete exit', () => {
     let i = 0;
-    const panelId = 'panel1';
+    const propId = 'prop1';
     const expectedValues = [1, 0];
     service.gameObs.subscribe(game => {
       const area = game ? game.content.areas['start'] : null;
-      expect(area?.panels.length).toEqual(expectedValues[i]);
+      expect(area?.props.length).toEqual(expectedValues[i]);
       i += 1;
     });
 
-    service.deletePanel(panelId);
+    service.deleteProp(propId);
   });
 });
 
-describe('updatePanel', () => {
+describe('updateProp', () => {
   let service: GameEditorService;
   beforeEach(() => {
     service = TestBed.inject(GameEditorService);
@@ -594,8 +594,8 @@ describe('updatePanel', () => {
   });
 
   it('should update exit', () => {
-    const panel: GamePanelDeco = {
-      ...gameMock.content.areas['start'].panels[0],
+    const prop: GameProp = {
+      ...gameMock.content.areas['start'].props[0],
       status: 'on',
     };
 
@@ -603,16 +603,16 @@ describe('updatePanel', () => {
     service.gameObs.subscribe(game => {
       if (i === 1) {
         const area = game ? game.content.areas['start'] : null;
-        const updatedPanel = area ? area.panels[0] : null;
-        if (updatedPanel) {
-          updatedPanel.status = 'on';
+        const updatedProp = area ? area.props[0] : null;
+        if (updatedProp) {
+          updatedProp.status = 'on';
         }
-        expect(updatedPanel).toEqual(panel);
+        expect(updatedProp).toEqual(prop);
       }
       i += 1;
     });
 
-    service.updatePanel(panel);
+    service.updateProp(prop);
   });
 });
 
@@ -728,4 +728,31 @@ describe('loadContentVersion', () => {
     expect(newGame?.content).toEqual(gameMock.content);
     fetchMock.unmockGlobal();
   }));
+
+  it('should get list of props options', () => {
+    const service = TestBed.inject(GameEditorService);
+    service.setTestValue(gameMock, 'game');
+    const options = service.getPropsListOptions('start');
+    expect(options.length).toBeGreaterThan(0);
+  });
+
+  it('should get a prop by id', () => {
+    const service = TestBed.inject(GameEditorService);
+    service.setTestValue(gameMock, 'game');
+    const prop = service.getPropById('prop1', 'start');
+    expect(prop?.id).toEqual('prop1');
+  });
+
+  it('should get a prop by id - not found', () => {
+    const service = TestBed.inject(GameEditorService);
+    service.setTestValue(gameMock, 'game');
+    const prop = service.getPropById('prop2', 'start');
+    expect(prop?.id).not.toBeDefined();
+  });
+  it('should get a prop by id - no game', () => {
+    const service = TestBed.inject(GameEditorService);
+    service.setTestValue(undefined, 'game');
+    const prop = service.getPropById('prop2', 'start');
+    expect(prop?.id).not.toBeDefined();
+  });
 });

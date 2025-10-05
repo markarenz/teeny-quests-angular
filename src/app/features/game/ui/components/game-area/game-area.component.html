@@ -20,9 +20,9 @@
     }
 
     <!-- Area PanelDeco -->
-    @for(panel of areaPanels; track panel.id;) {
-    <app-area-panel [panel]="panel" [isClickable]="false" (onClick)="handlePanelClick(panel.id)"
-      [isNearPlayer]="getIsNearPlayer(panel.x, panel.y)" [isLockedOut]="isLockedOut" />
+    @for(prop of areaProps; track prop.id;) {
+    <app-area-prop [prop]="prop" [isClickable]="false" (onClick)="handlePropClick(prop.id)"
+      [isNearPlayer]="getIsNearPlayer(prop.x, prop.y)" [isLockedOut]="isLockedOut" />
     }
 
     <!-- Area Exits -->

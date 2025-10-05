@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { EditorPanelInfoComponent } from './editor-panel-info.component';
-import gameMockData from '@app/features/editor/mocks/game.mock.json';
+import gameMockData from '@app/features/editor/mocks/game.mock';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 
 let service: GameEditorService;

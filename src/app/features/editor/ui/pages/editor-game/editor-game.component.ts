@@ -8,7 +8,7 @@ import { MainLayoutComponent } from '@main/ui/components/main-layout/main-layout
 import { ContainerComponent } from '@app/features/main/ui/components/container/container.component';
 import { EditorPanelInfoComponent } from '../../components/editor-panel-info/editor-panel-info.component';
 import { EditorPanelCellsComponent } from '../../components/editor-panel-cells/editor-panel-cells.component';
-import { EditorPanelPanelDecoComponent } from '../../components/editor-panel-paneldeco/editor-panel-paneldeco.component';
+import { EditorPanelPropsComponent } from '../../components/editor-panel-props/editor-panel-props.component';
 import { EditorPanelExitsComponent } from '../../components/editor-panel-exits/editor-panel-exits.component';
 import { EditorPanelItemsComponent } from '../../components/editor-panel-items/editor-panel-items.component';
 import { LoaderAnimationComponent } from '@app/features/main/ui/components/loader-animation/loader-animation.component';
@@ -36,7 +36,7 @@ import { ContentVersionsModalComponent } from '../../components/content-versions
     EditorPanelExitsComponent,
     EditorPanelCellsComponent,
     EditorPanelItemsComponent,
-    EditorPanelPanelDecoComponent,
+    EditorPanelPropsComponent,
     ContentVersionsModalComponent,
   ],
   templateUrl: './editor-game.component.html',
@@ -70,7 +70,7 @@ export class EditorGameComponent {
     { label: 'Map', slug: 'map' },
     { label: 'Exits', slug: 'exits' },
     { label: 'Items', slug: 'items' },
-    { label: 'Panels', slug: 'paneldeco' },
+    { label: 'Props', slug: 'props' },
   ];
 
   ngOnInit() {
@@ -91,7 +91,7 @@ export class EditorGameComponent {
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   async handleSaveClick() {
@@ -115,20 +115,20 @@ export class EditorGameComponent {
   handleSelectExit(id: string) {
     this._gameEditorService.selectItem('');
     this._gameEditorService.selectExit(id);
-    this._gameEditorService.selectPanel('');
+    this._gameEditorService.selectProp('');
     this.subNavCurrent = 'exits';
   }
 
   handleSelectPanel(id: string) {
     this._gameEditorService.selectExit('');
     this._gameEditorService.selectItem('');
-    this._gameEditorService.selectPanel(id);
-    this.subNavCurrent = 'paneldeco';
+    this._gameEditorService.selectProp(id);
+    this.subNavCurrent = 'props';
   }
   handleSelectMapCell(id: string) {
     this._gameEditorService.selectExit('');
     this._gameEditorService.selectItem('');
-    this._gameEditorService.selectPanel('');
+    this._gameEditorService.selectProp('');
     this._gameEditorService.setSelectedCellPosition(id);
     this.subNavCurrent = 'map';
   }

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EventEmitter } from '@angular/core';
 import { EditorPanelExitsComponent } from './editor-panel-exits.component';
-import gameMockData from '@app/features/editor/mocks/game.mock.json';
+import gameMockData from '@app/features/editor/mocks/game.mock';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import { GameAreaExit } from '@app/features/main/interfaces/types';
 

@@ -1,18 +1,8 @@
 <div class="area-editor-stage">
-  <div
-    id="area-editor-bg-click-catcher"
-    (click)="handleBackgroundClick()"
-    class="absolute top-0 left-0 w-full h-full"
-    aria-hidden="true"
-  ></div>
-  <svg
-    viewBox="0 0 100 50"
-    version="1.1"
-    xmlns="http://www.w3.org/2000/svg"
-    xmlns:svg="http://www.w3.org/2000/svg"
-    class="stage-base"
-    (click)="handleBackgroundClick()"
-  >
+  <div id="area-editor-bg-click-catcher" (click)="handleBackgroundClick()" class="absolute top-0 left-0 w-full h-full"
+    aria-hidden="true"></div>
+  <svg viewBox="0 0 100 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"
+    class="stage-base" (click)="handleBackgroundClick()">
     <g id="outer-ring">
       <path class="outline" d="M 50,0 100,25 50,50 0,25 Z" />
       <path class="inner" d="M 50,0.5 99,25 50,49.5 1,25 Z" />
@@ -22,55 +12,31 @@
   @if(selectedAreaMap) {
   <div>
     @for(positionKey of areaDataPositionKeys; track positionKey;) {
-    <app-area-cell
-      [positionKey]="positionKey"
-      [cellData]="selectedAreaMap[positionKey]"
-      [isEditorMode]="true"
-      [selectedAreaCellPosition]="selectedAreaCellPosition"
-      (onClick)="handleMapCellClick($event)"
-    />
+    <app-area-cell [positionKey]="positionKey" [cellData]="selectedAreaMap[positionKey]" [isEditorMode]="true"
+      [selectedAreaCellPosition]="selectedAreaCellPosition" (onClick)="handleMapCellClick($event)" />
     }
 
-    <div
-      class="absolute top-0 left-0 w-full h-full bg-gray-800/50 pointer-events-none	z-[80] {{
+    <div class="absolute top-0 left-0 w-full h-full bg-gray-800/50 pointer-events-none	z-[80] {{
         anyCellSelected ? 'block' : 'hidden'
-      }}"
-    ></div>
+      }}"></div>
 
     <!-- Area Items -->
     @for(item of selectedAreaItems; track item.id;) {
-    <app-area-item
-      [item]="item"
-      [isEditorSelected]="selectedItemId === item.id"
-      [isEditorMode]="true"
-      (onClick)="handleItemClick(item.id)"
-    />
+    <app-area-item [item]="item" [isEditorSelected]="selectedItemId === item.id" [isEditorMode]="true"
+      (onClick)="handleItemClick(item.id)" />
     } @if(playerPosition) {
     <app-editor-player-position [playerPosition]="playerPosition" />
     }
-    <!-- Area PanelDeco -->
-    @for(panel of selectedAreaPanels; track panel.id;) {
-    <app-area-panel
-      [panel]="panel"
-      [isPanelSelected]="selectedPanelId === panel.id"
-      [isClickable]="true"
-      [isEditorMode]="true"
-      (onClick)="handlePanelClick(panel.id)"
-      [isNearPlayer]="true"
-      [isLockedOut]="false"
-    />
+    <!-- Area Props -->
+    @for(prop of selectedAreaProps; track prop.id;) {
+    <app-area-prop [prop]="prop" [isPropSelected]="selectedPropId === prop.id" [isClickable]="true"
+      [isEditorMode]="true" (onClick)="handlePropClick(prop.id)" [isNearPlayer]="true" [isLockedOut]="false" />
     }
 
     <!-- Area Exits -->
     @for(exit of selectedAreaExits; track exit.id;) {
-    <app-area-exit
-      [exit]="exit"
-      [isEditorSelected]="selectedExitId === exit.id"
-      [isClickable]="true"
-      (onClick)="handleExitClick(exit.id)"
-      [isNearPlayer]="true"
-      [isLockedOut]="false"
-    />
+    <app-area-exit [exit]="exit" [isEditorSelected]="selectedExitId === exit.id" [isClickable]="true"
+      (onClick)="handleExitClick(exit.id)" [isNearPlayer]="true" [isLockedOut]="false" />
     }
   </div>
   }

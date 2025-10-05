@@ -7,54 +7,30 @@
           {{ isContentVersionModalOpen ? "Content Versions" : "Editor" }}
         </div>
         <div class="relative top:0 lg:top-[-9px] flex flex-row gap-4">
-          <app-button
-            variant="outlined"
-            label="Play"
-            [isDisabled]="isLoading"
-            (onButtonClick)="handlePlayClick()"
-          />
-          <app-button
-            variant="outlined"
-            label="Versions"
-            [isDisabled]="isLoading"
-            (onButtonClick)="handleContentVersionModalToggle(true)"
-          />
-          <app-button
-            variant="contained"
-            label="Save"
-            [isDisabled]="isLoading"
-            (onButtonClick)="handleSaveClick()"
-          />
+          <app-button variant="outlined" label="Play" [isDisabled]="isLoading" (onButtonClick)="handlePlayClick()" />
+          <app-button variant="outlined" label="Versions" [isDisabled]="isLoading"
+            (onButtonClick)="handleContentVersionModalToggle(true)" />
+          <app-button variant="contained" label="Save" [isDisabled]="isLoading" (onButtonClick)="handleSaveClick()" />
         </div>
       </div>
 
       <div class="flex flex-col lg:flex-row gap-8">
         <div id="editor-panel-controls" class="lg:max-w-md w-full">
-          <div
-            id="editor-tab-switcher"
-            class="inline-flex rounded-md shadow-sm w-full"
-            role="group"
-          >
+          <div id="editor-tab-switcher" class="inline-flex rounded-md shadow-sm w-full" role="group">
             @for (item of subNavLinks; track item.label; let idx = $index) {
-            <button
-              type="button"
-              (click)="handleSubNavClick(item.slug)"
-              class="px-4 py-2 w-full text-sm font-bold  border focus:z-10  border-gray-700  hover:text-white hover:bg-gray-800 {{
+            <button type="button" (click)="handleSubNavClick(item.slug)" class="px-4 py-2 w-full text-sm font-bold  border focus:z-10  border-gray-700  hover:text-white hover:bg-gray-800 {{
                 idx === 0 && 'rounded-s-lg'
               }} {{ idx === subNavLinks.length - 1 && 'rounded-e-lg' }} {{
                 subNavCurrent === item.slug ? '' : ''
               }} bg-gray-900 text-gray-100 disabled:bg-gray-700 disabled:text-white transition-colors duration-300"
-              [disabled]="subNavCurrent === item.slug"
-            >
+              [disabled]="subNavCurrent === item.slug">
               {{ item.label }}
             </button>
             }
           </div>
           <div class="flex flex-col gap-8 mt-8">
             @if (isLoading) {
-            <div
-              class="fixed inset-0 flex items-center justify-center bg-black-50 z-[999]"
-            >
+            <div class="fixed inset-0 flex items-center justify-center bg-black-50 z-[999]">
               <app-loader-animation />
             </div>
             }
@@ -67,28 +43,22 @@
             <app-editor-panel-exits />
             } @else if (subNavCurrent === 'items') {
             <app-editor-panel-items />
-            } @else if (subNavCurrent === 'paneldeco') {
-            <app-editor-panel-paneldeco />
+            } @else if (subNavCurrent === 'props') {
+            <app-editor-panel-props />
             }
           </div>
         </div>
         <div id="editor-panel-content" class="flex-grow">
           <div id="editor-content-stage" class="p-4 bg-gray-900">
-            <app-editor-area
-              (onSelectItem)="handleSelectItem($event)"
-              (onSelectExit)="handleSelectExit($event)"
-              (onSelectPanel)="handleSelectPanel($event)"
-              (onSelectMapCell)="handleSelectMapCell($event)"
-            />
+            <app-editor-area (onSelectItem)="handleSelectItem($event)" (onSelectExit)="handleSelectExit($event)"
+              (onSelectProp)="handleSelectPanel($event)" (onSelectMapCell)="handleSelectMapCell($event)" />
           </div>
         </div>
       </div>
     </div>
   </app-container>
   @if (isContentVersionModalOpen) {
-  <app-content-versions-modal
-    gameId="{{ game?.id }}"
-    (onCloseModal)="handleContentVersionModalToggle(false)"
-  ></app-content-versions-modal>
+  <app-content-versions-modal gameId="{{ game?.id }}"
+    (onCloseModal)="handleContentVersionModalToggle(false)"></app-content-versions-modal>
   }
 </app-main-layout>

@@ -136,6 +136,11 @@ export class EditorPanelExitsComponent {
   }
 
   handleEditClick(id: string) {
+    if (this.selectedExitId === id) {
+      this._gameEditorService.selectExit('');
+      this.selectedExitId = '';
+      return;
+    }
     this._gameEditorService.selectExit(id);
     this.updateUiAfterExitSelection(id);
   }

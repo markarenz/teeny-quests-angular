@@ -1,6 +1,6 @@
 import { fakeAsync, TestBed, tick, flush } from '@angular/core/testing';
 import { gamesApiUrl } from '@config/index';
-import gameMockData from '@app/features/editor/mocks/game.mock.json';
+import gameMockData from '@app/features/editor/mocks/game.mock';
 import fetchMock from 'fetch-mock';
 import { MainAppService } from './main-app-service';
 import { skip, take, first, firstValueFrom } from 'rxjs';
@@ -34,7 +34,7 @@ describe('toggleMenu', () => {
   it('should toggle the menu open value', () => {
     let i = 0;
     const expectedResults = [false, true, false];
-    service.isMenuOpenObs.subscribe((value) => {
+    service.isMenuOpenObs.subscribe(value => {
       expect(value).toEqual(expectedResults[i]);
       i += 1;
     });

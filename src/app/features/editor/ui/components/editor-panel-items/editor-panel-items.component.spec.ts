@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
-import gameMockData from '@app/features/editor/mocks/game.mock.json';
+import gameMockData from '@app/features/editor/mocks/game.mock';
 import { EditorPanelItemsComponent } from './editor-panel-items.component';
 import { GameItem } from '@app/features/main/interfaces/types';
 

@@ -44,9 +44,9 @@ export type GameActionEffects = {
   [key: string]: ActionEffect[];
 };
 
-export type GamePanelDeco = {
+export type GameProp = {
   id: string;
-  panelDecoType: string; // e.g., 'torch', 'painting', 'switch'
+  propType: string; // e.g., 'torch', 'painting', 'switch'
   areaId: string;
   x: number;
   y: number;
@@ -98,7 +98,7 @@ export type GameArea = {
   map: GameAreaMap;
   exits: GameAreaExit[];
   items: GameItem[];
-  panels: GamePanelDeco[];
+  props: GameProp[];
 };
 
 export type GameEventCondition = {
@@ -156,7 +156,7 @@ export type GameStateArea = {
   map: GameAreaMap;
   items: GameItem[];
   exits: GameAreaExit[];
-  panels: GamePanelDeco[];
+  props: GameProp[];
 };
 
 export type GameState = {
@@ -236,7 +236,7 @@ export type TableField = {
   actions?: TableAction[];
 };
 
-export type PanelDecoDefinition = {
+export type PropDefinition = {
   id: string;
   name: string;
   canSetHeight: boolean;

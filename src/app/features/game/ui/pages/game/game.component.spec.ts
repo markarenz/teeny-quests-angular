@@ -7,7 +7,7 @@ import { Location } from '@angular/common';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { GameService } from '@app/features/game/services/game-service/game-service.service';
-import gameMockData from '@app/features/editor/mocks/game.mock.json';
+import gameMockData from '@app/features/editor/mocks/game.mock';
 import { GameROM } from '@app/features/main/interfaces/types';
 
 describe('GameComponent', () => {

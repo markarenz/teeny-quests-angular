@@ -6,9 +6,13 @@ import {
 } from '@angular/core/testing';
 import { GameService } from '@app/features/game/services/game-service/game-service.service';
 import { ModalInventoryComponent } from './modal-inventory.component';
-import gameMockData from '@app/features/editor/mocks/game.mock.json';
+import gameMockData, {
+  gameStateMockData,
+} from '@app/features/editor/mocks/game.mock';
+import { GameROM } from '@app/features/main/interfaces/types';
 
 let gameMock = { ...gameMockData };
+let gameStateMock = { ...gameStateMockData };
 
 describe('ModalInventoryComponent', () => {
   let component: ModalInventoryComponent;
@@ -20,7 +24,7 @@ describe('ModalInventoryComponent', () => {
   });
 
   beforeEach(async () => {
-    gameMock = await JSON.parse(
+    gameMock = <GameROM>await JSON.parse(
       JSON.stringify({
         ...gameMockData,
       })
@@ -50,7 +54,7 @@ describe('ModalInventoryComponent', () => {
   it('should handle inventory close', fakeAsync(() => {
     let i = 0;
     const expectedValues = ['', 'inventory', ''];
-    service.pageModalStatusObs.subscribe((status) => {
+    service.pageModalStatusObs.subscribe(status => {
       expect(status).toEqual(expectedValues[i]);
       if (i === 2) {
         flush();
