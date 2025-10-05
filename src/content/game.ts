@@ -41,7 +41,7 @@ const game: GameROM = {
         },
         exits: [],
         items: [],
-        panels: [],
+        props: [],
       },
     },
     events: [],

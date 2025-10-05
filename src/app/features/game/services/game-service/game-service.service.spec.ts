@@ -293,11 +293,11 @@ describe('turnActionItemClick', () => {
     expect(gameState?.player?.inventory).toBeDefined();
   }));
 
-  it('should process turn panel click', fakeAsync(async () => {
+  it('should process turn prop click', fakeAsync(async () => {
     const service: GameService = TestBed.inject(GameService);
     service.processTurn({
-      verb: 'panel-click',
-      noun: 'panel1',
+      verb: 'prop-click',
+      noun: 'prop1',
     });
     const newGameState = await firstValueFrom(
       service.gameStateObs.pipe(skip(0), take(2))

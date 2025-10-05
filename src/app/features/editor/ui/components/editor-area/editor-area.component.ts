@@ -7,12 +7,12 @@ import {
   GameAreaExit,
   GameAreaMapCell,
   GameItem,
-  GamePanelDeco,
+  GameProp,
 } from '@app/features/main/interfaces/types';
 import { AreaCellComponent } from '@app/features/game/ui/components/area-cell/area-cell.component';
 import { AreaExitComponent } from '@app/features/game/ui/components/area-exit/area-exit.component';
 import { AreaItemComponent } from '@app/features/game/ui/components/area-item/area-item.component';
-import { AreaPanelComponent } from '@app/features/game/ui/components/area-panel/area-panel.component';
+import { AreaPropComponent } from '@app/features/game/ui/components/area-prop/area-prop.component';
 import { EditorPlayerPositionComponent } from '../editor-player-position/editor-player-position.component';
 
 @Component({
@@ -22,7 +22,7 @@ import { EditorPlayerPositionComponent } from '../editor-player-position/editor-
     AreaCellComponent,
     AreaExitComponent,
     AreaItemComponent,
-    AreaPanelComponent,
+    AreaPropComponent,
     EditorPlayerPositionComponent,
   ],
   templateUrl: './editor-area.component.html',
@@ -32,7 +32,7 @@ export class EditorAreaComponent {
   constructor(private _gameEditorService: GameEditorService) {}
   private subscriptions: Subscription[] = [];
   @Output() onSelectItem = new EventEmitter<string>();
-  @Output() onSelectPanel = new EventEmitter<string>();
+  @Output() onSelectProp = new EventEmitter<string>();
   @Output() onSelectExit = new EventEmitter<string>();
   @Output() onSelectMapCell = new EventEmitter<string>();
 
@@ -42,11 +42,11 @@ export class EditorAreaComponent {
   selectedAreaMap: GameArea['map'] | null = null;
   selectedAreaExits: GameArea['exits'] | null = null;
   selectedAreaItems: GameArea['items'] | null = null;
-  selectedAreaPanels: GameArea['panels'] | null = null;
+  selectedAreaProps: GameArea['props'] | null = null;
   selectedAreaCellPosition: string = '';
   selectedItemId: string = '';
   selectedExitId: string = '';
-  selectedPanelId: string = '';
+  selectedPropId: string = '';
   selectedExitDestination: string = '';
   selectedCell: GameAreaMapCell | null = null;
   anyCellSelected: boolean = false;
@@ -88,8 +88,8 @@ export class EditorAreaComponent {
       })
     );
     this.subscriptions.push(
-      this._gameEditorService.selectedPanelIdObs.subscribe((data: string) => {
-        this.selectedPanelId = data;
+      this._gameEditorService.selectedPropIdObs.subscribe((data: string) => {
+        this.selectedPropId = data;
       })
     );
     this.subscriptions.push(
@@ -120,11 +120,9 @@ export class EditorAreaComponent {
       })
     );
     this.subscriptions.push(
-      this._gameEditorService.areaPanelsObs.subscribe(
-        (data: GamePanelDeco[]) => {
-          this.selectedAreaPanels = data;
-        }
-      )
+      this._gameEditorService.areaPropsObs.subscribe((data: GameProp[]) => {
+        this.selectedAreaProps = data;
+      })
     );
     this.subscriptions.push(
       this._gameEditorService.areaItemsObs.subscribe((data: GameItem[]) => {
@@ -144,7 +142,7 @@ export class EditorAreaComponent {
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   handleAreaCellClick(areaId: string, cellPosition: string) {
@@ -167,8 +165,8 @@ export class EditorAreaComponent {
   handleItemClick(id: string) {
     this.onSelectItem.emit(id);
   }
-  handlePanelClick(id: string) {
-    this.onSelectPanel.emit(id);
+  handlePropClick(id: string) {
+    this.onSelectProp.emit(id);
   }
   handleMapCellClick(id: string) {
     this.onSelectMapCell.emit(id);

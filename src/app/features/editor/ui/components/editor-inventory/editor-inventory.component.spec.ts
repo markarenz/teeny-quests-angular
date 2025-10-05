@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EditorInventoryComponent } from './editor-inventory.component';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
-import gameMockData from '@app/features/editor/mocks/game.mock.json';
+import gameMockData from '@app/features/editor/mocks/game.mock';
 
 let service: GameEditorService;
 
@@ -25,7 +25,7 @@ describe('EditorInventoryComponent', () => {
   it('should create', async () => {
     expect(component).toBeTruthy();
 
-    service.gameObs.subscribe((game) => {
+    service.gameObs.subscribe(game => {
       expect(game).toEqual(gameMockData);
     });
   });
@@ -44,7 +44,7 @@ describe('EditorInventoryComponent', () => {
       gameMockData1,
       gameMockData2,
     ];
-    service.gameObs.subscribe((game) => {
+    service.gameObs.subscribe(game => {
       expect(game).toEqual(expectedResults[i]);
       i += 1;
     });

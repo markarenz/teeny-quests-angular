@@ -1,6 +1,6 @@
 import { utilCreateExit, utilDeleteExit, utilUpdateExit } from './exits-utils';
 import { getPositionKeysForGridSize } from '@main/utils';
-import gameMockData from '@app/features/editor/mocks/game.mock.json';
+import gameMockData from '@app/features/editor/mocks/game.mock';
 
 describe('utilCreateExit', () => {
   it('creates a new exit in an open spot- facing north', () => {
@@ -16,10 +16,14 @@ describe('utilCreateExit', () => {
   it('Unable to create a new exit since map is full', () => {
     const gameMock = JSON.parse(JSON.stringify(gameMockData));
     const positionKeys = getPositionKeysForGridSize();
-    const mockExit = { ...gameMockData.content.areas.start.exits[0] };
+    const mockExit = { ...gameMockData.content.areas['start'].exits[0] };
     positionKeys.forEach((key, idx) => {
       const [x, y] = key.split('_');
-      gameMock.content.areas.start.exits[idx] = { ...mockExit, x: +x, y: +y };
+      gameMock.content.areas['start'].exits[idx] = {
+        ...mockExit,
+        x: +x,
+        y: +y,
+      };
     });
 
     const { nextGame, newExit } = utilCreateExit({

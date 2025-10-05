@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SvgPanelTorchComponent } from './svg-panel-torch.component';
+import { SvgPropTorchComponent } from './svg-prop-torch.component';
 
-describe('SvgPanelTorchComponent', () => {
-  let component: SvgPanelTorchComponent;
-  let fixture: ComponentFixture<SvgPanelTorchComponent>;
+describe('SvgPropTorchComponent', () => {
+  let component: SvgPropTorchComponent;
+  let fixture: ComponentFixture<SvgPropTorchComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SvgPanelTorchComponent],
+      imports: [SvgPropTorchComponent],
       teardown: { destroyAfterEach: false },
     }).compileComponents();
 
-    fixture = TestBed.createComponent(SvgPanelTorchComponent);
+    fixture = TestBed.createComponent(SvgPropTorchComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

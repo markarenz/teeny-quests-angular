@@ -4,11 +4,11 @@ import { GameEditorService } from '@app/features/editor/services/game-editor-ser
 import { FormsModule } from '@angular/forms';
 import {
   GameArea,
-  GamePanelDeco,
+  GameProp,
   SelectIUIOption,
   GameActionEffects,
   ActionEffect,
-  PanelDecoDefinition,
+  PropDefinition,
 } from '@app/features/main/interfaces/types';
 import { AreaCellSelectorComponent } from '../area-cell-selector/area-cell-selector.component';
 import { CollapsibleCardComponent } from '@app/features/main/ui/components/collapsible-card/collapsible-card.component';
@@ -17,13 +17,13 @@ import { getLabelFromSlug, getPositionKeysForGridSize } from '@main/utils';
 import { floorDefinitions } from '@content/floor-definitions';
 import { EditorInputActionsComponent } from '../editor-input-actions/editor-input-actions.component';
 import {
-  panelDecoDefinitions,
-  panelDecoOptions,
-  panelDecoWallOptions,
-} from '@content/panelDeco-definitions';
+  propDecoDefinitions,
+  propDecoOptions,
+  propDecoWallOptions,
+} from '@content/prop-definitions';
 
 @Component({
-  selector: 'app-editor-panel-paneldeco',
+  selector: 'app-editor-panel-props',
   standalone: true,
   imports: [
     FormsModule,
@@ -32,34 +32,34 @@ import {
     IconButtonComponent,
     EditorInputActionsComponent,
   ],
-  templateUrl: './editor-panel-paneldeco.component.html',
-  styleUrl: './editor-panel-paneldeco.component.css',
+  templateUrl: './editor-panel-props.component.html',
+  styleUrl: './editor-panel-props.component.css',
 })
-export class EditorPanelPanelDecoComponent {
+export class EditorPanelPropsComponent {
   constructor(private _gameEditorService: GameEditorService) {}
   private subscriptions: Subscription[] = [];
   selectedAreaId: string = '';
-  panelTypeOptions: SelectIUIOption[] = panelDecoOptions;
+  propTypeOptions: SelectIUIOption[] = propDecoOptions;
 
-  selectedPanelDefinition: PanelDecoDefinition | null = null;
-  selectedPanelActions: GameActionEffects = {};
-  inputPanelType: string = '';
-  inputPanelPosition: string = '1_1';
-  inputPanelWall: string = 'west';
-  inputPanelHeight = '1';
-  inputPanelStatus: string = '';
-  inputPanelStatusEffects: GameActionEffects = {};
+  selectedPropDefinition: PropDefinition | null = null;
+  selectedPropActions: GameActionEffects = {};
+  inputPropType: string = '';
+  inputPropPosition: string = '1_1';
+  inputPropWall: string = 'west';
+  inputPropHeight = '1';
+  inputPropStatus: string = '';
+  inputPropStatusEffects: GameActionEffects = {};
 
   canSetHeight: boolean = true;
-  selectedPanelId: string = '';
-  panels: GamePanelDeco[] = [];
+  selectedPropId: string = '';
+  props: GameProp[] = [];
   isSelectedPositionValid: boolean = false;
 
   lockouts: string[] = [];
   area: GameArea | null = null;
-  panelWallOptions = panelDecoWallOptions;
-  panelStatusOptions: SelectIUIOption[] = [];
-  panelHeightOptions: SelectIUIOption[] = [];
+  propWallOptions = propDecoWallOptions;
+  propStatusOptions: SelectIUIOption[] = [];
+  propHeightOptions: SelectIUIOption[] = [];
 
   getNeighbors(position: string): { neighborN: any; neighborW: any } {
     if (!this.area) return { neighborN: null, neighborW: null };
@@ -71,36 +71,36 @@ export class EditorPanelPanelDecoComponent {
   }
 
   refreshUIData() {
-    if (this.selectedPanelId) {
+    if (this.selectedPropId) {
       if (!this.area) return;
       const position =
-        this.inputPanelPosition.length > 0 ? this.inputPanelPosition : '1_1';
+        this.inputPropPosition.length > 0 ? this.inputPropPosition : '1_1';
       const map = this.area.map;
       const currentH = map[position].h;
-      this.selectedPanelDefinition =
-        panelDecoDefinitions[this.inputPanelType] ?? null;
-      if (!this.selectedPanelDefinition) {
-        console.error('ERROR: Panel has no definition', this.inputPanelType);
+      this.selectedPropDefinition =
+        propDecoDefinitions[this.inputPropType] ?? null;
+      if (!this.selectedPropDefinition) {
+        console.error('ERROR: Prop has no definition', this.inputPropType);
         return;
       }
-      this.canSetHeight = this.selectedPanelDefinition.canSetHeight;
+      this.canSetHeight = this.selectedPropDefinition.canSetHeight;
       if (!this.canSetHeight) {
-        this.inputPanelHeight = currentH.toString();
+        this.inputPropHeight = currentH.toString();
       }
 
-      this.panelStatusOptions = this.selectedPanelDefinition?.statuses
-        ? this.selectedPanelDefinition?.statuses.map(status => {
+      this.propStatusOptions = this.selectedPropDefinition?.statuses
+        ? this.selectedPropDefinition?.statuses.map(status => {
             return { value: status, label: getLabelFromSlug(status) };
           })
         : [];
 
-      const selectedPanel = this.panels.find(
-        panel => panel.id === this.selectedPanelId
+      const selectedProp = this.props.find(
+        prop => prop.id === this.selectedPropId
       );
       const { neighborN, neighborW } = this.getNeighbors(position);
       const neighborWValid = neighborW && neighborW.h > currentH + 3;
       const neighborNValid = neighborN && neighborN.h > currentH + 3;
-      this.panelWallOptions = panelDecoWallOptions.filter(option => {
+      this.propWallOptions = propDecoWallOptions.filter(option => {
         if (option.value === 'west' && !neighborWValid) {
           return false;
         }
@@ -109,16 +109,16 @@ export class EditorPanelPanelDecoComponent {
         }
         return true;
       });
-      this.panelHeightOptions = [];
+      this.propHeightOptions = [];
       const relevantNeighborHeight =
-        this.inputPanelWall === 'north' ? neighborN?.h : neighborW?.h;
+        this.inputPropWall === 'north' ? neighborN?.h : neighborW?.h;
       const minH = currentH;
       const maxH = relevantNeighborHeight ? relevantNeighborHeight : currentH;
       const diffH = maxH - minH - 4;
       if (diffH >= 0) {
         for (let i = 0; i <= diffH; i++) {
           const stringValue = `${minH + i}`;
-          this.panelHeightOptions.push({
+          this.propHeightOptions.push({
             value: stringValue,
             label: stringValue,
           });
@@ -127,7 +127,7 @@ export class EditorPanelPanelDecoComponent {
     }
   }
 
-  updatePanelPositionLockouts() {
+  updatePropPositionLockouts() {
     if (this.area) {
       const newLockouts: string[] = [];
       const positionKeys = getPositionKeysForGridSize();
@@ -154,18 +154,18 @@ export class EditorPanelPanelDecoComponent {
   }
 
   ngOnInit() {
-    this.updatePanelPositionLockouts();
+    this.updatePropPositionLockouts();
     this.subscriptions.push(
-      this._gameEditorService.selectedPanelIdObs.subscribe((data: string) => {
+      this._gameEditorService.selectedPropIdObs.subscribe((data: string) => {
         if (data && data.length > 0) {
-          this.selectedPanelId = data;
-          this.panels = this._gameEditorService.getPanelsForCurrentArea();
-          this.updateUiAfterPanelSelection(data);
-          const selectedPanel = this.panels.find(
-            panel => panel.id === this.selectedPanelId
+          this.selectedPropId = data;
+          this.props = this._gameEditorService.getPropsForCurrentArea();
+          this.updateUiAfterPropSelection(data);
+          const selectedProp = this.props.find(
+            prop => prop.id === this.selectedPropId
           );
-          if (selectedPanel) {
-            this.selectedPanelActions = selectedPanel.statusActions || {};
+          if (selectedProp) {
+            this.selectedPropActions = selectedProp.statusActions || {};
           }
         }
       })
@@ -174,10 +174,10 @@ export class EditorPanelPanelDecoComponent {
       this._gameEditorService.selectedAreaIdObs.subscribe((data: any) => {
         if (this.selectedAreaId !== data) {
           this.selectedAreaId = data;
-          this.panels = this._gameEditorService.getPanelsForCurrentArea();
+          this.props = this._gameEditorService.getPropsForCurrentArea();
           this.area = this._gameEditorService.getAreaById(this.selectedAreaId);
 
-          this.updatePanelPositionLockouts();
+          this.updatePropPositionLockouts();
           this.refreshUIData();
         }
       })
@@ -194,78 +194,83 @@ export class EditorPanelPanelDecoComponent {
   }
 
   handleDeleteClick(id: string) {
-    this._gameEditorService.deletePanel(id);
+    this._gameEditorService.deleteProp(id);
   }
 
-  updateUiAfterPanelSelection(id: string) {
-    const selectedPanel = this.panels.find(panel => panel.id === id);
-    this.inputPanelPosition = selectedPanel
-      ? `${selectedPanel.y}_${selectedPanel.x}`
+  updateUiAfterPropSelection(id: string) {
+    const selectedProp = this.props.find(prop => prop.id === id);
+    this.inputPropPosition = selectedProp
+      ? `${selectedProp.y}_${selectedProp.x}`
       : '';
-    this.inputPanelType = selectedPanel ? selectedPanel.panelDecoType : '';
+    this.inputPropType = selectedProp ? selectedProp.propType : '';
 
-    this.inputPanelWall = selectedPanel ? selectedPanel.wall : 'north';
-    this.inputPanelHeight = selectedPanel ? `${selectedPanel.h}` : '1';
-    this.inputPanelStatus = selectedPanel ? `${selectedPanel.status}` : '';
-    this.updatePanelPositionLockouts();
+    this.inputPropWall = selectedProp ? selectedProp.wall : 'north';
+    this.inputPropHeight = selectedProp ? `${selectedProp.h}` : '1';
+    this.inputPropStatus = selectedProp ? `${selectedProp.status}` : '';
+    this.updatePropPositionLockouts();
     this.refreshUIData();
   }
 
   handleEditClick(id: string) {
-    this._gameEditorService.selectPanel(id);
-    this.updateUiAfterPanelSelection(id);
+    if (this.selectedPropId === id) {
+      this._gameEditorService.selectProp('');
+      this.selectedPropId = '';
+      return;
+    }
+    this._gameEditorService.selectProp(id);
+    this.updateUiAfterPropSelection(id);
   }
 
   handlePositionSelect(position: string) {
-    this.inputPanelPosition = position;
-    this.handlePanelInputChange();
+    this.inputPropPosition = position;
+    this.handlePropInputChange();
   }
 
   handleCreateClick() {
-    const panel: GamePanelDeco | null = this._gameEditorService.createPanel(
+    const prop: GameProp | null = this._gameEditorService.createProp(
       this.lockouts
     );
-    if (panel) {
-      this.handleEditClick(panel.id);
+    if (prop) {
+      this.handleEditClick(prop.id);
     }
   }
 
-  handlePanelInputChange() {
+  handlePropInputChange() {
     this.refreshUIData();
-    const selectedPanel = this.panels.find(
-      panel => panel.id === this.selectedPanelId
+    const selectedProp = this.props.find(
+      prop => prop.id === this.selectedPropId
     );
-    const [y, x] = this.inputPanelPosition.split('_');
+    const [y, x] = this.inputPropPosition.split('_');
 
-    if (selectedPanel) {
-      const wall = this.panelWallOptions
+    if (selectedProp) {
+      const wall = this.propWallOptions
         .map(option => option.value)
-        .includes(this.inputPanelWall)
-        ? this.inputPanelWall
-        : this.panelWallOptions[0].value;
+        .includes(this.inputPropWall)
+        ? this.inputPropWall
+        : this.propWallOptions[0].value;
 
-      this.inputPanelWall = wall;
+      this.inputPropWall = wall;
 
-      const updatedPanel: GamePanelDeco = {
-        ...selectedPanel,
-        id: this.selectedPanelId,
-        panelDecoType: this.inputPanelType,
+      const updatedProp: GameProp = {
+        ...selectedProp,
+        id: this.selectedPropId,
+        propType: this.inputPropType,
         areaId: this.selectedAreaId,
         wall,
         x: +x,
         y: +y,
-        h: parseInt(this.inputPanelHeight, 10),
-        status: this.inputPanelStatus,
-        statusActions: this.selectedPanelActions,
+        h: parseInt(this.inputPropHeight, 10),
+        status: this.inputPropStatus,
+        statusActions: this.selectedPropActions,
       };
-      this._gameEditorService.updatePanel(updatedPanel);
+      this._gameEditorService.updateProp(updatedProp);
 
       this.refreshUIData();
     }
   }
 
-  handlePanelActionInputChange(actions: ActionEffect[], status: string) {
-    this.selectedPanelActions[status] = actions;
-    this.handlePanelInputChange();
+  handlePropActionInputChange(actions: ActionEffect[], status: string) {
+    this.selectedPropActions[status] = actions;
+    this.handlePropInputChange();
   }
 }

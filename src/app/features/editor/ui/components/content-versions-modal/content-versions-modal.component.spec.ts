@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
 import { ContentVersionsModalComponent } from './content-versions-modal.component';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import { By } from '@angular/platform-browser';
-import gameMockData from '@app/features/editor/mocks/game.mock.json';
+import gameMockData from '@app/features/editor/mocks/game.mock';
 
 let gameMock = JSON.parse(JSON.stringify(gameMockData));
 const mockVersion = {

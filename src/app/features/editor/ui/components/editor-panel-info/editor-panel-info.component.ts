@@ -55,14 +55,14 @@ export class EditorPanelInfoComponent {
           this.inputStartingAreaId = this.game?.content.player.areaId || '';
 
           const area = this.game.content.areas[this.inputStartingAreaId];
-          this.lockouts = area.items.map((item) => `${item.y}_${item.x}`);
+          this.lockouts = area.items.map(item => `${item.y}_${item.x}`);
         }
       })
     );
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   handleInfoChange() {

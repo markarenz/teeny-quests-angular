@@ -1002,8 +1002,8 @@
         ],
         "panels": [
           {
-            "id": "panel1",
-            "panelDecoType": "torch",
+            "id": "prop1",
+            "propType": "torch",
             "areaId": "start",
             "statusActions": {},
             "wall": "north",
@@ -1462,7 +1462,6 @@
     }
   },
   "itemStatus": "active",
-  "dateCreated": "2024-12-31T02:28:08.755Z",
   "rating": "n/a",
   "userId": "108221133009572199999",
   "username": "Important Law",
@@ -1470,5 +1469,6 @@
   "introduction": "Game 3 intro2",
   "id": "MNbCyjAEUk1_4nawe7gD36W4JURzaJwb_hcGn6OZvR0",
   "title": "Game 3b2",
+  "dateCreated": "2024-12-31T02:28:08.755Z",
   "dateUpdated": "2024-12-31T02:28:08.755Z"
 }

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AreaPanelComponent } from './area-panel.component';
+import { AreaPropComponent } from './area-prop.component';
 
-describe('AreaPanelComponent', () => {
-  let component: AreaPanelComponent;
-  let fixture: ComponentFixture<AreaPanelComponent>;
+describe('AreaPropComponent', () => {
+  let component: AreaPropComponent;
+  let fixture: ComponentFixture<AreaPropComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AreaPanelComponent],
+      imports: [AreaPropComponent],
       teardown: { destroyAfterEach: false },
     }).compileComponents();
 
-    fixture = TestBed.createComponent(AreaPanelComponent);
+    fixture = TestBed.createComponent(AreaPropComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

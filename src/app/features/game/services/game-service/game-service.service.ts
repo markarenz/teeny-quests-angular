@@ -12,7 +12,7 @@ import { gamesApiUrl, versionsApiUrl } from '@config/index';
 import { getMoveOptions } from './utils/pathfinding';
 import { STANDARD_MOVE_DURATION } from '@config/index';
 import { itemDefinitions } from '@content/item-definitions';
-import { panelDecoDefinitions } from '@content/panelDeco-definitions';
+import { propDecoDefinitions } from '@content/prop-definitions';
 import { logger } from '@app/features/main/utils/logger';
 import { processTurnActions } from './utils/turn-actions';
 
@@ -88,7 +88,7 @@ export class GameService {
       areas[areaId] = {
         exits: nextGameROM.content.areas[areaId].exits,
         items: nextGameROM.content.areas[areaId].items,
-        panels: nextGameROM.content.areas[areaId].panels,
+        props: nextGameROM.content.areas[areaId].props,
         map: nextGameROM.content.areas[areaId].map,
       };
     });
@@ -374,27 +374,27 @@ export class GameService {
     return nextGameState;
   };
 
-  turnActionPanelClick = async (panelId: string): Promise<GameState> => {
+  turnActionPropClick = async (propId: string): Promise<GameState> => {
     let nextGameState = <GameState>(
       JSON.parse(JSON.stringify(this.gameState.value))
     );
     if (this.gameState.value === null) {
       return nextGameState;
     }
-    const panel = nextGameState.areas[nextGameState.player.areaId].panels.find(
-      p => p.id === panelId
+    const prop = nextGameState.areas[nextGameState.player.areaId].props.find(
+      p => p.id === propId
     );
-    if (panel) {
-      const panelDef = panelDecoDefinitions[panel.panelDecoType];
+    if (prop) {
+      const propDef = propDecoDefinitions[prop.propType];
       // Increment status
-      if (panelDef) {
-        const max = panelDef.statuses?.length ?? 2;
-        let idx = panelDef.statuses?.indexOf(panel.status ?? '') ?? 0;
+      if (propDef) {
+        const max = propDef.statuses?.length ?? 2;
+        let idx = propDef.statuses?.indexOf(prop.status ?? '') ?? 0;
         idx += 1;
         if (idx >= max) {
           idx = 0;
         }
-        panel.status = panelDef.statuses ? panelDef.statuses[idx] : '';
+        prop.status = propDef.statuses ? propDef.statuses[idx] : '';
       }
       nextGameState = {
         ...nextGameState,
@@ -402,15 +402,15 @@ export class GameService {
           ...nextGameState.areas,
           [nextGameState.player.areaId]: {
             ...nextGameState.areas[nextGameState.player.areaId],
-            panels: nextGameState.areas[nextGameState.player.areaId].panels.map(
-              p => (p.id === panelId ? panel : p)
+            props: nextGameState.areas[nextGameState.player.areaId].props.map(
+              p => (p.id === propId ? prop : p)
             ),
           },
         },
       };
       nextGameState = processTurnActions(
         nextGameState,
-        panel.statusActions[panel.status ?? ''] ?? []
+        prop.statusActions[prop.status ?? ''] ?? []
       );
 
       // Process actions
@@ -418,7 +418,7 @@ export class GameService {
     }
 
     logger({
-      message: `Panel ${panelId} not found in area ${nextGameState.player.areaId} or panel def not found.`,
+      message: `Prop ${propId} not found in area ${nextGameState.player.areaId} or prop def not found.`,
       type: 'error',
     });
     return nextGameState;
@@ -490,8 +490,8 @@ export class GameService {
         case 'item-click':
           nextGameState = await this.turnActionItemClick(noun);
           break;
-        case 'panel-click':
-          nextGameState = await this.turnActionPanelClick(noun);
+        case 'prop-click':
+          nextGameState = await this.turnActionPropClick(noun);
           break;
         case 'item-use':
           nextGameState = await this.turnActionItemUse(noun);

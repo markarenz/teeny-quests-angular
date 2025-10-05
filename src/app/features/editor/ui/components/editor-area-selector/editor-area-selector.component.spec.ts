@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import { EditorAreaSelectorComponent } from './editor-area-selector.component';
-import gameMockData from '@app/features/editor/mocks/game.mock.json';
+import gameMockData from '@app/features/editor/mocks/game.mock';
 import { GameROM } from '@app/features/main/interfaces/types';
 
 describe('EditorAreaSelectorComponent', () => {

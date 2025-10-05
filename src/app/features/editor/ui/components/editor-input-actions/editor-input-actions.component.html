@@ -23,7 +23,7 @@
   <div class="flex flex-col gap-4">
     <div>
       <label for="action-type-selector">Action Type: {{selectedAction ? getActionLabel(selectedAction) : ''}}</label>
-      <select id="action-type-selector" [(ngModel)]="inputActionType" (change)="handleActionInputChange()">
+      <select id="action-type-selector" [(ngModel)]="inputActionType" (change)="handleActionTypeChange()">
         @for(item of actionTypeOptions; track item.value) {
         <option [value]="item.value">{{ item.label }}</option>
         }
@@ -34,7 +34,6 @@
     @if(selectedActionTypeDefinition?.requiresAreaId) {
     <div>
       <label for="action-area-id-input">Area ID:</label>
-
       <select id="action-area-id-input" [(ngModel)]="inputActionAreaId" (change)="handleActionInputChange()">
         @for(item of areasListOptions; track item.value) {
         <option [value]="item.value">{{ item.label }}</option>
@@ -45,21 +44,28 @@
 
     @if(shouldShowPositionSelector) {
     <div>
-      <label for="action-cell-selector">Value: </label>
-      <app-area-cell-selector id="action-cell-selector" [selectedCellPosition]="inputActionPosition"
+      <label for="action-cell-selector">Position: </label>
+      <app-area-cell-selector id="action-cell-selector" [selectedCellPosition]="inputActionObjectId"
         (onPositionSelect)="handlePositionSelect($event)" [lockouts]="[]" />
     </div>
-    }
-
-    @if(shouldShowNumberInput) {
+    } @else {
     <div>
-      <label for="action-input-number">Position: </label>
-      <input id="action-input-number" [(ngModel)]="inputNumberValue" type="number"
-        [min]="selectedActionTypeDefinition?.numMin ?? 0" [max]="selectedActionTypeDefinition?.numMax ?? 100"
-        (change)="handleActionInputNumberChange()" />
+      <label for="action-object-id">{{objectIdentifierInputLabel}}</label>
+      <select id="action-object-id" [(ngModel)]="inputActionObjectId" (change)="handleActionInputChange()">
+        @for(item of objectIdentifierOptions; track item.value) {
+        <option [value]="item.value">{{ item.label }}</option>
+        }
+      </select>
     </div>
     }
-
+    <div>
+      <label for="action-value">{{valueInputLabel}}</label>
+      <select id="action-value" [(ngModel)]="inputActionValue" (change)="handleActionInputChange()">
+        @for(item of valueOptions; track item.value) {
+        <option [value]="item.value">{{ item.label }}</option>
+        }
+      </select>
+    </div>
   </div>
   }
   </div>

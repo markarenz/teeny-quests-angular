@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { GameAreaComponent } from './game-area.component';
 import { GameService } from '@app/features/game/services/game-service/game-service.service';
 import { GameROM } from '@app/features/main/interfaces/types';
-import gameMockData from '@app/features/editor/mocks/game.mock.json';
+import gameMockData from '@app/features/editor/mocks/game.mock';
 
 describe('GameAreaComponent', () => {
   let component: GameAreaComponent;

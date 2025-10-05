@@ -5,7 +5,7 @@ import {
   getPathBetweenPoints,
   getMoveOptions,
 } from './pathfinding';
-import gameMockData from '@app/features/editor/mocks/game.mock.json';
+import gameMockData from '@app/features/editor/mocks/game.mock';
 
 describe('getHeuristicDistance', () => {
   it('should return the correct distance', () => {
@@ -22,7 +22,7 @@ describe('getHeuristicDistance', () => {
 });
 
 describe('validateMovePositionKey', () => {
-  const areaMap = gameMockData.content.areas.start.map;
+  const areaMap = gameMockData.content.areas['start'].map;
 
   it('should return true for a valid position', () => {
     const positionKey = '1_1';
@@ -36,8 +36,8 @@ describe('validateMovePositionKey', () => {
 });
 
 describe('getPathBetweenPoints', () => {
-  const areaMap = gameMockData.content.areas.start.map;
-  const areaItems = gameMockData.content.areas.start.items;
+  const areaMap = gameMockData.content.areas['start'].map;
+  const areaItems = gameMockData.content.areas['start'].items;
   const positionKeys = getPositionKeysForGridSize();
 
   it('should return a path', () => {
@@ -63,8 +63,8 @@ describe('getPathBetweenPoints', () => {
 });
 
 describe('getMoveOptions', () => {
-  const areaMap = gameMockData.content.areas.start.map;
-  const areaItems = gameMockData.content.areas.start.items;
+  const areaMap = gameMockData.content.areas['start'].map;
+  const areaItems = gameMockData.content.areas['start'].items;
   const positionKeyStart = '1_1';
 
   it('should return an object with movement options', () => {

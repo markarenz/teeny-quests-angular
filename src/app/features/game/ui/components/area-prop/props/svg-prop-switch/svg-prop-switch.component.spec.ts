@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SvgPanelSwitchComponent } from './svg-panel-switch.component';
+import { SvgPropSwitchComponent } from './svg-prop-switch.component';
 
-describe('SvgPanelSwitchComponent', () => {
-  let component: SvgPanelSwitchComponent;
-  let fixture: ComponentFixture<SvgPanelSwitchComponent>;
+describe('SvgPropSwitchComponent', () => {
+  let component: SvgPropSwitchComponent;
+  let fixture: ComponentFixture<SvgPropSwitchComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SvgPanelSwitchComponent],
+      imports: [SvgPropSwitchComponent],
       teardown: { destroyAfterEach: false },
     }).compileComponents();
 
-    fixture = TestBed.createComponent(SvgPanelSwitchComponent);
+    fixture = TestBed.createComponent(SvgPropSwitchComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

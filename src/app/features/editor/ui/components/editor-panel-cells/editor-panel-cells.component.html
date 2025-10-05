@@ -1,75 +1,43 @@
-<app-collapsible-card
-  title="Map"
-  [defaultOpen]="true"
-  (onCollapse)="handleCellDeselect()"
->
+<app-collapsible-card title="Map" [defaultOpen]="true" (onCollapse)="handleCellDeselect()">
   <div class="flex flex-col gap-8">
     <div class="flex flex-col gap-4">
       <div class="flex items-center justify-between">
         <label>
           Selected Cell:
           {{
-            selectedCellPosition
-              ? selectedCellPosition.replace("_", ", ")
-              : "None"
+          selectedCellPosition
+          ? selectedCellPosition.replace("_", ", ")
+          : "None"
           }}
         </label>
         <div class="flex flex-row gap-2">
-          <app-icon-button
-            icon="edit"
-            label="Select Cell"
-            (click)="handleToggleCellSelector()"
-          />
-          <app-icon-button
-            icon="close"
-            theme="danger"
-            label="Deselect Cell"
-            (click)="handleCellDeselect()"
-            [isDisabled]="!selectedCellPosition"
-          />
+          <app-icon-button icon="edit" label="Select Cell" (click)="handleToggleCellSelector()" />
+          <app-icon-button icon="close" theme="danger" label="Deselect Cell" (click)="handleCellDeselect()"
+            [isDisabled]="!selectedCellPosition" />
         </div>
       </div>
 
       @if(isCellSelectorOpen) {
-      <app-area-cell-selector
-        id="editor-cell-selector"
-        [selectedCellPosition]="selectedCellPosition"
-        (onPositionSelect)="handleCellSelect($event)"
-      />
+      <app-area-cell-selector id="editor-cell-selector" [selectedCellPosition]="selectedCellPosition"
+        (onPositionSelect)="handleCellSelect($event)" />
       }
     </div>
 
     @if(selectedCellPosition && selectedCell) {
     <div class="flex flex-col gap-4">
       <label> Set Height </label>
-      <div
-        id="input-editor-panel-cells-height"
-        class="flex flex-row justify-between items-center max-w-[200px] w-full mx-auto"
-      >
+      <div id="input-editor-prop-cells-height"
+        class="flex flex-row justify-between items-center max-w-[200px] w-full mx-auto">
         @for(item of buttons; track item.direction) {
-        <button
-          class="height-button"
-          [style.order]="item.direction === 'down' ? 1 : 3"
-          (click)="handleCellHeightChange(item.direction)"
-          [disabled]="
+        <button class="height-button" [style.order]="item.direction === 'down' ? 1 : 3"
+          (click)="handleCellHeightChange(item.direction)" [disabled]="
             item.direction === 'up'
               ? selectedCell.h >= maxHeight
               : selectedCell.h < 1
-          "
-          [attr.aria-label]="item.label"
-        >
-          <svg
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/"
-            class="{{ item.direction === 'down' ? 'rotate-180' : null }}"
-          >
-            <polygon
-              fill="var(--color-gray-200)"
-              stroke="none"
-              points="12 5 3 15 9 15 9 19 15 19 15 15 21 15 12 5"
-            />
+          " [attr.aria-label]="item.label">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/"
+            class="{{ item.direction === 'down' ? 'rotate-180' : null }}">
+            <polygon fill="var(--color-gray-200)" stroke="none" points="12 5 3 15 9 15 9 19 15 19 15 15 21 15 12 5" />
           </svg>
         </button>
         }
@@ -81,37 +49,21 @@
 
     <div class="flex flex-col gap-4">
       <label>Floor: {{ currentFloorOption || "None" }}</label>
-      <app-editor-texture-selector
-        surfaceType="floor"
-        [options]="floorOptions"
-        [selectedId]="selectedCell.floor"
-        (onSelect)="handleFloorChange($event)"
-      />
+      <app-editor-texture-selector surfaceType="floor" [options]="floorOptions" [selectedId]="selectedCell.floor"
+        (onSelect)="handleFloorChange($event)" />
     </div>
     <div class="flex flex-col gap-4">
       <label>Wall Left: {{ currentWallLOption || "None" }}</label>
-      <app-editor-texture-selector
-        [options]="wallOptions"
-        surfaceType="wall"
-        [selectedId]="selectedCell.wallSouth"
-        (onSelect)="handleWallChange($event, 'south')"
-      />
+      <app-editor-texture-selector [options]="wallOptions" surfaceType="wall" [selectedId]="selectedCell.wallSouth"
+        (onSelect)="handleWallChange($event, 'south')" />
     </div>
 
     <div class="flex flex-col gap-4">
       <label>Wall Right: {{ currentWallROption || "None" }}</label>
-      <app-editor-texture-selector
-        [options]="wallOptions"
-        surfaceType="wall"
-        [selectedId]="selectedCell.wallEast"
-        (onSelect)="handleWallChange($event, 'east')"
-      />
+      <app-editor-texture-selector [options]="wallOptions" surfaceType="wall" [selectedId]="selectedCell.wallEast"
+        (onSelect)="handleWallChange($event, 'east')" />
     </div>
     }
-    <app-button
-      [fullWidth]="true"
-      label="Reset Textures"
-      (click)="handleResetTexturesClick()"
-    />
+    <app-button [fullWidth]="true" label="Reset Textures" (click)="handleResetTexturesClick()" />
   </div>
 </app-collapsible-card>

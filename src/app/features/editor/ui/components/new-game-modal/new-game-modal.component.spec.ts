@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
-import gameMockData from '@app/features/editor/mocks/game.mock.json';
+import gameMockData from '@app/features/editor/mocks/game.mock';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 
 let service: GameEditorService;

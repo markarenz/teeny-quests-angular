@@ -84,7 +84,7 @@ export class EditorPanelItemsComponent {
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   handleDeleteClick(id: string) {
@@ -93,7 +93,7 @@ export class EditorPanelItemsComponent {
   }
 
   updateUiAfterExitSelection(id: string) {
-    const selectedItem = this.items.find((item) => item.id === id);
+    const selectedItem = this.items.find(item => item.id === id);
     this.inputItemPosition = selectedItem
       ? `${selectedItem.y}_${selectedItem.x}`
       : '';
@@ -102,6 +102,11 @@ export class EditorPanelItemsComponent {
   }
 
   handleEditClick(id: string) {
+    if (this.selectedItemId === id) {
+      this._gameEditorService.selectItem('');
+      this.selectedItemId = '';
+      return;
+    }
     this._gameEditorService.selectItem(id);
     this.updateUiAfterExitSelection(id);
   }
@@ -123,7 +128,7 @@ export class EditorPanelItemsComponent {
 
   handleItemInputChange() {
     const selectedItem = this.items.find(
-      (item) => item.id === this.selectedItemId
+      item => item.id === this.selectedItemId
     );
     const [y, x] = this.inputItemPosition.split('_');
     if (selectedItem) {

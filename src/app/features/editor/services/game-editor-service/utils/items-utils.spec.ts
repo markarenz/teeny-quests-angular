@@ -1,6 +1,6 @@
 import { utilCreateItem, utilUpdateItem, utilDeleteItem } from './items-utils';
 import { getPositionKeysForGridSize } from '@main/utils';
-import gameMockData from '@app/features/editor/mocks/game.mock.json';
+import gameMockData from '@app/features/editor/mocks/game.mock';
 import { GameItem } from '@app/features/main/interfaces/types';
 
 describe('utilDeleteItem', () => {
@@ -41,10 +41,14 @@ describe('utilCreateItem', () => {
   it('creates a new default item in an open spot- facing south', () => {
     const gameMock = JSON.parse(JSON.stringify(gameMockData));
     const positionKeys = getPositionKeysForGridSize();
-    const mockItem = { ...gameMockData.content.areas.start.items[0] };
+    const mockItem = { ...gameMockData.content.areas['start'].items[0] };
     positionKeys.forEach((key, idx) => {
       const [x, y] = key.split('_');
-      gameMock.content.areas.start.items[idx] = { ...mockItem, x: +x, y: +y };
+      gameMock.content.areas['start'].items[idx] = {
+        ...mockItem,
+        x: +x,
+        y: +y,
+      };
     });
 
     const { nextGame, newItem } = utilCreateItem({
