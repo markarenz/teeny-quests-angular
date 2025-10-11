@@ -6,6 +6,7 @@ import {
   GameROM,
   GameState,
   GameStateArea,
+  LightMap,
   MovementOptions,
 } from '@app/features/main/interfaces/types';
 import { gamesApiUrl, versionsApiUrl } from '@config/index';
@@ -15,6 +16,8 @@ import { itemDefinitions } from '@content/item-definitions';
 import { propDecoDefinitions } from '@content/prop-definitions';
 import { logger } from '@app/features/main/utils/logger';
 import { processTurnActions } from './utils/turn-actions';
+import { getPositionKeysForGridSize } from '@app/features/main/utils';
+import { Lights } from '@content/constants';
 
 @Injectable({
   providedIn: 'root',
@@ -44,6 +47,8 @@ export class GameService {
 
   private playerAnim = new BehaviorSubject<string>('');
   playerAnimObs = this.playerAnim.asObservable();
+
+  public lightMap: LightMap = {};
 
   testInit(nextGameROM: GameROM): void {
     this.gameROM.next(nextGameROM);
@@ -78,6 +83,76 @@ export class GameService {
         lastUpdateDate: new Date().toISOString(),
       })
     );
+  }
+
+  public addLightToLightMap(
+    y: number,
+    x: number,
+    shape: string,
+    intensity: number,
+    lightMap: LightMap
+  ): LightMap {
+    console.log('addLightToLightMap', { shape });
+    Lights[shape]?.forEach(cell => {
+      const posKey = `${y + cell.dy}_${x + cell.dx}`;
+      if (lightMap[posKey] !== undefined) {
+        lightMap[posKey] = Math.min(
+          1.0,
+          lightMap[posKey] + (cell.lightAdd ?? 0) * intensity
+        );
+      }
+    });
+    return lightMap;
+  }
+
+  public calcLightMap(nextGameState: GameState): void {
+    const positionKeys = getPositionKeysForGridSize();
+    let lighting: LightMap = {};
+    const lightEmittingProps = nextGameState.areas[
+      nextGameState.player.areaId
+    ].props.filter(p => {
+      const propDef = propDecoDefinitions[p.propType];
+      return (
+        propDef &&
+        p.status === 'on' &&
+        propDef.ambientLight &&
+        propDef.ambientLight > 0
+      );
+    });
+    let ambientLight = 0.0;
+    lightEmittingProps.forEach(p => {
+      const propDef = propDecoDefinitions[p.propType];
+      if (propDef && propDef.ambientLight) {
+        ambientLight += propDef.ambientLight;
+      }
+    });
+
+    positionKeys.forEach(pk => {
+      lighting[pk] = ambientLight;
+    });
+
+    lighting = this.addLightToLightMap(
+      nextGameState.player.y,
+      nextGameState.player.x,
+      'circle-5',
+      1.0,
+      lighting
+    );
+
+    lightEmittingProps.forEach(p => {
+      const propDef = propDecoDefinitions[p.propType];
+      const dy = p.wall === 'west' ? -1 : 0;
+      const dx = p.wall === 'north' ? -1 : 0;
+      lighting = this.addLightToLightMap(
+        p.y + dx,
+        p.x + dy,
+        `${propDef.lightPattern}-${p.wall}`,
+        0.5,
+        lighting
+      );
+    });
+
+    this.lightMap = lighting;
   }
 
   initGameState(nextGameROM: GameROM): void {
@@ -130,6 +205,7 @@ export class GameService {
     this.gameState.next(nextGameState);
     this.calculateMovementOptions(nextGameState);
     this.saveLocalGameState(nextGameState);
+    this.calcLightMap(nextGameState);
   }
 
   loadGameROM(gameId: string | null, v?: string | null): void {
@@ -282,6 +358,8 @@ export class GameService {
 
     await this.delay(250);
 
+    this.calcLightMap(nextGameState);
+
     this.isLockedOut.next(false);
     this.areaTransitionMode.next('');
 
@@ -311,6 +389,7 @@ export class GameService {
       } else if (dy < 0) {
         nextGameState.player.facing = 'north';
       }
+      this.calcLightMap(nextGameState);
       this.playerAnim.next(`walk-${i % 2}`);
       this.gameState.next(nextGameState);
       await this.delay(STANDARD_MOVE_DURATION);
@@ -413,7 +492,7 @@ export class GameService {
         prop.statusActions[prop.status ?? ''] ?? []
       );
 
-      // Process actions
+      this.calcLightMap(nextGameState);
       return nextGameState;
     }
 

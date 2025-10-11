@@ -456,7 +456,7 @@ const gameMockData: GameROM = {
               ],
             },
             wall: 'north',
-            status: '',
+            status: 'off',
             x: 2,
             y: 2,
             h: 1,

@@ -243,6 +243,8 @@ export type PropDefinition = {
   hasStatusEffects: boolean;
   isClickable: boolean;
   statuses?: string[];
+  ambientLight?: number; // 0.0 - 1.0
+  lightPattern?: string;
 };
 
 export type ActionTypeDefinition = {
@@ -251,4 +253,14 @@ export type ActionTypeDefinition = {
   valueType: ActionValueType;
   numMin?: number;
   numMax?: number;
+};
+
+export type LightMap = {
+  [key: string]: number; // positionKey to light level (0.0 - 1.0)
+};
+
+export type LightCell = {
+  dx: number;
+  dy: number;
+  lightAdd: number;
 };
