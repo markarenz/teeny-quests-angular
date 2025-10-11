@@ -18,6 +18,8 @@ export const propDecoDefinitions: { [key: string]: PropDefinition } = {
     canSetHeight: true,
     statuses: ['on', 'off'],
     isClickable: false,
+    ambientLight: 0.5,
+    lightPattern: 'half-circle-3',
   },
   switch: {
     id: 'switch',

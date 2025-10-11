@@ -7,6 +7,7 @@ import {
   GameItem,
   GameProp,
   GameState,
+  LightMap,
   MovementOptions,
 } from '@app/features/main/interfaces/types';
 import { AreaCellComponent } from '@app/features/game/ui/components/area-cell/area-cell.component';
@@ -47,6 +48,7 @@ export class GameAreaComponent {
   isLockedOut: boolean = false;
   numTurns: number = 0;
   areaTransitionMode: string = 'cover';
+  areaLightMap: LightMap = {};
 
   ngOnInit(): void {
     this.subscriptions.push(
@@ -85,6 +87,7 @@ export class GameAreaComponent {
           // if moving...
           this.playerPosition = `${data.player.y}_${data.player.x}`;
           this.playerFacing = data.player.facing;
+          this.areaLightMap = this._gameService.lightMap;
         }
       })
     );

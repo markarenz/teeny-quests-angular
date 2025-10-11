@@ -2,7 +2,9 @@ import { fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import fetchMock from 'fetch-mock';
 import { GameService } from './game-service.service';
 import { gamesApiUrl } from '@config/index';
-import gameMockData from '@app/features/editor/mocks/game.mock';
+import gameMockData, {
+  gameStateMockData,
+} from '@app/features/editor/mocks/game.mock';
 import { MovementOptions } from '@app/features/main/interfaces/types';
 import { firstValueFrom, skip, take } from 'rxjs';
 
@@ -305,5 +307,42 @@ describe('turnActionItemClick', () => {
     const updatedH = newGameState?.areas['start'].map['1_6'].h;
     // More detail test on the actions are found in the turn-actions tests
     expect(updatedH && updatedH > 1).toBeTrue();
+  }));
+});
+
+describe('calcLightMap', () => {
+  let service: GameService;
+  beforeEach(() => {
+    TestBed.configureTestingModule({ teardown: { destroyAfterEach: false } });
+    service = TestBed.inject(GameService);
+    service.testInit(gameMock);
+    service.initGameState(gameMock);
+  });
+
+  it('should calculate light map', fakeAsync(() => {
+    tick(1000);
+    const mockState = JSON.parse(JSON.stringify({ ...gameStateMockData }));
+    mockState.areas['start'].props[0].status = 'on';
+    service.calcLightMap(mockState);
+    const lightMap = service.lightMap;
+    expect(Object.keys(lightMap).length).toBeGreaterThan(0);
+    expect(lightMap['2_2']).toEqual(1);
+  }));
+  it('should calculate light map - full light', fakeAsync(() => {
+    tick(1000);
+    const mockState = JSON.parse(JSON.stringify({ ...gameStateMockData }));
+    mockState.areas['start'].props[0].status = 'on';
+    mockState.areas['start'].props.push({
+      ...mockState.areas['start'].props[0],
+      id: 'prop2',
+      x: 5,
+      y: 5,
+      status: 'on',
+    });
+    service.calcLightMap(mockState);
+    const lightMap = service.lightMap;
+    expect(Object.keys(lightMap).length).toBeGreaterThan(0);
+    expect(lightMap['2_2']).toEqual(1);
+    expect(lightMap['0_0']).toEqual(1);
   }));
 });

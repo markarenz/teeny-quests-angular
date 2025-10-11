@@ -3,7 +3,7 @@ import {
   AreaPosition,
   getAreaElementPositionStyle,
 } from '@app/features/game/lib/utils/index';
-import { GameAreaMapCell } from '@app/features/main/interfaces/types';
+import { GameAreaMapCell, LightMap } from '@app/features/main/interfaces/types';
 import { areaHeightFactor, defaultGridSize } from '@config/index';
 import { TexturesFloorComponent } from '@app/features/game/ui/components/textures/textures-floor/textures-floor.component';
 import { TexturesWallComponent } from '@app/features/game/ui/components/textures/textures-wall/textures-wall.component';
@@ -17,6 +17,7 @@ import { TexturesWallComponent } from '@app/features/game/ui/components/textures
 })
 export class AreaCellComponent {
   @Input('positionKey') positionKey: string = '';
+  @Input('lightLevel') lightLevel: number = 0;
   @Input('isEditorMode') isEditorMode: boolean = false;
   @Input('selectedAreaCellPosition')
   selectedAreaCellPosition?: string = '';

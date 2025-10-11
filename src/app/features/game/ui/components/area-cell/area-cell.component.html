@@ -1,46 +1,22 @@
-<div
-  id="area-cell-{{ cell?.y }}-{{ cell?.x }}"
-  class="area-cell {{ isEditorMode ? 'editor-mode' : '' }}"
-  [style.bottom]="position.bottom"
-  [style.left]="position.left"
-  [style.z-index]="isSelected ? 300 : position.z"
-  [style.width]="width"
-  [style.height]="height"
->
+<div id="area-cell-{{ cell?.y }}-{{ cell?.x }}" class="area-cell {{ isEditorMode ? 'editor-mode' : '' }}"
+  [style.bottom]="position.bottom" [style.left]="position.left" [style.z-index]="isSelected ? 300 : position.z"
+  [style.width]="width" [style.height]="height" [style.filter]="'brightness(' + (lightLevel * 100) + '%)'">
   <!-- WALL LEFT -->
   @if(cell && displayElements.left) {
-  <app-textures-wall
-    [wallType]="cell.wallSouth"
-    wallPosition="l"
-    [h]="cell.h"
-    [positionKey]="positionKey"
-    [svgPolygonPoints]="svgPolygonPoints"
-    [svgViewBox]="svgViewBox"
-  />
+  <app-textures-wall [wallType]="cell.wallSouth" wallPosition="l" [h]="cell.h" [positionKey]="positionKey"
+    [svgPolygonPoints]="svgPolygonPoints" [svgViewBox]="svgViewBox" />
   }
   <!-- WALL RIGHT -->
   @if(cell && displayElements.right) {
-  <app-textures-wall
-    [wallType]="cell.wallEast"
-    wallPosition="r"
-    [h]="cell.h"
-    [positionKey]="positionKey"
-    [svgPolygonPoints]="svgPolygonPoints"
-    [svgViewBox]="svgViewBox"
-  />
+  <app-textures-wall [wallType]="cell.wallEast" wallPosition="r" [h]="cell.h" [positionKey]="positionKey"
+    [svgPolygonPoints]="svgPolygonPoints" [svgViewBox]="svgViewBox" />
   }
   <!-- FLOOR -->
   @if(cell && displayElements.top) {
-  <app-textures-floor
-    [floorType]="cell.floor"
-    [isEditorMode]="isEditorMode"
-    [positionKey]="positionKey"
-    (onClick)="handleClick()"
-  />
+  <app-textures-floor [floorType]="cell.floor" [isEditorMode]="isEditorMode" [positionKey]="positionKey"
+    (onClick)="handleClick()" />
   @if(showCellPositions) {
-  <div
-    class="w-full h-full z-[99999] absolute top-left text-gray-900 flex justify-center items-start"
-  >
+  <div class="w-full h-full z-[99999] absolute top-left text-gray-900 flex justify-center items-start">
     {{ positionKey }}
   </div>
 
