@@ -20,6 +20,7 @@ import { itemDefinitions } from '@content/item-definitions';
 export class AreaItemComponent {
   @Input('item') item: GameItem = defaultItem;
   @Input('isEditorSelected') isEditorSelected: boolean = false;
+  @Input('lightLevel') lightLevel: number = 0;
   @Input('isNearPlayer') isNearPlayer: boolean = false;
   @Input('isEditorMode') isEditorMode: boolean = false;
   @Input('isLockedOut') isLockedOut: boolean = false;

@@ -24,6 +24,7 @@ export class AreaPropComponent {
   @Input('isClickable') isClickable: boolean = false;
   @Input('isNearPlayer') isNearPlayer: boolean = false;
   @Input('isLockedOut') isLockedOut: boolean = false;
+  @Input('lightLevel') lightLevel: number = 0;
   @Output() onClick = new EventEmitter<string>();
   gridSize: number = defaultGridSize;
 

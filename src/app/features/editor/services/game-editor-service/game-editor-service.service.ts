@@ -76,8 +76,8 @@ export class GameEditorService {
   private areaItems = new BehaviorSubject<GameItem[]>([]);
   areaItemsObs = this.areaItems.asObservable();
 
-  private areaPanels = new BehaviorSubject<GameProp[]>([]);
-  areaPropsObs = this.areaPanels.asObservable();
+  private areaProps = new BehaviorSubject<GameProp[]>([]);
+  areaPropsObs = this.areaProps.asObservable();
 
   private contentVersions = new BehaviorSubject<ContentVersionListItem[]>([]);
   contentVersionsObs = this.contentVersions.asObservable();
@@ -164,7 +164,7 @@ export class GameEditorService {
       this.selectedAreaId.next(areaId);
       this.refreshAreaExits(this.game.value as GameROM);
       this.refreshAreaItems(this.game.value as GameROM);
-      this.refreshAreaPanels(this.game.value as GameROM);
+      this.refreshAreaProps(this.game.value as GameROM);
     }, 100);
   }
 
@@ -243,12 +243,12 @@ export class GameEditorService {
   }
 
   // PANELS -------------------------------------------------------------------
-  refreshAreaPanels(nextGame: GameROM) {
-    const nextPanels = [
+  refreshAreaProps(nextGame: GameROM) {
+    const nextProps = [
       ...nextGame.content.areas[this.selectedAreaId.value].props,
     ];
 
-    this.areaPanels.next(nextPanels);
+    this.areaProps.next(nextProps);
   }
 
   createProp(lockouts: string[]): GameProp | null {
@@ -261,7 +261,7 @@ export class GameEditorService {
 
       if (nextGame && newProp) {
         this.game.next(nextGame);
-        this.refreshAreaPanels(nextGame);
+        this.refreshAreaProps(nextGame);
         this.selectedPropId.next(newProp.id);
       }
     }
@@ -277,7 +277,7 @@ export class GameEditorService {
       });
       if (nextGame) {
         this.game.next(nextGame);
-        this.refreshAreaPanels(nextGame);
+        this.refreshAreaProps(nextGame);
       }
     }
   }
@@ -295,7 +295,7 @@ export class GameEditorService {
       });
       this.selectProp('');
       this.game.next(nextGame);
-      this.refreshAreaPanels(nextGame);
+      this.refreshAreaProps(nextGame);
     }
   }
 
@@ -524,7 +524,7 @@ export class GameEditorService {
             nextGameData.content.areas[nextSelectedAreaId];
           this.areaExits.next(nextSelectedArea.exits);
           this.areaItems.next(nextSelectedArea.items);
-          this.areaPanels.next(nextSelectedArea.props);
+          this.areaProps.next(nextSelectedArea.props);
           this.selectedArea.next(nextSelectedArea);
         });
     }
