@@ -26,6 +26,7 @@ import { SvgExitDefaultEComponent } from './exits/svg-exit-default-e/svg-exit-de
 export class AreaExitComponent {
   @Input('exit') exit: GameAreaExit = defaultExit;
   @Input('isEditorSelected') isEditorSelected: boolean = false;
+  @Input('lightLevel') lightLevel: number = 0;
   @Input('isClickable') isClickable: boolean = false;
   @Input('isNearPlayer') isNearPlayer: boolean = false;
   @Input('isLockedOut') isLockedOut: boolean = false;

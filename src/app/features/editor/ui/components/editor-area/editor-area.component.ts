@@ -130,6 +130,11 @@ export class EditorAreaComponent {
       })
     );
     this.subscriptions.push(
+      this._gameEditorService.areaPropsObs.subscribe((data: GameProp[]) => {
+        this.selectedAreaProps = data;
+      })
+    );
+    this.subscriptions.push(
       this._gameEditorService.selectedAreaObs.subscribe(
         (data: GameArea | null) => {
           if (data) {

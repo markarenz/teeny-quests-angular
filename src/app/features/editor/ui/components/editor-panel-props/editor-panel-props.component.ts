@@ -142,7 +142,8 @@ export class EditorPanelPropsComponent {
         const neighborWValid = neighborW && neighborW.h > currentH + 3;
         const neighborNValid = neighborN && neighborN.h > currentH + 3;
         if (
-          (!floor.walkable || (!neighborWValid && !neighborNValid)) &&
+          !neighborWValid &&
+          !neighborNValid &&
           !newLockouts.includes(position)
         ) {
           newLockouts.push(position);
@@ -157,9 +158,9 @@ export class EditorPanelPropsComponent {
     this.updatePropPositionLockouts();
     this.subscriptions.push(
       this._gameEditorService.selectedPropIdObs.subscribe((data: string) => {
+        this.props = this._gameEditorService.getPropsForCurrentArea();
         if (data && data.length > 0) {
           this.selectedPropId = data;
-          this.props = this._gameEditorService.getPropsForCurrentArea();
           this.updateUiAfterPropSelection(data);
           const selectedProp = this.props.find(
             prop => prop.id === this.selectedPropId

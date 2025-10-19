@@ -23,20 +23,21 @@
     <!-- Area Items -->
     @for(item of selectedAreaItems; track item.id;) {
     <app-area-item [item]="item" [isEditorSelected]="selectedItemId === item.id" [isEditorMode]="true"
-      (onClick)="handleItemClick(item.id)" />
+      (onClick)="handleItemClick(item.id)" [lightLevel]="1" />
     } @if(playerPosition) {
     <app-editor-player-position [playerPosition]="playerPosition" />
     }
     <!-- Area Props -->
     @for(prop of selectedAreaProps; track prop.id;) {
     <app-area-prop [prop]="prop" [isPropSelected]="selectedPropId === prop.id" [isClickable]="true"
-      [isEditorMode]="true" (onClick)="handlePropClick(prop.id)" [isNearPlayer]="true" [isLockedOut]="false" />
+      [isEditorMode]="true" (onClick)="handlePropClick(prop.id)" [isNearPlayer]="true" [isLockedOut]="false"
+      [lightLevel]="1" />
     }
 
     <!-- Area Exits -->
     @for(exit of selectedAreaExits; track exit.id;) {
     <app-area-exit [exit]="exit" [isEditorSelected]="selectedExitId === exit.id" [isClickable]="true"
-      (onClick)="handleExitClick(exit.id)" [isNearPlayer]="true" [isLockedOut]="false" />
+      (onClick)="handleExitClick(exit.id)" [isNearPlayer]="true" [isLockedOut]="false" [lightLevel]="1" />
     }
   </div>
   }

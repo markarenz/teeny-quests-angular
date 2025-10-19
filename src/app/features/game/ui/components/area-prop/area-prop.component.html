@@ -1,6 +1,6 @@
 <div [style.width]="width" [style.height]="width" [style.z-index]="position.z"
   class="area-prop {{ isNearPlayer ? 'near-player' : '' }}" [style.bottom]="position.bottom"
-  [style.left]="position.left" id="area-prop-{{ prop.id }}">
+  [style.filter]="'brightness(' + (lightLevel * 100) + '%)'" [style.left]="position.left" id="area-prop-{{ prop.id }}">
   @if (prop.propType === 'torch') {
   <app-svg-prop-torch [isPropSelected]="isPropSelected" [isClickable]="isClickable && !isLockedOut"
     [flipH]="prop.wall !== 'north'" [status]="prop.status ?? ''" />

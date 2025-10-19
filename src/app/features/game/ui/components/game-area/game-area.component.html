@@ -16,13 +16,13 @@
     <!-- Area Items -->
     @for(item of areaItems; track item.id;) {
     <app-area-item [item]="item" [isNearPlayer]="getIsNearPlayer(item.x, item.y)" [isLockedOut]="isLockedOut"
-      (onClick)="handleItemClick(item.id)" />
+      (onClick)="handleItemClick(item.id)" [lightLevel]="getLightLevel(item)" />
     }
 
     <!-- Area PanelDeco -->
     @for(prop of areaProps; track prop.id;) {
     <app-area-prop [prop]="prop" [isClickable]="false" (onClick)="handlePropClick(prop.id)"
-      [isNearPlayer]="getIsNearPlayer(prop.x, prop.y)" [isLockedOut]="isLockedOut" />
+      [isNearPlayer]="getIsNearPlayer(prop.x, prop.y)" [isLockedOut]="isLockedOut" [lightLevel]="getLightLevel(prop)" />
     }
 
     <!-- Area Exits -->
@@ -30,7 +30,7 @@
     <app-area-exit [exit]="exit" [isClickable]="
         getIsNearPlayer(exit.x, exit.y) && (exit.lock === '' || !exit.lock)
       " [isNearPlayer]="getIsNearPlayer(exit.x, exit.y)" (onClick)="handleExitClick(exit.id)"
-      [isLockedOut]="isLockedOut" />
+      [isLockedOut]="isLockedOut" [lightLevel]="getLightLevel(exit)" />
     }
 
     <!-- Movement Option Buttons -->

@@ -93,6 +93,10 @@ export class GameAreaComponent {
     );
   }
 
+  public getLightLevel(obj: GameProp | GameItem | GameAreaExit): number {
+    return Math.min(this.areaLightMap[`${obj.y}_${obj.x}`] + 0.25, 1);
+  }
+
   handleExitClick(exitId: string) {
     // process turn exit destination area, destination position, destination facing (opposite of exit direction)
     this._gameService.processTurn({
