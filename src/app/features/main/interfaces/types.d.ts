@@ -63,6 +63,7 @@ export type GameAreaMapCell = {
   floor: string;
   wallSouth: string;
   wallEast: string;
+  decal?: string;
 };
 
 export type GameItem = {

@@ -63,6 +63,15 @@
       <app-editor-texture-selector [options]="wallOptions" surfaceType="wall" [selectedId]="selectedCell.wallEast"
         (onSelect)="handleWallChange($event, 'east')" />
     </div>
+
+    <div>
+      <label>Decal: {{ currentDecalLabel || "None" }}</label>
+      <select id="exits-exit-direction-selector" [(ngModel)]="currentDecal" (change)="handleDecalChange()">
+        @for(item of decalOptions; track item.value) {
+        <option [value]="item.value">{{ item.label }}</option>
+        }
+      </select>
+    </div>
     }
     <app-button [fullWidth]="true" label="Reset Textures" (click)="handleResetTexturesClick()" />
   </div>
