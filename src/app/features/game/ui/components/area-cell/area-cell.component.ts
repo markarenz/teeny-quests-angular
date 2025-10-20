@@ -7,11 +7,12 @@ import { GameAreaMapCell, LightMap } from '@app/features/main/interfaces/types';
 import { areaHeightFactor, defaultGridSize } from '@config/index';
 import { TexturesFloorComponent } from '@app/features/game/ui/components/textures/textures-floor/textures-floor.component';
 import { TexturesWallComponent } from '@app/features/game/ui/components/textures/textures-wall/textures-wall.component';
+import { DecalsComponent } from '../area-cell/decals/decals.component';
 
 @Component({
   selector: 'app-area-cell',
   standalone: true,
-  imports: [TexturesFloorComponent, TexturesWallComponent],
+  imports: [TexturesFloorComponent, TexturesWallComponent, DecalsComponent],
   templateUrl: './area-cell.component.html',
   styleUrl: './area-cell.component.css',
 })
@@ -24,7 +25,6 @@ export class AreaCellComponent {
   @Input('cellData') cellData: GameAreaMapCell | null = null;
   @Output() onClick = new EventEmitter<string>();
 
-  showCellPositions: boolean = false;
   gridSize: number = defaultGridSize;
 
   cell: any = {};

@@ -15,10 +15,8 @@
   @if(cell && displayElements.top) {
   <app-textures-floor [floorType]="cell.floor" [isEditorMode]="isEditorMode" [positionKey]="positionKey"
     (onClick)="handleClick()" />
-  @if(showCellPositions) {
-  <div class="w-full h-full z-[99999] absolute top-left text-gray-900 flex justify-center items-start">
-    {{ positionKey }}
-  </div>
-
-  } }
+  }
+  @if(cell && displayElements.top && cell.decal) {
+  <app-decals [decalType]="cell.decal" />
+  }
 </div>

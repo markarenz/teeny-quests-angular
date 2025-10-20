@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { FormsModule } from '@angular/forms';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import { AreaCellSelectorComponent } from '../area-cell-selector/area-cell-selector.component';
 import { CollapsibleCardComponent } from '@app/features/main/ui/components/collapsible-card/collapsible-card.component';
@@ -10,11 +11,14 @@ import { floorOptionsData } from '@content/floor-definitions';
 import { EditorTextureSelectorComponent } from '../editor-texture-selector/editor-texture-selector.component';
 import { IconButtonComponent } from '@app/features/main/ui/components/icons/icon-button/icon-button.component';
 import { ButtonComponent } from '@app/features/main/ui/components/button/button.component';
+import { mapCellDecalOptions } from '@content/constants';
+import { getLabelFromSlug } from '@app/features/main/utils';
 
 @Component({
   selector: 'app-editor-panel-cells',
   standalone: true,
   imports: [
+    FormsModule,
     AreaCellSelectorComponent,
     CollapsibleCardComponent,
     EditorTextureSelectorComponent,
@@ -35,7 +39,10 @@ export class EditorPanelCellsComponent {
   currentFloorOption = 'default';
   currentWallLOption = 'default';
   currentWallROption = 'default';
+  currentDecal = '';
+  currentDecalLabel = '';
   wallOptions = wallOptionsData;
+  decalOptions = mapCellDecalOptions;
 
   buttons = [
     { label: 'Increase Height', direction: 'up' },
@@ -55,24 +62,25 @@ export class EditorPanelCellsComponent {
         (data: GameAreaMapCell | null) => {
           this.selectedCell = data ?? null;
           const thisFloor = this.floorOptions.find(
-            (floor) => floor.value === this.selectedCell?.floor
+            floor => floor.value === this.selectedCell?.floor
           );
           this.currentFloorOption = thisFloor?.label ?? 'default';
           const thisWallL = this.wallOptions.find(
-            (wall) => wall.value === this.selectedCell?.wallSouth
+            wall => wall.value === this.selectedCell?.wallSouth
           );
           this.currentWallLOption = thisWallL?.label ?? 'default';
           const thisWallR = this.wallOptions.find(
-            (wall) => wall.value === this.selectedCell?.wallEast
+            wall => wall.value === this.selectedCell?.wallEast
           );
           this.currentWallROption = thisWallR?.label ?? 'default';
+          this.currentDecal = this.selectedCell?.decal || '';
         }
       )
     );
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   handleToggleCellSelector() {
@@ -101,6 +109,15 @@ export class EditorPanelCellsComponent {
       this._gameEditorService.setCellData({
         ...this.selectedCell,
         floor: floorType,
+      });
+    }
+  }
+  handleDecalChange() {
+    if (this.selectedCell) {
+      this.currentDecalLabel = getLabelFromSlug(this.currentDecal);
+      this._gameEditorService.setCellData({
+        ...this.selectedCell,
+        decal: this.currentDecal,
       });
     }
   }
