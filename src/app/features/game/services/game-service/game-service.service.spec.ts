@@ -1,4 +1,5 @@
 import { fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
 import fetchMock from 'fetch-mock';
 import { GameService } from './game-service.service';
 import { gamesApiUrl } from '@config/index';
@@ -7,9 +8,11 @@ import gameMockData, {
 } from '@app/features/editor/mocks/game.mock';
 import { MovementOptions } from '@app/features/main/interfaces/types';
 import { firstValueFrom, skip, take } from 'rxjs';
+import { MessageService } from '../message/message.service';
 
 let gameMock = { ...gameMockData };
 let gameMockFromDB = { ...gameMockData };
+let messageService: MessageService;
 
 beforeEach(async () => {
   gameMock = await JSON.parse(
@@ -36,8 +39,11 @@ describe('GameService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [ToastrModule.forRoot()],
+      providers: [ToastrService],
       teardown: { destroyAfterEach: false },
     });
+    messageService = TestBed.inject(MessageService);
     service = TestBed.inject(GameService);
   });
 
@@ -49,7 +55,12 @@ describe('GameService', () => {
 describe('loadGameROM', () => {
   let service: GameService;
   beforeEach(() => {
-    TestBed.configureTestingModule({ teardown: { destroyAfterEach: false } });
+    TestBed.configureTestingModule({
+      imports: [ToastrModule.forRoot()],
+      providers: [ToastrService],
+      teardown: { destroyAfterEach: false },
+    });
+    messageService = TestBed.inject(MessageService);
     service = TestBed.inject(GameService);
   });
 
@@ -79,7 +90,12 @@ describe('loadGameROM', () => {
 describe('initGameState', () => {
   let service: GameService;
   beforeEach(() => {
-    TestBed.configureTestingModule({ teardown: { destroyAfterEach: false } });
+    TestBed.configureTestingModule({
+      imports: [ToastrModule.forRoot()],
+      providers: [ToastrService],
+      teardown: { destroyAfterEach: false },
+    });
+    messageService = TestBed.inject(MessageService);
     service = TestBed.inject(GameService);
   });
 
@@ -107,7 +123,12 @@ describe('processTurn', () => {
     '2_5': ['2_2', '2_3', '2_4', '2_5'],
   };
   beforeEach(() => {
-    TestBed.configureTestingModule({ teardown: { destroyAfterEach: false } });
+    TestBed.configureTestingModule({
+      imports: [ToastrModule.forRoot()],
+      providers: [ToastrService],
+      teardown: { destroyAfterEach: false },
+    });
+    messageService = TestBed.inject(MessageService);
     service = TestBed.inject(GameService);
     service.testInit(gameMock);
     service.initGameState(gameMock);
@@ -176,7 +197,12 @@ describe('processTurn', () => {
 describe('getArea', () => {
   let service: GameService;
   beforeEach(() => {
-    TestBed.configureTestingModule({ teardown: { destroyAfterEach: false } });
+    TestBed.configureTestingModule({
+      imports: [ToastrModule.forRoot()],
+      providers: [ToastrService],
+      teardown: { destroyAfterEach: false },
+    });
+    messageService = TestBed.inject(MessageService);
     service = TestBed.inject(GameService);
     service.testInit(gameMock);
     service.initGameState(gameMock);
@@ -191,7 +217,12 @@ describe('getArea', () => {
 describe('getGameStateArea', () => {
   let service: GameService;
   beforeEach(() => {
-    TestBed.configureTestingModule({ teardown: { destroyAfterEach: false } });
+    TestBed.configureTestingModule({
+      imports: [ToastrModule.forRoot()],
+      providers: [ToastrService],
+      teardown: { destroyAfterEach: false },
+    });
+    messageService = TestBed.inject(MessageService);
     service = TestBed.inject(GameService);
     service.testInit(gameMock);
     service.initGameState(gameMock);
@@ -206,7 +237,12 @@ describe('getGameStateArea', () => {
 describe('getOppositeDirection', () => {
   let service: GameService;
   beforeEach(() => {
-    TestBed.configureTestingModule({ teardown: { destroyAfterEach: false } });
+    TestBed.configureTestingModule({
+      imports: [ToastrModule.forRoot()],
+      providers: [ToastrService],
+      teardown: { destroyAfterEach: false },
+    });
+    messageService = TestBed.inject(MessageService);
     service = TestBed.inject(GameService);
   });
 
@@ -222,7 +258,12 @@ describe('getOppositeDirection', () => {
 describe('turnActionExit', () => {
   let service: GameService;
   beforeEach(() => {
-    TestBed.configureTestingModule({ teardown: { destroyAfterEach: false } });
+    TestBed.configureTestingModule({
+      imports: [ToastrModule.forRoot()],
+      providers: [ToastrService],
+      teardown: { destroyAfterEach: false },
+    });
+    messageService = TestBed.inject(MessageService);
     service = TestBed.inject(GameService);
     service.testInit(gameMock);
     service.initGameState(gameMock);
@@ -250,7 +291,12 @@ describe('turnActionExit', () => {
 describe('turnActionItemClick', () => {
   let service: GameService;
   beforeEach(() => {
-    TestBed.configureTestingModule({ teardown: { destroyAfterEach: false } });
+    TestBed.configureTestingModule({
+      imports: [ToastrModule.forRoot()],
+      providers: [ToastrService],
+      teardown: { destroyAfterEach: false },
+    });
+    messageService = TestBed.inject(MessageService);
     service = TestBed.inject(GameService);
     service.testInit(gameMock);
     service.initGameState(gameMock);
@@ -267,6 +313,7 @@ describe('turnActionItemClick', () => {
       service.gameStateObs.pipe(skip(0), take(1))
     );
     expect(gameState?.player?.inventory).toBeDefined();
+    flush();
   }));
 
   it('should process turn item use', fakeAsync(async () => {
@@ -286,13 +333,14 @@ describe('turnActionItemClick', () => {
     const service: GameService = TestBed.inject(GameService);
     service.processTurn({
       verb: 'item-drop',
-      noun: '1234abc',
+      noun: 'gold',
     });
     tick(10);
     const gameState = await firstValueFrom(
       service.gameStateObs.pipe(skip(0), take(1))
     );
     expect(gameState?.player?.inventory).toBeDefined();
+    flush();
   }));
 
   it('should process turn prop click', fakeAsync(async () => {
@@ -313,7 +361,12 @@ describe('turnActionItemClick', () => {
 describe('calcLightMap', () => {
   let service: GameService;
   beforeEach(() => {
-    TestBed.configureTestingModule({ teardown: { destroyAfterEach: false } });
+    TestBed.configureTestingModule({
+      imports: [ToastrModule.forRoot()],
+      providers: [ToastrService],
+      teardown: { destroyAfterEach: false },
+    });
+    messageService = TestBed.inject(MessageService);
     service = TestBed.inject(GameService);
     service.testInit(gameMock);
     service.initGameState(gameMock);

@@ -237,6 +237,12 @@ export type TableField = {
   actions?: TableAction[];
 };
 
+export type ToastMessage = {
+  title: string;
+  message: string;
+  messageType?: 'info' | 'success' | 'error' | 'warning';
+};
+
 export type PropDefinition = {
   id: string;
   name: string;
@@ -246,6 +252,9 @@ export type PropDefinition = {
   statuses?: string[];
   ambientLight?: number; // 0.0 - 1.0
   lightPattern?: string;
+  statusMessages?: {
+    [status: string]: ToastMessage;
+  };
 };
 
 export type ActionTypeDefinition = {

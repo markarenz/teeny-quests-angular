@@ -1,12 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=Arvo:wght@700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Arvo:wght@700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --font-primary: "Montserrat", sans-serif;
-  --font-headline: "Arvo", serif;
+  --font-primary: 'Montserrat', sans-serif;
+  --font-headline: 'Arvo', serif;
   --color-primary: #1dce52;
   --color-primary-dark: #068c2e;
   --color-primary-50: rgba(29, 205, 82, 0.5);
@@ -27,6 +27,15 @@
   --color-white-75: rgba(255, 245, 255, 0.75);
   --color-lock-silver: #999999;
   --color-lock-gold: #cab045;
+
+  --color-error: #bb3b10;
+  --color-error-border: #e7b6a6;
+  --color-warning: #bb3b10;
+  --color-warning-border: #e7b6a6;
+  --color-info: #068c2e;
+  --color-info-border: #80e19d;
+  --color-success: #068c2e;
+  --color-success-border: #80e19d;
 }
 
 html {
@@ -90,9 +99,9 @@ label {
   font-family: var(--font-headline);
 }
 
-input[type="password"],
-input[type="number"],
-input[type="text"],
+input[type='password'],
+input[type='number'],
+input[type='text'],
 select,
 textarea {
   width: 100%;
@@ -174,4 +183,27 @@ select {
   fill: var(--color-primary-dark-50);
   stroke-width: 4px;
   stroke: var(--color-primary);
+}
+
+.toast-container {
+  .ngx-toastr {
+    border: 2px solid var(--color-gray-100);
+    border-radius: 1rem !important;
+  }
+  .toast-info {
+    border-color: var(--color-info-border);
+    background-color: var(--color-info);
+  }
+  .toast-warning {
+    border-color: var(--color-warning-border);
+    background-color: var(--color-warning);
+  }
+  .toast-error {
+    border-color: var(--color-error-border);
+    background-color: var(--color-error);
+  }
+  .toast-success {
+    border-color: var(--color-success-border);
+    background-color: var(--color-success);
+  }
 }

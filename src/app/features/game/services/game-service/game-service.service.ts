@@ -9,6 +9,7 @@ import {
   LightMap,
   MovementOptions,
 } from '@app/features/main/interfaces/types';
+import { MessageService } from '@app/features/game/services/message/message.service';
 import { gamesApiUrl, versionsApiUrl } from '@config/index';
 import { getMoveOptions } from './utils/pathfinding';
 import { STANDARD_MOVE_DURATION } from '@config/index';
@@ -23,6 +24,10 @@ import { Lights } from '@content/constants';
   providedIn: 'root',
 })
 export class GameService {
+  constructor(private messageService: MessageService) {
+    this.messageService = messageService;
+  }
+
   public v: string | null = null; // game version
   private gameROM = new BehaviorSubject<GameROM | null>(null);
   gameROMObs = this.gameROM.asObservable();
@@ -289,7 +294,6 @@ export class GameService {
   }
 
   getCanUseItem = (itemId: string): boolean => {
-    const itemDef = itemDefinitions[itemId];
     // if is KEY, is the player standing on a cell with a locked exit of a matching color?
     if (itemId.startsWith('key-')) {
       const color = itemId.split('key-')[1]; // e.g. 'silver'
@@ -400,15 +404,16 @@ export class GameService {
     return this.gameState.value as GameState;
   };
 
-  turnActionDropItem = async (itemId: string): Promise<GameState> => {
+  turnActionDropItem = async (itemType: string): Promise<GameState> => {
     let nextGameState = JSON.parse(JSON.stringify(this.gameState.value));
-    nextGameState.player.inventory[itemId] -= 1;
+    nextGameState.player.inventory[itemType] -= 1;
+    const itemDef = itemDefinitions[itemType];
     const area = nextGameState.areas[nextGameState.player.areaId];
     const positionKey = `${nextGameState.player.y}_${nextGameState.player.x}`;
     const newItem: GameItem = {
       id: `item-${Date.now()}`,
       areaId: nextGameState.player.areaId,
-      itemType: itemId,
+      itemType,
       x: nextGameState.player.x,
       y: nextGameState.player.y,
       h: this.gameROM.value!.content.areas[nextGameState.player.areaId].map[
@@ -416,6 +421,11 @@ export class GameService {
       ].h,
     };
     area.items.push(newItem);
+    this.messageService.showMessage({
+      title: 'Inventory Updated',
+      message: `Dropped ${itemDef.name}.`,
+      messageType: 'info',
+    });
     return nextGameState;
   };
 
@@ -435,6 +445,11 @@ export class GameService {
         nextGameState.player.inventory[itemId] - 1,
         0
       );
+      this.messageService.showMessage({
+        title: 'Exit Unlocked',
+        message: `Unlocked the exit with the ${color} key.`,
+        messageType: 'success',
+      });
     }
     return nextGameState;
   };
@@ -487,11 +502,14 @@ export class GameService {
           },
         },
       };
-      nextGameState = processTurnActions(
+      const turnActionResult = processTurnActions(
         nextGameState,
         prop.statusActions[prop.status ?? ''] ?? []
       );
-
+      nextGameState = turnActionResult.nextGameState;
+      turnActionResult.messages.forEach(msg => {
+        this.messageService.showMessage(msg);
+      });
       this.calcLightMap(nextGameState);
       return nextGameState;
     }
@@ -540,6 +558,11 @@ export class GameService {
             nextGameState.areas[nextGameState.player.areaId].items.filter(
               (i: GameItem) => i.id !== itemId
             );
+          this.messageService.showMessage({
+            title: 'Inventory Updated',
+            message: `Picked up ${itemDef.name}.`,
+            messageType: 'info',
+          });
         }
         break;
     }

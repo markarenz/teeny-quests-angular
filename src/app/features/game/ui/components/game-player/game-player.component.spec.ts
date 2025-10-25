@@ -1,17 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GamePlayerComponent } from './game-player.component';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { MessageService } from '@app/features/game/services/message/message.service';
 
 describe('GamePlayerComponent', () => {
   let component: GamePlayerComponent;
   let fixture: ComponentFixture<GamePlayerComponent>;
+  let messageService: MessageService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GamePlayerComponent],
+      imports: [GamePlayerComponent, ToastrModule.forRoot()],
+      providers: [ToastrService],
       teardown: { destroyAfterEach: false },
     }).compileComponents();
-
+    messageService = TestBed.inject(MessageService);
     fixture = TestBed.createComponent(GamePlayerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -61,7 +61,10 @@ describe('processTurnActions', () => {
         actionValue: 'on',
       },
     ];
-    const nextGameState = processTurnActions(gameStateMock, mockActions);
+    const { nextGameState, messages } = processTurnActions(
+      gameStateMock,
+      mockActions
+    );
 
     const updatedH = nextGameState.areas['start'].map['1_1'].h;
     expect(updatedH).toBe(10);
@@ -73,5 +76,6 @@ describe('processTurnActions', () => {
       p => p.id === 'prop1'
     )?.status;
     expect(updatedPropStatus).toBe('on');
+    expect(messages.length).toBe(3);
   });
 });

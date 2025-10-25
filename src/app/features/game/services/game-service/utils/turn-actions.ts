@@ -3,51 +3,72 @@ import {
   ActionEffect,
   GameArea,
   GameState,
+  ToastMessage,
 } from '@app/features/main/interfaces/types';
+import { propDecoDefinitions } from '@content/prop-definitions';
 
 export const processTurnActions = (
   nextGameState: GameState,
   actions: ActionEffect[]
-): GameState => {
+): { nextGameState: GameState; messages: ToastMessage[] } => {
+  const messages: ToastMessage[] = [];
   let actionGameState = { ...nextGameState };
   actions.forEach(action => {
-    actionGameState = processTurnAction(nextGameState, action);
+    const processTurnActionResult = processTurnAction(nextGameState, action);
+    actionGameState = processTurnActionResult.actionGameState;
+    if (processTurnActionResult.message) {
+      messages.push(processTurnActionResult.message);
+    }
   });
 
-  return actionGameState;
+  return { nextGameState: actionGameState, messages };
 };
 
 export const processTurnAction = (
   nextGameState: GameState,
   action: ActionEffect
-): GameState => {
+): { actionGameState: GameState; message: ToastMessage | null } => {
   let actionGameState = { ...nextGameState };
+  let message = null;
+  let processActionResult: {
+    nextGameState: GameState;
+    message: ToastMessage | null;
+  } = {
+    nextGameState: actionGameState,
+    message: null,
+  };
 
   switch (action.action) {
     case EventAction.UPDATE_MAP_CELL_HEIGHT:
     case EventAction.UPDATE_MAP_CELL_FLOOR:
-      actionGameState = processActionSetMapCell(actionGameState, action);
+      processActionResult = processActionSetMapCell(actionGameState, action);
       break;
     case EventAction.SET_PROP_STATUS:
-      actionGameState = processActionSetPropStatus(actionGameState, action);
+      processActionResult = processActionSetPropStatus(actionGameState, action);
       break;
     default:
       break;
   }
 
-  return actionGameState;
+  return {
+    actionGameState: processActionResult.nextGameState,
+    message: processActionResult.message,
+  };
 };
 
 export const processActionSetPropStatus = (
   actionGameState: GameState,
   action: ActionEffect
-) => {
+): { nextGameState: GameState; message: ToastMessage | null } => {
   const areaId = action.actionObject.areaId;
   const propId = action.actionObject.identifier;
   const newStatus = <string>action.actionValue || 'off';
+  let message = null;
   if (areaId && propId) {
     const area = <GameArea>actionGameState.areas[areaId];
-    if (area && area.props) {
+    const prop = area.props.find(prop => prop.id === propId);
+    if (area && area.props && prop) {
+      const propDef = propDecoDefinitions[prop?.propType];
       const propIndex = area.props.findIndex(prop => prop.id === propId);
       if (propIndex !== -1) {
         area.props[propIndex] = {
@@ -59,15 +80,24 @@ export const processActionSetPropStatus = (
           props: [...area.props],
         };
       }
+      if (
+        propDef &&
+        propDef.statusMessages &&
+        propDef.statusMessages.hasOwnProperty(newStatus)
+      ) {
+        const statusMessage = propDef.statusMessages[newStatus];
+        message = statusMessage;
+      }
     }
   }
-  return actionGameState;
+  return { nextGameState: actionGameState, message };
 };
 
 export const processActionSetMapCell = (
   actionGameState: GameState,
   action: ActionEffect
-) => {
+): { nextGameState: GameState; message: ToastMessage | null } => {
+  let message = null;
   const areaId = action.actionObject.areaId;
   const positionKey = action.actionObject.identifier;
   let updates = {};
@@ -100,6 +130,13 @@ export const processActionSetMapCell = (
         },
       };
     }
+    if (Object.keys(updates).length > 0) {
+      message = <ToastMessage>{
+        title: 'Map Updated',
+        message: 'You hear a sound of shifting stone nearby.',
+        messageType: 'warning',
+      };
+    }
   }
-  return actionGameState;
+  return { nextGameState: actionGameState, message };
 };

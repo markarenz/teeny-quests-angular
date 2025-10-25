@@ -20,6 +20,18 @@ export const propDecoDefinitions: { [key: string]: PropDefinition } = {
     isClickable: false,
     ambientLight: 0.5,
     lightPattern: 'half-circle-3',
+    statusMessages: {
+      on: {
+        title: 'Torch Lit',
+        message: 'The torch is now lit, illuminating the surrounding area.',
+        messageType: 'info',
+      },
+      off: {
+        title: 'Torch Extinguished',
+        message: 'The torch has been extinguished, darkening the area.',
+        messageType: 'info',
+      },
+    },
   },
   switch: {
     id: 'switch',
@@ -28,6 +40,7 @@ export const propDecoDefinitions: { [key: string]: PropDefinition } = {
     statuses: ['on', 'off'],
     canSetHeight: false,
     isClickable: true,
+    // No status messages for switches, only message on resulting actions
   },
 };
 

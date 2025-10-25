@@ -10,6 +10,8 @@ import gameMockData, {
   gameStateMockData,
 } from '@app/features/editor/mocks/game.mock';
 import { GameROM } from '@app/features/main/interfaces/types';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { MessageService } from '@app/features/game/services/message/message.service';
 
 let gameMock = { ...gameMockData };
 let gameStateMock = { ...gameStateMockData };
@@ -18,6 +20,7 @@ describe('ModalInventoryComponent', () => {
   let component: ModalInventoryComponent;
   let fixture: ComponentFixture<ModalInventoryComponent>;
   let service: GameService;
+  let messageService: MessageService;
 
   afterEach(() => {
     TestBed.resetTestingModule();
@@ -30,9 +33,11 @@ describe('ModalInventoryComponent', () => {
       })
     );
     await TestBed.configureTestingModule({
-      imports: [ModalInventoryComponent],
+      imports: [ModalInventoryComponent, ToastrModule.forRoot()],
+      providers: [ToastrService],
       teardown: { destroyAfterEach: false },
     }).compileComponents();
+    messageService = TestBed.inject(MessageService);
     service = TestBed.inject(GameService);
 
     fixture = TestBed.createComponent(ModalInventoryComponent);
