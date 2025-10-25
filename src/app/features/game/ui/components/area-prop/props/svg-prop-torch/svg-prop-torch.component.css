@@ -1,3 +1,29 @@
 .flip-horizontal {
   transform: scaleX(-1);
 }
+
+.torch-glow {
+  transition: opacity 0.5s ease-in-out;
+}
+
+.torch-flame {
+  transition: transform 0.2s ease-in-out;
+  transform-origin: center 21%;
+}
+
+.torch-off {
+  .torch-glow {
+    opacity: 0;
+  }
+  .torch-flame {
+    transform: scaleY(0);
+  }
+}
+.torch-on {
+  .torch-glow {
+    opacity: 1;
+  }
+  .torch-flame {
+    transform: scaleY(1);
+  }
+}
