@@ -9,6 +9,8 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { GameService } from '@app/features/game/services/game-service/game-service.service';
 import gameMockData from '@app/features/editor/mocks/game.mock';
 import { GameROM } from '@app/features/main/interfaces/types';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { MessageService } from '@app/features/game/services/message/message.service';
 
 describe('GameComponent', () => {
   let component: GameComponent;
@@ -17,17 +19,20 @@ describe('GameComponent', () => {
   let gameMockDataClean: GameROM;
   let router: Router;
   let location: Location;
+  let messageService: MessageService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GameComponent, OAuthModule.forRoot()],
+      imports: [GameComponent, OAuthModule.forRoot(), ToastrModule.forRoot()],
       providers: [
         provideRouter([]),
         provideHttpClient(),
         provideHttpClientTesting(),
+        ToastrService,
       ],
       teardown: { destroyAfterEach: false },
     }).compileComponents();
+    messageService = TestBed.inject(MessageService);
 
     gameMockDataClean = await JSON.parse(
       JSON.stringify({
