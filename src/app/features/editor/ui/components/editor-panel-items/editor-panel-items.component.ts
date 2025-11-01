@@ -6,6 +6,7 @@ import {
   GameArea,
   GameAreaExit,
   GameItem,
+  GameProp,
   SelectIUIOption,
 } from '@app/features/main/interfaces/types';
 import { AreaCellSelectorComponent } from '../area-cell-selector/area-cell-selector.component';
@@ -53,11 +54,17 @@ export class EditorPanelItemsComponent {
       this.area.exits.forEach((exit: GameAreaExit) => {
         newLockouts.push(`${exit.y}_${exit.x}`);
       });
+      this.area.props.forEach((prop: GameProp) => {
+        newLockouts.push(`${prop.y}_${prop.x}`);
+      });
       const positionKeys = getPositionKeysForGridSize();
       const map = this.area.map;
       positionKeys.forEach((position: string) => {
         const floor = floorDefinitions[map[position].floor];
-        if (!floor.walkable && !newLockouts.includes(position)) {
+        if (
+          (!floor.walkable || map[position].isHidden) &&
+          !newLockouts.includes(position)
+        ) {
           newLockouts.push(position);
         }
       });

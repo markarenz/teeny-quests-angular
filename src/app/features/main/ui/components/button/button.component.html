@@ -1,12 +1,7 @@
-<button
-  role="button"
-  type="button"
-  class="button-root px-4 py-2 font-bold {{
+<button role="button" type="button" class="button-root px-4 py-2 font-bold {{
     variant === 'outlined' ? 'outlined' : 'contained'
-  }} {{ fullWidth ? 'w-full' : 'w-full md:w-auto' }}"
-  disabled="{{ isDisabled ? 'TRUE' : null }}"
-  (click)="handleButtonClick()"
->
+  }} {{ fullWidth ? 'w-full' : 'w-full md:w-auto' }}" disabled="{{ isDisabled ? 'TRUE' : null }}"
+  (click)="handleButtonClick()">
   <div class="button-glint-wrap" aria-hidden="true">
     <div class="button-glint"></div>
   </div>

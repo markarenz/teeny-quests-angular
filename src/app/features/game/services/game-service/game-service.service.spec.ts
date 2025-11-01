@@ -9,6 +9,7 @@ import gameMockData, {
 import { MovementOptions } from '@app/features/main/interfaces/types';
 import { firstValueFrom, skip, take } from 'rxjs';
 import { MessageService } from '../message/message.service';
+import game from '@content/game';
 
 let gameMock = { ...gameMockData };
 let gameMockFromDB = { ...gameMockData };
@@ -212,6 +213,10 @@ describe('getArea', () => {
     const actual = service.getArea('start');
     expect(actual?.id).toEqual('start');
   });
+  it('return null when data is missing', () => {
+    const actual = service.getArea('invalid-area-id');
+    expect(actual).toBeNull();
+  });
 });
 
 describe('getGameStateArea', () => {
@@ -232,6 +237,32 @@ describe('getGameStateArea', () => {
     const actual = service.getGameStateArea('start');
     expect(actual).toBeDefined();
   });
+  it('return null if data is missing', () => {
+    const actual = service.getGameStateArea('invalid-area-id');
+    expect(actual).toBeNull();
+  });
+});
+
+describe('getCanUseItem', () => {
+  let service: GameService;
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [ToastrModule.forRoot()],
+      providers: [ToastrService],
+      teardown: { destroyAfterEach: false },
+    });
+    messageService = TestBed.inject(MessageService);
+    service = TestBed.inject(GameService);
+    const gameMock = JSON.parse(JSON.stringify({ ...gameMockData }));
+    service.testInit(gameMock);
+    service.initGameState(gameMock);
+  });
+
+  it('should return whether an item can be used', fakeAsync(() => {
+    tick(1000);
+    const result = service.getCanUseItem('key-silver');
+    expect(result).toBeFalse();
+  }));
 });
 
 describe('getOppositeDirection', () => {
@@ -355,6 +386,7 @@ describe('turnActionItemClick', () => {
     const updatedH = newGameState?.areas['start'].map['1_6'].h;
     // More detail test on the actions are found in the turn-actions tests
     expect(updatedH && updatedH > 1).toBeTrue();
+    flush();
   }));
 });
 

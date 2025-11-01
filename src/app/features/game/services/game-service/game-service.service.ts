@@ -97,7 +97,6 @@ export class GameService {
     intensity: number,
     lightMap: LightMap
   ): LightMap {
-    console.log('addLightToLightMap', { shape });
     Lights[shape]?.forEach(cell => {
       const posKey = `${y + cell.dy}_${x + cell.dx}`;
       if (lightMap[posKey] !== undefined) {
@@ -206,7 +205,6 @@ export class GameService {
     if (localGameState) {
       nextGameState = localGameState;
     }
-
     this.gameState.next(nextGameState);
     this.calculateMovementOptions(nextGameState);
     this.saveLocalGameState(nextGameState);
@@ -294,9 +292,8 @@ export class GameService {
   }
 
   getCanUseItem = (itemId: string): boolean => {
-    // if is KEY, is the player standing on a cell with a locked exit of a matching color?
     if (itemId.startsWith('key-')) {
-      const color = itemId.split('key-')[1]; // e.g. 'silver'
+      const color = itemId.split('key-')[1];
       const area =
         this.gameState.value?.areas[this.gameState.value.player.areaId];
       if (!area || !this.gameState.value) {

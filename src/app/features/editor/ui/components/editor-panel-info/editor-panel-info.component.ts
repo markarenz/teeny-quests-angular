@@ -2,11 +2,13 @@ import { Component, input } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import { FormsModule } from '@angular/forms';
-import { GameROM } from '@app/features/main/interfaces/types';
+import { GameArea, GameROM } from '@app/features/main/interfaces/types';
 import { AreaCellSelectorComponent } from '../area-cell-selector/area-cell-selector.component';
 import { CollapsibleCardComponent } from '@app/features/main/ui/components/collapsible-card/collapsible-card.component';
 import { EditorAreaSelectorGeneralComponent } from '../editor-area-selector-general/editor-area-selector-general.component';
 import { EditorInventoryComponent } from '../editor-inventory/editor-inventory.component';
+import { getPositionKeysForGridSize } from '@app/features/main/utils';
+import { floorDefinitions } from '@content/floor-definitions';
 
 @Component({
   selector: 'app-editor-panel-info',
@@ -53,9 +55,8 @@ export class EditorPanelInfoComponent {
             `${this.game?.content.player.y}_${this.game?.content.player.x}` ||
             '4_4';
           this.inputStartingAreaId = this.game?.content.player.areaId || '';
-
           const area = this.game.content.areas[this.inputStartingAreaId];
-          this.lockouts = area.items.map(item => `${item.y}_${item.x}`);
+          this.lockouts = this.getLockouts(area);
         }
       })
     );
@@ -63,6 +64,31 @@ export class EditorPanelInfoComponent {
 
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  public getLockouts(area: GameArea): string[] {
+    const newLockouts: string[] = [];
+    area.items.forEach(item => {
+      newLockouts.push(`${item.y}_${item.x}`);
+    });
+    area.exits.forEach(exit => {
+      newLockouts.push(`${exit.y}_${exit.x}`);
+    });
+    area.props.forEach(prop => {
+      newLockouts.push(`${prop.y}_${prop.x}`);
+    });
+    const positionKeys = getPositionKeysForGridSize();
+    const map = area.map;
+    positionKeys.forEach((position: string) => {
+      const floor = floorDefinitions[map[position].floor];
+      if (
+        (!floor.walkable || map[position].isHidden) &&
+        !newLockouts.includes(position)
+      ) {
+        newLockouts.push(position);
+      }
+    });
+    return newLockouts;
   }
 
   handleInfoChange() {
