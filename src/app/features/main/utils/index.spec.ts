@@ -5,6 +5,7 @@ import {
   getInitialsFromName,
   getPositionKeysForGridSize,
   getLabelFromSlug,
+  formatDate,
 } from './index';
 
 describe('capitalizeWords', () => {
@@ -47,5 +48,12 @@ describe('getPositionKeysForGridSize', () => {
 describe('getLabelFromSlug', () => {
   it('should convert a slug to a label', () => {
     expect(getLabelFromSlug('hello-world')).toBe('Hello World');
+  });
+});
+
+describe('formatDate', () => {
+  it('should format a date correctly', () => {
+    const date = '2024-01-01T12:00:00Z';
+    expect(formatDate(date).length).toBeGreaterThan(0);
   });
 });

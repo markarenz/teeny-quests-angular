@@ -6,7 +6,7 @@ export const capitalizeWords = (str?: string): string =>
     ? ''
     : str
         .split(' ')
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
         .join(' ');
 
 export const getRandomInt = (min: number, max: number): number =>
@@ -38,5 +38,5 @@ export const formatDate = (date: string): string => new Date(date).toString();
 export const getLabelFromSlug = (slug: string): string =>
   slug
     .split('-')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');

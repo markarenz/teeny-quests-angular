@@ -36,6 +36,11 @@ export const validateMovePositionKey = ({
     return false;
   }
 
+  // is the cell hidden?
+  if (areaMap[positionKey].isHidden) {
+    return false;
+  }
+
   return true;
 };
 
@@ -108,7 +113,7 @@ export const getPathBetweenPoints = ({
         path.push(temp.parent);
         temp = temp.parent;
       }
-      return path.reverse().map((cell) => cell.positionKey);
+      return path.reverse().map(cell => cell.positionKey);
     }
 
     // Remove the current cell from the openSet
@@ -127,7 +132,7 @@ export const getPathBetweenPoints = ({
     for (let i = 0; i < neighboingPositionKeys.length; i++) {
       const neighboringKey = neighboingPositionKeys[i];
       let neighbor = pathfindingGrid.find(
-        (cell) => cell.positionKey === neighboringKey
+        cell => cell.positionKey === neighboringKey
       );
 
       const deltaHeight =
@@ -201,7 +206,7 @@ export const getMoveOptions = ({
         positionKey,
       }) &&
       // Forbit player from moving to a cell with an item
-      !areaItems.some((item) => {
+      !areaItems.some(item => {
         `${item.y}_${item.x}` === positionKey;
       }) &&
       // Ignore start position

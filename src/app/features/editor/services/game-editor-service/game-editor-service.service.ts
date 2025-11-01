@@ -748,4 +748,30 @@ export class GameEditorService {
     }
     return null;
   };
+
+  public getCanMapCellBeHidden = (positionKey: string): boolean => {
+    const areaId = this.selectedAreaId.value;
+    const area = this.game.value?.content.areas[areaId];
+    const player = this.game.value?.content.player;
+    if (!area || !player) {
+      return false;
+    }
+    const conflictWithPlayer =
+      `${player.y}_${player.x}` === positionKey && player?.areaId === areaId;
+    const conflictExits = area.exits.some(exit => {
+      const exitPositionKey = `${exit.y}_${exit.x}`;
+      return exitPositionKey === positionKey;
+    });
+    const conflictItems = area.items.some(item => {
+      const exitPositionKey = `${item.y}_${item.x}`;
+      return exitPositionKey === positionKey;
+    });
+    const conflictProps = area.props.some(prop => {
+      const exitPositionKey = `${prop.y}_${prop.x}`;
+      return exitPositionKey === positionKey;
+    });
+    return (
+      !conflictExits && !conflictItems && !conflictProps && !conflictWithPlayer
+    );
+  };
 }

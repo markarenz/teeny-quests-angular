@@ -12,10 +12,11 @@
   @if(selectedAreaMap) {
   <div>
     @for(positionKey of areaDataPositionKeys; track positionKey;) {
+    @if (!selectedAreaMap[positionKey].isHidden) {
     <app-area-cell [positionKey]="positionKey" [cellData]="selectedAreaMap[positionKey]" [isEditorMode]="true"
       [selectedAreaCellPosition]="selectedAreaCellPosition" (onClick)="handleMapCellClick($event)" [lightLevel]="1" />
     }
-
+    }
     <div class="absolute top-0 left-0 w-full h-full bg-gray-800/50 pointer-events-none	z-[80] {{
         anyCellSelected ? 'block' : 'hidden'
       }}"></div>

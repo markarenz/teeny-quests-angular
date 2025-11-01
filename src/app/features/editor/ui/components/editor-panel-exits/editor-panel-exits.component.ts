@@ -72,6 +72,9 @@ export class EditorPanelExitsComponent {
       this.area.items.forEach((item: GameItem) => {
         newLockouts.push(`${item.y}_${item.x}`);
       });
+      this.area.props.forEach(prop => {
+        newLockouts.push(`${prop.y}_${prop.x}`);
+      });
       this.area.exits.forEach((exit: GameAreaExit) => {
         if (exit.id !== this.selectedExitId) {
           newLockouts.push(`${exit.y}_${exit.x}`);
@@ -81,7 +84,10 @@ export class EditorPanelExitsComponent {
       const map = this.area.map;
       positionKeys.forEach((position: string) => {
         const floor = floorDefinitions[map[position].floor];
-        if (!floor.walkable && !newLockouts.includes(position)) {
+        if (
+          (map[position].isHidden || !floor.walkable) &&
+          !newLockouts.includes(position)
+        ) {
           newLockouts.push(position);
         }
       });

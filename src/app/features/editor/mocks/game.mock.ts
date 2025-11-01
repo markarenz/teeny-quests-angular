@@ -412,6 +412,7 @@ const gameMockData: GameROM = {
             x: 2,
             y: 6,
             h: 1,
+            lock: 'silver',
           },
         ],
         props: [
@@ -457,7 +458,7 @@ const gameMockData: GameROM = {
             },
             wall: 'north',
             status: 'off',
-            x: 2,
+            x: 3,
             y: 2,
             h: 1,
           },

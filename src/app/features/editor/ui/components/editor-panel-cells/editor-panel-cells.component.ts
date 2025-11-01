@@ -12,7 +12,9 @@ import { EditorTextureSelectorComponent } from '../editor-texture-selector/edito
 import { IconButtonComponent } from '@app/features/main/ui/components/icons/icon-button/icon-button.component';
 import { ButtonComponent } from '@app/features/main/ui/components/button/button.component';
 import { mapCellDecalOptions } from '@content/constants';
+import { TooltipComponent } from '@app/features/main/ui/components/tooltip/tooltip.component';
 import { getLabelFromSlug } from '@app/features/main/utils';
+import { commonText } from '@content/text';
 
 @Component({
   selector: 'app-editor-panel-cells',
@@ -24,6 +26,7 @@ import { getLabelFromSlug } from '@app/features/main/utils';
     EditorTextureSelectorComponent,
     IconButtonComponent,
     ButtonComponent,
+    TooltipComponent,
   ],
   templateUrl: './editor-panel-cells.component.html',
   styleUrl: './editor-panel-cells.component.css',
@@ -31,18 +34,21 @@ import { getLabelFromSlug } from '@app/features/main/utils';
 export class EditorPanelCellsComponent {
   constructor(private _gameEditorService: GameEditorService) {}
   private subscriptions: Subscription[] = [];
-  isCellSelectorOpen: boolean = false;
-  selectedCellPosition: string = '';
-  selectedCell: GameAreaMapCell | null = null;
-  maxHeight: number = maxAreaCellHeight;
-  floorOptions = floorOptionsData;
-  currentFloorOption = 'default';
-  currentWallLOption = 'default';
-  currentWallROption = 'default';
-  currentDecal = '';
-  currentDecalLabel = '';
-  wallOptions = wallOptionsData;
-  decalOptions = mapCellDecalOptions;
+  public isCellSelectorOpen: boolean = false;
+  public selectedCellPosition: string = '';
+  public selectedCell: GameAreaMapCell | null = null;
+  public maxHeight: number = maxAreaCellHeight;
+  public floorOptions = floorOptionsData;
+  public currentFloorOption = 'default';
+  public currentWallLOption = 'default';
+  public currentWallROption = 'default';
+  public currentDecal = '';
+  public currentDecalLabel = '';
+  public wallOptions = wallOptionsData;
+  public decalOptions = mapCellDecalOptions;
+  public canHideCell: boolean = false;
+  public inputCellHidden: boolean = false;
+  public commonText = commonText;
 
   buttons = [
     { label: 'Increase Height', direction: 'up' },
@@ -54,6 +60,9 @@ export class EditorPanelCellsComponent {
       this._gameEditorService.selectedCellPositionObs.subscribe(
         (data: string | null) => {
           this.selectedCellPosition = data ?? '';
+          this.canHideCell = this._gameEditorService.getCanMapCellBeHidden(
+            data ?? ''
+          );
         }
       )
     );
@@ -74,6 +83,7 @@ export class EditorPanelCellsComponent {
           );
           this.currentWallROption = thisWallR?.label ?? 'default';
           this.currentDecal = this.selectedCell?.decal || '';
+          this.inputCellHidden = this.selectedCell?.isHidden || false;
         }
       )
     );
@@ -132,5 +142,15 @@ export class EditorPanelCellsComponent {
   }
   handleResetTexturesClick() {
     this._gameEditorService.resetTexturesForCurrentArea();
+  }
+
+  hideMapCell() {
+    if (this.selectedCell && this.selectedCellPosition) {
+      this.inputCellHidden = !this.inputCellHidden;
+      this._gameEditorService.setCellData({
+        ...this.selectedCell,
+        isHidden: this.inputCellHidden,
+      });
+    }
   }
 }

@@ -756,3 +756,29 @@ describe('loadContentVersion', () => {
     expect(prop?.id).not.toBeDefined();
   });
 });
+
+describe('getCanMapCellBeHidden', () => {
+  let service: GameEditorService;
+  beforeEach(() => {
+    service = TestBed.inject(GameEditorService);
+    service.setTestValue(gameMock, 'game');
+    service.setTestValue('start', 'selectedAreaId');
+    // Locations:
+    // prop 2_3
+    // item 3_4
+    // exit 2_6
+    // player 2_2
+  });
+  it('should determine if map cell can be hidden', () => {
+    const canBeHidden = service.getCanMapCellBeHidden('1_1');
+    expect(canBeHidden).toBeTrue();
+  });
+  it('should determine map cell cannot be hidden due to conflict', () => {
+    const canBeHidden = service.getCanMapCellBeHidden('3_4');
+    expect(canBeHidden).toBeFalse();
+  });
+  it('should determine map cell cannot be hidden due player start', () => {
+    const canBeHidden = service.getCanMapCellBeHidden('2_2');
+    expect(canBeHidden).toBeFalse();
+  });
+});

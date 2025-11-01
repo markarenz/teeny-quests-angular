@@ -1,16 +1,11 @@
 <div class="game-area-stage">
-  <svg viewBox="0 0 100 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"
-    class="stage-base">
-    <g id="outer-ring">
-      <path class="inner" d="M 50,0.5 99,25 50,49.5 1,25 Z" />
-    </g>
-  </svg>
-
   @if(areaMap) {
   <div>
     @for(positionKey of areaDataPositionKeys; track positionKey;) {
+    @if(!areaMap[positionKey].isHidden) {
     <app-area-cell [positionKey]="positionKey" [cellData]="areaMap[positionKey]"
       [lightLevel]="areaLightMap[positionKey]" />
+    }
     }
 
     <!-- Area Items -->

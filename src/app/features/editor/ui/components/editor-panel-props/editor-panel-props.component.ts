@@ -132,18 +132,28 @@ export class EditorPanelPropsComponent {
       const newLockouts: string[] = [];
       const positionKeys = getPositionKeysForGridSize();
       const map = this.area.map;
+      this.area.items.forEach(item => {
+        newLockouts.push(`${item.y}_${item.x}`);
+      });
+      this.area.props.forEach(prop => {
+        if (prop.id !== this.selectedPropId) {
+          newLockouts.push(`${prop.y}_${prop.x}`);
+        }
+      });
+      this.area.exits.forEach(exit => {
+        newLockouts.push(`${exit.y}_${exit.x}`);
+      });
       positionKeys.forEach((position: string) => {
         const floor = floorDefinitions[map[position].floor];
         const currentH = map[position].h;
         // check n and w neighbors to see if H is +2 higher than current cell
         const { neighborN, neighborW } = this.getNeighbors(position);
-
+        const cellValid = floor.walkable && !map[position].isHidden;
         // If current cell is not walkabout or no 2 unit wall exists to the north or west, lock out this cell
         const neighborWValid = neighborW && neighborW.h > currentH + 3;
         const neighborNValid = neighborN && neighborN.h > currentH + 3;
         if (
-          !neighborWValid &&
-          !neighborNValid &&
+          ((!neighborWValid && !neighborNValid) || !cellValid) &&
           !newLockouts.includes(position)
         ) {
           newLockouts.push(position);
