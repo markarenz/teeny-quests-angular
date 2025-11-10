@@ -6,6 +6,12 @@
   transition: 0.05s all linear;
 }
 
+:host-context(.game-ended) .player-position {
+  transition-duration: 1s;
+  bottom: 80% !important;
+  opacity: 0 !important;
+}
+
 .player-position-inner {
   transition: 0.25s transform ease-in-out;
 }

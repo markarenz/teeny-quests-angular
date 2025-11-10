@@ -10,7 +10,8 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 export class SvgExitDefaultEComponent {
   @Input('isEditorSelected') isEditorSelected: boolean = false;
   @Input('isClickable') isClickable: boolean = false;
-  @Input('lock') lock = 'gold'; // TODO: remove this
+  @Input('isLevelExit') isLevelExit: boolean = false;
+  @Input('lock') lock = 'gold';
   @Output() onClick = new EventEmitter<string>();
 
   handleClick() {

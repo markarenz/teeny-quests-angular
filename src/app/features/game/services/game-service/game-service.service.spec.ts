@@ -319,6 +319,45 @@ describe('turnActionExit', () => {
   }));
 });
 
+describe('turnActionExit', () => {
+  let service: GameService;
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [ToastrModule.forRoot()],
+      providers: [ToastrService],
+      teardown: { destroyAfterEach: false },
+    });
+    messageService = TestBed.inject(MessageService);
+    service = TestBed.inject(GameService);
+    const gameMockLevelExit = JSON.parse(
+      JSON.stringify({
+        ...gameMockData,
+      })
+    );
+    gameMockLevelExit.content.areas['start'].exits[0].exitType = 'game-end';
+    service.testInit(gameMockLevelExit);
+    service.initGameState(gameMockLevelExit);
+  });
+  it('should process turn level exit', fakeAsync(async () => {
+    tick(1000);
+
+    service.processTurn({
+      verb: 'exit',
+      noun: '1735602762347',
+    });
+
+    let i = 0;
+    service.gameStateObs.subscribe(gameState => {
+      if (i === 2) {
+        expect(gameState?.flagValues['gameEnded']).toBeTrue();
+        flush();
+      }
+      i += 1;
+    });
+    flush();
+  }));
+});
+
 describe('turnActionItemClick', () => {
   let service: GameService;
   beforeEach(() => {
