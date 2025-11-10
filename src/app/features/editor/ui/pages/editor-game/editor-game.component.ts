@@ -71,6 +71,7 @@ export class EditorGameComponent {
     { label: 'Exits', slug: 'exits' },
     { label: 'Items', slug: 'items' },
     { label: 'Props', slug: 'props' },
+    { label: 'Events', slug: 'events' },
   ];
 
   ngOnInit() {

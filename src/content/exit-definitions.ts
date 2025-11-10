@@ -4,6 +4,10 @@ export const exitDefinitions = [
     value: 'default',
   },
   {
+    label: 'Level Exit',
+    value: 'game-end',
+  },
+  {
     label: 'Cave Exit',
     value: 'cave',
   },

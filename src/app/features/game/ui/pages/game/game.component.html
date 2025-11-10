@@ -1,29 +1,16 @@
 <app-main-layout [title]="title">
   <div class="my-8 min-h-[50vh] flex flex-col gap-8">
-    <div class="game-wrap">
+    <div class="game-wrap {{gameStatus === 'ended' ? 'game-ended' : ''}}">
       @if(!isLoading) {
       <div>
         <app-game-area />
         <div class="absolute top-0 left-0 flex flex-row gap-4">
-          <app-icon-button
-            size="md"
-            label="Open Inventory"
-            icon="backpack"
-            (onButtonClick)="handleInventoryClick()"
-            [showDot]="showInventoryDot"
-          />
+          <app-icon-button size="md" label="Open Inventory" icon="backpack" (onButtonClick)="handleInventoryClick()"
+            [showDot]="showInventoryDot" />
         </div>
         <div class="absolute bottom-0 right-0 flex flex-row gap-4">
-          <app-icon-button
-            size="md"
-            icon="info"
-            (onButtonClick)="handleInfoClick()"
-          />
-          <app-icon-button
-            size="md"
-            icon="help"
-            (onButtonClick)="handleHelpClick()"
-          />
+          <app-icon-button size="md" icon="info" (onButtonClick)="handleInfoClick()" />
+          <app-icon-button size="md" icon="help" (onButtonClick)="handleHelpClick()" />
         </div>
       </div>
       }
@@ -32,15 +19,13 @@
       @if(gameModalStatus === 'inventory') {
       <app-modal-inventory />
       } @if(['loading', 'intro', 'help'].includes(gameModalStatus)) {
-      <app-modal-page
-        [isLoading]="isLoading"
-        [title]="title"
-        [gameModalStatus]="gameModalStatus"
-        [introParagraphs]="introParagraphs"
-        (onConfirm)="handlePageModalConfirm()"
-        (onClose)="handlePageModalConfirm()"
-      />
+      <app-modal-page [isLoading]="isLoading" [title]="title" [gameModalStatus]="gameModalStatus"
+        [introParagraphs]="introParagraphs" (onConfirm)="handlePageModalConfirm()"
+        (onClose)="handlePageModalConfirm()" />
       }
     </div>
   </div>
+  @if(gameStatus === 'ended') {
+  <app-game-end-message (handleGameEndConfirmClick)="handleGameEndClick()" />
+  }
 </app-main-layout>

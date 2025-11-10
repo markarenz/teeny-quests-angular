@@ -13,6 +13,7 @@ import { GameAreaComponent } from '../../components/game-area/game-area.componen
 import { pageModalTitles } from '@content/constants';
 import { IconButtonComponent } from '@app/features/main/ui/components/icons/icon-button/icon-button.component';
 import { ModalPageComponent } from '@app/features/game/ui/components/modal-page/modal-page.component';
+import { GameEndMessageComponent } from '../../components/game-end-message/game-end-message.component';
 import { ModalInventoryComponent } from '../../components/modal-inventory/modal-inventory.component';
 import { AuthProviderService } from '@app/features/auth/services/auth-provider-service';
 import { logger } from '@app/features/main/utils/logger';
@@ -26,6 +27,7 @@ import { logger } from '@app/features/main/utils/logger';
     IconButtonComponent,
     ModalPageComponent,
     ModalInventoryComponent,
+    GameEndMessageComponent,
   ],
   templateUrl: './game.component.html',
   styleUrl: './game.component.css',
@@ -76,7 +78,7 @@ export class GameComponent {
     this._gameService.loadGameROM(id, v);
     this.isLoading = true;
     this.subscriptions.push(
-      this._authGoogleService.isLoggedInObs.subscribe((isLoggedIn) => {
+      this._authGoogleService.isLoggedInObs.subscribe(isLoggedIn => {
         if (isLoggedIn === null) {
           return;
         }
@@ -111,6 +113,11 @@ export class GameComponent {
           }
           this.previousInventory = data.player.inventory;
         }
+        if (data?.flagValues['gameEnded']) {
+          // FUTURE: handle game end vs level end
+          // -- For now, we just game end and go back to the homepage
+          this.gameStatus = 'ended';
+        }
       })
     );
     this.subscriptions.push(
@@ -127,7 +134,7 @@ export class GameComponent {
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   handlePageModalConfirm = () => {
@@ -146,5 +153,8 @@ export class GameComponent {
   };
   handleInventoryClose = () => {
     this._gameService.setPageModalStatus('');
+  };
+  handleGameEndClick = () => {
+    this.router.navigate(['/']);
   };
 }

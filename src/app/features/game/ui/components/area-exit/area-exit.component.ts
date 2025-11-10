@@ -31,14 +31,15 @@ export class AreaExitComponent {
   @Input('isNearPlayer') isNearPlayer: boolean = false;
   @Input('isLockedOut') isLockedOut: boolean = false;
   @Output() onClick = new EventEmitter<string>();
-  gridSize: number = defaultGridSize;
+  public gridSize: number = defaultGridSize;
+  public isLevelExit = false;
 
-  left: string = '';
-  bottom: string = '';
-  height: string = '0%';
-  width: string = '0%';
-  position: AreaPosition = { left: '0', bottom: '0', z: 0 };
-  ariaLabel: string = '';
+  public left: string = '';
+  public bottom: string = '';
+  public height: string = '0%';
+  public width: string = '0%';
+  public position: AreaPosition = { left: '0', bottom: '0', z: 0 };
+  public ariaLabel: string = '';
 
   selectedIndicatorPositions: { [key: string]: string } = {
     north: 'top-[15%] left-[55%]',
@@ -64,6 +65,7 @@ export class AreaExitComponent {
       this.position = getAreaElementPositionStyle(this.gridSize, y, x, h);
       this.width = `${cellW}%`;
       this.ariaLabel = `Select Exit ${this.exit.y}_${this.exit.x}`;
+      this.isLevelExit = this.exit.exitType === 'game-end';
     }
   }
 

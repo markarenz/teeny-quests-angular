@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input, Input } from '@angular/core';
 import { SvgPlayerComponent } from '../svg-player/svg-player.component';
 import { Subscription } from 'rxjs';
 import { GameService } from '@app/features/game/services/game-service/game-service.service';
@@ -38,7 +38,7 @@ export class GamePlayerComponent {
       this.h = this.cellData.h;
     }
 
-    const [y, x] = this.playerPosition.split('_').map((v) => parseInt(v));
+    const [y, x] = this.playerPosition.split('_').map(v => parseInt(v));
     const cellW = 100 / defaultGridSize;
     this.width = `${cellW}%`;
 
@@ -64,7 +64,7 @@ export class GamePlayerComponent {
     );
   }
   ngOnDestroy() {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   ngOnChanges() {

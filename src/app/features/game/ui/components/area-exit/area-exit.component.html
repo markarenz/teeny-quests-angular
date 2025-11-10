@@ -3,15 +3,15 @@
   [style.left]="position.left" [style.filter]="'brightness(' + (lightLevel * 100) + '%)'" id="area-exit-{{ exit.id }}">
   @if (exit.direction === 'west') {
   <app-svg-exit-default-w [isEditorSelected]="isEditorSelected" [isClickable]="isClickable && !isLockedOut"
-    (onClick)="handleClick()" [lock]="exit.lock ?? ''" />
+    (onClick)="handleClick()" [lock]="exit.lock ?? ''" [isLevelExit]="isLevelExit" />
   } @else if (exit.direction === 'north') {
   <app-svg-exit-default-n [isEditorSelected]="isEditorSelected" [isClickable]="isClickable && !isLockedOut"
-    (onClick)="handleClick()" [lock]="exit.lock ?? ''" />
+    (onClick)="handleClick()" [lock]="exit.lock ?? ''" [isLevelExit]="isLevelExit" />
   } @else if (exit.direction === 'south') {
   <app-svg-exit-default-s [isEditorSelected]="isEditorSelected" [isClickable]="isClickable && !isLockedOut"
-    (onClick)="handleClick()" [lock]="exit.lock ?? ''" />
+    (onClick)="handleClick()" [lock]="exit.lock ?? ''" [isLevelExit]="isLevelExit" />
   } @else if (exit.direction === 'east') {
   <app-svg-exit-default-e [isEditorSelected]="isEditorSelected" [isClickable]="isClickable && !isLockedOut"
-    (onClick)="handleClick()" [lock]="exit.lock ?? ''" />
+    (onClick)="handleClick()" [lock]="exit.lock ?? ''" [isLevelExit]="isLevelExit" />
   }
 </div>

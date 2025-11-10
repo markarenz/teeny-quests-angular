@@ -347,6 +347,11 @@ export class GameService {
     this.exitingDirection.next(exit.direction);
     await this.delay(250);
 
+    if (exit?.exitType === 'game-end') {
+      nextGameState.flagValues.gameEnded = true;
+      return nextGameState;
+    }
+
     // fade out
     this.areaTransitionMode.next('cover');
     await this.delay(250);

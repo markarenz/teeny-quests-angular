@@ -207,3 +207,35 @@ select {
     background-color: var(--color-success);
   }
 }
+
+.exit-default-root {
+  .arch-bg {
+    fill: #cccccc;
+  }
+  .arch-stones {
+    fill: #8a8a8a;
+  }
+  &.level-exit-svg {
+    .arch-bg {
+      fill: var(--color-primary);
+    }
+    .arch-stones {
+      fill: var(--color-primary-dark);
+    }
+  }
+  .exit-swirl-exterior {
+    fill: var(--color-secondary);
+  }
+  .exit-swirl-interior {
+    fill: var(--color-gray-700);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg); /* Start at 0 degrees rotation */
+  }
+  100% {
+    transform: rotate(360deg); /* Rotate to 360 degrees */
+  }
+}
