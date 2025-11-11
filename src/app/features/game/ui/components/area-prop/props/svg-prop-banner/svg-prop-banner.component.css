@@ -1,0 +1,62 @@
+.flip-horizontal {
+  transform: scaleX(-1);
+}
+.prop-wrap {
+  &.touched {
+    animation: bannerTouchAnim 0.5s ease-out forwards;
+  }
+}
+.banner-root {
+  &.red {
+    .border {
+      fill: #800000;
+    }
+    .base {
+      fill: #aa0000;
+    }
+    .highlight {
+      fill: #d40000;
+    }
+  }
+  &.blue {
+    .border {
+      fill: #003e80;
+    }
+    .base {
+      fill: #0060aa;
+    }
+    .highlight {
+      fill: #2171e9;
+    }
+  }
+  &.green {
+    .border {
+      fill: #056a24;
+    }
+    .base {
+      fill: var(--color-primary-dark);
+    }
+    .highlight {
+      fill: var(--color-primary);
+      opacity: 0.5;
+    }
+  }
+}
+
+@keyframes bannerTouchAnim {
+  0% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(4%);
+  }
+  40% {
+    transform: translateY(0);
+  }
+  60% {
+    transform: translateY(2%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}

@@ -53,7 +53,8 @@ export class GameService {
   private playerAnim = new BehaviorSubject<string>('');
   playerAnimObs = this.playerAnim.asObservable();
 
-  public lightMap: LightMap = {};
+  private lightMap = new BehaviorSubject<LightMap>({});
+  lightMapObs = this.lightMap.asObservable();
 
   testInit(nextGameROM: GameROM): void {
     this.gameROM.next(nextGameROM);
@@ -134,7 +135,6 @@ export class GameService {
     positionKeys.forEach(pk => {
       lighting[pk] = ambientLight;
     });
-
     lighting = this.addLightToLightMap(
       nextGameState.player.y,
       nextGameState.player.x,
@@ -155,8 +155,7 @@ export class GameService {
         lighting
       );
     });
-
-    this.lightMap = lighting;
+    this.lightMap.next(lighting);
   }
 
   initGameState(nextGameROM: GameROM): void {
@@ -523,6 +522,13 @@ export class GameService {
     return nextGameState;
   };
 
+  public resetGameProgress = (): void => {
+    const gameId = this.gameROM.value?.id;
+    if (gameId) {
+      localStorage.removeItem(this.getLocalSaveKey(gameId));
+    }
+  };
+
   turnActionItemClick = async (itemId: string): Promise<GameState> => {
     let nextGameState = JSON.parse(JSON.stringify(this.gameState.value));
 
@@ -604,6 +610,21 @@ export class GameService {
         default:
           nextGameState = await this.turnActionDropItem(noun);
           break;
+      }
+
+      // Settle item heights
+      if (nextGameState.areas[nextGameState.player.areaId]) {
+        const map = nextGameState.areas[nextGameState.player.areaId];
+        nextGameState.areas[nextGameState.player.areaId].items =
+          nextGameState.areas[nextGameState.player.areaId].items.map(
+            (item: any) => {
+              const positionKey = `${item.y}_${item.x}`;
+              return {
+                ...item,
+                h: map.map[positionKey].h,
+              };
+            }
+          );
       }
 
       nextGameState.numTurns += 1;

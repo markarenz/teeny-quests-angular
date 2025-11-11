@@ -42,11 +42,20 @@ export const propDecoDefinitions: { [key: string]: PropDefinition } = {
     isClickable: true,
     // No status messages for switches, only message on resulting actions
   },
+  banner: {
+    id: 'banner',
+    name: 'Banner',
+    hasStatusEffects: true,
+    statuses: ['red', 'blue', 'green'],
+    canSetHeight: false,
+    isClickable: true,
+  },
 };
 
 export const propDecoOptions: SelectIUIOption[] = [
   { value: 'torch', label: 'Torch' },
   { value: 'switch', label: 'Switch' },
+  { value: 'banner', label: 'Banner' },
 ];
 
 export const propDecoWallOptions: SelectIUIOption[] = [

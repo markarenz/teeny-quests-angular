@@ -8,12 +8,17 @@ import {
 } from '@app/features/game/lib/utils/index';
 import { SvgPropTorchComponent } from './props/svg-prop-torch/svg-prop-torch.component';
 import { SvgPropSwitchComponent } from './props/svg-prop-switch/svg-prop-switch.component';
+import { SvgPropBannerComponent } from './props/svg-prop-banner/svg-prop-banner.component';
 import { propDecoDefinitions } from '@content/prop-definitions';
 
 @Component({
   selector: 'app-area-prop',
   standalone: true,
-  imports: [SvgPropTorchComponent, SvgPropSwitchComponent],
+  imports: [
+    SvgPropTorchComponent,
+    SvgPropSwitchComponent,
+    SvgPropBannerComponent,
+  ],
   templateUrl: './area-prop.component.html',
   styleUrl: './area-prop.component.css',
 })
@@ -28,12 +33,13 @@ export class AreaPropComponent {
   @Output() onClick = new EventEmitter<string>();
   gridSize: number = defaultGridSize;
 
-  left: string = '';
-  bottom: string = '';
-  height: string = '0%';
-  width: string = '0%';
-  position: AreaPosition = { left: '0', bottom: '0', z: 0 };
-  ariaLabel: string = '';
+  public isTouched: boolean = false;
+  public left: string = '';
+  public bottom: string = '';
+  public height: string = '0%';
+  public width: string = '0%';
+  public position: AreaPosition = { left: '0', bottom: '0', z: 0 };
+  public ariaLabel: string = '';
 
   updatePropProps() {
     if (this.prop) {
@@ -56,6 +62,10 @@ export class AreaPropComponent {
   }
   handleClick() {
     if (this.isClickable || this.isEditorMode) {
+      this.isTouched = true;
+      setTimeout(() => {
+        this.isTouched = false;
+      }, 500);
       this.onClick.emit(this.prop.id);
     }
   }

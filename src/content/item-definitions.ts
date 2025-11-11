@@ -21,6 +21,15 @@ export const itemDefinitions: { [key: string]: ItemDefinition } = {
     use: 'unlock-exit-silver',
     inventoryActions: ['use', 'drop'],
   },
+  'key-gold': {
+    id: 'key-gold',
+    inventoryKey: 'key-gold',
+    name: 'Gold Key',
+    variant: 'gold',
+    action: 'take',
+    use: 'unlock-exit-gold',
+    inventoryActions: ['use', 'drop'],
+  },
   'coins-25': {
     id: 'coins-25',
     inventoryKey: 'gold',
@@ -55,9 +64,14 @@ export const inventoryDefinitions: { [key: string]: InventoryDefinition } = {
     id: 'key-silver',
     name: 'Silver Key',
   },
+  'key-gold': {
+    id: 'key-gold',
+    name: 'Gold Key',
+  },
 };
 
 export const itemOptions: SelectIUIOption[] = [
   { value: 'key-silver', label: 'Silver Key' },
+  { value: 'key-gold', label: 'Gold Key' },
   { value: 'coins-25', label: 'Coins' },
 ];
