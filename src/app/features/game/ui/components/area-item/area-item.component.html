@@ -6,8 +6,8 @@
   <div aria-hidden="=true" class="highlighted-object {{
       isNearPlayer && !isLockedOut ? 'active-highlight' : ''
     }}"></div>
-  @if (item.itemType === 'key-silver') {
-  <app-svg-item-key />
+  @if (item.itemType.startsWith('key-')) {
+  <app-svg-item-key [variant]="item.itemType.replace('key-', '')" />
   } @else if (item.itemType === 'coins-25') {
   <app-svg-item-coins />
   } @if (isEditorSelected) {

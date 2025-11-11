@@ -9,4 +9,5 @@ import { Component, Input } from '@angular/core';
 })
 export class SvgItemKeyComponent {
   @Input('isFlat') isFlat: boolean = false;
+  @Input('variant') variant: string = 'silver';
 }

@@ -1,3 +1,26 @@
 .isometric {
   transform: scale(0.5, 0.35) translate(0, 50%);
 }
+
+.silver {
+  .stop1 {
+    stop-color: #bababa;
+  }
+  .stop2 {
+    stop-color: #bababa;
+  }
+  .stop3 {
+    stop-color: #bababa;
+  }
+}
+.gold {
+  .stop1 {
+    stop-color: #e4a11a;
+  }
+  .stop2 {
+    stop-color: #e6ab58;
+  }
+  .stop3 {
+    stop-color: #aa750b;
+  }
+}

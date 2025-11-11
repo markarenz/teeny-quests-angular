@@ -443,16 +443,19 @@ describe('calcLightMap', () => {
     service.initGameState(gameMock);
   });
 
-  it('should calculate light map', fakeAsync(() => {
+  it('should calculate light map', fakeAsync(async () => {
     tick(1000);
     const mockState = JSON.parse(JSON.stringify({ ...gameStateMockData }));
     mockState.areas['start'].props[0].status = 'on';
     service.calcLightMap(mockState);
-    const lightMap = service.lightMap;
+
+    const lightMap = await firstValueFrom(
+      service.lightMapObs.pipe(skip(0), take(1))
+    );
     expect(Object.keys(lightMap).length).toBeGreaterThan(0);
     expect(lightMap['2_2']).toEqual(1);
   }));
-  it('should calculate light map - full light', fakeAsync(() => {
+  it('should calculate light map - full light', fakeAsync(async () => {
     tick(1000);
     const mockState = JSON.parse(JSON.stringify({ ...gameStateMockData }));
     mockState.areas['start'].props[0].status = 'on';
@@ -464,7 +467,9 @@ describe('calcLightMap', () => {
       status: 'on',
     });
     service.calcLightMap(mockState);
-    const lightMap = service.lightMap;
+    const lightMap = await firstValueFrom(
+      service.lightMapObs.pipe(skip(0), take(1))
+    );
     expect(Object.keys(lightMap).length).toBeGreaterThan(0);
     expect(lightMap['2_2']).toEqual(1);
     expect(lightMap['0_0']).toEqual(1);

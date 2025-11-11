@@ -70,6 +70,11 @@ export class GameAreaComponent {
       })
     );
     this.subscriptions.push(
+      this._gameService.lightMapObs.subscribe((data: LightMap) => {
+        this.areaLightMap = data;
+      })
+    );
+    this.subscriptions.push(
       this._gameService.gameStateObs.subscribe((data: GameState | null) => {
         if (data) {
           this.numTurns = data.numTurns;
@@ -87,7 +92,6 @@ export class GameAreaComponent {
           // if moving...
           this.playerPosition = `${data.player.y}_${data.player.x}`;
           this.playerFacing = data.player.facing;
-          this.areaLightMap = this._gameService.lightMap;
         }
       })
     );

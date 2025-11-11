@@ -3,7 +3,7 @@
   <div class="flex flex-col gap-8">
     <div class="flex flex-col gap-4">
       <div class="flex flex-col gap-4">
-        @if(actions.length < 1) { <div>No actions.</div>
+        @if(!actions || actions.length < 1) { <div>No actions.</div>
       } @for(action of actions; track action.id; let idx = $index) {
       <div class="rounded-md flex flex-row items-center p-2 {{
               selectedActionId === action.id ? 'bg-green-900' : 'bg-gray-800'
