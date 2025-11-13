@@ -1,4 +1,4 @@
-<div class="game-area-stage">
+<div class="game-area-stage" [style.bottom]="isFullWidthMode ? fullWidthOffsetY : 0">
   @if(areaMap) {
   <div>
     @for(positionKey of areaDataPositionKeys; track positionKey;) {
@@ -42,7 +42,6 @@
     <div id="game-transition-cover" class="absolute top-0 left-0 w-full h-full bg-gray-800 z-[100] transition-opacity {{
         areaTransitionMode === 'cover' ? 'opacity-100' : 'opacity-0'
       }} pointer-events-none"></div>
-    <div class="absolute right-2 top-2 z-[999]">Turns: {{ numTurns }}</div>
   </div>
   }
 </div>

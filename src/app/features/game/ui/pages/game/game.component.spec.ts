@@ -1,4 +1,9 @@
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
 import { BehaviorSubject, firstValueFrom, of } from 'rxjs';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { GameComponent } from './game.component';
@@ -82,5 +87,30 @@ describe('GameComponent', () => {
     expect(service.gameROMObs).toBeTruthy();
     const gameROM = await firstValueFrom(service.gameROMObs);
     expect(gameROM).toBeTruthy();
+  }));
+
+  it('handleGameEndClick should call router.navigate', fakeAsync(async () => {
+    spyOn(router, 'navigate');
+    fixture.detectChanges();
+    component.handleGameEndClick();
+    expect(router.navigate).toHaveBeenCalledWith(['/']);
+  }));
+  it('handleToggleFullWidth should call service setYOffset', fakeAsync(async () => {
+    spyOn(service, 'setFullWidthYOffsetCurrent');
+    fixture.detectChanges();
+    component.handleToggleFullWidth();
+    expect(service.setFullWidthYOffsetCurrent).toHaveBeenCalled();
+  }));
+  it('handle window resize', fakeAsync(async () => {
+    spyOn(service, 'setAspectRatio');
+    fixture.detectChanges();
+    spyOnProperty(window, 'innerWidth', 'get').and.returnValue(1250);
+
+    const mockEvent: Event = {
+      //@ts-expect-error
+      target: { innerWidth: 1200, innerHeight: 800 },
+    };
+    component.onResize(mockEvent as unknown as Event);
+    expect(service.setAspectRatio).toHaveBeenCalled();
   }));
 });

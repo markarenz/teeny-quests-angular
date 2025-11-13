@@ -1,16 +1,23 @@
 <app-main-layout [title]="title">
   <div class="my-8 min-h-[50vh] flex flex-col gap-8">
-    <div class="game-wrap {{gameStatus === 'ended' ? 'game-ended' : ''}}">
+    <div class="game-wrap {{isFullWidthMode ? 'full-width' : ''}} {{gameStatus === 'ended' ? 'game-ended' : ''}}">
       @if(!isLoading) {
       <div>
-        <app-game-area />
-        <div class="absolute top-0 left-0 flex flex-row gap-4">
+        <app-game-area [isFullWidthMode]="isFullWidthMode" />
+        <div class="absolute z-[40] {{isFullWidthMode ? 'left-4 top-4' : 'left-0 top-0'}}  flex flex-row gap-4">
           <app-icon-button size="md" label="Open Inventory" icon="backpack" (onButtonClick)="handleInventoryClick()"
             [showDot]="showInventoryDot" />
         </div>
-        <div class="absolute bottom-0 right-0 flex flex-row gap-4">
-          <app-icon-button size="md" icon="info" (onButtonClick)="handleInfoClick()" />
-          <app-icon-button size="md" icon="help" (onButtonClick)="handleHelpClick()" />
+        <div class="absolute z-[40] {{isFullWidthMode ? 'right-4 top-4' : 'right-0 top-0'}}  flex flex-row gap-4">
+          <app-icon-button label="About This Level" size="md" icon="info" (onButtonClick)="handleInfoClick()" />
+          <app-icon-button label="How to Play Teeny Quests" size="md" icon="help" (onButtonClick)="handleHelpClick()" />
+          <div class="hidden sm:block">
+            <app-icon-button label="{{isFullWidthMode ? 'Collapse' : 'Expand'}}" size="md"
+              icon="{{ isFullWidthMode ? 'collapse' : 'expand'}}" (onButtonClick)="handleToggleFullWidth()" />
+          </div>
+        </div>
+        <div class="absolute bottom-0 {{isFullWidthMode ? 'right-4' : 'right-0'}} flex flex-row gap-4">
+          Turns: {{numTurns}}
         </div>
       </div>
       }
