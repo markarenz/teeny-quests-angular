@@ -10,6 +10,7 @@ import { MovementOptions } from '@app/features/main/interfaces/types';
 import { firstValueFrom, skip, take } from 'rxjs';
 import { MessageService } from '../message/message.service';
 import game from '@content/game';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 let gameMock = { ...gameMockData };
 let gameMockFromDB = { ...gameMockData };
@@ -41,7 +42,7 @@ describe('GameService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ToastrModule.forRoot()],
-      providers: [ToastrService],
+      providers: [ToastrService, provideNoopAnimations()],
       teardown: { destroyAfterEach: false },
     });
     messageService = TestBed.inject(MessageService);
@@ -58,7 +59,7 @@ describe('loadGameROM', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ToastrModule.forRoot()],
-      providers: [ToastrService],
+      providers: [ToastrService, provideNoopAnimations()],
       teardown: { destroyAfterEach: false },
     });
     messageService = TestBed.inject(MessageService);
@@ -93,7 +94,7 @@ describe('initGameState', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ToastrModule.forRoot()],
-      providers: [ToastrService],
+      providers: [ToastrService, provideNoopAnimations()],
       teardown: { destroyAfterEach: false },
     });
     messageService = TestBed.inject(MessageService);
@@ -126,7 +127,7 @@ describe('processTurn', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ToastrModule.forRoot()],
-      providers: [ToastrService],
+      providers: [ToastrService, provideNoopAnimations()],
       teardown: { destroyAfterEach: false },
     });
     messageService = TestBed.inject(MessageService);
@@ -200,7 +201,7 @@ describe('getArea', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ToastrModule.forRoot()],
-      providers: [ToastrService],
+      providers: [ToastrService, provideNoopAnimations()],
       teardown: { destroyAfterEach: false },
     });
     messageService = TestBed.inject(MessageService);
@@ -224,7 +225,7 @@ describe('getGameStateArea', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ToastrModule.forRoot()],
-      providers: [ToastrService],
+      providers: [ToastrService, provideNoopAnimations()],
       teardown: { destroyAfterEach: false },
     });
     messageService = TestBed.inject(MessageService);
@@ -248,7 +249,7 @@ describe('getCanUseItem', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ToastrModule.forRoot()],
-      providers: [ToastrService],
+      providers: [ToastrService, provideNoopAnimations()],
       teardown: { destroyAfterEach: false },
     });
     messageService = TestBed.inject(MessageService);
@@ -270,7 +271,7 @@ describe('getOppositeDirection', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ToastrModule.forRoot()],
-      providers: [ToastrService],
+      providers: [ToastrService, provideNoopAnimations()],
       teardown: { destroyAfterEach: false },
     });
     messageService = TestBed.inject(MessageService);
@@ -291,7 +292,7 @@ describe('turnActionExit', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ToastrModule.forRoot()],
-      providers: [ToastrService],
+      providers: [ToastrService, provideNoopAnimations()],
       teardown: { destroyAfterEach: false },
     });
     messageService = TestBed.inject(MessageService);
@@ -324,7 +325,7 @@ describe('turnActionExit', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ToastrModule.forRoot()],
-      providers: [ToastrService],
+      providers: [ToastrService, provideNoopAnimations()],
       teardown: { destroyAfterEach: false },
     });
     messageService = TestBed.inject(MessageService);
@@ -363,7 +364,7 @@ describe('turnActionItemClick', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ToastrModule.forRoot()],
-      providers: [ToastrService],
+      providers: [ToastrService, provideNoopAnimations()],
       teardown: { destroyAfterEach: false },
     });
     messageService = TestBed.inject(MessageService);
@@ -434,7 +435,7 @@ describe('calcLightMap', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ToastrModule.forRoot()],
-      providers: [ToastrService],
+      providers: [ToastrService, provideNoopAnimations()],
       teardown: { destroyAfterEach: false },
     });
     messageService = TestBed.inject(MessageService);

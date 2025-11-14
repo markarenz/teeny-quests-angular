@@ -46,6 +46,7 @@ export type GameActionEffects = {
 
 export type GameProp = {
   id: string;
+  name?: string;
   propType: string; // e.g., 'torch', 'painting', 'switch'
   areaId: string;
   x: number;
@@ -69,6 +70,7 @@ export type GameAreaMapCell = {
 
 export type GameItem = {
   id: string;
+  name?: string;
   itemType: string;
   areaId: string;
   x: number;
@@ -79,6 +81,7 @@ export type GameItem = {
 
 export type GameAreaExit = {
   id: string;
+  name?: string;
   exitType: string;
   areaId: string;
   direction: string;

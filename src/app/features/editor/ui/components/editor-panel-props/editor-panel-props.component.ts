@@ -38,30 +38,31 @@ import {
 export class EditorPanelPropsComponent {
   constructor(private _gameEditorService: GameEditorService) {}
   private subscriptions: Subscription[] = [];
-  selectedAreaId: string = '';
-  propTypeOptions: SelectIUIOption[] = propDecoOptions;
+  public selectedAreaId: string = '';
+  public propTypeOptions: SelectIUIOption[] = propDecoOptions;
 
-  selectedPropDefinition: PropDefinition | null = null;
-  selectedPropActions: GameActionEffects = {};
-  inputPropType: string = '';
-  inputPropPosition: string = '1_1';
-  inputPropWall: string = 'west';
-  inputPropHeight = '1';
-  inputPropStatus: string = '';
-  inputPropStatusEffects: GameActionEffects = {};
+  public selectedPropDefinition: PropDefinition | null = null;
+  public selectedPropActions: GameActionEffects = {};
+  public inputPropType: string = '';
+  public inputPropPosition: string = '1_1';
+  public inputPropWall: string = 'west';
+  public inputPropHeight = '1';
+  public inputPropStatus: string = '';
+  public inputPropName: string = '';
+  public inputPropStatusEffects: GameActionEffects = {};
 
-  canSetHeight: boolean = true;
-  selectedPropId: string = '';
-  props: GameProp[] = [];
-  isSelectedPositionValid: boolean = false;
+  public canSetHeight: boolean = true;
+  public selectedPropId: string = '';
+  public props: GameProp[] = [];
+  public isSelectedPositionValid: boolean = false;
 
-  lockouts: string[] = [];
-  area: GameArea | null = null;
-  propWallOptions = propDecoWallOptions;
-  propStatusOptions: SelectIUIOption[] = [];
-  propHeightOptions: SelectIUIOption[] = [];
+  public lockouts: string[] = [];
+  public area: GameArea | null = null;
+  public propWallOptions = propDecoWallOptions;
+  public propStatusOptions: SelectIUIOption[] = [];
+  public propHeightOptions: SelectIUIOption[] = [];
 
-  getNeighbors(position: string): { neighborN: any; neighborW: any } {
+  public getNeighbors(position: string): { neighborN: any; neighborW: any } {
     if (!this.area) return { neighborN: null, neighborW: null };
     const map = this.area.map;
     const [y, x] = position.split('_').map(Number);
@@ -70,7 +71,7 @@ export class EditorPanelPropsComponent {
     return { neighborN, neighborW };
   }
 
-  refreshUIData() {
+  public refreshUIData() {
     if (this.selectedPropId) {
       if (!this.area) return;
       const position =
@@ -127,7 +128,7 @@ export class EditorPanelPropsComponent {
     }
   }
 
-  updatePropPositionLockouts() {
+  public updatePropPositionLockouts() {
     if (this.area) {
       const newLockouts: string[] = [];
       const positionKeys = getPositionKeysForGridSize();
@@ -204,11 +205,11 @@ export class EditorPanelPropsComponent {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  handleDeleteClick(id: string) {
+  public handleDeleteClick(id: string) {
     this._gameEditorService.deleteProp(id);
   }
 
-  updateUiAfterPropSelection(id: string) {
+  public updateUiAfterPropSelection(id: string) {
     const selectedProp = this.props.find(prop => prop.id === id);
     this.inputPropPosition = selectedProp
       ? `${selectedProp.y}_${selectedProp.x}`
@@ -218,11 +219,12 @@ export class EditorPanelPropsComponent {
     this.inputPropWall = selectedProp ? selectedProp.wall : 'north';
     this.inputPropHeight = selectedProp ? `${selectedProp.h}` : '1';
     this.inputPropStatus = selectedProp ? `${selectedProp.status}` : '';
+    this.inputPropName = selectedProp ? `${selectedProp.name || ''}` : '';
     this.updatePropPositionLockouts();
     this.refreshUIData();
   }
 
-  handleEditClick(id: string) {
+  public handleEditClick(id: string) {
     if (this.selectedPropId === id) {
       this._gameEditorService.selectProp('');
       this.selectedPropId = '';
@@ -232,12 +234,12 @@ export class EditorPanelPropsComponent {
     this.updateUiAfterPropSelection(id);
   }
 
-  handlePositionSelect(position: string) {
+  public handlePositionSelect(position: string) {
     this.inputPropPosition = position;
     this.handlePropInputChange();
   }
 
-  handleCreateClick() {
+  public handleCreateClick() {
     const prop: GameProp | null = this._gameEditorService.createProp(
       this.lockouts
     );
@@ -246,13 +248,12 @@ export class EditorPanelPropsComponent {
     }
   }
 
-  handlePropInputChange() {
+  public handlePropInputChange() {
     this.refreshUIData();
     const selectedProp = this.props.find(
       prop => prop.id === this.selectedPropId
     );
     const [y, x] = this.inputPropPosition.split('_');
-
     if (selectedProp) {
       const wall = this.propWallOptions
         .map(option => option.value)
@@ -265,6 +266,7 @@ export class EditorPanelPropsComponent {
       const updatedProp: GameProp = {
         ...selectedProp,
         id: this.selectedPropId,
+        name: this.inputPropName,
         propType: this.inputPropType,
         areaId: this.selectedAreaId,
         wall,
@@ -280,7 +282,7 @@ export class EditorPanelPropsComponent {
     }
   }
 
-  handlePropActionInputChange(actions: ActionEffect[], status: string) {
+  public handlePropActionInputChange(actions: ActionEffect[], status: string) {
     this.selectedPropActions[status] = actions;
     this.handlePropInputChange();
   }

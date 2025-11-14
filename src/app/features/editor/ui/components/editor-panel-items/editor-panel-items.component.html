@@ -1,66 +1,49 @@
-<app-collapsible-card
-  title="Items"
-  [isCollapsible]="false"
-  [showNewButton]="true"
-  (onNewButtonClick)="handleCreateClick()"
->
+<app-collapsible-card title="Items" [isCollapsible]="false" [showNewButton]="true"
+  (onNewButtonClick)="handleCreateClick()">
   <div class="flex flex-col gap-8">
     <div class="flex flex-col gap-4">
       <div class="flex flex-col gap-4">
-        @if(items.length < 1) {
-        <div>No items.</div>
-        } @for(item of items; track item.id; let idx = $index) {
-        <div
-          class="rounded-md flex flex-row items-center p-2 {{
+        @if(items.length < 1) { <div>No items.</div>
+      } @for(item of items; track item.id; let idx = $index) {
+      <div class="rounded-md flex flex-row items-center p-2 {{
             selectedItemId === item.id ? 'bg-green-900' : 'bg-gray-800'
-          }}"
-        >
-          <div class="flex-grow">
-            Exit #{{ idx + 1 }} - Type: {{ item.itemType }}, X:{{ item.x }},
-            Y:{{ item.y }},
-            {{ item.h }}
-          </div>
-          <div class="flex flex-row gap-2">
-            <app-icon-button
-              icon="edit"
-              label="Edit Exit"
-              (click)="handleEditClick(item.id)"
-            />
-            <app-icon-button
-              icon="delete"
-              theme="danger"
-              label="Delete Exit"
-              (click)="handleDeleteClick(item.id)"
-            />
-          </div>
-        </div>
-        }
-      </div>
-    </div>
-    @if (selectedItemId) {
-    <div class="flex flex-col gap-4">
-      <div>
-        <label>Position: </label>
-        <app-area-cell-selector
-          id="editor-item-position-selector"
-          [selectedCellPosition]="inputItemPosition"
-          (onPositionSelect)="handlePositionSelect($event)"
-          [lockouts]="lockouts"
-        />
-      </div>
-      <div>
-        <label for="item-type-selector">Item Type</label>
-        <select
-          id="item-type-selector"
-          [(ngModel)]="inputItemType"
-          (change)="handleItemInputChange()"
-        >
-          @for(item of itemTypeOptions; track item.value) {
-          <option [value]="item.value">{{ item.label }}</option>
+          }}">
+        <div class="flex-grow">
+          @if(item.name) {
+          {{item.name}}
+          } @else {
+          Item #{{ idx + 1 }} - X:{{ item.x }}, Y:{{ item.y }},
           }
-        </select>
+        </div>
+        <div class="flex flex-row gap-2">
+          <app-icon-button icon="edit" label="Edit Exit" (click)="handleEditClick(item.id)" />
+          <app-icon-button icon="delete" theme="danger" label="Delete Exit" (click)="handleDeleteClick(item.id)" />
+        </div>
       </div>
+      }
     </div>
-    }
+  </div>
+  @if (selectedItemId) {
+  <div class="flex flex-col gap-4">
+    <div>
+      <label for="prop-name-input">Item Name</label>
+      <input id="popinput" [(ngModel)]="inputItemName" type="text" maxlength="100" class="text-input"
+        (change)="handleItemInputChange()" />
+    </div>
+    <div>
+      <label>Position: </label>
+      <app-area-cell-selector id="editor-item-position-selector" [selectedCellPosition]="inputItemPosition"
+        (onPositionSelect)="handlePositionSelect($event)" [lockouts]="lockouts" />
+    </div>
+    <div>
+      <label for="item-type-selector">Item Type</label>
+      <select id="item-type-selector" [(ngModel)]="inputItemType" (change)="handleItemInputChange()">
+        @for(item of itemTypeOptions; track item.value) {
+        <option [value]="item.value">{{ item.label }}</option>
+        }
+      </select>
+    </div>
+  </div>
+  }
   </div>
 </app-collapsible-card>

@@ -5,6 +5,7 @@ import { AuthProviderService } from '@app/features/auth/services/auth-provider-s
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -18,6 +19,7 @@ describe('HomeComponent', () => {
         AuthProviderService,
         provideHttpClient(),
         provideHttpClientTesting(),
+        provideNoopAnimations(),
       ],
       teardown: { destroyAfterEach: false },
     }).compileComponents();

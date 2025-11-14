@@ -9,8 +9,12 @@
             selectedPropId === prop.id ? 'bg-green-900' : 'bg-gray-800'
           }}">
         <div class="flex-grow">
+          @if(prop.name) {
+          {{prop.name}}
+          } @else {
           Prop #{{ idx + 1 }} - X:{{ prop.x }}, Y:{{ prop.y }},
-          Type:{{ prop.propType }}
+          }
+          ({{ prop.propType }})
         </div>
         <div class="flex flex-row gap-2">
           <app-icon-button icon="edit" label="Edit Prop" (click)="handleEditClick(prop.id)" />
@@ -26,6 +30,11 @@
       <label>Position: </label>
       <app-area-cell-selector id="editor-cell-selector" [selectedCellPosition]="inputPropPosition"
         (onPositionSelect)="handlePositionSelect($event)" [lockouts]="lockouts" />
+    </div>
+    <div>
+      <label for="prop-name-input">Prop Name</label>
+      <input id="popinput" [(ngModel)]="inputPropName" type="text" maxlength="100" class="text-input"
+        (change)="handlePropInputChange()" />
     </div>
     <div>
       <label for="prop-type-selector">Prop Type</label>

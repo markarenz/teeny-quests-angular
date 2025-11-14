@@ -460,7 +460,6 @@ export class GameEditorService {
   }
 
   async saveGame(game: GameROM): Promise<void> {
-    console.log('Saving game...', typeof game.introduction);
     const token = this.authProviderService.getToken();
     if (this.game?.value?.content) {
       return fetch(gamesApiUrl, {
@@ -498,9 +497,8 @@ export class GameEditorService {
       if (exits) {
         exitsOptions = exits.map(exit => ({
           value: exit.id,
-          label: `X: ${exit.x}, Y: ${
-            exit.y
-          } Direction: ${exit.direction.toLocaleUpperCase()}`,
+          label: `${exit.name ? exit.name : `X: ${exit.x}, Y: ${exit.y}`}
+           (${exit.direction.toLocaleUpperCase()})`,
         }));
       }
     }
@@ -732,7 +730,7 @@ export class GameEditorService {
       if (props) {
         propsOptions = props.map(prop => ({
           value: prop.id,
-          label: `${getLabelFromSlug(prop.propType)} X: ${prop.x}, Y: ${prop.y}`,
+          label: `${prop.name ? prop.name : `X: ${prop.x}, Y: ${prop.y}`} (${getLabelFromSlug(prop.propType)})`,
         }));
       }
     }
