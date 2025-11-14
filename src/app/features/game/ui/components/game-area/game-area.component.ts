@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { GameService } from '@app/features/game/services/game-service/game-service.service';
 import {
@@ -32,6 +32,7 @@ import { GameMovementOptionButtonComponent } from '../game-movement-option-butto
   styleUrl: './game-area.component.css',
 })
 export class GameAreaComponent {
+  @Input('isFullWidthMode') isFullWidthMode: boolean = false;
   private subscriptions: Subscription[] = [];
   constructor(private _gameService: GameService) {}
 
@@ -46,14 +47,19 @@ export class GameAreaComponent {
   playerPosition: string = '0_0';
   playerFacing: string = 'north';
   isLockedOut: boolean = false;
-  numTurns: number = 0;
   areaTransitionMode: string = 'cover';
   areaLightMap: LightMap = {};
+  fullWidthOffsetY: string = '0%';
 
   ngOnInit(): void {
     this.subscriptions.push(
       this._gameService.isLockedOutObs.subscribe((data: boolean) => {
         this.isLockedOut = data;
+      })
+    );
+    this.subscriptions.push(
+      this._gameService.fullWidthOffsetYObs.subscribe((data: string) => {
+        this.fullWidthOffsetY = data;
       })
     );
     this.subscriptions.push(
@@ -77,7 +83,6 @@ export class GameAreaComponent {
     this.subscriptions.push(
       this._gameService.gameStateObs.subscribe((data: GameState | null) => {
         if (data) {
-          this.numTurns = data.numTurns;
           if (data.player.areaId !== this.areaId) {
             const areaId = data.player.areaId;
             const gameStateArea = this._gameService.getGameStateArea(areaId);
@@ -89,7 +94,6 @@ export class GameAreaComponent {
               ? Object.keys(this.areaMap)
               : [];
           }
-          // if moving...
           this.playerPosition = `${data.player.y}_${data.player.x}`;
           this.playerFacing = data.player.facing;
         }

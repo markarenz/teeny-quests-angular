@@ -4,4 +4,17 @@
   margin: 0 auto;
   aspect-ratio: 1 / 1;
   position: relative;
+  &.full-width {
+    max-width: none;
+    padding: 0 1rem;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: var(--color-gray-800);
+    z-index: 110;
+    width: 100vw;
+    height: 100vw;
+    overflow: hidden;
+  }
 }

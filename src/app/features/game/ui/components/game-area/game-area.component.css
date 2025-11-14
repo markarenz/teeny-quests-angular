@@ -4,6 +4,13 @@
   margin: 0 auto;
   aspect-ratio: 1 / 1;
   position: relative;
+  :host-context(.full-width) & {
+    max-width: none;
+    position: absolute;
+    width: 100vw;
+    bottom: 0;
+    transition: bottom 1.5s ease-in-out;
+  }
 
   .stage-base {
     position: absolute;

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import {
   GameArea,
+  GameAreaMap,
   GameItem,
   GameROM,
   GameState,
@@ -10,7 +11,7 @@ import {
   MovementOptions,
 } from '@app/features/main/interfaces/types';
 import { MessageService } from '@app/features/game/services/message/message.service';
-import { gamesApiUrl, versionsApiUrl } from '@config/index';
+import { defaultGridSize, gamesApiUrl, versionsApiUrl } from '@config/index';
 import { getMoveOptions } from './utils/pathfinding';
 import { STANDARD_MOVE_DURATION } from '@config/index';
 import { itemDefinitions } from '@content/item-definitions';
@@ -19,6 +20,7 @@ import { logger } from '@app/features/main/utils/logger';
 import { processTurnActions } from './utils/turn-actions';
 import { getPositionKeysForGridSize } from '@app/features/main/utils';
 import { Lights } from '@content/constants';
+import { getAreaElementPositionStyle } from '../../lib/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -28,6 +30,7 @@ export class GameService {
     this.messageService = messageService;
   }
 
+  private aspectRatio: number = 1.0;
   public v: string | null = null; // game version
   private gameROM = new BehaviorSubject<GameROM | null>(null);
   gameROMObs = this.gameROM.asObservable();
@@ -56,6 +59,9 @@ export class GameService {
   private lightMap = new BehaviorSubject<LightMap>({});
   lightMapObs = this.lightMap.asObservable();
 
+  private fullWidthOffsetY = new BehaviorSubject<string>('0%');
+  fullWidthOffsetYObs = this.fullWidthOffsetY.asObservable();
+
   testInit(nextGameROM: GameROM): void {
     this.gameROM.next(nextGameROM);
   }
@@ -68,6 +74,10 @@ export class GameService {
         break;
     }
   }
+
+  public setAspectRatio = (aspectRatio: number) => {
+    this.aspectRatio = aspectRatio;
+  };
 
   calculateMovementOptions(nextGameState: GameState): void {
     const nextMovementOptions = getMoveOptions({
@@ -157,6 +167,34 @@ export class GameService {
     });
     this.lightMap.next(lighting);
   }
+
+  public setFullWidthYOffsetCurrent = () => {
+    const gameState = this.gameState.value;
+    if (gameState?.areas[gameState.player.areaId].map) {
+      this.setFullWidthOffsetY(
+        gameState?.player.y ?? 0,
+        gameState?.player.x ?? 0,
+        gameState?.areas[gameState.player.areaId].map
+      );
+    }
+  };
+  public setFullWidthOffsetY = (y: number, x: number, map: GameAreaMap) => {
+    if (map) {
+      const positionStyles = getAreaElementPositionStyle(
+        defaultGridSize,
+        y,
+        x,
+        map[`${y}_${x}`]?.h ?? 0
+      );
+      const playerY = parseFloat(positionStyles.bottom.replace('%', ''));
+      const offsetY = 50 - playerY + 10 * this.aspectRatio;
+      const offsetYLimited = Math.min(
+        Math.max(offsetY, 0),
+        30 * this.aspectRatio
+      );
+      this.fullWidthOffsetY.next(`${offsetYLimited}vw`);
+    }
+  };
 
   initGameState(nextGameROM: GameROM): void {
     const nowStr = new Date().toISOString();
@@ -368,6 +406,11 @@ export class GameService {
     this.isLockedOut.next(false);
     this.areaTransitionMode.next('');
 
+    this.setFullWidthOffsetY(
+      nextGameState.player.y,
+      nextGameState.player.x,
+      destinationArea.map
+    );
     return nextGameState;
   };
 
@@ -377,6 +420,10 @@ export class GameService {
     if (!path || path.length < 2) {
       return this.gameState.value as GameState;
     }
+
+    const [cy, cx] = destination.split('_').map(v => parseInt(v));
+    const map = nextGameState.areas[nextGameState.player.areaId].map;
+    this.setFullWidthOffsetY(cy, cx, map);
 
     this.isLockedOut.next(true);
     for (let i = 1; i < path.length; i++) {

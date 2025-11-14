@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GameService } from '@app/features/game/services/game-service/game-service.service';
@@ -33,22 +33,31 @@ import { logger } from '@app/features/main/utils/logger';
   styleUrl: './game.component.css',
 })
 export class GameComponent {
-  isLoading: boolean = false;
-  gameStatus: string = '';
-  gameAuthorId: string = '';
-  gameModalStatus: string = 'loading';
-  pageModalTitle: string = 'Loading';
-  isLockedOut: boolean = false;
-  showInventoryDot: boolean = false;
-  previousInventory: Inventory | null = null;
+  private windowWidth: number;
+  private windowHeight: number;
+
+  public isFullWidthMode: boolean = false;
+  public isLoading: boolean = false;
+  public gameStatus: string = '';
+  public gameAuthorId: string = '';
+  public gameModalStatus: string = 'loading';
+  public pageModalTitle: string = 'Loading';
+  public isLockedOut: boolean = false;
+  public showInventoryDot: boolean = false;
+  public previousInventory: Inventory | null = null;
   private userId: string | null = null;
+  public numTurns: number = 0;
 
   constructor(
     private _route: ActivatedRoute,
     private _gameService: GameService,
     private _authGoogleService: AuthProviderService,
     private router: Router
-  ) {}
+  ) {
+    this.windowWidth = window.innerWidth;
+    this.windowHeight = window.innerHeight;
+    this._gameService.setAspectRatio(this.windowWidth / this.windowHeight);
+  }
 
   private subscriptions: Subscription[] = [];
   // Eventually we will pull this in dynamically
@@ -113,6 +122,10 @@ export class GameComponent {
           }
           this.previousInventory = data.player.inventory;
         }
+        if (data) {
+          this.numTurns = data.numTurns;
+        }
+
         if (data?.flagValues['gameEnded']) {
           // FUTURE: handle game end vs level end
           // -- For now, we just game end and go back to the homepage
@@ -132,6 +145,17 @@ export class GameComponent {
         this.isLockedOut = data;
       })
     );
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    this.windowWidth = (event.target as Window).innerWidth;
+    this.windowHeight = (event.target as Window).innerHeight;
+    const aspectRatio = this.windowWidth / this.windowHeight;
+    if (aspectRatio < 1 && this.isFullWidthMode) {
+      this.isFullWidthMode = false;
+    }
+    this._gameService.setAspectRatio(aspectRatio);
   }
 
   ngOnDestroy() {
@@ -157,5 +181,9 @@ export class GameComponent {
   };
   handleGameEndClick = () => {
     this.router.navigate(['/']);
+  };
+  handleToggleFullWidth = () => {
+    this.isFullWidthMode = !this.isFullWidthMode;
+    this._gameService.setFullWidthYOffsetCurrent();
   };
 }
