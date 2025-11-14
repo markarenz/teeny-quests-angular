@@ -460,6 +460,7 @@ export class GameEditorService {
   }
 
   async saveGame(game: GameROM): Promise<void> {
+    console.log('Saving game...', typeof game.introduction);
     const token = this.authProviderService.getToken();
     if (this.game?.value?.content) {
       return fetch(gamesApiUrl, {

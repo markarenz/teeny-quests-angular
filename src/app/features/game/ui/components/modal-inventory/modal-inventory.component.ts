@@ -17,10 +17,11 @@ export class ModalInventoryComponent {
   constructor(private _gameService: GameService) {}
 
   private subscriptions: Subscription[] = [];
-  currentInventory: Inventory | null = null;
-  currentInventoryKeys: string[] = [];
-  itemDefinitions = itemDefinitions;
-  canDrop = false;
+  public isInventoryEmpty = false;
+  public currentInventory: Inventory | null = null;
+  public currentInventoryKeys: string[] = [];
+  public itemDefinitions = itemDefinitions;
+  public canDrop = false;
 
   handleInventoryClose = () => {
     this._gameService.setPageModalStatus('');
@@ -45,10 +46,15 @@ export class ModalInventoryComponent {
           );
           this.currentInventory = data.player.inventory;
         }
+        this.isInventoryEmpty =
+          this.currentInventoryKeys.length === 0 ||
+          this.currentInventoryKeys.every(
+            key => this.currentInventory![key] === 0
+          );
         const positionKey = `${data?.player.y}_${data?.player.x}`;
         const area = data.areas[data?.player.areaId];
         const isSpaceOccupied = area.items.some(
-          (item) => `${item.y}_${item.x}` === positionKey
+          item => `${item.y}_${item.x}` === positionKey
         );
         this.canDrop = !isSpaceOccupied;
       })
@@ -56,7 +62,7 @@ export class ModalInventoryComponent {
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   getCanUseItem(itemId: string): boolean {

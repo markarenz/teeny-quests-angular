@@ -141,7 +141,7 @@ export type GameROM = {
   id: string;
   title: string;
   description: string;
-  introduction: string;
+  introduction?: string;
   itemStatus: string;
   userId: string;
   username: string;

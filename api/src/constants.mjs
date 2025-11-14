@@ -1,118 +1,118 @@
 export const tableNames = {
-  games: "TQ_Games",
-  users: "TQ_Users",
-  versions: "TQ_ContentVersions",
+  games: 'TQ_Games',
+  users: 'TQ_Users',
+  versions: 'TQ_ContentVersions',
 };
 
 export const indexNames = {
-  games_get: "itemStatusIndex",
-  games_get_userId: "gamesByUserIndex",
-  users_get: "itemStatusIndex",
-  versions_get_gameId: "versionsByGameIndex",
+  games_get: 'itemStatusIndex',
+  games_get_userId: 'gamesByUserIndex',
+  users_get: 'itemStatusIndex',
+  versions_get_gameId: 'versionsByGameIndex',
 };
 
 export const authorizationMatchers = {
   users_post: {
-    profile: "sub",
-    bodyParam: "id",
+    profile: 'sub',
+    bodyParam: 'id',
   },
   games_post: {
-    profile: "sub",
-    bodyParam: "userId",
+    profile: 'sub',
+    bodyParam: 'userId',
   },
   games_put: {
-    profile: "sub",
-    bodyParam: "userId",
+    profile: 'sub',
+    bodyParam: 'userId',
   },
   versions_post: {
-    profile: "sub",
-    bodyParam: "userId",
+    profile: 'sub',
+    bodyParam: 'userId',
   },
 };
 
 export const fieldNames = {
   games: [
     {
-      fieldName: "id",
+      fieldName: 'id',
       required: false,
       detailOnly: false,
     },
     {
-      fieldName: "itemStatus",
+      fieldName: 'itemStatus',
       required: true,
       detailOnly: false,
     },
     {
-      fieldName: "userId",
+      fieldName: 'userId',
       required: true,
       detailOnly: false,
     },
     {
-      fieldName: "username",
+      fieldName: 'username',
       required: true,
       detailOnly: false,
     },
     {
-      fieldName: "title",
+      fieldName: 'title',
       required: true,
       detailOnly: false,
     },
     {
-      fieldName: "description",
+      fieldName: 'description',
       required: true,
       detailOnly: false,
     },
     {
-      fieldName: "introduction",
-      required: true,
+      fieldName: 'introduction',
+      required: false,
       detailOnly: true,
     },
     {
-      fieldName: "rating",
+      fieldName: 'rating',
       required: true,
       detailOnly: false,
     },
     {
-      fieldName: "content",
+      fieldName: 'content',
       required: true,
       detailOnly: true,
     },
   ],
   versions: [
     {
-      fieldName: "id",
+      fieldName: 'id',
       required: false,
       detailOnly: false,
     },
     {
-      fieldName: "gameId",
+      fieldName: 'gameId',
       required: true,
       detailOnly: false,
     },
     {
-      fieldName: "userId",
+      fieldName: 'userId',
       required: true,
       detailOnly: false,
     },
     {
-      fieldName: "content",
+      fieldName: 'content',
       required: true,
       detailOnly: false,
     },
   ],
   users: [
     {
-      fieldName: "id",
+      fieldName: 'id',
       required: false,
       detailOnly: false,
     },
     {
-      fieldName: "username",
+      fieldName: 'username',
       required: true,
       detailOnly: false,
     },
     {
-      fieldName: "itemStatus",
+      fieldName: 'itemStatus',
       required: true,
       detailOnly: false,
     },

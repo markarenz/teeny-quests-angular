@@ -1,35 +1,21 @@
 <div class="absolute">
-  <app-common-modal
-    title="Inventory"
-    [isLockedOut]="false"
-    [showCancel]="false"
-    (onConfirm)="handleInventoryClose()"
-  >
+  <app-common-modal title="Inventory" [isLockedOut]="false" [showCancel]="false" (onConfirm)="handleInventoryClose()">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      @if(isInventoryEmpty) {
+      <div>Your inventory is empty.</div>
+      }
       @for(key of currentInventoryKeys; track key;) { @if(currentInventory![key]
       > 0) {
       <div class="flex flex-row gap-2 items-center bg-gray-800 rounded-md p-2">
-        <div
-          class="flex flex-row gap-2 items-center flex-grow whitespace-nowrap overflow-hidden text-ellipsis"
-        >
+        <div class="flex flex-row gap-2 items-center flex-grow whitespace-nowrap overflow-hidden text-ellipsis">
           {{ itemDefinitions[key] ? itemDefinitions[key].name : key }}
           x{{ currentInventory![key] }}
         </div>
         @if(itemDefinitions[key].inventoryActions.includes('drop') && canDrop) {
-        <app-icon-button
-          label="Drop Item"
-          icon="drop"
-          size="sm"
-          (onButtonClick)="handleItemActionClick(key, 'drop')"
-        />
+        <app-icon-button label="Drop Item" icon="drop" size="sm" (onButtonClick)="handleItemActionClick(key, 'drop')" />
         } @if(itemDefinitions[key].inventoryActions.includes('use')) {
-        <app-icon-button
-          label="Use Item"
-          icon="use"
-          size="sm"
-          (onButtonClick)="handleItemActionClick(key, 'use')"
-          [isDisabled]="!getCanUseItem(key)"
-        />
+        <app-icon-button label="Use Item" icon="use" size="sm" (onButtonClick)="handleItemActionClick(key, 'use')"
+          [isDisabled]="!getCanUseItem(key)" />
         }
       </div>
       } }
