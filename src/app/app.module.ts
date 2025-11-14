@@ -6,9 +6,10 @@ import { GameService } from './features/game/services/game-service/game-service.
 import { AuthProviderService } from './features/auth/services/auth-provider-service';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Import this
 
 @NgModule({
-  imports: [BrowserModule, FormsModule],
+  imports: [BrowserModule, FormsModule, BrowserAnimationsModule],
   providers: [
     MainAppService,
     GameEditorService,

@@ -5,6 +5,7 @@ import {
   tick,
 } from '@angular/core/testing';
 import { BehaviorSubject, firstValueFrom, of } from 'rxjs';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { GameComponent } from './game.component';
 import { ActivatedRoute, provideRouter, Router } from '@angular/router';
@@ -34,6 +35,7 @@ describe('GameComponent', () => {
         provideHttpClient(),
         provideHttpClientTesting(),
         ToastrService,
+        provideNoopAnimations(),
       ],
       teardown: { destroyAfterEach: false },
     }).compileComponents();

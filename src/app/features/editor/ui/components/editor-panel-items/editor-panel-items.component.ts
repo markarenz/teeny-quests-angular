@@ -32,16 +32,17 @@ export class EditorPanelItemsComponent {
   constructor(private _gameEditorService: GameEditorService) {}
   private subscriptions: Subscription[] = [];
 
-  selectedAreaId: string = '';
-  panelMode: string = '';
-  itemTypeOptions: SelectIUIOption[] = itemOptions;
-  inputItemType: string = '';
-  inputItemPosition: string = '';
-  selectedItemId: string = '';
-  items: GameItem[] = [];
-  isSelectedPositionValid: boolean = false;
-  lockouts: string[] = [];
-  area: GameArea | null = null;
+  public selectedAreaId: string = '';
+  public panelMode: string = '';
+  public itemTypeOptions: SelectIUIOption[] = itemOptions;
+  public inputItemType: string = '';
+  public inputItemPosition: string = '';
+  public inputItemName: string = '';
+  public selectedItemId: string = '';
+  public items: GameItem[] = [];
+  public isSelectedPositionValid: boolean = false;
+  public lockouts: string[] = [];
+  public area: GameArea | null = null;
 
   updateItemPositionLockouts() {
     if (this.area) {
@@ -77,7 +78,7 @@ export class EditorPanelItemsComponent {
       this._gameEditorService.selectedItemIdObs.subscribe((data: string) => {
         this.selectedItemId = data;
         this.items = this._gameEditorService.getItemsForCurrentArea();
-        this.updateUiAfterExitSelection(data);
+        this.updateUiAfterItemSelection(data);
       })
     );
     this.subscriptions.push(
@@ -99,8 +100,9 @@ export class EditorPanelItemsComponent {
     this.updateItemPositionLockouts();
   }
 
-  updateUiAfterExitSelection(id: string) {
+  updateUiAfterItemSelection(id: string) {
     const selectedItem = this.items.find(item => item.id === id);
+    this.inputItemName = selectedItem ? selectedItem.name || '' : '';
     this.inputItemPosition = selectedItem
       ? `${selectedItem.y}_${selectedItem.x}`
       : '';
@@ -115,7 +117,7 @@ export class EditorPanelItemsComponent {
       return;
     }
     this._gameEditorService.selectItem(id);
-    this.updateUiAfterExitSelection(id);
+    this.updateUiAfterItemSelection(id);
   }
 
   handlePositionSelect(position: string) {
@@ -142,6 +144,7 @@ export class EditorPanelItemsComponent {
       const updatedItem: GameItem = {
         ...selectedItem,
         id: this.selectedItemId,
+        name: this.inputItemName,
         itemType: this.inputItemType,
         areaId: this.selectedAreaId,
         x: +x,

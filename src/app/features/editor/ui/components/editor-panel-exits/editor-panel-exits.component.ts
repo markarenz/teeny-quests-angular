@@ -30,28 +30,29 @@ import { floorDefinitions } from '@content/floor-definitions';
 export class EditorPanelExitsComponent {
   constructor(private _gameEditorService: GameEditorService) {}
   private subscriptions: Subscription[] = [];
-  selectedAreaId: string = '';
-  panelMode: string = '';
-  exitTypeOptions: SelectIUIOption[] = exitDefinitions;
-  exitDirectionOptions: SelectIUIOption[] = exitDirections;
-  inputExitType: string = '';
-  inputExitDirection: string = '';
-  inputExitPosition: string = '';
-  inputExitDestination: string = '';
-  inputExitDestinationExit: string = '';
-  inputExitLockType: string = '';
-  selectedExitId: string = '';
-  exits: GameAreaExit[] = [];
-  isSelectedPositionValid: boolean = false;
-  areasListOptions: SelectIUIOption[] = [];
-  exitsListOptions: SelectIUIOption[] = [];
-  exitsLockOptions: SelectIUIOption[] = [
+  public selectedAreaId: string = '';
+  public panelMode: string = '';
+  public exitTypeOptions: SelectIUIOption[] = exitDefinitions;
+  public exitDirectionOptions: SelectIUIOption[] = exitDirections;
+  public inputExitType: string = '';
+  public inputExitDirection: string = '';
+  public inputExitPosition: string = '';
+  public inputExitDestination: string = '';
+  public inputExitDestinationExit: string = '';
+  public inputExitLockType: string = '';
+  public inputExitName: string = '';
+  public selectedExitId: string = '';
+  public exits: GameAreaExit[] = [];
+  public isSelectedPositionValid: boolean = false;
+  public areasListOptions: SelectIUIOption[] = [];
+  public exitsListOptions: SelectIUIOption[] = [];
+  public exitsLockOptions: SelectIUIOption[] = [
     { value: '', label: 'None' },
     { value: 'silver', label: 'Silver' },
     { value: 'gold', label: 'Gold' },
   ];
-  lockouts: string[] = [];
-  area: GameArea | null = null;
+  public lockouts: string[] = [];
+  public area: GameArea | null = null;
 
   refreshUIData() {
     this.areasListOptions = this._gameEditorService
@@ -137,6 +138,7 @@ export class EditorPanelExitsComponent {
     this.inputExitDestinationExit = selectedExit
       ? selectedExit.destinationExitId
       : '';
+    this.inputExitName = selectedExit ? selectedExit.name || '' : '';
     this.updateExitPositionLockouts();
     this.refreshUIData();
   }
@@ -172,6 +174,7 @@ export class EditorPanelExitsComponent {
       const updatedExit: GameAreaExit = {
         ...selectedExit,
         id: this.selectedExitId,
+        name: this.inputExitName,
         exitType: this.inputExitType,
         areaId: this.selectedAreaId,
         direction: this.inputExitDirection,
