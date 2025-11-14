@@ -8,5 +8,7 @@ import { Component, Input } from '@angular/core';
   styleUrl: './loader-animation.component.css',
 })
 export class LoaderAnimationComponent {
-  @Input('cover') cover: boolean = false;
+  @Input('showBg') showBg: boolean = false;
+  @Input('size') size: string = 'full';
+  @Input('isFixed') isFixed: boolean = false;
 }

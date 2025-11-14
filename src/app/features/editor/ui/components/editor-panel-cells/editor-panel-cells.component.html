@@ -28,7 +28,7 @@
       <div class="flex items-center justify-between">
         <label>Cell Height</label>
         <div>
-          <app-tooltip tooltip
+          <app-tooltip
             [content]="canHideCell ? commonText.tooltip_hideCell_enabled : commonText.tooltip_hideCell_disabled">
             <app-button [fullWidth]="true" [label]="inputCellHidden ? 'Unhide' : 'Hide'" (click)="hideMapCell()"
               [isDisabled]="!canHideCell" />

@@ -15,6 +15,8 @@ import { IconButtonComponent } from '@app/features/main/ui/components/icons/icon
 import { ModalPageComponent } from '@app/features/game/ui/components/modal-page/modal-page.component';
 import { GameEndMessageComponent } from '../../components/game-end-message/game-end-message.component';
 import { ModalInventoryComponent } from '../../components/modal-inventory/modal-inventory.component';
+import { LoaderAnimationComponent } from '@app/features/main/ui/components/loader-animation/loader-animation.component';
+import { TooltipComponent } from '@app/features/main/ui/components/tooltip/tooltip.component';
 import { AuthProviderService } from '@app/features/auth/services/auth-provider-service';
 import { logger } from '@app/features/main/utils/logger';
 
@@ -28,6 +30,8 @@ import { logger } from '@app/features/main/utils/logger';
     ModalPageComponent,
     ModalInventoryComponent,
     GameEndMessageComponent,
+    LoaderAnimationComponent,
+    TooltipComponent,
   ],
   templateUrl: './game.component.html',
   styleUrl: './game.component.css',
@@ -47,6 +51,7 @@ export class GameComponent {
   public previousInventory: Inventory | null = null;
   private userId: string | null = null;
   public numTurns: number = 0;
+  public showIntroduction: boolean = false;
 
   constructor(
     private _route: ActivatedRoute,
@@ -99,13 +104,20 @@ export class GameComponent {
       this._gameService.gameROMObs.subscribe((data: GameROM | null) => {
         if (data) {
           this.title = data.title;
-          this.introParagraphs = data.introduction
-            .split('\n')
-            .map((p, idx) => ({ text: p, id: idx }));
+          this.showIntroduction =
+            typeof data.introduction !== 'undefined' &&
+            data.introduction !== '';
+          this.introParagraphs =
+            this.showIntroduction && data.introduction
+              ? data.introduction
+                  .split('\n')
+                  .map((p, idx) => ({ text: p, id: idx }))
+              : [];
           this.gameStatus = data.itemStatus;
           this.gameAuthorId = data.userId;
           this.isLoading = false;
-          this._gameService.setPageModalStatus('intro');
+          const nextPageModalStatus = this.showIntroduction ? 'intro' : '';
+          this._gameService.setPageModalStatus(nextPageModalStatus);
           this.authorizationCheck();
         }
       })
@@ -185,5 +197,9 @@ export class GameComponent {
   handleToggleFullWidth = () => {
     this.isFullWidthMode = !this.isFullWidthMode;
     this._gameService.setFullWidthYOffsetCurrent();
+  };
+  handleResetProgress = () => {
+    this._gameService.resetGameProgress();
+    window.location.reload();
   };
 }

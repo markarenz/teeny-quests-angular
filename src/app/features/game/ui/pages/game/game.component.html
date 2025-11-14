@@ -4,16 +4,31 @@
       @if(!isLoading) {
       <div>
         <app-game-area [isFullWidthMode]="isFullWidthMode" />
-        <div class="absolute z-[40] {{isFullWidthMode ? 'left-4 top-4' : 'left-0 top-0'}}  flex flex-row gap-4">
-          <app-icon-button size="md" label="Open Inventory" icon="backpack" (onButtonClick)="handleInventoryClick()"
-            [showDot]="showInventoryDot" />
+        <div class="absolute z-[110] {{isFullWidthMode ? 'left-4 top-4' : 'left-0 top-0'}}  flex flex-row gap-4">
+          <app-tooltip content="Inventory" align="left" position="bottom">
+            <app-icon-button size="md" label="Open Inventory" icon="backpack" (onButtonClick)="handleInventoryClick()"
+              [showDot]="showInventoryDot" />
+          </app-tooltip>
         </div>
-        <div class="absolute z-[40] {{isFullWidthMode ? 'right-4 top-4' : 'right-0 top-0'}}  flex flex-row gap-4">
-          <app-icon-button label="About This Level" size="md" icon="info" (onButtonClick)="handleInfoClick()" />
-          <app-icon-button label="How to Play Teeny Quests" size="md" icon="help" (onButtonClick)="handleHelpClick()" />
+        <div class="absolute z-[110] {{isFullWidthMode ? 'right-4 top-4' : 'right-0 top-0'}}  flex flex-row gap-4">
+          @if(showIntroduction) {
+          <app-tooltip content="About This Level" position="bottom">
+            <app-icon-button label="About This Level" size="md" icon="info" (onButtonClick)="handleInfoClick()" />
+          </app-tooltip>
+          }
+          <app-tooltip content="How to Play Teeny Quests" position="bottom">
+            <app-icon-button label="How to Play Teeny Quests" size="md" icon="help"
+              (onButtonClick)="handleHelpClick()" />
+          </app-tooltip>
+
+          <app-tooltip content="Reset Progress" position="bottom">
+            <app-icon-button label="Reset Progress" size="md" icon="reset" (onButtonClick)="handleResetProgress()" />
+          </app-tooltip>
           <div class="hidden sm:block">
-            <app-icon-button label="{{isFullWidthMode ? 'Collapse' : 'Expand'}}" size="md"
-              icon="{{ isFullWidthMode ? 'collapse' : 'expand'}}" (onButtonClick)="handleToggleFullWidth()" />
+            <app-tooltip content="Full Width" align="right" position="bottom">
+              <app-icon-button label="{{isFullWidthMode ? 'Collapse' : 'Expand'}}" size="md"
+                icon="{{ isFullWidthMode ? 'collapse' : 'expand'}}" (onButtonClick)="handleToggleFullWidth()" />
+            </app-tooltip>
           </div>
         </div>
         <div class="absolute bottom-0 {{isFullWidthMode ? 'right-4' : 'right-0'}} flex flex-row gap-4">
@@ -25,10 +40,12 @@
       <!-- Modal: Conversation -->
       @if(gameModalStatus === 'inventory') {
       <app-modal-inventory />
-      } @if(['loading', 'intro', 'help'].includes(gameModalStatus)) {
+      } @if(['intro', 'help'].includes(gameModalStatus)) {
       <app-modal-page [isLoading]="isLoading" [title]="title" [gameModalStatus]="gameModalStatus"
         [introParagraphs]="introParagraphs" (onConfirm)="handlePageModalConfirm()"
         (onClose)="handlePageModalConfirm()" />
+      } @if(gameModalStatus === 'loading') {
+      <app-loader-animation [showBg]="true" size="sm" [isFixed]="true" />
       }
     </div>
   </div>

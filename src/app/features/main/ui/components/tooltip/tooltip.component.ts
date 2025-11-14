@@ -9,4 +9,6 @@ import { Component, Input } from '@angular/core';
 })
 export class TooltipComponent {
   @Input('content') content: string = '';
+  @Input('align') align: string = 'center';
+  @Input('position') position: string = 'top';
 }
