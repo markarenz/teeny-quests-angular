@@ -1,31 +1,30 @@
-<div
-  class="nav-root fixed top-0 left-0 w-screen h-scren {{
+<div class="nav-root fixed top-0 left-0 w-screen h-scren {{
     isMenuOpen ? 'menuOpen' : null
-  }}"
->
+  }}">
   <app-modal-bg (onBgClick)="handleToggleMenu()" />
   <app-container>
-    <nav
-      class="py-12 w-full h-screen flex items-center justify-center text-gray-100 {{
+    <nav class="py-12 w-full h-screen flex items-center justify-center text-gray-100 {{
         isMenuOpen ? 'menuOpen' : null
-      }}"
-    >
+      }}">
       <ul class="flex flex-col text-center">
         @for (menuItem of menuItems; track menuItem.id) {
         <li>
-          <a
-            class="nav-link py-3 px-3 block scale-100 hover:scale-110 transition-transform"
-            routerLink="{{ menuItem.href }}"
-            routerLinkActive="active"
-            tabindex="{{ isMenuOpen ? 0 : -1 }}"
-            [routerLinkActiveOptions]="{ exact: true }"
-            ariaCurrentWhenActive="page"
-            (click)="handleToggleMenu()"
-          >
+          @if (menuItem.href?.startsWith('http')) {
+          <a class="nav-link py-3 px-3 block scale-100 hover:scale-110 transition-transform" href="{{ menuItem.href }}"
+            target="_blank" rel="noopener noreferrer" tabindex="{{ isMenuOpen ? 0 : -1 }}">
             <span>
               {{ menuItem.label }}
             </span>
           </a>
+          } @else {
+          <a class="nav-link py-3 px-3 block scale-100 hover:scale-110 transition-transform"
+            routerLink="{{ menuItem.href }}" routerLinkActive="active" tabindex="{{ isMenuOpen ? 0 : -1 }}"
+            [routerLinkActiveOptions]="{ exact: true }" ariaCurrentWhenActive="page" (click)="handleToggleMenu()">
+            <span>
+              {{ menuItem.label }}
+            </span>
+          </a>
+          }
         </li>
         }
       </ul>
