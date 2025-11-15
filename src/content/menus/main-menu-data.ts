@@ -6,11 +6,11 @@ export const mainMenuData: MenuItem[] = [
     label: 'Home',
     href: '/',
   },
-  {
-    id: 2,
-    label: 'Games',
-    href: '/game',
-  },
+  // {
+  //   id: 2,
+  //   label: 'Games',
+  //   href: '/game',
+  // },
   {
     id: 3,
     label: 'About',
@@ -22,10 +22,15 @@ export const mainMenuData: MenuItem[] = [
     href: '/editor',
     isLoggedInOnly: true,
   },
+  // {
+  //   id: 5,
+  //   label: 'Profile',
+  //   href: '/profile',
+  //   isLoggedInOnly: true,
+  // },
   {
-    id: 5,
-    label: 'Profile',
-    href: '/profile',
-    isLoggedInOnly: true,
+    id: 6,
+    label: 'More Nonsense',
+    href: 'https://www.ridiculopathy.com',
   },
 ];
