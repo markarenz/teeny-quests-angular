@@ -55,9 +55,7 @@ export class EditorPanelExitsComponent {
   public area: GameArea | null = null;
 
   refreshUIData() {
-    this.areasListOptions = this._gameEditorService
-      .getAreasListOptions()
-      .filter(item => item.value !== this.selectedAreaId);
+    this.areasListOptions = this._gameEditorService.getAreasListOptions();
 
     this.exitsListOptions = [
       { value: '', label: 'None' },
@@ -138,6 +136,7 @@ export class EditorPanelExitsComponent {
     this.inputExitDestinationExit = selectedExit
       ? selectedExit.destinationExitId
       : '';
+    this.inputExitLockType = selectedExit ? selectedExit.lock || '' : '';
     this.inputExitName = selectedExit ? selectedExit.name || '' : '';
     this.updateExitPositionLockouts();
     this.refreshUIData();

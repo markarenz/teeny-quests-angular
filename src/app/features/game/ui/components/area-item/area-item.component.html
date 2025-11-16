@@ -10,6 +10,8 @@
   <app-svg-item-key [variant]="item.itemType.replace('key-', '')" />
   } @else if (item.itemType === 'coins-25') {
   <app-svg-item-coins />
+  } @else if (item.itemType === 'coins-100') {
+  <app-svg-item-bag-of-coins />
   } @if (isEditorSelected) {
   <div
     class="absolute top-[45%] left-[30%] w-[40%] h-[40%] bg-transparent rounded-full z-index-[100] border-4 border-primary border-dashed ring-2 ring-offset-2 ring-offset-primaryDarker ring-primaryDark"

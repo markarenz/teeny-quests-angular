@@ -26,7 +26,7 @@ describe('findAnOpenCell', () => {
     const mockItem = { ...gameMockData.content.areas['start'].items[0] };
     const positionKeys = getPositionKeysForGridSize();
     positionKeys.forEach((key, idx) => {
-      const [x, y] = key.split('_');
+      const [y, x] = key.split('_');
       gameMock.content.areas['start'].items[idx] = {
         ...mockItem,
         x: +x,

@@ -39,6 +39,15 @@ export const itemDefinitions: { [key: string]: ItemDefinition } = {
     amount: 25,
     inventoryActions: ['use'],
   },
+  'coins-100': {
+    id: 'coins-100',
+    inventoryKey: 'gold',
+    name: 'Bag of Coins',
+    variant: 'gold',
+    action: 'take',
+    amount: 100,
+    inventoryActions: ['use'],
+  },
   gold: {
     id: 'gold',
     inventoryKey: 'gold',
@@ -74,4 +83,5 @@ export const itemOptions: SelectIUIOption[] = [
   { value: 'key-silver', label: 'Silver Key' },
   { value: 'key-gold', label: 'Gold Key' },
   { value: 'coins-25', label: 'Coins' },
+  { value: 'coins-100', label: 'Bag of Coins' },
 ];

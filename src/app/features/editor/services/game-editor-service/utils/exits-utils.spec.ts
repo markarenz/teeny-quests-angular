@@ -18,7 +18,7 @@ describe('utilCreateExit', () => {
     const positionKeys = getPositionKeysForGridSize();
     const mockExit = { ...gameMockData.content.areas['start'].exits[0] };
     positionKeys.forEach((key, idx) => {
-      const [x, y] = key.split('_');
+      const [y, x] = key.split('_');
       gameMock.content.areas['start'].exits[idx] = {
         ...mockExit,
         x: +x,

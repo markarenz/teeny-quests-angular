@@ -53,7 +53,7 @@ export class EditorGameComponent {
     private router: Router
   ) {}
 
-  title = 'Editor Game';
+  title = '';
   isLoading: boolean = false;
   isValid: boolean = false;
   game: GameROM | null = null;
@@ -83,7 +83,10 @@ export class EditorGameComponent {
           return;
         }
         this.game = data;
-        this.title = this.game?.title ?? 'Game Title';
+        console.log('GAME DATA:', this.game?.title);
+        if (this.game?.title) {
+          this.title = this.game?.title;
+        }
       })
     );
 

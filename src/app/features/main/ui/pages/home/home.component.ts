@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { RouterLink } from '@angular/router';
-import { Title, Meta } from '@angular/platform-browser';
 import { ContainerComponent } from '@main/ui/components/container/container.component';
 import { MainLayoutComponent } from '@main/ui/components/main-layout/main-layout.component';
 import { LogoMainComponent } from '../../components/logo-main/logo-main.component';
@@ -24,11 +23,7 @@ import { GameROM } from '@app/features/main/interfaces/types';
   styleUrl: './home.component.css',
 })
 export class HomeComponent {
-  constructor(
-    private titleService: Title,
-    private metaService: Meta,
-    private _mainAppService: MainAppService
-  ) {}
+  constructor(private _mainAppService: MainAppService) {}
   private subscriptions: Subscription[] = [];
 
   games: any[] = [];
@@ -52,14 +47,8 @@ export class HomeComponent {
         this.games = data;
       })
     );
-
-    this.titleService.setTitle(this.title);
-    this.metaService.addTag({
-      name: 'description',
-      content: this.description,
-    });
   }
   ngOnDestroy() {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }

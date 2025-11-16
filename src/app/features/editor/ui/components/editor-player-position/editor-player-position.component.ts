@@ -33,7 +33,7 @@ export class EditorPlayerPositionComponent {
       this.h = cell.h;
     }
 
-    const [x, y] = this.playerPosition.split('_').map((v) => parseInt(v));
+    const [y, x] = this.playerPosition.split('_').map(v => parseInt(v));
     const cellW = 100 / defaultGridSize;
     this.width = `${cellW}%`;
 
@@ -70,7 +70,7 @@ export class EditorPlayerPositionComponent {
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
   ngOnChanges() {
     this.updatePlayerPositionHeight();

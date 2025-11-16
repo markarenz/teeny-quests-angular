@@ -43,7 +43,7 @@ describe('utilCreateItem', () => {
     const positionKeys = getPositionKeysForGridSize();
     const mockItem = { ...gameMockData.content.areas['start'].items[0] };
     positionKeys.forEach((key, idx) => {
-      const [x, y] = key.split('_');
+      const [y, x] = key.split('_');
       gameMock.content.areas['start'].items[idx] = {
         ...mockItem,
         x: +x,

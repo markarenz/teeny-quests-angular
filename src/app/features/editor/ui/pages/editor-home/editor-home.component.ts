@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Title, Meta } from '@angular/platform-browser';
 import { ContainerComponent } from '@main/ui/components/container/container.component';
 import { MainLayoutComponent } from '@main/ui/components/main-layout/main-layout.component';
 import { TableComponent } from '@app/features/main/ui/components/table/table.component';
@@ -30,14 +29,10 @@ import { GameEditorService } from '@app/features/editor/services/game-editor-ser
 export class EditorHomeComponent {
   constructor(
     private _authService: AuthProviderService,
-    private _gameEditorService: GameEditorService,
-    private titleService: Title,
-    private metaService: Meta
+    private _gameEditorService: GameEditorService
   ) {}
   private subscriptions: Subscription[] = [];
 
-  title = 'Editor Page';
-  description = 'This page lists your current games.';
   isMenuOpen: boolean = false;
   games: any[] = [];
   isLoading: boolean = false;
@@ -67,16 +62,10 @@ export class EditorHomeComponent {
         this._gameEditorService.getGamesByUserId(this.user);
       })
     );
-
-    this.titleService.setTitle(this.title);
-    this.metaService.addTag({
-      name: 'description',
-      content: this.description,
-    });
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   toggleNewGameModal() {
