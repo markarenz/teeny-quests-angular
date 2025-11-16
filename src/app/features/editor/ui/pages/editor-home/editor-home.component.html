@@ -1,28 +1,16 @@
-<app-main-layout [title]="title">
+<app-main-layout title="Quest Editor" description="This page lists your current games.">
   <app-container>
     <div class="py-8">
       <app-breadcrumbs [links]="breadcrumbLinks" />
       <div class="w-full md:flex md:justify-end mt-8">
-        <app-button
-          label="New Game"
-          (onButtonClick)="toggleNewGameModal()"
-          variant="contained"
-        />
+        <app-button label="New Game" (onButtonClick)="toggleNewGameModal()" variant="contained" />
       </div>
 
       <div class="mt-8">
-        <app-table
-          title="Your Games"
-          [rows]="games"
-          [tableFields]="tableFields"
-          linkFormat="/editor/:id"
-          [isLoading]="isLoading"
-        />
+        <app-table title="Your Games" [rows]="games" [tableFields]="tableFields" linkFormat="/editor/:id"
+          [isLoading]="isLoading" />
       </div>
     </div>
-    <app-new-game-modal
-      [isMenuOpen]="isMenuOpen"
-      (onBgClick)="toggleNewGameModal()"
-    />
+    <app-new-game-modal [isMenuOpen]="isMenuOpen" (onBgClick)="toggleNewGameModal()" />
   </app-container>
 </app-main-layout>

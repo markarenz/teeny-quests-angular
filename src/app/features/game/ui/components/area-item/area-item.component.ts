@@ -8,12 +8,17 @@ import {
 } from '@app/features/game/lib/utils/index';
 import { SvgItemCoinsComponent } from './items/svg-item-coins/svg-item-coins.component';
 import { SvgItemKeyComponent } from './items/svg-item-key/svg-item-key.component';
+import { SvgItemBagOfCoinsComponent } from './items/svg-item-bag-of-coins/svg-item-bag-of-coins.component';
 import { itemDefinitions } from '@content/item-definitions';
 
 @Component({
   selector: 'app-area-item',
   standalone: true,
-  imports: [SvgItemCoinsComponent, SvgItemKeyComponent],
+  imports: [
+    SvgItemCoinsComponent,
+    SvgItemKeyComponent,
+    SvgItemBagOfCoinsComponent,
+  ],
   templateUrl: './area-item.component.html',
   styleUrl: './area-item.component.css',
 })

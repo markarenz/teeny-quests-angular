@@ -24,7 +24,7 @@ export const validateMovePositionKey = ({
   areaMap: GameAreaMap;
   positionKey: string;
 }): boolean => {
-  const [x, y] = positionKey.split('_');
+  const [y, x] = positionKey.split('_');
 
   // Does the cell not exist?
   if (!areaMap[positionKey]) {
