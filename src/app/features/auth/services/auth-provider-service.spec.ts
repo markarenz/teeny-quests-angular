@@ -1,6 +1,6 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { AuthProviderService } from './auth-provider-service';
-import { OAuthService } from 'angular-oauth2-oidc';
+import { OAuthEvent, OAuthService } from 'angular-oauth2-oidc';
 import { provideRouter } from '@angular/router';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
@@ -21,6 +21,7 @@ describe('AuthProviderService', () => {
     getIdentityClaims: () => of(true),
     initImplicitFlow: () => of(true),
     revokeTokenAndLogout: () => of(true),
+    events: of<OAuthEvent>({ type: 'token_received' } as OAuthEvent),
   };
 
   beforeEach(async () => {

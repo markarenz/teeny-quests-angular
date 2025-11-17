@@ -1,6 +1,7 @@
 import { Injectable, inject, signal, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { OAuthService } from 'angular-oauth2-oidc';
+import { filter } from 'rxjs/operators';
+import { OAuthEvent, OAuthService } from 'angular-oauth2-oidc';
 import { authConfig } from './auth.config';
 import { BehaviorSubject } from 'rxjs';
 import { getUserByIdOrCreateUser } from './auth-service-utils';
@@ -65,6 +66,17 @@ export class AuthProviderService implements OnDestroy {
         this.userId.set(null);
       }
     });
+    this.oAuthService.events
+      .pipe(filter((e: OAuthEvent) => e.type === 'token_expires'))
+      .subscribe(() => {
+        console.warn('Access token expired. Attempting silent refresh...');
+        this.oAuthService.silentRefresh();
+      });
+    this.oAuthService.events
+      .pipe(filter((e: OAuthEvent) => e.type === 'session_terminated'))
+      .subscribe(() => {
+        console.warn('Session terminated. User needs to log in again.');
+      });
   }
 
   login() {

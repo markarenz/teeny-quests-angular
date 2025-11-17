@@ -344,13 +344,36 @@ export class GameEditorService {
     }
   }
 
-  updateExit(updatedExit: GameAreaExit) {
+  updateExit(updatedExit: GameAreaExit, isEnabledReciprocalExits: boolean) {
     if (this.game.value) {
       const { nextGame } = utilUpdateExit({
         game: this.game.value,
         selectedAreaId: this.selectedAreaId.value,
         updatedExit,
       });
+      if (isEnabledReciprocalExits && nextGame) {
+        if (updatedExit.destinationAreaId && updatedExit.destinationExitId) {
+          // Check the destination exit to see if it links back
+          const destinationExit = nextGame.content.areas[
+            updatedExit.destinationAreaId
+          ].exits.find(exit => exit.id === updatedExit.destinationExitId);
+          if (destinationExit) {
+            const isLinkingBack =
+              destinationExit.destinationAreaId === this.selectedAreaId.value &&
+              destinationExit.destinationExitId === updatedExit.id;
+            if (!isLinkingBack) {
+              // Update the destination exit to link back
+              destinationExit.destinationAreaId = this.selectedAreaId.value;
+              destinationExit.destinationExitId = updatedExit.id;
+              nextGame.content.areas[updatedExit.destinationAreaId].exits =
+                nextGame.content.areas[updatedExit.destinationAreaId].exits.map(
+                  exit =>
+                    exit.id === destinationExit.id ? destinationExit : exit
+                );
+            }
+          }
+        }
+      }
       if (nextGame) {
         this.game.next(nextGame);
         this.refreshAreaExits(nextGame as GameROM);
