@@ -11,6 +11,7 @@ import {
 import { AreaCellSelectorComponent } from '../area-cell-selector/area-cell-selector.component';
 import { CollapsibleCardComponent } from '@app/features/main/ui/components/collapsible-card/collapsible-card.component';
 import { exitDefinitions, exitDirections } from '@content/exit-definitions';
+import { TooltipComponent } from '@app/features/main/ui/components/tooltip/tooltip.component';
 import { IconButtonComponent } from '@app/features/main/ui/components/icons/icon-button/icon-button.component';
 import { getPositionKeysForGridSize } from '@main/utils';
 import { floorDefinitions } from '@content/floor-definitions';
@@ -23,6 +24,7 @@ import { floorDefinitions } from '@content/floor-definitions';
     CollapsibleCardComponent,
     AreaCellSelectorComponent,
     IconButtonComponent,
+    TooltipComponent,
   ],
   templateUrl: './editor-panel-exits.component.html',
   styleUrl: './editor-panel-exits.component.css',
@@ -41,6 +43,7 @@ export class EditorPanelExitsComponent {
   public inputExitDestinationExit: string = '';
   public inputExitLockType: string = '';
   public inputExitName: string = '';
+  public isEnabledReciprocalExits: boolean = true;
   public selectedExitId: string = '';
   public exits: GameAreaExit[] = [];
   public isSelectedPositionValid: boolean = false;
@@ -54,7 +57,7 @@ export class EditorPanelExitsComponent {
   public lockouts: string[] = [];
   public area: GameArea | null = null;
 
-  refreshUIData() {
+  public refreshUIData() {
     this.areasListOptions = this._gameEditorService.getAreasListOptions();
 
     this.exitsListOptions = [
@@ -65,7 +68,7 @@ export class EditorPanelExitsComponent {
     ];
   }
 
-  updateExitPositionLockouts() {
+  public updateExitPositionLockouts() {
     if (this.area) {
       const newLockouts: string[] = [];
       this.area.items.forEach((item: GameItem) => {
@@ -119,11 +122,11 @@ export class EditorPanelExitsComponent {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  handleDeleteClick(id: string) {
+  public handleDeleteClick(id: string) {
     this._gameEditorService.deleteExit(id);
   }
 
-  updateUiAfterExitSelection(id: string) {
+  public updateUiAfterExitSelection(id: string) {
     const selectedExit = this.exits.find(exit => exit.id === id);
     this.inputExitPosition = selectedExit
       ? `${selectedExit.y}_${selectedExit.x}`
@@ -142,7 +145,7 @@ export class EditorPanelExitsComponent {
     this.refreshUIData();
   }
 
-  handleEditClick(id: string) {
+  public handleEditClick(id: string) {
     if (this.selectedExitId === id) {
       this._gameEditorService.selectExit('');
       this.selectedExitId = '';
@@ -152,19 +155,21 @@ export class EditorPanelExitsComponent {
     this.updateUiAfterExitSelection(id);
   }
 
-  handlePositionSelect(position: string) {
+  public handlePositionSelect(position: string) {
     this.inputExitPosition = position;
     this.handleExitInputChange();
   }
 
-  handleCreateClick() {
+  public handleCreateClick() {
     const exit: GameAreaExit | null = this._gameEditorService.createExit();
     if (exit) {
       this.handleEditClick(exit.id);
     }
   }
-
-  handleExitInputChange() {
+  public handleToggleReciprocalExits() {
+    this.isEnabledReciprocalExits = !this.isEnabledReciprocalExits;
+  }
+  public handleExitInputChange() {
     const selectedExit = this.exits.find(
       exit => exit.id === this.selectedExitId
     );
@@ -184,7 +189,10 @@ export class EditorPanelExitsComponent {
         lock: this.inputExitLockType ?? '',
       };
 
-      this._gameEditorService.updateExit(updatedExit);
+      this._gameEditorService.updateExit(
+        updatedExit,
+        this.isEnabledReciprocalExits
+      );
       this.refreshUIData();
     }
   }

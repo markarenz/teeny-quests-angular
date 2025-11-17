@@ -2,6 +2,16 @@
   (onNewButtonClick)="handleCreateClick()">
   <div class="flex flex-col gap-8">
     <div class="flex flex-col gap-4">
+      <div>
+        <label for="reciprocal-exits-toggle" class="flex flex-row items-center gap-2">
+          <input id="reciprocal-exits-toggle" type="checkbox" [checked]="isEnabledReciprocalExits"
+            (change)="handleToggleReciprocalExits()" />
+          <span>Enable <app-tooltip
+              content="Selecting a destination exit will set that exit to link back to the selected exit.">Reciprocal
+              Exits</app-tooltip>
+          </span>
+        </label>
+      </div>
       <div class="flex flex-col gap-4">
         @if(exits.length < 1) { <div>No exits. <i>(Not a Sartre reference).</i></div>
       } @for(exit of exits; track exit.id; let idx = $index) {

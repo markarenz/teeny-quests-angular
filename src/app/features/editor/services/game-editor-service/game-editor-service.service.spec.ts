@@ -538,7 +538,35 @@ describe('updateExit', () => {
       i += 1;
     });
 
-    service.updateExit(exit);
+    service.updateExit(exit, false);
+  });
+
+  it('should update exit with reciprocal exits enabled', () => {
+    const exit: GameAreaExit = {
+      id: 'new-exit-id',
+      destinationAreaId: 'area2',
+      destinationExitId: '17356027612345',
+      exitType: 'default',
+      direction: 'north',
+      areaId: 'start',
+      x: 1,
+      y: 1,
+      h: 4,
+    };
+
+    let i = 0;
+    service.gameObs.subscribe(game => {
+      if (i === 1) {
+        const area = game ? game.content.areas['area2'] : null;
+        const updatedDestinationExit = area ? area.exits[0] : null;
+        expect(updatedDestinationExit?.destinationExitId).toEqual(
+          'new-exit-id'
+        );
+      }
+      i += 1;
+    });
+
+    service.updateExit(exit, true);
   });
 });
 
@@ -593,7 +621,7 @@ describe('updateProp', () => {
     service.setTestValue('start', 'selectedAreaId');
   });
 
-  it('should update exit', () => {
+  it('should update prop', () => {
     const prop: GameProp = {
       ...gameMock.content.areas['start'].props[0],
       status: 'on',
