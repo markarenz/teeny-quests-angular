@@ -11,7 +11,7 @@
     <div class="pb-8">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
         @if (games.length > 0) { @for (game of games; track game.id) {
-        <a routerLink="/game/{{ game.id }}" class="group rounded-md">
+        <a routerLink="/game/{{ game.id }}" class="group rounded-md" (mousedown)="handleClickSound()">
           <app-game-link-card [title]="game.title" [username]="game.username" [description]="game.description"
             [isSkeleton]="false" />
         </a>

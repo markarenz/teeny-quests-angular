@@ -6,6 +6,7 @@ import { MenuItem, userMenuData } from '@content/menus/user-menu-data';
 import { Subscription } from 'rxjs';
 import { ModalBgComponent } from '@app/features/main/ui/components/modal-bg/modal-bg.component';
 import { User } from '@app/features/auth/interfaces/types';
+import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 
 @Component({
   selector: 'app-login',
@@ -24,7 +25,8 @@ export class LoginComponent {
 
   constructor(
     private _authService: AuthProviderService,
-    private router: Router
+    private router: Router,
+    private _audioService: AudioService
   ) {
     this.subscription = Subscription.EMPTY;
   }
@@ -70,5 +72,9 @@ export class LoginComponent {
     this.isUserMenuOpen = false;
     this.authService.logout();
     this.router.navigate(['/']);
+  }
+
+  handleClickSound() {
+    this._audioService.playSound('click1');
   }
 }

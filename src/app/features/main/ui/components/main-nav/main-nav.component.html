@@ -11,7 +11,8 @@
         <li>
           @if (menuItem.href?.startsWith('http')) {
           <a class="nav-link py-3 px-3 block scale-100 hover:scale-110 transition-transform" href="{{ menuItem.href }}"
-            target="_blank" rel="noopener noreferrer" tabindex="{{ isMenuOpen ? 0 : -1 }}">
+            target="_blank" rel="noopener noreferrer" tabindex="{{ isMenuOpen ? 0 : -1 }}"
+            (mousedown)="handleClickSound()">
             <span>
               {{ menuItem.label }}
             </span>
@@ -19,7 +20,8 @@
           } @else {
           <a class="nav-link py-3 px-3 block scale-100 hover:scale-110 transition-transform"
             routerLink="{{ menuItem.href }}" routerLinkActive="active" tabindex="{{ isMenuOpen ? 0 : -1 }}"
-            [routerLinkActiveOptions]="{ exact: true }" ariaCurrentWhenActive="page" (click)="handleToggleMenu()">
+            [routerLinkActiveOptions]="{ exact: true }" ariaCurrentWhenActive="page" (click)="handleToggleMenu()"
+            (mousedown)="handleClickSound()">
             <span>
               {{ menuItem.label }}
             </span>

@@ -1,11 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EventEmitter } from '@angular/core';
 import { AreaPropComponent } from './area-prop.component';
+import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 
 describe('AreaPropComponent', () => {
   let component: AreaPropComponent;
   let fixture: ComponentFixture<AreaPropComponent>;
   let mockEventEmitter: EventEmitter<string>;
+  let audioService: AudioService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -14,6 +16,7 @@ describe('AreaPropComponent', () => {
     }).compileComponents();
 
     mockEventEmitter = new EventEmitter<string>();
+    audioService = TestBed.inject(AudioService);
     fixture = TestBed.createComponent(AreaPropComponent);
     component = fixture.componentInstance;
     component.isClickable = true;

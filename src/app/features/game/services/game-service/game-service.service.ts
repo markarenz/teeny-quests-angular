@@ -21,14 +21,16 @@ import { processTurnActions } from './utils/turn-actions';
 import { getPositionKeysForGridSize } from '@app/features/main/utils';
 import { Lights } from '@content/constants';
 import { getAreaElementPositionStyle } from '../../lib/utils';
+import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GameService {
-  constructor(private messageService: MessageService) {
-    this.messageService = messageService;
-  }
+  constructor(
+    private _messageService: MessageService,
+    private _audioService: AudioService
+  ) {}
 
   private aspectRatio: number = 1.0;
   public v: string | null = null; // game version
@@ -346,6 +348,7 @@ export class GameService {
     return false;
   };
   turnActionExit = async (exitId: string): Promise<GameState> => {
+    this._audioService.playSound('exit');
     let nextGameState = JSON.parse(JSON.stringify(this.gameState.value));
     const areaId = nextGameState.player.areaId;
     const area = this.getArea(areaId);
@@ -386,6 +389,7 @@ export class GameService {
 
     if (exit?.exitType === 'game-end') {
       nextGameState.flagValues.gameEnded = true;
+      this._audioService.playSound('game-end');
       return nextGameState;
     }
 
@@ -427,6 +431,11 @@ export class GameService {
 
     this.isLockedOut.next(true);
     for (let i = 1; i < path.length; i++) {
+      if (i % 2 === 0) {
+        this._audioService.playSound('step2');
+      } else {
+        this._audioService.playSound('step1');
+      }
       const [y, x] = path[i].split('_');
       const dx = +x - nextGameState.player.x;
       const dy = +y - nextGameState.player.y;
@@ -469,7 +478,7 @@ export class GameService {
       ].h,
     };
     area.items.push(newItem);
-    this.messageService.showMessage({
+    this._messageService.showMessage({
       title: 'Inventory Updated',
       message: `Dropped ${itemDef.name}.`,
       messageType: 'info',
@@ -493,11 +502,12 @@ export class GameService {
         nextGameState.player.inventory[itemId] - 1,
         0
       );
-      this.messageService.showMessage({
+      this._messageService.showMessage({
         title: 'Exit Unlocked',
         message: `Unlocked the exit with the ${color} key.`,
         messageType: 'success',
       });
+      this._audioService.playSound('unlock');
     }
     return nextGameState;
   };
@@ -552,11 +562,12 @@ export class GameService {
       };
       const turnActionResult = processTurnActions(
         nextGameState,
-        prop.statusActions[prop.status ?? ''] ?? []
+        prop.statusActions[prop.status ?? ''] ?? [],
+        this._audioService
       );
       nextGameState = turnActionResult.nextGameState;
       turnActionResult.messages.forEach(msg => {
-        this.messageService.showMessage(msg);
+        this._messageService.showMessage(msg);
       });
       this.calcLightMap(nextGameState);
       return nextGameState;
@@ -613,11 +624,14 @@ export class GameService {
             nextGameState.areas[nextGameState.player.areaId].items.filter(
               (i: GameItem) => i.id !== itemId
             );
-          this.messageService.showMessage({
+          this._messageService.showMessage({
             title: 'Inventory Updated',
             message: `Picked up ${itemDef.name}.`,
             messageType: 'info',
           });
+          setTimeout(() => {
+            this._audioService.playSound('take-item');
+          }, 200);
         }
         break;
     }

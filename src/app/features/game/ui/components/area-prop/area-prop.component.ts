@@ -10,6 +10,7 @@ import { SvgPropTorchComponent } from './props/svg-prop-torch/svg-prop-torch.com
 import { SvgPropSwitchComponent } from './props/svg-prop-switch/svg-prop-switch.component';
 import { SvgPropBannerComponent } from './props/svg-prop-banner/svg-prop-banner.component';
 import { propDecoDefinitions } from '@content/prop-definitions';
+import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 
 @Component({
   selector: 'app-area-prop',
@@ -23,6 +24,8 @@ import { propDecoDefinitions } from '@content/prop-definitions';
   styleUrl: './area-prop.component.css',
 })
 export class AreaPropComponent {
+  constructor(private _audioService: AudioService) {}
+
   @Input('prop') prop: GameProp = defaultProp;
   @Input('isEditorMode') isEditorMode: boolean = false;
   @Input('isPropSelected') isPropSelected: boolean = false;
@@ -67,6 +70,12 @@ export class AreaPropComponent {
         this.isTouched = false;
       }, 500);
       this.onClick.emit(this.prop.id);
+    }
+  }
+  public handleMouseDown(): void {
+    const sound = propDecoDefinitions[this.prop.propType]?.sound;
+    if (sound) {
+      this._audioService.playSound(sound);
     }
   }
 }

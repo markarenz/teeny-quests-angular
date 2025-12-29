@@ -19,7 +19,7 @@
   }
   @if (((isNearPlayer && isClickable) || isEditorMode) && !isLockedOut) {
   <button role="button" type="button" [attr.aria-label]="ariaLabel" (click)="handleClick()"
-    [disabled]="!isClickable && !isEditorMode" class="absolute top-[15%] {{
+    (mousedown)="handleMouseDown()" [disabled]="!isClickable && !isEditorMode" class="absolute top-[15%] {{
       prop.wall === 'north' ? 'left-[53%]' : 'left-[8%]'
     }}  w-[40%] h-[40%] cursor-pointer pointer-events-auto rounded-full focus:outline-none {{isEditorMode
     ? 'ring-0 group-hover:ring-4 focus:ring-4 focus:ring-offset-2 focus:ring-offset-primaryDarker ring-primaryDark '

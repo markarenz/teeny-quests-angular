@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 import { ButtonComponent } from './button.component';
 import { EventEmitter } from '@angular/core';
 
@@ -7,6 +7,7 @@ describe('ButtonComponent', () => {
   let component: ButtonComponent;
   let fixture: ComponentFixture<ButtonComponent>;
   let mockEventEmitter: EventEmitter<string>;
+  let audioService: AudioService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -15,6 +16,7 @@ describe('ButtonComponent', () => {
     }).compileComponents();
 
     mockEventEmitter = new EventEmitter<string>();
+    audioService = TestBed.inject(AudioService);
     fixture = TestBed.createComponent(ButtonComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

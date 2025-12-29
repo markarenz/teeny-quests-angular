@@ -25,11 +25,13 @@ export const propDecoDefinitions: { [key: string]: PropDefinition } = {
         title: 'Torch Lit',
         message: 'The torch is now lit, illuminating the surrounding area.',
         messageType: 'info',
+        sound: 'torch-on',
       },
       off: {
         title: 'Torch Extinguished',
         message: 'The torch has been extinguished, darkening the area.',
         messageType: 'info',
+        sound: 'torch-on',
       },
     },
   },
@@ -40,6 +42,7 @@ export const propDecoDefinitions: { [key: string]: PropDefinition } = {
     statuses: ['on', 'off'],
     canSetHeight: false,
     isClickable: true,
+    sound: 'switch',
     // No status messages for switches, only message on resulting actions
   },
   banner: {
@@ -49,6 +52,7 @@ export const propDecoDefinitions: { [key: string]: PropDefinition } = {
     statuses: ['red', 'blue', 'green'],
     canSetHeight: false,
     isClickable: true,
+    sound: 'bounce',
   },
 };
 
