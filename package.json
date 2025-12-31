@@ -1,11 +1,10 @@
 {
   "name": "teeny-quests-angular",
-  "version": "0.9.44",
+  "version": "0.9.46",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "npm run pre-build && ng build --configuration production",
-    "pre-build": "node ./pre-build.js",
     "deploy": "aws s3 sync dist/teeny-quests-angular/browser s3://teeny-quests",
     "watch": "ng build --watch --configuration development",
     "lambda:deploy": "cd ./api/src && zip -r ../lambda.zip ./* && cd .. && aws lambda update-function-code --function-name TQ-SharedApiLambda --zip-file fileb://lambda.zip --region us-east-1 && cd ..",
