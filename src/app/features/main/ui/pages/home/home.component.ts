@@ -7,6 +7,7 @@ import { LogoMainComponent } from '../../components/logo-main/logo-main.componen
 import { GameLinkCardComponent } from '../../components/game-link-card/game-link-card.component';
 import { MainAppService } from '@app/features/main/services/main-app-service';
 import { GameROM } from '@app/features/main/interfaces/types';
+import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 
 @Component({
   selector: 'app-home',
@@ -23,7 +24,10 @@ import { GameROM } from '@app/features/main/interfaces/types';
   styleUrl: './home.component.css',
 })
 export class HomeComponent {
-  constructor(private _mainAppService: MainAppService) {}
+  constructor(
+    private _mainAppService: MainAppService,
+    private _audioService: AudioService
+  ) {}
   private subscriptions: Subscription[] = [];
 
   games: any[] = [];
@@ -50,5 +54,9 @@ export class HomeComponent {
   }
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  handleClickSound() {
+    this._audioService.playSound('click1');
   }
 }

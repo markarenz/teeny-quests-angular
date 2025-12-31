@@ -5,16 +5,22 @@ import {
   GameState,
   ToastMessage,
 } from '@app/features/main/interfaces/types';
+import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 import { propDecoDefinitions } from '@content/prop-definitions';
 
 export const processTurnActions = (
   nextGameState: GameState,
-  actions: ActionEffect[]
+  actions: ActionEffect[],
+  audioService: AudioService
 ): { nextGameState: GameState; messages: ToastMessage[] } => {
   const messages: ToastMessage[] = [];
   let actionGameState = { ...nextGameState };
   actions.forEach(action => {
-    const processTurnActionResult = processTurnAction(nextGameState, action);
+    const processTurnActionResult = processTurnAction(
+      nextGameState,
+      action,
+      audioService
+    );
     actionGameState = processTurnActionResult.actionGameState;
     if (processTurnActionResult.message) {
       messages.push(processTurnActionResult.message);
@@ -26,7 +32,8 @@ export const processTurnActions = (
 
 export const processTurnAction = (
   nextGameState: GameState,
-  action: ActionEffect
+  action: ActionEffect,
+  audioService: AudioService
 ): { actionGameState: GameState; message: ToastMessage | null } => {
   let actionGameState = { ...nextGameState };
   let message = null;
@@ -41,10 +48,18 @@ export const processTurnAction = (
   switch (action.action) {
     case EventAction.UPDATE_MAP_CELL_HEIGHT:
     case EventAction.UPDATE_MAP_CELL_FLOOR:
-      processActionResult = processActionSetMapCell(actionGameState, action);
+      processActionResult = processActionSetMapCell(
+        actionGameState,
+        action,
+        audioService
+      );
       break;
     case EventAction.SET_PROP_STATUS:
-      processActionResult = processActionSetPropStatus(actionGameState, action);
+      processActionResult = processActionSetPropStatus(
+        actionGameState,
+        action,
+        audioService
+      );
       break;
     default:
       break;
@@ -58,7 +73,8 @@ export const processTurnAction = (
 
 export const processActionSetPropStatus = (
   actionGameState: GameState,
-  action: ActionEffect
+  action: ActionEffect,
+  audioService: AudioService
 ): { nextGameState: GameState; message: ToastMessage | null } => {
   const areaId = action.actionObject.areaId;
   const propId = action.actionObject.identifier;
@@ -87,6 +103,9 @@ export const processActionSetPropStatus = (
       ) {
         const statusMessage = propDef.statusMessages[newStatus];
         message = statusMessage;
+        if (statusMessage.sound) {
+          audioService.playSound(statusMessage.sound);
+        }
       }
     }
   }
@@ -95,7 +114,8 @@ export const processActionSetPropStatus = (
 
 export const processActionSetMapCell = (
   actionGameState: GameState,
-  action: ActionEffect
+  action: ActionEffect,
+  audioService: AudioService
 ): { nextGameState: GameState; message: ToastMessage | null } => {
   let message = null;
   const areaId = action.actionObject.areaId;
@@ -136,6 +156,7 @@ export const processActionSetMapCell = (
         message: 'You hear a sound of shifting stone nearby.',
         messageType: 'warning',
       };
+      audioService.playSound('stone');
     }
   }
   return { nextGameState: actionGameState, message };

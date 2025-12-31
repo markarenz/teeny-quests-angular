@@ -5,11 +5,13 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { AuthProviderService } from '@app/features/auth/services/auth-provider-service';
 import { provideRouter } from '@angular/router';
+import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
   let authService: AuthProviderService;
+  let audioService: AudioService;
 
   afterEach(() => {
     TestBed.resetTestingModule();
@@ -26,7 +28,7 @@ describe('LoginComponent', () => {
       teardown: { destroyAfterEach: false },
     }).compileComponents();
     authService = TestBed.inject(AuthProviderService);
-
+    audioService = TestBed.inject(AudioService);
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { ModalBgComponent } from '../modal-bg/modal-bg.component';
 import { mainMenuData } from '@content/menus/main-menu-data';
 import { MenuItem } from '@content/menus/user-menu-data';
+import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 
 @Component({
   selector: 'app-main-nav',
@@ -24,11 +25,12 @@ export class MainNavComponent {
 
   constructor(
     private _mainAppService: MainAppService,
-    private _authProviderService: AuthProviderService
+    private _authProviderService: AuthProviderService,
+    private _audioService: AudioService
   ) {}
 
   private setNavMenuData() {
-    this.menuItems = mainMenuData.filter((item) => {
+    this.menuItems = mainMenuData.filter(item => {
       if (item.isLoggedInOnly && !this.isLoggedIn) {
         return false;
       }
@@ -56,10 +58,13 @@ export class MainNavComponent {
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   handleToggleMenu() {
     this._mainAppService.toggleMenu();
+  }
+  handleClickSound() {
+    this._audioService.playSound('click1');
   }
 }

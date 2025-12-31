@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 
 @Component({
   selector: 'app-icon-button',
@@ -8,6 +9,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   styleUrl: './icon-button.component.css',
 })
 export class IconButtonComponent {
+  @Input('enableSound') enableSound: boolean = true;
   // Icons supported: Edit, Close, New, Info, Help
   @Input('label') label: string = 'Click';
   @Input('theme') theme: string = 'default';
@@ -17,7 +19,15 @@ export class IconButtonComponent {
   @Input('isDisabled') isDisabled: boolean = false;
   @Output() onButtonClick = new EventEmitter<string>();
 
+  constructor(private _audioService: AudioService) {}
+
   public handleButtonClick(): void {
     this.onButtonClick.emit();
+  }
+
+  public handleMouseDown(): void {
+    if (this.enableSound) {
+      this._audioService.playSound('click1');
+    }
   }
 }

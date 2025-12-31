@@ -1,15 +1,9 @@
-<header
-  class="bg-gray-700 color-gray-300 border-b-2 border-gray-400 shadow-lg py-2"
->
+<header class="bg-gray-700 color-gray-300 border-b-2 border-gray-400 shadow-lg py-2">
   <app-container>
     <div class="flex flex-row items-center gap-6">
       <div class="flex flex-row items-center gap-6">
         <div class="block h-12 w-24 bg-blue-400">
-          <a
-            class="block h-full w-full"
-            routerLink="/"
-            ariaCurrentWhenActive="page"
-          >
+          <a class="block h-full w-full" routerLink="/" ariaCurrentWhenActive="page" (mousedown)="handleClickSound()">
             <app-svg-mini-logo theme="color" />
           </a>
         </div>
@@ -23,12 +17,9 @@
         </div>
       </div>
       <div>
-        <button
-          role="button"
-          (click)="handleToggleMenu()"
+        <button role="button" (click)="handleToggleMenu()"
           class="flex w-12 h-12 justify-center items-center group hover:bg-gray-400/50 toggle-root transition-colors duration-500"
-          aria-label="Toggle Menu"
-        >
+          aria-label="Toggle Menu" (mousedown)="handleClickSound()">
           <app-menu-toggle />
         </button>
       </div>

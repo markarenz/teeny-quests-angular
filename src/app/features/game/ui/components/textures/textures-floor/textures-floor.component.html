@@ -1,19 +1,9 @@
-<svg
-  [attr.viewBox]="isFlat ? '0 0 100 100' : '0 0 100 50'"
-  version="1.1"
-  xmlns="http://www.w3.org/2000/svg"
-  xmlns:svg="http://www.w3.org/2000/svg"
-  style="position: absolute; top: 0; left: 0; width: 100%"
->
+<svg [attr.viewBox]="isFlat ? '0 0 100 100' : '0 0 100 50'" version="1.1" xmlns="http://www.w3.org/2000/svg"
+  xmlns:svg="http://www.w3.org/2000/svg" style="position: absolute; top: 0; left: 0; width: 100%">
   <defs>
     @if(floorType === 'dirt') {
-    <pattern
-      [id]="'texture_floor_dirt_' + (isFlat ? 'flat' : 'floor')"
-      x="0"
-      y="0"
-      width="1"
-      [attr.height]="isFlat ? '0.5' : '1'"
-    >
+    <pattern [id]="'texture_floor_dirt_' + (isFlat ? 'flat' : 'floor')" x="0" y="0" width="1"
+      [attr.height]="isFlat ? '0.5' : '1'">
       <rect x="0" y="0" width="100" height="100" fill="#5f4126" />
       <ellipse cx="30" cy="18" rx="4" ry="2" fill="#543109" />
       <ellipse cx="75" cy="30" rx="4" ry="2" fill="#543109" />
@@ -26,76 +16,30 @@
       <circle cx="10" cy="26" r="1" fill="#7b5a36" />
     </pattern>
     } @else if(floorType === 'water') {
-    <pattern
-      [id]="'texture_floor_water_' + (isFlat ? 'flat' : 'floor')"
-      x="0"
-      y="0"
-      width="1"
-      [attr.height]="isFlat ? '0.5' : '1'"
-    >
+    <pattern [id]="'texture_floor_water_' + (isFlat ? 'flat' : 'floor')" x="0" y="0" width="1"
+      [attr.height]="isFlat ? '0.5' : '1'">
       <rect x="0" y="0" width="100" height="100" fill="#4444bb" />
       <path
         d="m 8.1360044,25.285197 c 0,0 2.9787586,-4.27515 9.2672496,-4.446156 6.288489,-0.171006 5.29557,6.84024 12.41149,6.84024 7.115921,0 9.432732,-4.788169 9.432732,-4.788169"
-        fill="none"
-        stroke="#6666cc"
-        strokeWidth="2"
-      />
+        fill="none" stroke="#6666cc" strokeWidth="2" />
       <path
         d="m 8.1360044,25.285197 c 0,0 2.9787586,-4.27515 9.2672496,-4.446156 6.288489,-0.171006 5.29557,6.84024 12.41149,6.84024 7.115921,0 9.432732,-4.788169 9.432732,-4.788169"
-        fill="none"
-        stroke="#6666cc"
-        strokeWidth="2"
-        transform="translate(50, 0)"
-      />
+        fill="none" stroke="#6666cc" strokeWidth="2" transform="translate(50, 0)" />
     </pattern>
     } @else if(floorType === 'wall-top') {
-    <pattern
-      [id]="'texture_floor_wall-top_' + (isFlat ? 'flat' : 'floor')"
-      x="0"
-      y="0"
-      width="1"
-      [attr.height]="isFlat ? '0.25' : '1'"
-    >
+    <pattern [id]="'texture_floor_wall-top_' + (isFlat ? 'flat' : 'floor')" x="0" y="0" width="1"
+      [attr.height]="isFlat ? '0.25' : '1'">
       <rect x="0" y="0" width="100" height="100" fill="#ccc" />
-      <ellipse
-        cx="25"
-        cy="30"
-        rx="3"
-        ry="1.5"
-        fill="none"
-        stroke="#aaa"
-        strokeWidth="1"
-      />
-      <ellipse
-        cx="60"
-        cy="38"
-        rx="3"
-        ry="1.5"
-        fill="none"
-        stroke="#aaa"
-        strokeWidth="1"
-      />
-      <ellipse
-        cx="50"
-        cy="10"
-        rx="3"
-        ry="1.5"
-        fill="none"
-        stroke="#aaa"
-        strokeWidth="1"
-      />
+      <ellipse cx="25" cy="30" rx="3" ry="1.5" fill="none" stroke="#aaa" strokeWidth="1" />
+      <ellipse cx="60" cy="38" rx="3" ry="1.5" fill="none" stroke="#aaa" strokeWidth="1" />
+      <ellipse cx="50" cy="10" rx="3" ry="1.5" fill="none" stroke="#aaa" strokeWidth="1" />
       <circle cx="75" cy="20" r="1" fill="#aaa" />
       <circle cx="50" cy="26" r="1" fill="#aaa" />
       <circle cx="26" cy="22" r="1" fill="#aaa" />
     </pattern>
     } @else if(floorType === 'tile-dark') {
-    <pattern
-      [id]="'texture_floor_tile-dark_' + (isFlat ? 'flat' : 'floor')"
-      x="0"
-      y="0"
-      width="1"
-      [attr.height]="isFlat ? '0.25' : '1'"
-    >
+    <pattern [id]="'texture_floor_tile-dark_' + (isFlat ? 'flat' : 'floor')" x="0" y="0" width="1"
+      [attr.height]="isFlat ? '0.25' : '1'">
       <rect x="0" y="0" width="100" height="100" fill="#555" />
       @if(isFlat) {
       <polygon points="0,12.5 25,0 50,12.5 25,25 0,12.5" fill="#666" />
@@ -106,13 +50,8 @@
       }
     </pattern>
     } @else {
-    <pattern
-      [id]="'texture_floor_default_' + (isFlat ? 'flat' : 'floor')"
-      x="0"
-      y="0"
-      width="1"
-      [attr.height]="isFlat ? '0.25' : '1'"
-    >
+    <pattern [id]="'texture_floor_default_' + (isFlat ? 'flat' : 'floor')" x="0" y="0" width="1"
+      [attr.height]="isFlat ? '0.25' : '1'">
       <rect x="0" y="0" width="100" height="100" fill="#ddd" />
       @if(isFlat) {
       <polygon points="0,12.5 25,0 50,12.5 25,25 0,12.5" fill="#d1d1d1" />
@@ -124,20 +63,14 @@
     </pattern>
     }
   </defs>
-  <polygon
-    (click)="handleClick()"
-    stroke="#aaa"
-    strokeWidth="2"
-    class="{{ isEditorMode ? 'editor-mode' : '' }}"
+  <polygon (click)="handleClick()" stroke="#aaa" strokeWidth="2" class="{{ isEditorMode ? 'editor-mode' : '' }}"
     [attr.points]="
       isFlat ? '0,0 100,0 100,100 0,100' : '50,0 100,25 50,50 0,25'
-    "
-    [attr.fill]="
+    " [attr.fill]="
       'url(#texture_floor_' +
       floorType +
       '_' +
       (isFlat ? 'flat' : 'floor') +
       ')'
-    "
-  />
+    " />
 </svg>

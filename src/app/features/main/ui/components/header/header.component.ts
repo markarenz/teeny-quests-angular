@@ -6,6 +6,7 @@ import { SvgMiniLogoComponent } from '../svg-mini-logo/svg-mini-logo.component';
 import { MainAppService } from '@main/services/main-app-service';
 import { LoginComponent } from '@app/features/auth/ui/components/login/login.component';
 import { Subscription } from 'rxjs';
+import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 
 @Component({
   selector: 'app-header',
@@ -26,7 +27,10 @@ export class HeaderComponent {
   private subscription: Subscription;
   isMenuOpen: boolean = false;
 
-  constructor(private _mainAppService: MainAppService) {
+  constructor(
+    private _mainAppService: MainAppService,
+    private _audioService: AudioService
+  ) {
     this.subscription = Subscription.EMPTY;
   }
   ngOnInit() {
@@ -43,5 +47,9 @@ export class HeaderComponent {
 
   handleToggleMenu() {
     this._mainAppService.toggleMenu();
+  }
+
+  handleClickSound() {
+    this._audioService.playSound('click1');
   }
 }

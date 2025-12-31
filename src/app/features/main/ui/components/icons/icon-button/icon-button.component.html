@@ -1,7 +1,7 @@
 <button role="button" type="button" class="button-root p-1 {{ theme }} {{
     size === 'lg' ? 'w-16 h-16' : size === 'md' ? 'w-12 h-12' : 'w-8 h-8'
-  }}" disabled="{{ isDisabled ? 'TRUE' : null }}" (click)="handleButtonClick()" [attr.aria-label]="label"
-  [title]="label">
+  }}" disabled="{{ isDisabled ? 'TRUE' : null }}" (click)="handleButtonClick()" (mousedown)="handleMouseDown()"
+  [attr.aria-label]="label" [title]="label">
   @if(showDot && size !== 'sm') {
   <svg viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"
     class="absolute bottom-[-10%] right-[-10%] w-4 h-4">

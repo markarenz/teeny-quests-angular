@@ -10,6 +10,10 @@ import {
 } from '@app/features/main/interfaces/types';
 import { EventAction } from '@app/features/main/interfaces/enums';
 
+const mockAudioService: any = {
+  playSound: () => {},
+};
+
 let gameMock: GameROM;
 let gameStateMock: GameState;
 
@@ -63,7 +67,8 @@ describe('processTurnActions', () => {
     ];
     const { nextGameState, messages } = processTurnActions(
       gameStateMock,
-      mockActions
+      mockActions,
+      mockAudioService
     );
 
     const updatedH = nextGameState.areas['start'].map['1_1'].h;

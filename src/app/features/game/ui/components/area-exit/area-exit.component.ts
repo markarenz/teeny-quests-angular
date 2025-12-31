@@ -10,6 +10,7 @@ import { SvgExitDefaultWComponent } from './exits/svg-exit-default-w/svg-exit-de
 import { SvgExitDefaultNComponent } from './exits/svg-exit-default-n/svg-exit-default-n.component';
 import { SvgExitDefaultSComponent } from './exits/svg-exit-default-s/svg-exit-default-s.component';
 import { SvgExitDefaultEComponent } from './exits/svg-exit-default-e/svg-exit-default-e.component';
+import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 
 @Component({
   selector: 'app-area-exit',
@@ -24,6 +25,8 @@ import { SvgExitDefaultEComponent } from './exits/svg-exit-default-e/svg-exit-de
   styleUrl: './area-exit.component.css',
 })
 export class AreaExitComponent {
+  constructor(private _audioService: AudioService) {}
+
   @Input('exit') exit: GameAreaExit = defaultExit;
   @Input('isEditorSelected') isEditorSelected: boolean = false;
   @Input('lightLevel') lightLevel: number = 0;
@@ -58,7 +61,7 @@ export class AreaExitComponent {
     return Math.max(this.position.z + this.zBumpMap[this.exit.direction], 0);
   }
 
-  updateExitProps() {
+  public updateExitProps() {
     if (this.exit) {
       const { x, y, h } = this.exit;
       const cellW = 100 / this.gridSize;
@@ -69,16 +72,19 @@ export class AreaExitComponent {
     }
   }
 
-  ngOnChanges() {
+  public ngOnChanges() {
     this.updateExitProps();
   }
 
   ngOnInit() {
     this.updateExitProps();
   }
-  handleClick() {
+  public handleClick() {
     if (this.isClickable) {
       this.onClick.emit(this.exit.id);
     }
+  }
+  public handleMouseDown() {
+    this._audioService.playSound('click1');
   }
 }

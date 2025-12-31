@@ -6,8 +6,8 @@
     style="position: absolute; top: 0; left: 0; width: 100%;" [attr.aria-label]="title">
     <g class="group">
       <polygon role="button" fill="none" points="50,0 100,25 50,50 0,25" (click)="handleMovementButtonClick()"
-        (keydown.enter)="handleMovementButtonClick()" [attr.tabindex]="isLockedOut ? -1 : 0"
-        class="focus:fill-white/50">
+        (keydown.enter)="handleMovementButtonClick()" (mousedown)="handleMouseDown()"
+        [attr.tabindex]="isLockedOut ? -1 : 0" class="focus:fill-white/50">
         <text x="10" y="100" style="opacity: 0">{{ title }}</text>
       </polygon>
       <ellipse cx="50" cy="25" rx="8" ry="4" fill="var(--color-primary)" stroke="var(--color-gray-500)" stroke-width="2"

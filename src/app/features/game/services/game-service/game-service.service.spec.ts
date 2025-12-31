@@ -9,12 +9,13 @@ import gameMockData, {
 import { MovementOptions } from '@app/features/main/interfaces/types';
 import { firstValueFrom, skip, take } from 'rxjs';
 import { MessageService } from '../message/message.service';
-import game from '@content/game';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 
 let gameMock = { ...gameMockData };
 let gameMockFromDB = { ...gameMockData };
 let messageService: MessageService;
+let mockAudioService: jasmine.SpyObj<AudioService>;
 
 beforeEach(async () => {
   gameMock = await JSON.parse(
@@ -38,13 +39,19 @@ afterEach(() => {
 
 describe('GameService', () => {
   let service: GameService;
+  mockAudioService = jasmine.createSpyObj('AudioService', ['playSound']);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ToastrModule.forRoot()],
-      providers: [ToastrService, provideNoopAnimations()],
+      providers: [
+        ToastrService,
+        provideNoopAnimations(),
+        { provide: AudioService, useValue: mockAudioService },
+      ],
       teardown: { destroyAfterEach: false },
     });
+
     messageService = TestBed.inject(MessageService);
     service = TestBed.inject(GameService);
   });
@@ -56,10 +63,15 @@ describe('GameService', () => {
 
 describe('loadGameROM', () => {
   let service: GameService;
+  mockAudioService = jasmine.createSpyObj('AudioService', ['playSound']);
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ToastrModule.forRoot()],
-      providers: [ToastrService, provideNoopAnimations()],
+      providers: [
+        ToastrService,
+        provideNoopAnimations(),
+        { provide: AudioService, useValue: mockAudioService },
+      ],
       teardown: { destroyAfterEach: false },
     });
     messageService = TestBed.inject(MessageService);
@@ -91,10 +103,15 @@ describe('loadGameROM', () => {
 
 describe('initGameState', () => {
   let service: GameService;
+  mockAudioService = jasmine.createSpyObj('AudioService', ['playSound']);
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ToastrModule.forRoot()],
-      providers: [ToastrService, provideNoopAnimations()],
+      providers: [
+        ToastrService,
+        provideNoopAnimations(),
+        { provide: AudioService, useValue: mockAudioService },
+      ],
       teardown: { destroyAfterEach: false },
     });
     messageService = TestBed.inject(MessageService);
@@ -119,6 +136,7 @@ describe('initGameState', () => {
 
 describe('processTurn', () => {
   let service: GameService;
+  mockAudioService = jasmine.createSpyObj('AudioService', ['playSound']);
   const mockMovementOptions: MovementOptions = {
     '2_3': ['2_2', '2_3'],
     '2_4': ['2_2', '2_3', '2_4'],
@@ -127,7 +145,11 @@ describe('processTurn', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ToastrModule.forRoot()],
-      providers: [ToastrService, provideNoopAnimations()],
+      providers: [
+        ToastrService,
+        provideNoopAnimations(),
+        { provide: AudioService, useValue: mockAudioService },
+      ],
       teardown: { destroyAfterEach: false },
     });
     messageService = TestBed.inject(MessageService);
@@ -198,10 +220,15 @@ describe('processTurn', () => {
 
 describe('getArea', () => {
   let service: GameService;
+  mockAudioService = jasmine.createSpyObj('AudioService', ['playSound']);
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ToastrModule.forRoot()],
-      providers: [ToastrService, provideNoopAnimations()],
+      providers: [
+        ToastrService,
+        provideNoopAnimations(),
+        { provide: AudioService, useValue: mockAudioService },
+      ],
       teardown: { destroyAfterEach: false },
     });
     messageService = TestBed.inject(MessageService);
@@ -222,10 +249,15 @@ describe('getArea', () => {
 
 describe('getGameStateArea', () => {
   let service: GameService;
+  mockAudioService = jasmine.createSpyObj('AudioService', ['playSound']);
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ToastrModule.forRoot()],
-      providers: [ToastrService, provideNoopAnimations()],
+      providers: [
+        ToastrService,
+        provideNoopAnimations(),
+        { provide: AudioService, useValue: mockAudioService },
+      ],
       teardown: { destroyAfterEach: false },
     });
     messageService = TestBed.inject(MessageService);
@@ -246,10 +278,15 @@ describe('getGameStateArea', () => {
 
 describe('getCanUseItem', () => {
   let service: GameService;
+  mockAudioService = jasmine.createSpyObj('AudioService', ['playSound']);
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ToastrModule.forRoot()],
-      providers: [ToastrService, provideNoopAnimations()],
+      providers: [
+        ToastrService,
+        provideNoopAnimations(),
+        { provide: AudioService, useValue: mockAudioService },
+      ],
       teardown: { destroyAfterEach: false },
     });
     messageService = TestBed.inject(MessageService);
@@ -268,10 +305,15 @@ describe('getCanUseItem', () => {
 
 describe('getOppositeDirection', () => {
   let service: GameService;
+  mockAudioService = jasmine.createSpyObj('AudioService', ['playSound']);
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ToastrModule.forRoot()],
-      providers: [ToastrService, provideNoopAnimations()],
+      providers: [
+        ToastrService,
+        provideNoopAnimations(),
+        { provide: AudioService, useValue: mockAudioService },
+      ],
       teardown: { destroyAfterEach: false },
     });
     messageService = TestBed.inject(MessageService);
@@ -289,10 +331,15 @@ describe('getOppositeDirection', () => {
 
 describe('turnActionExit', () => {
   let service: GameService;
+  mockAudioService = jasmine.createSpyObj('AudioService', ['playSound']);
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ToastrModule.forRoot()],
-      providers: [ToastrService, provideNoopAnimations()],
+      providers: [
+        ToastrService,
+        provideNoopAnimations(),
+        { provide: AudioService, useValue: mockAudioService },
+      ],
       teardown: { destroyAfterEach: false },
     });
     messageService = TestBed.inject(MessageService);
@@ -322,10 +369,15 @@ describe('turnActionExit', () => {
 
 describe('turnActionExit', () => {
   let service: GameService;
+  mockAudioService = jasmine.createSpyObj('AudioService', ['playSound']);
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ToastrModule.forRoot()],
-      providers: [ToastrService, provideNoopAnimations()],
+      providers: [
+        ToastrService,
+        provideNoopAnimations(),
+        { provide: AudioService, useValue: mockAudioService },
+      ],
       teardown: { destroyAfterEach: false },
     });
     messageService = TestBed.inject(MessageService);
@@ -361,10 +413,15 @@ describe('turnActionExit', () => {
 
 describe('turnActionItemClick', () => {
   let service: GameService;
+  mockAudioService = jasmine.createSpyObj('AudioService', ['playSound']);
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ToastrModule.forRoot()],
-      providers: [ToastrService, provideNoopAnimations()],
+      providers: [
+        ToastrService,
+        provideNoopAnimations(),
+        { provide: AudioService, useValue: mockAudioService },
+      ],
       teardown: { destroyAfterEach: false },
     });
     messageService = TestBed.inject(MessageService);
@@ -432,10 +489,15 @@ describe('turnActionItemClick', () => {
 
 describe('calcLightMap', () => {
   let service: GameService;
+  mockAudioService = jasmine.createSpyObj('AudioService', ['playSound']);
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ToastrModule.forRoot()],
-      providers: [ToastrService, provideNoopAnimations()],
+      providers: [
+        ToastrService,
+        provideNoopAnimations(),
+        { provide: AudioService, useValue: mockAudioService },
+      ],
       teardown: { destroyAfterEach: false },
     });
     messageService = TestBed.inject(MessageService);

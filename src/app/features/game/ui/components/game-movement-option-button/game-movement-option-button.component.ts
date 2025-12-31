@@ -3,6 +3,7 @@ import { areaHeightFactor, defaultGridSize } from '@config/index';
 import { AreaPosition } from '@game/lib/utils';
 import { getAreaElementPositionStyle } from '@game/lib/utils';
 import { GameService } from '@game/services/game-service/game-service.service';
+import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 
 @Component({
   selector: 'app-game-movement-option-button',
@@ -29,7 +30,10 @@ export class GameMovementOptionButtonComponent {
   height: string = '0%';
   width: string = '0%';
 
-  constructor(private _gameService: GameService) {}
+  constructor(
+    private _gameService: GameService,
+    private _audioService: AudioService
+  ) {}
 
   ngOnInit() {
     this.updateCellProps();
@@ -58,5 +62,8 @@ export class GameMovementOptionButtonComponent {
     if (!this.isLockedOut) {
       this._gameService.processTurn({ verb: 'move', noun: this.positionKey });
     }
+  }
+  public handleMouseDown(): void {
+    this._audioService.playSound('click1');
   }
 }

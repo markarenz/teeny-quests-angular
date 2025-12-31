@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 
 @Component({
   selector: 'app-button',
@@ -9,6 +10,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 })
 export class ButtonComponent {
   @Input('label') label: string = 'Click';
+  @Input('enableSound') enableSound: boolean = true;
   // Supported variants: contained, outlined
   @Input('fullWidth') fullWidth: boolean = false;
   @Input('variant') variant: string = 'contained';
@@ -16,9 +18,16 @@ export class ButtonComponent {
   @Input('isDisabled') isDisabled: boolean = false;
   @Output() onButtonClick = new EventEmitter<string>();
 
+  constructor(private _audioService: AudioService) {}
+
   public handleButtonClick(): void {
     if (!this.isDisabled) {
       this.onButtonClick.emit();
+    }
+  }
+  public handleMouseDown(): void {
+    if (this.enableSound) {
+      this._audioService.playSound('click1');
     }
   }
 }

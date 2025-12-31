@@ -245,6 +245,7 @@ export type ToastMessage = {
   title: string;
   message: string;
   messageType?: 'info' | 'success' | 'error' | 'warning';
+  sound?: string;
 };
 
 export type PropDefinition = {
@@ -256,6 +257,7 @@ export type PropDefinition = {
   statuses?: string[];
   ambientLight?: number; // 0.0 - 1.0
   lightPattern?: string;
+  sound?: string;
   statusMessages?: {
     [status: string]: ToastMessage;
   };
