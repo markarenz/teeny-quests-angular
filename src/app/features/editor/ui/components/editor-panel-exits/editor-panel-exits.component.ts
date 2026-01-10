@@ -60,6 +60,18 @@ export class EditorPanelExitsComponent {
   public refreshUIData() {
     this.areasListOptions = this._gameEditorService.getAreasListOptions();
 
+    const propOnCell = this.area?.props.find(prop => {
+      const position = this.inputExitPosition;
+      const [y, x] = position.split('_');
+      return prop.x === +x && prop.y === +y;
+    });
+    this.exitDirectionOptions = exitDirections.filter(option => {
+      // if there is a prop on this square, ignore options that match the wall value
+      if (propOnCell && propOnCell.wall === option.value) {
+        return false;
+      }
+      return true;
+    });
     this.exitsListOptions = [
       { value: '', label: 'None' },
       ...this._gameEditorService
@@ -74,8 +86,20 @@ export class EditorPanelExitsComponent {
       this.area.items.forEach((item: GameItem) => {
         newLockouts.push(`${item.y}_${item.x}`);
       });
+      const selectedExit = this.exits.find(
+        exit => exit.id === this.selectedExitId
+      );
       this.area.props.forEach(prop => {
-        newLockouts.push(`${prop.y}_${prop.x}`);
+        if (
+          this.area?.exits.some(
+            exit =>
+              selectedExit?.id !== exit.id &&
+              exit.x === prop.x &&
+              exit.y === prop.y
+          )
+        ) {
+          newLockouts.push(`${prop.y}_${prop.x}`);
+        }
       });
       this.area.exits.forEach((exit: GameAreaExit) => {
         if (exit.id !== this.selectedExitId) {
@@ -87,7 +111,9 @@ export class EditorPanelExitsComponent {
       positionKeys.forEach((position: string) => {
         const floor = floorDefinitions[map[position].floor];
         if (
-          (map[position].isHidden || !floor.walkable) &&
+          (map[position].isHidden ||
+            !floor.walkable ||
+            map[position].h === 0) &&
           !newLockouts.includes(position)
         ) {
           newLockouts.push(position);
@@ -98,7 +124,17 @@ export class EditorPanelExitsComponent {
     }
   }
 
+  private handleAreaChange(newAreaId: string) {
+    if (this.selectedAreaId !== newAreaId) {
+      this.selectedAreaId = newAreaId;
+      this.exits = this._gameEditorService.getExitsForCurrentArea();
+      this.area = this._gameEditorService.getAreaById(this.selectedAreaId);
+      this.refreshUIData();
+    }
+  }
+
   ngOnInit() {
+    this.handleAreaChange(this._gameEditorService.getSelectedAreaId());
     this.subscriptions.push(
       this._gameEditorService.selectedExitIdObs.subscribe((data: string) => {
         this.selectedExitId = data;
@@ -108,12 +144,7 @@ export class EditorPanelExitsComponent {
     );
     this.subscriptions.push(
       this._gameEditorService.selectedAreaIdObs.subscribe((data: any) => {
-        if (this.selectedAreaId !== data) {
-          this.selectedAreaId = data;
-          this.exits = this._gameEditorService.getExitsForCurrentArea();
-          this.area = this._gameEditorService.getAreaById(this.selectedAreaId);
-          this.refreshUIData();
-        }
+        this.handleAreaChange(data);
       })
     );
   }

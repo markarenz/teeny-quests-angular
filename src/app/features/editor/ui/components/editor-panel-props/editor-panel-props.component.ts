@@ -9,6 +9,8 @@ import {
   GameActionEffects,
   ActionEffect,
   PropDefinition,
+  GameAreaExit,
+  GameAreaMapCell,
 } from '@app/features/main/interfaces/types';
 import { AreaCellSelectorComponent } from '../area-cell-selector/area-cell-selector.component';
 import { CollapsibleCardComponent } from '@app/features/main/ui/components/collapsible-card/collapsible-card.component';
@@ -71,6 +73,41 @@ export class EditorPanelPropsComponent {
     return { neighborN, neighborW };
   }
 
+  private getExitOnCell = (y: number, x: number): GameAreaExit | null => {
+    return (
+      this.area?.exits.find(exit => exit.x === +x && exit.y === +y) || null
+    );
+  };
+
+  private getPropWallOptions = (
+    position: string,
+    neighborN: GameAreaMapCell | null = null,
+    neighborW: GameAreaMapCell | null = null,
+    currentH: number = 0
+  ): SelectIUIOption[] => {
+    const [y, x] = position.split('_').map(Number);
+    const exitOnCell = this.getExitOnCell(y, x);
+    const prop = this.props?.find(prop => prop.x === x && prop.y === y);
+    const neighborWValid = neighborW && neighborW.h > currentH + 3;
+    const neighborNValid = neighborN && neighborN.h > currentH + 3;
+
+    return propDecoWallOptions.filter(option => {
+      if (prop && option.value === prop.wall) {
+        return true;
+      }
+      if (exitOnCell && option.value === exitOnCell.direction) {
+        return false;
+      }
+      if (option.value === 'west' && !neighborWValid) {
+        return false;
+      }
+      if (option.value === 'north' && !neighborNValid) {
+        return false;
+      }
+      return true;
+    });
+  };
+
   public refreshUIData() {
     if (this.selectedPropId) {
       if (!this.area) return;
@@ -94,22 +131,17 @@ export class EditorPanelPropsComponent {
             return { value: status, label: getLabelFromSlug(status) };
           })
         : [];
-
-      const selectedProp = this.props.find(
-        prop => prop.id === this.selectedPropId
-      );
       const { neighborN, neighborW } = this.getNeighbors(position);
-      const neighborWValid = neighborW && neighborW.h > currentH + 3;
-      const neighborNValid = neighborN && neighborN.h > currentH + 3;
-      this.propWallOptions = propDecoWallOptions.filter(option => {
-        if (option.value === 'west' && !neighborWValid) {
-          return false;
-        }
-        if (option.value === 'north' && !neighborNValid) {
-          return false;
-        }
-        return true;
-      });
+      this.propWallOptions = this.getPropWallOptions(
+        position,
+        neighborN,
+        neighborW,
+        currentH
+      );
+      if (this.propWallOptions.length === 0) {
+        console.error('ERROR: No valid walls for prop placement');
+        this.propWallOptions = propDecoWallOptions;
+      }
       this.propHeightOptions = [];
       const relevantNeighborHeight =
         this.inputPropWall === 'north' ? neighborN?.h : neighborW?.h;
@@ -141,20 +173,35 @@ export class EditorPanelPropsComponent {
           newLockouts.push(`${prop.y}_${prop.x}`);
         }
       });
-      this.area.exits.forEach(exit => {
-        newLockouts.push(`${exit.y}_${exit.x}`);
-      });
+      // this.area.exits.forEach(exit => {
+      //   // If there is an exit AND a prop, lock out that position
+      //   if (
+      //     this.area?.props.some(
+      //       prop =>
+      //         this.selectedPropId !== prop.id &&
+      //         prop.x === exit.x &&
+      //         prop.y === exit.y
+      //     )
+      //   ) {
+      //     newLockouts.push(`${exit.y}_${exit.x}`);
+      //   }
+      // });
       positionKeys.forEach((position: string) => {
         const floor = floorDefinitions[map[position].floor];
         const currentH = map[position].h;
-        // check n and w neighbors to see if H is +2 higher than current cell
+
         const { neighborN, neighborW } = this.getNeighbors(position);
-        const cellValid = floor.walkable && !map[position].isHidden;
-        // If current cell is not walkabout or no 2 unit wall exists to the north or west, lock out this cell
-        const neighborWValid = neighborW && neighborW.h > currentH + 3;
-        const neighborNValid = neighborN && neighborN.h > currentH + 3;
+        const wallOptions = this.getPropWallOptions(
+          position,
+          neighborN,
+          neighborW,
+          currentH
+        );
+        const wallOptionValid = wallOptions.length > 0;
+        const cellValid =
+          floor.walkable && !map[position].isHidden && currentH > 0;
         if (
-          ((!neighborWValid && !neighborNValid) || !cellValid) &&
+          (!wallOptionValid || !cellValid) &&
           !newLockouts.includes(position)
         ) {
           newLockouts.push(position);
@@ -200,6 +247,10 @@ export class EditorPanelPropsComponent {
       })
     );
   }
+
+  private updatePanelProps = () => {
+    this.props = this._gameEditorService.getPropsForCurrentArea();
+  };
 
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
@@ -255,14 +306,20 @@ export class EditorPanelPropsComponent {
     );
     const [y, x] = this.inputPropPosition.split('_');
     if (selectedProp) {
-      const wall = this.propWallOptions
+      let wall = this.propWallOptions
         .map(option => option.value)
         .includes(this.inputPropWall)
         ? this.inputPropWall
         : this.propWallOptions[0].value;
+      // If we are moving the prop to a location with an exit, adjust the wall if needed
+      const exitOnCell = this.area?.exits.find(
+        exit => exit.x === +x && exit.y === +y
+      );
+      if (exitOnCell && exitOnCell.direction === selectedProp?.wall) {
+        wall = selectedProp?.wall === 'north' ? 'west' : 'north';
+      }
 
       this.inputPropWall = wall;
-
       const updatedProp: GameProp = {
         ...selectedProp,
         id: this.selectedPropId,
@@ -277,7 +334,7 @@ export class EditorPanelPropsComponent {
         statusActions: this.selectedPropActions,
       };
       this._gameEditorService.updateProp(updatedProp);
-
+      this.updatePanelProps();
       this.refreshUIData();
     }
   }

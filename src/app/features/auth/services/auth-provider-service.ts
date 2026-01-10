@@ -73,6 +73,13 @@ export class AuthProviderService implements OnDestroy {
         this.oAuthService.silentRefresh();
       });
     this.oAuthService.events
+      .pipe(filter((e: OAuthEvent) => e.type === 'silent_refresh_timeout'))
+      .subscribe(() => {
+        this.logout();
+        console.warn('Silent refresh timeout error, logging out.');
+      });
+
+    this.oAuthService.events
       .pipe(filter((e: OAuthEvent) => e.type === 'session_terminated'))
       .subscribe(() => {
         console.warn('Session terminated. User needs to log in again.');
