@@ -19,6 +19,7 @@ export const findAnOpenCell = ({
       return (
         !lockouts.includes(key) &&
         !area.map[key].isHidden &&
+        area.map[key].h > 0 &&
         floorDefinitions[area.map[key].floor ?? 'default'].walkable &&
         !area.exits.some(exit => exit.x === +x && exit.y === +y) &&
         !area.items.some(item => item.x === +x && item.y === +y)

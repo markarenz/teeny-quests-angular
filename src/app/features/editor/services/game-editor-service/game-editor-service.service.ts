@@ -157,6 +157,9 @@ export class GameEditorService {
   getAreaById(areaId: string): GameArea | null {
     return this.game.value?.content.areas[areaId] ?? null;
   }
+  getSelectedAreaId(): string {
+    return this.selectedAreaId.value;
+  }
 
   setSelectedAreaId(areaId: string) {
     this.selectedAreaId.next('');

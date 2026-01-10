@@ -37,7 +37,7 @@ export const validateMovePositionKey = ({
   }
 
   // is the cell hidden?
-  if (areaMap[positionKey].isHidden) {
+  if (areaMap[positionKey].isHidden || areaMap[positionKey].h === 0) {
     return false;
   }
 

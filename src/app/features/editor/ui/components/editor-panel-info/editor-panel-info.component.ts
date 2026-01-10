@@ -82,7 +82,7 @@ export class EditorPanelInfoComponent {
     positionKeys.forEach((position: string) => {
       const floor = floorDefinitions[map[position].floor];
       if (
-        (!floor.walkable || map[position].isHidden) &&
+        (!floor.walkable || map[position].isHidden || map[position].h === 0) &&
         !newLockouts.includes(position)
       ) {
         newLockouts.push(position);

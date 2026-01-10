@@ -39,7 +39,7 @@
 
     <app-game-player [playerPosition]=" playerPosition" [cellData]="areaMap[playerPosition]"
       [playerFacing]="playerFacing" />
-    <div id="game-transition-cover" class="absolute top-0 left-0 w-full h-full bg-gray-800 z-[100] transition-opacity {{
+    <div id="game-transition-cover" class="absolute top-0 left-0 w-full h-full bg-gray-800 z-[100] duration-300 transition-opacity {{
         areaTransitionMode === 'cover' ? 'opacity-100' : 'opacity-0'
       }} pointer-events-none"></div>
   </div>

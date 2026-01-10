@@ -103,7 +103,7 @@ export class GameComponent {
     this.subscriptions.push(
       this._gameService.gameROMObs.subscribe((data: GameROM | null) => {
         if (data) {
-          this.title = data.title;
+          this.title = `Teeny Quest: ${data.title}`;
           this.showIntroduction =
             typeof data.introduction !== 'undefined' &&
             data.introduction !== '';

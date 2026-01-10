@@ -73,9 +73,11 @@ export class AreaPropComponent {
     }
   }
   public handleMouseDown(): void {
-    const sound = propDecoDefinitions[this.prop.propType]?.sound;
-    if (sound) {
-      this._audioService.playSound(sound);
+    if (!this.isEditorMode) {
+      const sound = propDecoDefinitions[this.prop.propType]?.sound;
+      if (sound) {
+        this._audioService.playSound(sound);
+      }
     }
   }
 }
