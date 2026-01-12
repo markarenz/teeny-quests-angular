@@ -1,0 +1,80 @@
+<app-collapsible-card title="Events" [isCollapsible]="false" [showNewButton]="true"
+  (onNewButtonClick)="handleCreateClick()">
+  <div class="flex flex-col gap-8">
+    <div class="flex flex-col gap-4">
+      <div class="flex flex-col gap-4">
+        @if(events.length < 1) { <div>No events.</div>
+      } @for(event of events; track event.id; let idx = $index) {
+      <div class="rounded-md flex flex-row items-center p-2 {{
+            selectedEventId === event.id ? 'bg-green-900' : 'bg-gray-800'
+          }}">
+        <div class="flex-grow">
+          {{event.name}}
+        </div>
+        <div class="flex flex-row gap-2">
+          <app-icon-button icon="edit" label="Edit Event" (click)="handleEditClick(event.id)" />
+          <app-icon-button icon="delete" theme="danger" label="Delete Exit" (click)="handleDeleteClick(event.id)" />
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+  <!-- @if (selectedEventId) {
+  <div class="flex flex-col gap-4">
+    <div>
+      <label for="prop-name-input">Exit Name</label>
+      <input id="popinput" [(ngModel)]="inputExitName" type="text" maxlength="100" class="text-input"
+        (change)="handleExitInputChange()" />
+    </div>
+    <div>
+      <label>Position: </label>
+      <app-area-cell-selector id="editor-cell-selector" [selectedCellPosition]="inputExitPosition"
+        (onPositionSelect)="handlePositionSelect($event)" [lockouts]="lockouts" />
+    </div>
+    <div>
+      <label for="exits-exit-direction-selector">Direction</label>
+      <select id="exits-exit-direction-selector" [(ngModel)]="inputExitDirection" (change)="handleExitInputChange()">
+        @for(item of exitDirectionOptions; track item.value) {
+        <option [value]="item.value">{{ item.label }}</option>
+        }
+      </select>
+    </div>
+
+    <div>
+      <label for="exits-exit-type-selector">Exit Type</label>
+      <select id="exits-exit-type-selector" [(ngModel)]="inputExitType" (change)="handleExitInputChange()">
+        @for(item of exitTypeOptions; track item.value) {
+        <option [value]="item.value">{{ item.label }}</option>
+        }
+      </select>
+    </div>
+    <div>
+      <label for="exits-exit-destination-selector">Destination Area</label>
+      <select id="exits-exit-destination-area-selector" [(ngModel)]="inputExitDestination"
+        (change)="handleExitInputChange()">
+        @for(item of areasListOptions; track item.value) {
+        <option [value]="item.value">{{ item.label }}</option>
+        }
+      </select>
+    </div>
+    <div>
+      <label for="exits-exit-destination-selector">Destination Exit</label>
+      <select id="exits-exit-destination-exit-selector" [(ngModel)]="inputExitDestinationExit"
+        (change)="handleExitInputChange()">
+        @for(item of exitsListOptions; track item.value) {
+        <option [value]="item.value">{{ item.label }}</option>
+        }
+      </select>
+    </div>
+    <div>
+      <label for="exits-exit-lock-selector">Lock</label>
+      <select id="exits-exit-lock-selector" [(ngModel)]="inputExitLockType" (change)="handleExitInputChange()">
+        @for(item of exitsLockOptions; track item.value) {
+        <option [value]="item.value">{{ item.label }}</option>
+        }
+      </select>
+    </div>
+  </div>
+  } -->
+  </div>
+</app-collapsible-card>

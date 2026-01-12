@@ -4,6 +4,7 @@ import {
   EventAction,
   ActionObjectType,
   ActionValueType,
+  ConditionComparison,
 } from './enums';
 
 export type SelectIUIOption = {
@@ -20,18 +21,18 @@ export type SubNavItem = {
   slug: string;
 };
 
-export type ActionCondition = {
-  conditionType: string; // 'flag', 'item', 'position', etc.
-  identifier: string; // flagId, itemId, positionKey, etc.
+export type GameEventActionCondition = {
+  conditionType: EventConditionType;
+  identifier: string; // flagId-select, itemId-select,
   subIdentifier?: string; // for map cell conditions, e.g., 'floor', 'wallSouth', 'wallEast'
-  comparison: string; // 'equals', 'not equals', 'greater than', 'less than', etc.
+  comparison: ConditionComparison;
   value: boolean | number | string;
 };
 
 export type ActionEffect = {
   id: string;
   action: EventAction;
-  conditions?: ActionCondition[];
+  conditions?: GameEventActionCondition[];
   actionObject: {
     areaId?: string;
     identifier?: string; // itemId, exitId, panelDecoId, positionKey, flagId, etc.
@@ -106,18 +107,11 @@ export type GameArea = {
   props: GameProp[];
 };
 
-export type GameEventCondition = {
-  // TODO: define conditions
-};
-
-export type GameEventAction = {
-  // TODO: define actions
-};
-
 export type GameEvent = {
   id: string;
-  conditions: GameEventCondition[];
-  actions: GameEventAction[];
+  name: string;
+  conditions: GameEventActionCondition[];
+  actions: ActionEffect[][];
 };
 
 export type Inventory = {

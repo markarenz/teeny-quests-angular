@@ -9,7 +9,7 @@
     "build:deploy": "npm run build && npm run deploy",
     "watch": "ng build --watch --configuration development",
     "lambda:deploy": "cd ./api/src && zip -r ../lambda.zip ./* && cd .. && aws lambda update-function-code --function-name TQ-SharedApiLambda --zip-file fileb://lambda.zip --region us-east-1 && cd ..",
-    "test": "ng test --code-coverage --browsers=ChromeHeadless",
+    "test": "ng test --code-coverage --browsers=ChromeHeadless --no-watch",
     "test:watch": "ng test --code-coverage --browsers=ChromeHeadless --watch"
   },
   "private": true,

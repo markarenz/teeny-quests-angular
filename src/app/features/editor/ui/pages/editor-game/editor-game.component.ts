@@ -11,6 +11,7 @@ import { EditorPanelCellsComponent } from '../../components/editor-panel-cells/e
 import { EditorPanelPropsComponent } from '../../components/editor-panel-props/editor-panel-props.component';
 import { EditorPanelExitsComponent } from '../../components/editor-panel-exits/editor-panel-exits.component';
 import { EditorPanelItemsComponent } from '../../components/editor-panel-items/editor-panel-items.component';
+import { EditorPanelEventsComponent } from '../../components/editor-panel-events/editor-panel-events.component';
 import { LoaderAnimationComponent } from '@app/features/main/ui/components/loader-animation/loader-animation.component';
 import { EditorAreaComponent } from '../../components/editor-area/editor-area.component';
 import { EditorAreaSelectorComponent } from '../../components/editor-area-selector/editor-area-selector.component';
@@ -37,6 +38,7 @@ import { ContentVersionsModalComponent } from '../../components/content-versions
     EditorPanelCellsComponent,
     EditorPanelItemsComponent,
     EditorPanelPropsComponent,
+    EditorPanelEventsComponent,
     ContentVersionsModalComponent,
   ],
   templateUrl: './editor-game.component.html',
@@ -45,6 +47,8 @@ import { ContentVersionsModalComponent } from '../../components/content-versions
 export class EditorGameComponent {
   private subscriptions: Subscription[] = [];
   public isContentVersionModalOpen: boolean = false;
+  public subNavCurrent: string = 'info';
+  public showAreaSelector: boolean = false;
 
   constructor(
     private _route: ActivatedRoute,
@@ -64,7 +68,6 @@ export class EditorGameComponent {
     { label: 'Editing Game' },
   ];
 
-  subNavCurrent: string = 'info';
   subNavLinks: SubNavItem[] = [
     { label: 'Info', slug: 'info' },
     { label: 'Map', slug: 'map' },
@@ -83,7 +86,6 @@ export class EditorGameComponent {
           return;
         }
         this.game = data;
-        console.log('GAME DATA:', this.game?.title);
         if (this.game?.title) {
           this.title = this.game?.title;
         }
@@ -104,16 +106,23 @@ export class EditorGameComponent {
     this.isLoading = false;
   }
 
+  private setShowAreaSelector() {
+    this.showAreaSelector = ['map', 'props', 'exits', 'items'].includes(
+      this.subNavCurrent
+    );
+  }
   handleSubNavClick(slug: string) {
     this._gameEditorService.selectExit('');
     this._gameEditorService.selectItem('');
     this.subNavCurrent = slug;
+    this.setShowAreaSelector();
   }
 
   handleSelectItem(id: string) {
     this._gameEditorService.selectExit('');
     this._gameEditorService.selectItem(id);
     this.subNavCurrent = 'items';
+    this.setShowAreaSelector();
   }
 
   handleSelectExit(id: string) {
@@ -121,6 +130,7 @@ export class EditorGameComponent {
     this._gameEditorService.selectExit(id);
     this._gameEditorService.selectProp('');
     this.subNavCurrent = 'exits';
+    this.setShowAreaSelector();
   }
 
   handleSelectPanel(id: string) {
@@ -135,6 +145,7 @@ export class EditorGameComponent {
     this._gameEditorService.selectProp('');
     this._gameEditorService.setSelectedCellPosition(id);
     this.subNavCurrent = 'map';
+    this.setShowAreaSelector();
   }
   handlePlayClick() {
     localStorage.removeItem(`save--${this.game?.id ?? ''}`);
