@@ -14,6 +14,7 @@ import {
   GameContent,
   ContentVersionListItem,
   GameProp,
+  GameEvent,
 } from '@app/features/main/interfaces/types';
 import {
   utilDeleteItem,
@@ -30,6 +31,7 @@ import {
   utilDeleteProp,
   utilUpdateProp,
 } from './utils/prop-utils';
+import { utilCreateEvent, utilDeleteEvent } from './utils/event-utils';
 import { getLabelFromSlug, getPositionKeysForGridSize } from '@main/utils';
 import { logger } from '@app/features/main/utils/logger';
 
@@ -64,6 +66,9 @@ export class GameEditorService {
   private selectedExitId = new BehaviorSubject<string>('');
   selectedExitIdObs = this.selectedExitId.asObservable();
 
+  private selectedEventId = new BehaviorSubject<string>('');
+  selectedEventIdObs = this.selectedEventId.asObservable();
+
   private selectedPropId = new BehaviorSubject<string>('');
   selectedPropIdObs = this.selectedPropId.asObservable();
 
@@ -78,6 +83,9 @@ export class GameEditorService {
 
   private areaProps = new BehaviorSubject<GameProp[]>([]);
   areaPropsObs = this.areaProps.asObservable();
+
+  private events = new BehaviorSubject<GameEvent[]>([]);
+  eventsObs = this.events.asObservable();
 
   private contentVersions = new BehaviorSubject<ContentVersionListItem[]>([]);
   contentVersionsObs = this.contentVersions.asObservable();
@@ -168,6 +176,7 @@ export class GameEditorService {
       this.refreshAreaExits(this.game.value as GameROM);
       this.refreshAreaItems(this.game.value as GameROM);
       this.refreshAreaProps(this.game.value as GameROM);
+      this.refreshEvents(this.game.value as GameROM);
     }, 100);
   }
 
@@ -384,6 +393,51 @@ export class GameEditorService {
     }
   }
 
+  // EVENTS -------------------------------------------------------------------
+  public createEvent() {
+    if (this.game.value) {
+      const { nextGame, newEvent } = utilCreateEvent({
+        game: this.game.value,
+      });
+
+      if (nextGame && newEvent) {
+        this.game.next(nextGame);
+        this.selectedPropId.next(newEvent.id);
+        this.refreshEvents(nextGame);
+        this.events.next(nextGame.content.events);
+        this.game.next(nextGame);
+      }
+    }
+  }
+
+  selectEvent(eventId: string) {
+    this.selectedEventId.next(eventId);
+  }
+
+  getEvents(): GameEvent[] {
+    return this.events.value;
+  }
+
+  refreshEvents(nextGame: GameROM) {
+    const nextEvents = [...nextGame.content.events];
+    this.events.next(nextEvents);
+  }
+
+  public deleteEvent(eventId: string) {
+    if (this.game.value) {
+      const { nextGame } = utilDeleteEvent({
+        game: this.game.value,
+        eventId,
+      });
+      this.selectEvent('');
+      if (nextGame) {
+        this.game.next(nextGame);
+        this.events.next(nextGame.content.events);
+        this.refreshEvents(nextGame);
+      }
+    }
+  }
+
   // SELECTED -----------------------------------------------------------------
 
   setSelectedCellPosition(cellPosition: string) {
@@ -550,6 +604,7 @@ export class GameEditorService {
           this.areaExits.next(nextSelectedArea.exits);
           this.areaItems.next(nextSelectedArea.items);
           this.areaProps.next(nextSelectedArea.props);
+          this.events.next(nextGameData.content.events);
           this.selectedArea.next(nextSelectedArea);
         });
     }

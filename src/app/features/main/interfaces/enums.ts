@@ -43,3 +43,15 @@ export enum ActionValueType {
   FLOOR_TYPE = 'floor-type',
   PROP_STATUS = 'prop-status]',
 }
+
+export enum EventConditionType {
+  FLAG = 'flag',
+  INVENTORY_QTY = 'inventory-qty',
+}
+
+export enum ConditionComparison {
+  EQUALS = 'equals',
+  NOT_EQUALS = 'not-equals',
+  GREATER_THAN = 'greater-than',
+  LESS_THAN = 'less-than',
+}

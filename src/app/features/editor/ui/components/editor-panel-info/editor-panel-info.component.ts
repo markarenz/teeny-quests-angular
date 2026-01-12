@@ -118,7 +118,6 @@ export class EditorPanelInfoComponent {
   }
   handlePlayerStartPositionChange(newPosition: string) {
     const [y, x] = newPosition.split('_');
-    console.log('strartibng position change:', y, x);
     this.inputStartingAreaPositionX = +x;
     this.inputStartingAreaPositionY = +y;
     this.handleInfoChange();

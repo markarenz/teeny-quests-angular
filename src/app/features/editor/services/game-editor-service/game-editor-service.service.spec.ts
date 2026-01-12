@@ -810,3 +810,48 @@ describe('getCanMapCellBeHidden', () => {
     expect(canBeHidden).toBeFalse();
   });
 });
+
+describe('events', () => {
+  describe('createEvent', () => {
+    it('should create event', () => {
+      const authProviderService = TestBed.inject(AuthProviderService);
+      const service = new GameEditorService(authProviderService);
+      service.setTestValue(gameMock, 'game');
+
+      service.createEvent();
+
+      service.gameObs.subscribe(game => {
+        const events = game ? game.content.events : [];
+        expect(events.length).toEqual(1);
+      });
+    });
+  });
+  describe('deleteEvent', () => {
+    it('should delete event', () => {
+      const authProviderService = TestBed.inject(AuthProviderService);
+      const service = new GameEditorService(authProviderService);
+      const gameWithEvent = {
+        ...gameMock,
+        content: {
+          ...gameMock.content,
+          events: [
+            {
+              id: 'event-1',
+              name: 'Event 1',
+              conditions: [],
+              actions: [],
+            },
+          ],
+        },
+      };
+      service.setTestValue(gameWithEvent, 'game');
+
+      service.deleteEvent('event-1');
+
+      service.gameObs.subscribe(game => {
+        const events = game ? game.content.events : [];
+        expect(events.length).toEqual(0);
+      });
+    });
+  });
+});

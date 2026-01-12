@@ -34,7 +34,10 @@
               <app-loader-animation />
             </div>
             }
+            @if(showAreaSelector) {
             <app-editor-area-selector />
+            }
+
             @if (subNavCurrent === 'info') {
             <app-editor-panel-info />
             } @else if (subNavCurrent === 'map') {
@@ -45,6 +48,8 @@
             <app-editor-panel-items />
             } @else if (subNavCurrent === 'props') {
             <app-editor-panel-props />
+            } @else if (subNavCurrent === 'events') {
+            <app-editor-panel-events />
             }
           </div>
         </div>
