@@ -414,6 +414,23 @@ export class GameEditorService {
     this.selectedEventId.next(eventId);
   }
 
+  updateEventData(eventId: string, updatedData: Partial<GameEvent>) {
+    if (this.game.value) {
+      const nextEvents = this.game.value.content.events.map(event =>
+        event.id === eventId ? { ...event, ...updatedData } : event
+      );
+      const nextGame = {
+        ...this.game.value,
+        content: {
+          ...this.game.value.content,
+          events: nextEvents,
+        },
+      };
+      this.game.next(nextGame);
+      this.events.next(nextEvents);
+    }
+  }
+
   getEvents(): GameEvent[] {
     return this.events.value;
   }

@@ -11,6 +11,7 @@ export const utilCreateEvent = ({
   const newEvent: GameEvent = {
     id: newEventId,
     name: `Event ${newEventId.slice(-5)}`,
+    isUnidirectional: true,
     conditions: [],
     actions: [],
   };

@@ -22,8 +22,9 @@ export type SubNavItem = {
 };
 
 export type GameEventActionCondition = {
+  id: string;
   conditionType: EventConditionType;
-  identifier: string; // flagId-select, itemId-select,
+  identifier: string; // based on cidition type: inventory-key, flagId-select, itemId-select,
   subIdentifier?: string; // for map cell conditions, e.g., 'floor', 'wallSouth', 'wallEast'
   comparison: ConditionComparison;
   value: boolean | number | string;
@@ -110,8 +111,9 @@ export type GameArea = {
 export type GameEvent = {
   id: string;
   name: string;
+  isUnidirectional: boolean; // if true, event can only trigger once
   conditions: GameEventActionCondition[];
-  actions: ActionEffect[][];
+  actions: ActionEffect[];
 };
 
 export type Inventory = {

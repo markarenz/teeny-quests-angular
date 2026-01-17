@@ -46,7 +46,7 @@ export enum ActionValueType {
 
 export enum EventConditionType {
   FLAG = 'flag',
-  INVENTORY_QTY = 'inventory-qty',
+  INVENTORY = 'inventory',
 }
 
 export enum ConditionComparison {
@@ -54,4 +54,14 @@ export enum ConditionComparison {
   NOT_EQUALS = 'not-equals',
   GREATER_THAN = 'greater-than',
   LESS_THAN = 'less-than',
+}
+
+export enum ConditionObjectType {
+  INVENTORY_KEY = 'inventory-key',
+  FLAG_ID = 'flag-id',
+}
+
+export enum ConditionValueType {
+  NUMBER = 'number',
+  BOOLEAN = 'boolean',
 }
