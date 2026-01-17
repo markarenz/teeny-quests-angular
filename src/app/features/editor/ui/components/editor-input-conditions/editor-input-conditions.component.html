@@ -1,0 +1,61 @@
+<app-collapsible-card [title]="title" [isCollapsible]="false" [showNewButton]="true" titleType="secondary"
+  (onNewButtonClick)="handleCreateClick()">
+  <div class="flex flex-col gap-8">
+    <div class="flex flex-col gap-4">
+      <div class="flex flex-col gap-4">
+        @if(!conditions || conditions.length < 1) { <div>No conditions.</div>
+      } @for(condition of conditions; track condition.id; let idx = $index) {
+      <div class="rounded-md flex flex-row items-center p-2 {{
+              selectedConditionId === condition.id ? 'bg-green-900' : 'bg-gray-800'
+            }}">
+        <div class="flex-grow">
+          {{ getConditionLabel(condition) }}
+        </div>
+        <div class="flex flex-row gap-2">
+          <app-icon-button icon="edit" label="Edit Action" (click)="handleEditClick(condition.id)" />
+          <app-icon-button icon="delete" theme="danger" label="Delete Action"
+            (click)="handleDeleteClick(condition.id)" />
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+  @if (selectedConditionId) {
+  <div class="flex flex-col gap-4">
+    <div>
+      <label for="action-type-selector">Action Type: {{selectedCondition ? getConditionLabel(selectedCondition) :
+        ''}}</label>
+      <select id="action-type-selector" [(ngModel)]="inputConditionType" (change)="handleConditionTypeChange()">
+        @for(item of conditionTypeOptions; track item.value) {
+        <option [value]="item.value">{{ item.label }}</option>
+        }
+      </select>
+    </div>
+    <div>
+      <label for="action-object-id">{{objectIdentifierInputLabel}}</label>
+      <select id="action-object-id" [(ngModel)]="inputConditionObjectId" (change)="handleConditionInputChange()">
+        @for(item of objectIdentifierOptions; track item.value) {
+        <option [value]="item.value">{{ item.label }}</option>
+        }
+      </select>
+    </div>
+
+    <div>
+      <label for="action-value">{{valueInputLabel}}</label>
+      @if (valueOptions.length > 0) {
+      <select id="action-value" [(ngModel)]="inputConditionValue" (change)="handleConditionInputChange()">
+        <div>
+          @for(item of valueOptions; track item.value) {
+          <option [value]="item.value">{{ item.label }}</option>
+          }
+        </div>
+      </select>
+      } @else {
+      <input [type]="selectedConditionTypeDefinition?.valueType === 'number' ? 'number' : 'text'"
+        [(ngModel)]="inputConditionValue" (change)="handleConditionInputChange()" class="text-input" />
+      }
+    </div>
+  </div>
+  }
+  </div>
+</app-collapsible-card>

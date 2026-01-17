@@ -1,4 +1,5 @@
 import { SelectIUIOption } from '@app/features/main/interfaces/types';
+import { getLabelFromSlug } from '@app/features/main/utils';
 
 export type ItemDefinition = {
   id: string;
@@ -30,6 +31,15 @@ export const itemDefinitions: { [key: string]: ItemDefinition } = {
     use: 'unlock-exit-gold',
     inventoryActions: ['use', 'drop'],
   },
+  gold: {
+    id: 'gold',
+    inventoryKey: 'gold',
+    name: 'Gold Coins',
+    variant: 'gold',
+    action: '',
+    amount: 1,
+    inventoryActions: ['use'],
+  },
   'coins-25': {
     id: 'coins-25',
     inventoryKey: 'gold',
@@ -46,15 +56,6 @@ export const itemDefinitions: { [key: string]: ItemDefinition } = {
     variant: 'gold',
     action: 'take',
     amount: 100,
-    inventoryActions: ['use'],
-  },
-  gold: {
-    id: 'gold',
-    inventoryKey: 'gold',
-    name: 'Gold Coins',
-    variant: 'gold',
-    action: '',
-    amount: 1,
     inventoryActions: ['use'],
   },
 };
@@ -85,3 +86,18 @@ export const itemOptions: SelectIUIOption[] = [
   { value: 'coins-25', label: 'Coins' },
   { value: 'coins-100', label: 'Bag of Coins' },
 ];
+
+const itemKeyOptionsRaw: string[] = [];
+Object.keys(itemDefinitions).forEach(key => {
+  const itemDef = itemDefinitions[key];
+  if (!itemKeyOptionsRaw.includes(itemDef.inventoryKey)) {
+    itemKeyOptionsRaw.push(itemDef.inventoryKey);
+  }
+});
+
+export const itemKeyOptions: SelectIUIOption[] = itemKeyOptionsRaw.map(key => {
+  return {
+    value: key,
+    label: getLabelFromSlug(key),
+  };
+});
