@@ -22,12 +22,10 @@ export enum EventAction {
   UPDATE_MAP_CELL_HEIGHT = 'update-map-cell-height',
   UPDATE_MAP_CELL_FLOOR = 'update-map-cell-floor',
   SET_PROP_STATUS = 'set-prop-status',
-  SET_FLAG = 'setFlag',
-  UNSET_FLAG = 'unsetFlag',
-  ADD_ITEM = 'addItem',
-  REMOVE_ITEM = 'removeItem',
-  TELEPORT_PLAYER = 'teleportPlayer',
-  CHANGE_AREA = 'changeArea',
+  SET_FLAG = 'set-flag',
+  ADD_ITEM = 'add-item',
+  REMOVE_ITEM = 'remove-item',
+  TELEPORT_PLAYER = 'teleport-player',
 }
 
 export enum ActionObjectType {
@@ -41,7 +39,8 @@ export enum ActionObjectType {
 export enum ActionValueType {
   CELL_HEIGHT = 'cell-height',
   FLOOR_TYPE = 'floor-type',
-  PROP_STATUS = 'prop-status]',
+  PROP_STATUS = 'prop-status',
+  BOOLEAN = 'boolean',
 }
 
 export enum EventConditionType {
@@ -53,7 +52,9 @@ export enum ConditionComparison {
   EQUALS = 'equals',
   NOT_EQUALS = 'not-equals',
   GREATER_THAN = 'greater-than',
+  GREATER_THAN_OR_EQUALS = 'greater-than-or-equals',
   LESS_THAN = 'less-than',
+  LESS_THAN_OR_EQUALS = 'less-than-or-equals',
 }
 
 export enum ConditionObjectType {

@@ -38,6 +38,14 @@ export const actionDefinitions: { [key: string]: ActionDefinition } = {
     valueType: ActionValueType.PROP_STATUS,
     requiresAreaId: true,
   },
+  'set-flag': {
+    id: 'set-flag',
+    name: 'Set Flag',
+    objectType: ActionObjectType.FLAG_ID,
+    showAreaId: false,
+    valueType: ActionValueType.BOOLEAN,
+    requiresAreaId: false,
+  },
 };
 
 export const actionOptions: SelectIUIOption[] = Object.values(

@@ -19,6 +19,7 @@ import {
   actionDefinitions,
   actionOptions,
 } from '@content/action-definitions';
+import { defaultFlagIdOptions, booleanOptions } from '@content/flags';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import { floorOptionsData } from '@content/floor-definitions';
 import { maxAreaCellHeight } from '@config/index';
@@ -53,6 +54,8 @@ export class EditorInputActionsComponent {
   public areasListOptions: SelectIUIOption[] = [];
   public objectIdentifierOptions: SelectIUIOption[] = [];
   public valueOptions: SelectIUIOption[] = [];
+  public booleanOptions: SelectIUIOption[] = booleanOptions;
+  public flagIdOptions: SelectIUIOption[] = defaultFlagIdOptions;
   public objectIdentifierInputLabel: string = 'Object Identifier';
   public valueInputLabel: string = 'Value';
 
@@ -95,6 +98,9 @@ export class EditorInputActionsComponent {
             this._gameEditorService.getPropsListOptions(this.inputActionAreaId);
         }
       }
+      if (def.objectType === ActionObjectType.FLAG_ID) {
+        this.objectIdentifierOptions = defaultFlagIdOptions;
+      }
       // set value options based on type and sub type
       if (def.valueType === ActionValueType.FLOOR_TYPE) {
         this.valueOptions = floorOptionsData;
@@ -123,6 +129,9 @@ export class EditorInputActionsComponent {
           }
         }
       }
+      if (def.valueType === ActionValueType.BOOLEAN) {
+        this.valueOptions = booleanOptions;
+      }
     }
   }
 
@@ -130,7 +139,6 @@ export class EditorInputActionsComponent {
     const defaultNewAction: ActionEffect = {
       id: `action-${Date.now()}`,
       action: EventAction.UPDATE_MAP_CELL_HEIGHT,
-      conditions: [],
       actionObject: {
         areaId: this.selectedAreaId,
         identifier: '0_0',

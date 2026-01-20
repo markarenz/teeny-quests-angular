@@ -32,12 +32,10 @@ describe('processTurnActions', () => {
   });
 
   it('should process multiple actions', () => {
-    const initialMap = gameStateMock.areas['start'].map;
     const mockActions: ActionEffect[] = [
       {
         id: 'abcd1234',
         action: EventAction.UPDATE_MAP_CELL_HEIGHT,
-        conditions: [],
         actionObject: {
           areaId: 'start',
           identifier: '1_1',
@@ -47,7 +45,6 @@ describe('processTurnActions', () => {
       {
         id: 'abcd1234',
         action: EventAction.UPDATE_MAP_CELL_FLOOR,
-        conditions: [],
         actionObject: {
           areaId: 'start',
           identifier: '1_1',
@@ -57,7 +54,6 @@ describe('processTurnActions', () => {
       {
         id: 'abcd1234',
         action: EventAction.SET_PROP_STATUS,
-        conditions: [],
         actionObject: {
           areaId: 'start',
           identifier: 'prop1',

@@ -22,6 +22,7 @@ import { getPositionKeysForGridSize } from '@app/features/main/utils';
 import { Lights } from '@content/constants';
 import { getAreaElementPositionStyle } from '../../lib/utils';
 import { AudioService } from '@app/features/main/services/audio/audio-service.service';
+import { processEvents } from './utils/event-actions';
 
 @Injectable({
   providedIn: 'root',
@@ -389,7 +390,6 @@ export class GameService {
 
     if (exit?.exitType === 'game-end') {
       nextGameState.flagValues.gameEnded = true;
-      this._audioService.playSound('game-end');
       return nextGameState;
     }
 
@@ -686,6 +686,16 @@ export class GameService {
               };
             }
           );
+      }
+      nextGameState = processEvents(
+        nextGameState,
+        this.gameROM.value,
+        this._audioService,
+        this._messageService
+      );
+
+      if (nextGameState.flagValues['gameEnded']) {
+        this._audioService.playSound('game-end');
       }
 
       nextGameState.numTurns += 1;

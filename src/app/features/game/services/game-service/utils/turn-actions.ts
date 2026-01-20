@@ -61,6 +61,9 @@ export const processTurnAction = (
         audioService
       );
       break;
+    case EventAction.SET_FLAG:
+      processActionResult = processActionSetFlag(actionGameState, action);
+      break;
     default:
       break;
   }
@@ -158,6 +161,26 @@ export const processActionSetMapCell = (
       };
       audioService.playSound('stone');
     }
+  }
+  return { nextGameState: actionGameState, message };
+};
+
+export const processActionSetFlag = (
+  actionGameState: GameState,
+  action: ActionEffect
+): { nextGameState: GameState; message: ToastMessage | null } => {
+  let message = null;
+  const flagId = action.actionObject.identifier;
+  const flagValue = action.actionValue === 'true';
+  if (!flagId) {
+    return { nextGameState: actionGameState, message };
+  }
+
+  if (flagId) {
+    actionGameState.flagValues = {
+      ...actionGameState.flagValues,
+      [flagId]: flagValue,
+    };
   }
   return { nextGameState: actionGameState, message };
 };

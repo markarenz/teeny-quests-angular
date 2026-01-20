@@ -33,7 +33,6 @@ export type GameEventActionCondition = {
 export type ActionEffect = {
   id: string;
   action: EventAction;
-  conditions?: GameEventActionCondition[];
   actionObject: {
     areaId?: string;
     identifier?: string; // itemId, exitId, panelDecoId, positionKey, flagId, etc.
