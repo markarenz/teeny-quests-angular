@@ -425,7 +425,6 @@ const gameMockData: GameROM = {
                 {
                   id: 'action-1758468156810',
                   action: EventAction.UPDATE_MAP_CELL_HEIGHT,
-                  conditions: [],
                   actionObject: {
                     areaId: 'start',
                     identifier: '1_6',
@@ -435,7 +434,6 @@ const gameMockData: GameROM = {
                 {
                   id: 'action-1758468156811',
                   action: EventAction.UPDATE_MAP_CELL_FLOOR,
-                  conditions: [],
                   actionObject: {
                     areaId: 'start',
                     identifier: '1_6',
@@ -447,7 +445,6 @@ const gameMockData: GameROM = {
                 {
                   id: 'action-1758468163190',
                   action: EventAction.UPDATE_MAP_CELL_HEIGHT,
-                  conditions: [],
                   actionObject: {
                     areaId: 'start',
                     identifier: '1_6',
