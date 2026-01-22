@@ -11,11 +11,9 @@
           </app-tooltip>
         </div>
         <div class="absolute z-[110] {{isFullWidthMode ? 'right-4 top-4' : 'right-0 top-0'}}  flex flex-row gap-4">
-          @if(showIntroduction) {
-          <app-tooltip content="About This Level" position="bottom">
-            <app-icon-button label="About This Level" size="md" icon="info" (onButtonClick)="handleInfoClick()" />
+          <app-tooltip content="Goals for this level" position="bottom">
+            <app-icon-button label="Goals for this level" size="md" icon="info" (onButtonClick)="handleInfoClick()" />
           </app-tooltip>
-          }
           <app-tooltip content="How to Play Teeny Quests" position="bottom">
             <app-icon-button label="How to Play Teeny Quests" size="md" icon="help"
               (onButtonClick)="handleHelpClick()" />
@@ -42,8 +40,7 @@
       <app-modal-inventory />
       } @if(['intro', 'help'].includes(gameModalStatus)) {
       <app-modal-page [isLoading]="isLoading" [title]="title" [gameModalStatus]="gameModalStatus"
-        [introParagraphs]="introParagraphs" (onConfirm)="handlePageModalConfirm()"
-        (onClose)="handlePageModalConfirm()" />
+        [levelGoals]="levelGoals" (onConfirm)="handlePageModalConfirm()" (onClose)="handlePageModalConfirm()" />
       } @if(gameModalStatus === 'loading') {
       <app-loader-animation [showBg]="true" size="sm" [isFixed]="true" />
       }

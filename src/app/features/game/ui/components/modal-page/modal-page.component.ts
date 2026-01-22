@@ -15,7 +15,7 @@ import { Paragraph } from '@app/features/main/interfaces/types';
   styleUrl: './modal-page.component.css',
 })
 export class ModalPageComponent {
-  @Input('introParagraphs') introParagraphs: Paragraph[] = [];
+  @Input('levelGoals') levelGoals: string = '';
   @Input('title') title: string = '';
   @Input('gameModalStatus') gameModalStatus: string = 'loading';
   @Input('isLoading') isLoading: boolean = false;

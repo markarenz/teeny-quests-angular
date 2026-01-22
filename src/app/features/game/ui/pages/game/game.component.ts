@@ -49,9 +49,9 @@ export class GameComponent {
   public isLockedOut: boolean = false;
   public showInventoryDot: boolean = false;
   public previousInventory: Inventory | null = null;
+  public levelGoals: string = '';
   private userId: string | null = null;
   public numTurns: number = 0;
-  public showIntroduction: boolean = false;
 
   constructor(
     private _route: ActivatedRoute,
@@ -67,7 +67,6 @@ export class GameComponent {
   private subscriptions: Subscription[] = [];
   // Eventually we will pull this in dynamically
   title: string = '';
-  introParagraphs: Paragraph[] = [];
 
   private authorizationCheck() {
     if (this.title !== '' && this.userId !== null) {
@@ -101,22 +100,18 @@ export class GameComponent {
       })
     );
     this.subscriptions.push(
+      this._gameService.levelGoalsObs.subscribe(data => {
+        this.levelGoals = data;
+      })
+    );
+    this.subscriptions.push(
       this._gameService.gameROMObs.subscribe((data: GameROM | null) => {
         if (data) {
           this.title = `Teeny Quest: ${data.title}`;
-          this.showIntroduction =
-            typeof data.introduction !== 'undefined' &&
-            data.introduction !== '';
-          this.introParagraphs =
-            this.showIntroduction && data.introduction
-              ? data.introduction
-                  .split('\n')
-                  .map((p, idx) => ({ text: p, id: idx }))
-              : [];
           this.gameStatus = data.itemStatus;
           this.gameAuthorId = data.userId;
           this.isLoading = false;
-          const nextPageModalStatus = this.showIntroduction ? 'intro' : '';
+          const nextPageModalStatus = 'intro';
           this._gameService.setPageModalStatus(nextPageModalStatus);
           this.authorizationCheck();
         }

@@ -63,20 +63,28 @@ export const itemDefinitions: { [key: string]: ItemDefinition } = {
 export type InventoryDefinition = {
   id: string;
   name: string;
+  pluralName: string;
+  article: string;
 };
 
 export const inventoryDefinitions: { [key: string]: InventoryDefinition } = {
   gold: {
     id: 'gold',
     name: 'Gold',
+    pluralName: 'Gold Coins',
+    article: 'a',
   },
   'key-silver': {
     id: 'key-silver',
     name: 'Silver Key',
+    pluralName: 'Silver Keys',
+    article: 'a',
   },
   'key-gold': {
     id: 'key-gold',
     name: 'Gold Key',
+    pluralName: 'Gold Keys',
+    article: 'a',
   },
 };
 

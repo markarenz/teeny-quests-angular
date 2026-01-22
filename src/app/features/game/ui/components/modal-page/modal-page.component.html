@@ -7,9 +7,7 @@
     <app-content-game-help />
     } @else if(gameModalStatus === 'intro') {
     <div class="flex flex-col gap-2">
-      @for (paragraph of introParagraphs; track paragraph.id) {
-      <p>{{ paragraph.text }}</p>
-      }
+      <h2 class="text-2xl">Goals: <span class="font-primary font-normal">{{ levelGoals }}</span></h2>
     </div>
     }
   </app-common-modal>
