@@ -23,6 +23,7 @@ import { Lights } from '@content/constants';
 import { getAreaElementPositionStyle } from '../../lib/utils';
 import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 import { processEvents } from './utils/event-actions';
+import { getLevelGoals } from './utils/common';
 
 @Injectable({
   providedIn: 'root',
@@ -64,6 +65,9 @@ export class GameService {
 
   private fullWidthOffsetY = new BehaviorSubject<string>('0%');
   fullWidthOffsetYObs = this.fullWidthOffsetY.asObservable();
+
+  private levelGoals = new BehaviorSubject<string>('');
+  levelGoalsObs = this.levelGoals.asObservable();
 
   testInit(nextGameROM: GameROM): void {
     this.gameROM.next(nextGameROM);
@@ -246,6 +250,7 @@ export class GameService {
       nextGameState = localGameState;
     }
     this.gameState.next(nextGameState);
+    this.levelGoals.next(getLevelGoals(nextGameROM));
     this.calculateMovementOptions(nextGameState);
     this.saveLocalGameState(nextGameState);
     this.calcLightMap(nextGameState);
