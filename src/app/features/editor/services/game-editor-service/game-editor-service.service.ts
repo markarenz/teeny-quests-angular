@@ -15,6 +15,7 @@ import {
   ContentVersionListItem,
   GameProp,
   GameEvent,
+  GameFlag,
 } from '@app/features/main/interfaces/types';
 import {
   utilDeleteItem,
@@ -34,6 +35,7 @@ import {
 import { utilCreateEvent, utilDeleteEvent } from './utils/event-utils';
 import { getLabelFromSlug, getPositionKeysForGridSize } from '@main/utils';
 import { logger } from '@app/features/main/utils/logger';
+import { defaultFlagIdOptions } from '@content/flags';
 
 @Injectable({
   providedIn: 'root',
@@ -86,6 +88,9 @@ export class GameEditorService {
 
   private events = new BehaviorSubject<GameEvent[]>([]);
   eventsObs = this.events.asObservable();
+
+  private flags = new BehaviorSubject<GameFlag[]>([]);
+  flagsObs = this.flags.asObservable();
 
   private contentVersions = new BehaviorSubject<ContentVersionListItem[]>([]);
   contentVersionsObs = this.contentVersions.asObservable();
@@ -196,6 +201,56 @@ export class GameEditorService {
     return (
       this.game.value?.content.areas[this.selectedAreaId.value]?.exits ?? []
     );
+  }
+
+  // FLAGS --------------------------------------------------------------------
+  updateFlagsInGame(nextFlags: GameFlag[]) {
+    if (this.game.value) {
+      const nextGame = {
+        ...this.game.value,
+        content: {
+          ...this.game.value.content,
+          flags: nextFlags,
+        },
+      };
+      this.game.next(nextGame);
+    }
+  }
+
+  getFlagsListOptions(): SelectIUIOption[] {
+    return [
+      ...defaultFlagIdOptions,
+      ...this.flags.value.map(flag => ({
+        value: flag.id,
+        label: flag.name,
+      })),
+    ];
+  }
+
+  createFlag() {
+    const newFlag: GameFlag = {
+      id: uuidv4(),
+      name: 'New Flag',
+      scoreValue: 0,
+    };
+    const nextFlags = [...this.flags.value, newFlag];
+    this.flags.next(nextFlags);
+    this.updateFlagsInGame(nextFlags);
+  }
+
+  deleteFlag(flagId: string) {
+    const nextFlags = this.flags.value.filter(flag => flag.id !== flagId);
+    this.flags.next(nextFlags);
+    this.updateFlagsInGame(nextFlags);
+  }
+  updateFlag(updatedFlag: GameFlag) {
+    {
+      const nextFlags = this.flags.value.map(flag =>
+        flag.id === updatedFlag.id ? updatedFlag : flag
+      );
+      this.flags.next(nextFlags);
+      this.updateFlagsInGame(nextFlags);
+    }
   }
 
   // ITEMS -------------------------------------------------------------------
@@ -500,6 +555,7 @@ export class GameEditorService {
           props: [],
         },
       },
+      flags: [],
       events: [],
       flagValues: {
         GAME_OVER: false,
@@ -623,6 +679,7 @@ export class GameEditorService {
           this.areaProps.next(nextSelectedArea.props);
           this.events.next(nextGameData.content.events);
           this.selectedArea.next(nextSelectedArea);
+          this.flags.next(nextGameData.content.flags ?? []);
         });
     }
   }
@@ -778,6 +835,7 @@ export class GameEditorService {
             this.areaExits.next(nextSelectedArea.exits);
             this.areaItems.next(nextSelectedArea.items);
             this.selectedArea.next(nextSelectedArea);
+            this.flags.next(nextGameData.content.flags ?? []);
           }
         });
     }

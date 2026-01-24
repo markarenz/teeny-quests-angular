@@ -854,4 +854,70 @@ describe('events', () => {
       });
     });
   });
+  describe('updateFlagsInGame', () => {
+    it('should update flags in game', () => {
+      const authProviderService = TestBed.inject(AuthProviderService);
+      const service = new GameEditorService(authProviderService);
+      service.setTestValue(gameMock, 'game');
+
+      const newFlags = [
+        { id: 'flag1', name: 'Flag 1', scoreValue: 10 },
+        { id: 'flag2', name: 'Flag 2', scoreValue: 20 },
+      ];
+      service.updateFlagsInGame(newFlags);
+
+      service.gameObs.subscribe(game => {
+        const flags = game ? game.content.flags : [];
+        expect(flags).toEqual(newFlags);
+      });
+    });
+  });
+  describe('createFlag', () => {
+    it('should create flag', () => {
+      const authProviderService = TestBed.inject(AuthProviderService);
+      const service = new GameEditorService(authProviderService);
+      service.setTestValue(gameMock, 'game');
+      service.createFlag();
+      service.gameObs.subscribe(game => {
+        const flags = game ? (game.content.flags ?? []) : [];
+        const createdFlag = flags.find(flag => flag.name === 'New Flag');
+        expect(createdFlag).toBeDefined();
+        expect(createdFlag?.scoreValue).toEqual(0);
+      });
+    });
+  });
+  describe('deleteFlag', () => {
+    it('should delete flag', () => {
+      const authProviderService = TestBed.inject(AuthProviderService);
+      const service = new GameEditorService(authProviderService);
+      service.setTestValue(gameMock, 'game');
+      service.createFlag();
+      const flagsOptionsBefore = service.getFlagsListOptions();
+      const flagId = flagsOptionsBefore[flagsOptionsBefore.length - 1].value;
+      service.deleteFlag(flagId);
+      const flagsOptionsAfter = service.getFlagsListOptions();
+      expect(flagsOptionsAfter.length).toEqual(flagsOptionsBefore.length - 1);
+    });
+  });
+  describe('updateFlag', () => {
+    it('should update flag', () => {
+      const authProviderService = TestBed.inject(AuthProviderService);
+      const service = new GameEditorService(authProviderService);
+      service.setTestValue(gameMock, 'game');
+      service.createFlag();
+      const flagsOptionsBefore = service.getFlagsListOptions();
+      const flagId = flagsOptionsBefore[flagsOptionsBefore.length - 1].value;
+      const updatedFlag = {
+        id: flagId,
+        name: 'Updated Flag Name',
+        scoreValue: 50,
+      };
+      service.updateFlag(updatedFlag);
+      service.gameObs.subscribe(game => {
+        const flags = game ? game.content.flags : [];
+        const flag = flags?.find(f => f.id === flagId);
+        expect(flag).toEqual(updatedFlag);
+      });
+    });
+  });
 });
