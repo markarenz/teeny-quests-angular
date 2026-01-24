@@ -161,6 +161,23 @@ select {
     padding-left: 1rem;
   }
 }
+.gradient-text {
+  background: linear-gradient(
+    90deg,
+    var(--color-primary),
+    var(--color-secondary)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+
+  background: -webkit-linear-gradient(#1dce52, #068c2e, #076724);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  /* We use a filter since typical text shadow will not work with the gradient text */
+  filter: drop-shadow(1px 1px 0 #ccc) drop-shadow(-1px -1px 0 #333)
+    drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.9));
+}
 
 .exit-button {
   fill: transparent;

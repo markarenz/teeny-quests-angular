@@ -23,7 +23,7 @@ import { Lights } from '@content/constants';
 import { getAreaElementPositionStyle } from '../../lib/utils';
 import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 import { processEvents } from './utils/event-actions';
-import { getLevelGoals } from './utils/common';
+import { calcScore, getLevelGoals } from './utils/common';
 
 @Injectable({
   providedIn: 'root',
@@ -41,6 +41,9 @@ export class GameService {
 
   private gameState = new BehaviorSubject<GameState | null>(null);
   gameStateObs = this.gameState.asObservable();
+
+  private score = new BehaviorSubject<number>(0);
+  scoreObs = this.score.asObservable();
 
   private movementOptions = new BehaviorSubject<MovementOptions>({});
   movementOptionsObs = this.movementOptions.asObservable();
@@ -248,6 +251,9 @@ export class GameService {
 
     if (localGameState) {
       nextGameState = localGameState;
+    }
+    if (this.gameROM.value) {
+      this.score.next(calcScore(nextGameState, this.gameROM.value));
     }
     this.gameState.next(nextGameState);
     this.levelGoals.next(getLevelGoals(nextGameROM));
@@ -707,6 +713,7 @@ export class GameService {
       }
 
       nextGameState.numTurns += 1;
+      this.score.next(calcScore(nextGameState, this.gameROM.value));
       this.saveLocalGameState(nextGameState);
       this.gameState.next(nextGameState);
       this.calculateMovementOptions(nextGameState);

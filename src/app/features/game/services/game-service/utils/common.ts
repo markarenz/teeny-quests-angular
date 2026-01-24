@@ -4,7 +4,7 @@ import {
   EventConditionType,
 } from '@app/features/main/interfaces/enums';
 import { inventoryDefinitions } from '@content/item-definitions';
-import { GameROM } from '@app/features/main/interfaces/types';
+import { GameROM, GameState } from '@app/features/main/interfaces/types';
 import { ExitType } from '@content/exit-definitions';
 
 export const getLevelGoals = (gameROM: GameROM): string => {
@@ -40,4 +40,23 @@ export const getLevelGoals = (gameROM: GameROM): string => {
   // Capitalize first letter
   const levelGoalsText = levelGoalsArr.join(' -or- ') + '.';
   return levelGoalsText[0].toUpperCase() + levelGoalsText.slice(1);
+};
+
+export const calcScore = (gameState: GameState, gameROM: GameROM): number => {
+  let score = 0;
+  Object.keys(gameState.player.inventory).forEach(inventoryKey => {
+    const itemCount = gameState.player.inventory[inventoryKey];
+    const itemDef = inventoryDefinitions[inventoryKey];
+    if (itemDef && itemDef.scoreValue) {
+      score += itemDef.scoreValue * itemCount;
+    }
+  });
+  gameROM.content.flags?.forEach(flagDef => {
+    if (flagDef.scoreValue && gameState.flagValues[flagDef.id]) {
+      score += flagDef.scoreValue;
+    }
+  });
+  score -= gameState.numTurns;
+
+  return Math.max(0, score);
 };

@@ -50,6 +50,7 @@ export class GameComponent {
   public showInventoryDot: boolean = false;
   public previousInventory: Inventory | null = null;
   public levelGoals: string = '';
+  public score: number = 0;
   private userId: string | null = null;
   public numTurns: number = 0;
 
@@ -102,6 +103,11 @@ export class GameComponent {
     this.subscriptions.push(
       this._gameService.levelGoalsObs.subscribe(data => {
         this.levelGoals = data;
+      })
+    );
+    this.subscriptions.push(
+      this._gameService.scoreObs.subscribe((data: number) => {
+        this.score = data;
       })
     );
     this.subscriptions.push(

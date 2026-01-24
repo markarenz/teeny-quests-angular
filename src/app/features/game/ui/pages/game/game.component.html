@@ -4,33 +4,46 @@
       @if(!isLoading) {
       <div>
         <app-game-area [isFullWidthMode]="isFullWidthMode" />
-        <div class="absolute z-[110] {{isFullWidthMode ? 'left-4 top-4' : 'left-0 top-0'}}  flex flex-row gap-4">
-          <app-tooltip content="Inventory" align="left" position="bottom">
+        <div class="absolute z-[110] {{isFullWidthMode ? 'left-4 bottom-4' : 'left-0 bottom-0'}}  flex flex-row gap-4">
+          <app-tooltip content="Inventory" align="left" position="top">
             <app-icon-button size="md" label="Open Inventory" icon="backpack" (onButtonClick)="handleInventoryClick()"
               [showDot]="showInventoryDot" />
           </app-tooltip>
         </div>
-        <div class="absolute z-[110] {{isFullWidthMode ? 'right-4 top-4' : 'right-0 top-0'}}  flex flex-row gap-4">
-          <app-tooltip content="Goals for this level" position="bottom">
-            <app-icon-button label="Goals for this level" size="md" icon="info" (onButtonClick)="handleInfoClick()" />
+        <div
+          class="absolute z-[110] {{isFullWidthMode ? 'right-4 bottom-4' : 'right-0 bottom-0'}}  flex flex-row gap-2">
+          <app-tooltip content="Goals for this level" position="top">
+            <app-icon-button label="Goals for this level" size="sm" icon="info" (onButtonClick)="handleInfoClick()" />
           </app-tooltip>
-          <app-tooltip content="How to Play Teeny Quests" position="bottom">
-            <app-icon-button label="How to Play Teeny Quests" size="md" icon="help"
+          <app-tooltip content="How to Play Teeny Quests" position="top">
+            <app-icon-button label="How to Play Teeny Quests" size="sm" icon="help"
               (onButtonClick)="handleHelpClick()" />
           </app-tooltip>
-
-          <app-tooltip content="Reset Progress" position="bottom">
-            <app-icon-button label="Reset Progress" size="md" icon="reset" (onButtonClick)="handleResetProgress()" />
+          <app-tooltip content="Reset Progress" position="top">
+            <app-icon-button label="Reset Progress" size="sm" icon="reset" (onButtonClick)="handleResetProgress()" />
           </app-tooltip>
           <div class="hidden sm:block">
-            <app-tooltip content="Full Width" align="right" position="bottom">
-              <app-icon-button label="{{isFullWidthMode ? 'Collapse' : 'Expand'}}" size="md"
+            <app-tooltip content="Full Width" align="right" position="top">
+              <app-icon-button label="{{isFullWidthMode ? 'Collapse' : 'Expand'}}" size="sm"
                 icon="{{ isFullWidthMode ? 'collapse' : 'expand'}}" (onButtonClick)="handleToggleFullWidth()" />
             </app-tooltip>
           </div>
         </div>
-        <div class="absolute bottom-0 {{isFullWidthMode ? 'right-4' : 'right-0'}} flex flex-row gap-4">
-          Turns: {{numTurns}}
+        <div class="absolute z-[110] top-0 {{isFullWidthMode ? 'left-4' : 'left-0'}} flex flex-col gap-0 items-start">
+          <div class="text-sm">
+            SCORE
+          </div>
+          <div class="text-3xl lg:text-6xl gradient-text font-bold font-headline leading-none">
+            {{score.toLocaleString()}}
+          </div>
+        </div>
+        <div class="absolute z-[110] top-0 {{isFullWidthMode ? 'right-4' : 'right-0'}} flex flex-col gap-0 items-start">
+          <div class="text-sm w-full text-right">
+            TURNS
+          </div>
+          <div class="text-3xl lg:text-6xl gradient-text font-bold font-headline leading-none w-full text-right">
+            {{numTurns.toLocaleString()}}
+          </div>
         </div>
       </div>
       }

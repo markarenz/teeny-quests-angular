@@ -65,6 +65,7 @@ export type InventoryDefinition = {
   name: string;
   pluralName: string;
   article: string;
+  scoreValue: number;
 };
 
 export const inventoryDefinitions: { [key: string]: InventoryDefinition } = {
@@ -73,18 +74,21 @@ export const inventoryDefinitions: { [key: string]: InventoryDefinition } = {
     name: 'Gold',
     pluralName: 'Gold Coins',
     article: 'a',
+    scoreValue: 1,
   },
   'key-silver': {
     id: 'key-silver',
     name: 'Silver Key',
     pluralName: 'Silver Keys',
     article: 'a',
+    scoreValue: 5,
   },
   'key-gold': {
     id: 'key-gold',
     name: 'Gold Key',
     pluralName: 'Gold Keys',
     article: 'a',
+    scoreValue: 10,
   },
 };
 
