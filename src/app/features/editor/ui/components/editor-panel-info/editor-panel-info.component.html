@@ -1,27 +1,17 @@
-<app-collapsible-card
-  title="Info"
-  [isCollapsible]="false"
-  [showNewButton]="false"
->
+<app-collapsible-card title="Info" [isCollapsible]="false" [showNewButton]="false">
   <div class="flex flex-col gap-8">
     <h3>Game Info</h3>
     <div class="flex flex-col gap-4">
       <div id="editor-content-info" class="relative flex flex-col gap-4">
         <div class="grid grid-cols-1 gap-4">
           <div>
-            <label for="new-game--title" class="block text"
-              >Title
+            <label for="new-game--title" class="block text">Title
               <span class="text-md font-normal">
                 ({{ inputTitle.length }}/{{ inputTitleMaxLength }})
               </span>
             </label>
-            <input
-              id="new-game--title"
-              type="text"
-              [(ngModel)]="inputTitle"
-              (ngModelChange)="handleInfoChange()"
-              [maxlength]="inputTitleMaxLength"
-            />
+            <input id="new-game--title" type="text" [(ngModel)]="inputTitle" (ngModelChange)="handleInfoChange()"
+              [maxlength]="inputTitleMaxLength" />
           </div>
           <div>
             <label for="new-game--itemStatus" class="block text">Status</label>
@@ -37,56 +27,31 @@
           </div>
         </div>
         <div>
-          <label for="new-game--description" class="block text"
-            >Description
+          <label for="new-game--description" class="block text">Description
             <span class="text-md font-normal">
               ({{ inputDescription.length }}/{{ inputDescriptionMaxLength }})
             </span>
           </label>
-          <textarea
-            id="new-game--description"
-            [(ngModel)]="inputDescription"
-            (ngModelChange)="handleInfoChange()"
-            rows="6"
-            [maxlength]="inputDescriptionMaxLength"
-            (keydown)="onChangeNoLineBreaks($event)"
-          ></textarea>
-        </div>
-        <div>
-          <label for="new-game--introduction" class="block text"
-            >Introduction
-            <span class="text-md font-normal">
-              ({{ inputIntroduction.length }}/{{ inputIntroductionMaxLength }})
-            </span>
-          </label>
-          <textarea
-            id="new-game--introduction"
-            [(ngModel)]="inputIntroduction"
-            (ngModelChange)="handleInfoChange()"
-            rows="6"
-            [maxlength]="inputIntroductionMaxLength"
-          ></textarea>
+          <textarea id="new-game--description" [(ngModel)]="inputDescription" (ngModelChange)="handleInfoChange()"
+            rows="6" [maxlength]="inputDescriptionMaxLength" (keydown)="onChangeNoLineBreaks($event)"></textarea>
         </div>
       </div>
     </div>
 
-    <h3>Start</h3>
+    <div>
+      <app-editor-input-flags />
+    </div>
+
     <div class="flex flex-col gap-4">
       <div>
         <label>Starting Area</label>
-        <app-editor-area-selector-general
-          (onAreaSelected)="handleStartingAreaChange($event)"
-          [areaId]="inputStartingAreaId"
-        />
+        <app-editor-area-selector-general (onAreaSelected)="handleStartingAreaChange($event)"
+          [areaId]="inputStartingAreaId" />
       </div>
       <div>
         <label>Starting Position</label>
-        <app-area-cell-selector
-          id="editor-player-starting-position"
-          [selectedCellPosition]="inputStartingAreaPosition"
-          (onPositionSelect)="handlePlayerStartPositionChange($event)"
-          [lockouts]="lockouts"
-        />
+        <app-area-cell-selector id="editor-player-starting-position" [selectedCellPosition]="inputStartingAreaPosition"
+          (onPositionSelect)="handlePlayerStartPositionChange($event)" [lockouts]="lockouts" />
       </div>
       <div>
         <label>Starting Inventory</label>

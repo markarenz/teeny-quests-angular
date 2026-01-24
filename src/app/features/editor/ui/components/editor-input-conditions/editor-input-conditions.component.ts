@@ -43,6 +43,7 @@ export class EditorInputConditionsComponent {
   public selectedConditionId: string | null = null;
   public conditionTypeOptions = conditionOptions;
   public inventoryKeyOptions = itemKeyOptions;
+  public flagIdOptions: SelectIUIOption[] = [];
   public selectedConditionTypeDefinition: ConditionDefinition | null = null;
   public valueOptions: SelectIUIOption[] = [];
   public objectIdentifierInputLabel: string = 'Object Identifier';
@@ -53,6 +54,10 @@ export class EditorInputConditionsComponent {
   public inputConditionObjectId: string = '';
   public inputConditionValue: string = '';
   public inputConditionIsUnidirectional: boolean = false;
+
+  ngOnInit() {
+    this.flagIdOptions = this._gameEditorService.getFlagsListOptions();
+  }
 
   public refreshUIData() {
     if (this.selectedCondition) {
@@ -75,7 +80,7 @@ export class EditorInputConditionsComponent {
 
       const objectInputOptionsMap = {
         [ConditionObjectType.INVENTORY_KEY]: this.inventoryKeyOptions,
-        [ConditionObjectType.FLAG_ID]: [], // TODO: get a list of flags
+        [ConditionObjectType.FLAG_ID]: this.flagIdOptions,
       };
       this.objectIdentifierOptions =
         objectInputOptionsMap[def.objectType] || [];

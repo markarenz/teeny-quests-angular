@@ -123,9 +123,16 @@ export type GameStateValues = {
   [key: string]: boolean | number | string;
 };
 
+export type GameFlag = {
+  id: string;
+  name: string;
+  scoreValue: number;
+};
+
 export type GameContent = {
   areas: { [key: string]: GameArea };
   events: GameEvent[];
+  flags?: GameFlag[];
   flagValues: GameStateValues;
   player: {
     areaId: string;

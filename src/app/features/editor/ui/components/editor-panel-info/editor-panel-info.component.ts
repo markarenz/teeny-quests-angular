@@ -9,6 +9,7 @@ import { EditorAreaSelectorGeneralComponent } from '../editor-area-selector-gene
 import { EditorInventoryComponent } from '../editor-inventory/editor-inventory.component';
 import { getPositionKeysForGridSize } from '@app/features/main/utils';
 import { floorDefinitions } from '@content/floor-definitions';
+import { EditorInputFlagsComponent } from '../editor-input-flags/editor-input-flags.component';
 
 @Component({
   selector: 'app-editor-panel-info',
@@ -19,6 +20,7 @@ import { floorDefinitions } from '@content/floor-definitions';
     AreaCellSelectorComponent,
     EditorAreaSelectorGeneralComponent,
     EditorInventoryComponent,
+    EditorInputFlagsComponent,
   ],
   templateUrl: './editor-panel-info.component.html',
   styleUrl: './editor-panel-info.component.css',
@@ -30,9 +32,7 @@ export class EditorPanelInfoComponent {
   inputTitle: string = '';
   inputTitleMaxLength: number = 128;
   inputDescription: string = '';
-  inputIntroduction = '';
   inputDescriptionMaxLength: number = 512;
-  inputIntroductionMaxLength: number = 2048;
   inputItemStatus: string = '';
   inputStartingAreaId: string = '';
   inputStartingAreaPosition: string = '';
@@ -49,7 +49,6 @@ export class EditorPanelInfoComponent {
           this.game = data;
           this.inputTitle = this.game?.title || '';
           this.inputDescription = this.game?.description || '';
-          this.inputIntroduction = this.game?.introduction || '';
           this.inputItemStatus = this.game?.itemStatus || '';
           this.inputStartingAreaPosition =
             `${this.game?.content.player.y}_${this.game?.content.player.x}` ||
@@ -97,7 +96,6 @@ export class EditorPanelInfoComponent {
         ...this.game,
         title: this.inputTitle,
         description: this.inputDescription,
-        introduction: this.inputIntroduction,
         itemStatus: this.inputItemStatus,
         content: {
           ...this.game.content,

@@ -19,7 +19,7 @@ import {
   actionDefinitions,
   actionOptions,
 } from '@content/action-definitions';
-import { defaultFlagIdOptions, booleanOptions } from '@content/flags';
+import { booleanOptions } from '@content/flags';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import { floorOptionsData } from '@content/floor-definitions';
 import { maxAreaCellHeight } from '@config/index';
@@ -55,7 +55,7 @@ export class EditorInputActionsComponent {
   public objectIdentifierOptions: SelectIUIOption[] = [];
   public valueOptions: SelectIUIOption[] = [];
   public booleanOptions: SelectIUIOption[] = booleanOptions;
-  public flagIdOptions: SelectIUIOption[] = defaultFlagIdOptions;
+  public flagIdOptions: SelectIUIOption[] = [];
   public objectIdentifierInputLabel: string = 'Object Identifier';
   public valueInputLabel: string = 'Value';
 
@@ -65,6 +65,9 @@ export class EditorInputActionsComponent {
   public inputActionValue: string = '';
   public shouldShowPositionSelector: boolean = false;
 
+  ngOnInit() {
+    this.flagIdOptions = this._gameEditorService.getFlagsListOptions();
+  }
   public refreshUIData() {
     if (this.selectedAction) {
       this.inputActionType = this.selectedAction.action;
@@ -99,7 +102,7 @@ export class EditorInputActionsComponent {
         }
       }
       if (def.objectType === ActionObjectType.FLAG_ID) {
-        this.objectIdentifierOptions = defaultFlagIdOptions;
+        this.objectIdentifierOptions = this.flagIdOptions;
       }
       // set value options based on type and sub type
       if (def.valueType === ActionValueType.FLOOR_TYPE) {

@@ -257,6 +257,9 @@ export class GameService {
   }
 
   loadGameROM(gameId: string | null, v?: string | null): void {
+    if (this.gameROM.value) {
+      this.gameROM.next(null);
+    }
     if (gameId) {
       this.areaTransitionMode.next('cover');
       this.isLockedOut.next(true);

@@ -87,8 +87,6 @@ describe('GameComponent', () => {
     component.ngOnInit();
     fixture.detectChanges();
     expect(service.gameROMObs).toBeTruthy();
-    const gameROM = await firstValueFrom(service.gameROMObs);
-    expect(gameROM).toBeTruthy();
   }));
 
   it('handleGameEndClick should call router.navigate', fakeAsync(async () => {

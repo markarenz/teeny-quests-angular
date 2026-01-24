@@ -1,0 +1,37 @@
+<app-collapsible-card title="Flags" [isCollapsible]="false" [showNewButton]="true" titleType="secondary"
+  (onNewButtonClick)="handleCreateClick()">
+  <div class="flex flex-col gap-8">
+    <div class="flex flex-col gap-4">
+      <div class="flex flex-col gap-4">
+        @if(!flags || flags.length < 1) { <div>No flags.</div>
+      } @for(flag of flags; track flag.id; let idx = $index) {
+      <div class="rounded-md flex flex-row items-center p-2 {{
+              selectedFlagId === flag.id ? 'bg-green-900' : 'bg-gray-800'
+            }}">
+        <div class="flex-grow">
+          {{ flag.name }}
+        </div>
+        <div class="flex flex-row gap-2">
+          <app-icon-button icon="edit" label="Edit Flag" (click)="handleEditClick(flag.id)" />
+          <app-icon-button icon="delete" theme="danger" label="Delete Flag" (click)="handleDeleteClick(flag.id)" />
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+  @if (selectedFlagId) {
+  <div class="flex flex-col gap-4">
+    <div>
+      <div>
+        <label for="flag-name">Flag Name</label>
+        <input type="text" id="flag-name" [(ngModel)]="inputName" (change)="handleInputChange()" />
+      </div>
+      <div>
+        <label for="flag-score-value">Score Value</label>
+        <input type="number" id="flag-score-value" [(ngModel)]="inputScoreValue" (change)="handleInputChange()" />
+      </div>
+    </div>
+  </div>
+  }
+  </div>
+</app-collapsible-card>
