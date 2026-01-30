@@ -1,17 +1,19 @@
-export const tableNames = {
+import { AuthorizationMatchers, FiledDefinition } from './models';
+
+export const tableNames: Record<string, string> = {
   games: 'TQ_Games',
   users: 'TQ_Users',
   versions: 'TQ_ContentVersions',
 };
 
-export const indexNames = {
+export const indexNames: Record<string, string> = {
   games_get: 'itemStatusIndex',
   games_get_userId: 'gamesByUserIndex',
   users_get: 'itemStatusIndex',
   versions_get_gameId: 'versionsByGameIndex',
 };
 
-export const authorizationMatchers = {
+export const authorizationMatchers: AuthorizationMatchers = {
   users_post: {
     profile: 'sub',
     bodyParam: 'id',
@@ -30,7 +32,7 @@ export const authorizationMatchers = {
   },
 };
 
-export const fieldNames = {
+export const fieldNames: Record<string, FiledDefinition[]> = {
   games: [
     {
       fieldName: 'id',

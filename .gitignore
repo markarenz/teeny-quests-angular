@@ -15,3 +15,6 @@ coverage/
 src/config/configConstants.ts
 api/lambda.zip
 TQ-SharedApiLambda-layer.zip
+api/jest_html_reporters.html
+api/dist
+api/coverage/

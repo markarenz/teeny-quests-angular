@@ -9,9 +9,17 @@ import {
   tableNames,
   indexNames,
   authorizationMatchers,
-} from './constants.mjs';
+} from './constants';
+import {
+  AuthorizationMatcher,
+  JwtPayload,
+  Params,
+  RequestBody,
+  ReturnPayload,
+} from './models/index';
 
-const unmarshallArray = items => items.map(i => unmarshall(i));
+// TODO: remove any[] and use union type instead
+const unmarshallArray = (items: any[]) => items.map(i => unmarshall(i));
 
 /* JWT FUNCTIONS FOR AUTHORIZATION */
 /**
@@ -21,7 +29,7 @@ const unmarshallArray = items => items.map(i => unmarshall(i));
  * @returns {Promise<string>} The JWKS URI as a string.
  * @throws {Error} If the fetch request fails or the response is invalid.
  */
-const getJwksUri = async () => {
+const getJwksUri = async (): Promise<string> => {
   const response = await fetch(
     'https://accounts.google.com/.well-known/openid-configuration'
   );
@@ -38,7 +46,7 @@ const getJwksUri = async () => {
  * @returns {Promise<JwtVerifier>} A promise that resolves to a configured JwtVerifier instance.
  */
 
-async function createVerifier(jwksUri, clientId) {
+async function createVerifier(jwksUri: string, clientId: string) {
   const jwksCache = new SimpleJwksCache(); // Use a cache for better performance
   const verifier = JwtVerifier.create(
     {
@@ -58,13 +66,13 @@ async function createVerifier(jwksUri, clientId) {
  * Verifies a JWT token using the provided verifier.
  *
  * @async
- * @param {Object} verifier - An object with a `verify` method to validate the JWT.
+ * @param {any} verifier - An object with a `verify` method to validate the JWT.
  * @param {string} token - The JWT token to verify.
- * @returns {Promise<Object>} The decoded payload if the token is valid.
+ * @returns {Promise<JwtPayload>} The decoded payload if the token is valid.
  * @throws {Error} If token verification fails.
  */
 
-async function verifyJwt(verifier, token) {
+async function verifyJwt(verifier: any, token: string): Promise<JwtPayload> {
   try {
     const payload = await verifier.verify(token);
     return payload;
@@ -79,23 +87,30 @@ async function verifyJwt(verifier, token) {
  *
  * @async
  * @param {string} token - The JWT token to verify and extract payload from.
- * @param {Object} params - The parameters of the request to match against the payload.
+ * @param {Params} params - The parameters of the request to match against the payload.
  * @param {string} requestKey - The key used to determine which fields to match for authorization.
  * @returns {Promise<boolean>} Resolves to true if the authorization fields match, false otherwise.
  */
 
-const getAuthorizationForRequest = async (token, params, requestKey) => {
+const getAuthorizationForRequest = async (
+  token: string,
+  params: Params,
+  requestKey: string
+): Promise<boolean> => {
   const jwksUri = await getJwksUri();
   const clientId = process.env.GOOGLE_CLIENT_ID;
-  const verifier = await createVerifier(jwksUri, clientId);
+  const verifier = await createVerifier(jwksUri, clientId ?? '');
   const payload = await verifyJwt(verifier, token);
   let isAuthorized = false;
   // The authorization matchers obj defines which fields to match on for authorization
-  const authorizationMatcher = authorizationMatchers[requestKey];
+  const authorizationMatcher: AuthorizationMatcher =
+    authorizationMatchers[requestKey];
   const profileFieldName = authorizationMatcher?.profile ?? '';
   const paramsFieldName = authorizationMatcher?.bodyParam ?? '';
   if (
-    !!payload[profileFieldName] &&
+    payload &&
+    payload.hasOwnProperty(profileFieldName) &&
+    params.body &&
     !!params.body[paramsFieldName] &&
     payload[profileFieldName] === params.body[paramsFieldName]
   ) {
@@ -108,13 +123,19 @@ const getAuthorizationForRequest = async (token, params, requestKey) => {
  * Extracts and validates data from the request body based on the specified path's field definitions.
  *
  * @param {Object} params - The parameters object.
- * @param {Object} params.body - The request body containing input data.
+ * @param {RequestBody} params.body - The request body containing input data.
  * @param {string} params.path - The path used to determine which fields to extract and validate.
  * @returns {Object|null} The extracted data object if all required fields are present; otherwise, null.
  */
 
-const getBodyData = ({ body, path }) => {
-  const data = {};
+const getBodyData = ({
+  body,
+  path,
+}: {
+  body: RequestBody;
+  path: string;
+}): Object | null => {
+  const data: Record<string, string | boolean | object | number | null> = {};
   let valid = true;
   fieldNames[path].forEach(item => {
     const { fieldName, required } = item;
@@ -135,7 +156,7 @@ const getBodyData = ({ body, path }) => {
  * @returns {string} The URL-safe base64 encoded string.
  */
 
-const toUrlString = buffer => {
+const toUrlString = (buffer: Buffer): string => {
   return buffer
     .toString('base64')
     .replace(/\+/g, '-')
@@ -147,15 +168,18 @@ const toUrlString = buffer => {
  * Generates a standardized HTTP response payload.
  *
  * @param {number} statusCode - The HTTP status code to return.
- * @param {Object} body - The response body to be stringified.
- * @returns {Object} The response payload with statusCode, headers, and stringified body.
+ * @param {RequestBody} body - The response body to be stringified.
+ * @returns {ReturnPayload} The response payload with statusCode, headers, and stringified body.
  */
 
-const generateReturnPayload = (statusCode, body) => {
+const generateReturnPayload = (
+  statusCode: number,
+  body: RequestBody
+): ReturnPayload => {
   return {
     statusCode,
     headers: {
-      'access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': '*',
     },
     body: JSON.stringify(body),
   };
@@ -164,11 +188,11 @@ const generateReturnPayload = (statusCode, body) => {
 /**
  * Generates a standard CORS preflight (OPTIONS) response object.
  *
- * @param {object} _params - Parameters for the response (currently unused).
- * @returns {object} The response object containing statusCode, headers, and body for CORS preflight.
+ * @param {Params} _params - Parameters for the response (currently unused).
+ * @returns {ReturnPayload} The response object containing statusCode, headers, and body for CORS preflight.
  */
 
-export const returnOptionsResponse = _params => {
+export const returnOptionsResponse = (_params: Params): ReturnPayload => {
   return {
     statusCode: 200,
     headers: {
@@ -187,35 +211,36 @@ export const returnOptionsResponse = _params => {
  *
  * @async
  * @function createItem
- * @param {Object} params - The parameters for item creation.
- * @returns {Promise<Object>} The response payload containing status, message, item ID, and HTTP status code.
+ * @param {Params} params - The parameters for item creation.
+ * @returns {Promise<ReturnPayload>} The response payload containing status, message, item ID, and HTTP status code.
  */
 
-export const createItem = async params => {
+// TODO: Define proper types for params and return value
+export const createItem = async (params: Params): Promise<ReturnPayload> => {
   const { path, dynamoDb, body, token, requestKey } = params;
-  const { id: rawId } = body;
+  const { id: rawId } = body ?? {};
   let success = false;
   let id = null;
   let resp = null;
   const isAuthorized = await getAuthorizationForRequest(
-    token,
+    token ?? '',
     params,
-    requestKey
+    requestKey ?? ''
   );
-  console.error('isAuthorized', isAuthorized);
+
   if (!isAuthorized) {
     console.error('Unauthorized request for createItem');
     return generateReturnPayload(403, { message: 'Unauthorized request' });
   }
 
-  const bodyData = getBodyData({ body, path });
+  const bodyData = getBodyData({ body: body ?? {}, path: path ?? '' });
   if (bodyData) {
     // For Users, we pull in the sub ID from authentication
     // Otherwise, we create a new ID
     id = rawId ?? toUrlString(randomBytes(32));
 
     const command = new PutCommand({
-      TableName: tableNames[path],
+      TableName: tableNames[path ?? ''],
       Item: {
         ...bodyData,
         id,
@@ -223,7 +248,6 @@ export const createItem = async params => {
         dateUpdated: new Date().toISOString(),
       },
     });
-
     resp = await dynamoDb.send(command);
     success = resp['$metadata'].httpStatusCode === 200;
   }
@@ -240,17 +264,17 @@ export const createItem = async params => {
  *
  * @async
  * @function getItems
- * @param {Object} params - The parameters for the query.
+ * @param {Params} params - The parameters for the query.
  * @param {import('@aws-sdk/client-dynamodb').DynamoDBClient} params.dynamoDb - The DynamoDB client instance.
- * @returns {Promise<Object>} The response payload containing a success flag and the list of items (if found).
+ * @returns {Promise<ReturnPayload>} The response payload containing a success flag and the list of items (if found).
  */
 
-export const getItems = async params => {
+export const getItems = async (params: Params): Promise<ReturnPayload> => {
   const { path, dynamoDb, requestKey } = params;
   const command = new QueryCommand({
-    TableName: tableNames[path],
-    IndexName: indexNames[requestKey],
-    ProjectionExpression: fieldNames[path]
+    TableName: tableNames[path ?? ''],
+    IndexName: indexNames[requestKey ?? ''],
+    ProjectionExpression: fieldNames[path ?? '']
       .filter(item => !item.detailOnly)
       .map(item => item.fieldName)
       .join(', '),
@@ -274,20 +298,22 @@ export const getItems = async params => {
  *
  * @async
  * @function getItemsByUserId
- * @param {Object} params - The parameters for the query.
+ * @param {Params} params - The parameters for the query.
  * @param {import('@aws-sdk/client-dynamodb').DynamoDBClient} params.dynamoDb - The DynamoDB client instance.
- * @returns {Promise<Object>} The response payload containing the items and success status.
+ * @returns {Promise<ReturnPayload>} The response payload containing the items and success status.
  */
 
-export const getItemsByUserId = async params => {
+export const getItemsByUserId = async (
+  params: Params
+): Promise<ReturnPayload> => {
   const { path, dynamoDb, searchParams, requestKey } = params;
-  let items = [];
+  let items: any[] | null = [];
   // TODO: Filter by user ID for author page (FUTURE)
   if (searchParams?.userId && searchParams?.userId.length > 0) {
     const { userId } = searchParams;
     const command = new QueryCommand({
-      TableName: tableNames[path],
-      IndexName: indexNames[requestKey],
+      TableName: tableNames[path ?? ''],
+      IndexName: indexNames[requestKey ?? ''],
       ProjectionExpression: 'id, title, description, username, itemStatus',
       KeyConditionExpression: 'userId = :value',
       ExpressionAttributeValues: {
@@ -305,23 +331,25 @@ export const getItemsByUserId = async params => {
  *
  * @async
  * @function getItemsByGameId
- * @param {Object} params - The parameters for the query.
+ * @param {Params} params - The parameters for the query.
  * @param {string} params.path - The path used to determine the table name.
  * @param {Object} params.dynamoDb - The DynamoDB client instance.
  * @param {Object} params.searchParams - Search parameters, may include userId for filtering.
  * @param {string} params.requestKey - Key used to determine the index name.
  * @param {string} params.gameId - The game ID to filter items by.
- * @returns {Promise<Object>} The response payload containing the items.
+ * @returns {Promise<ReturnPayload>} The response payload containing the items.
  */
 
-export const getItemsByGameId = async params => {
+export const getItemsByGameId = async (
+  params: Params
+): Promise<ReturnPayload> => {
   const { path, dynamoDb, searchParams, requestKey } = params;
-  let items = [];
+  let items: any[] | null = [];
   if (searchParams?.gameId && searchParams?.gameId.length > 0) {
     const { gameId } = searchParams;
     const command = new QueryCommand({
-      TableName: tableNames[path],
-      IndexName: indexNames[requestKey],
+      TableName: tableNames[path ?? ''],
+      IndexName: indexNames[requestKey ?? ''],
       ProjectionExpression: 'id, gameId, userId, dateCreated, dateUpdated',
       KeyConditionExpression: 'gameId = :value',
       ExpressionAttributeValues: {
@@ -338,18 +366,20 @@ export const getItemsByGameId = async params => {
  * Retrieves an item by its ID from a DynamoDB table.
  *
  * @async
- * @param {Object} params - The parameters for the function.
+ * @param {Params} params - The parameters for the function.
  * @param {import('@aws-sdk/lib-dynamodb').DynamoDBDocumentClient} params.dynamoDb - The DynamoDB DocumentClient instance.
  * @param {string} [params.searchParams.id] - The ID of the item to retrieve.
- * @returns {Promise<Object|undefined>} A promise that resolves to a payload object containing the item if found, or null if not found.
+ * @returns {Promise<ReturnPayload|undefined>} A promise that resolves to a payload object containing the item if found, or null if not found.
  */
 
-export const getItemById = async params => {
+export const getItemById = async (
+  params: Params
+): Promise<ReturnPayload | undefined> => {
   const { path, dynamoDb, searchParams } = params;
   const id = searchParams?.id ?? null;
-  if (searchParams?.id && id.length > 0) {
+  if (searchParams?.id && id && id.length > 0) {
     const command = new GetCommand({
-      TableName: tableNames[path],
+      TableName: tableNames[path ?? ''],
       Key: {
         id,
       },
@@ -368,26 +398,26 @@ export const getItemById = async params => {
  * Updates an item in the DynamoDB table based on the provided parameters.
  *
  * @async
- * @param {Object} params - The parameters for updating the item.
- * @returns {Promise<Object>} The response payload indicating success or failure of the update operation.
+ * @param {Params} params - The parameters for updating the item.
+ * @returns {Promise<ReturnPayload>} The response payload indicating success or failure of the update operation.
  */
 
-export const updateItem = async params => {
+export const updateItem = async (params: Params): Promise<ReturnPayload> => {
   const { path, dynamoDb, body, token, requestKey } = params;
-  const { id } = body;
+  const { id } = body ?? {};
 
-  const bodyData = getBodyData({ body, path });
+  const bodyData = getBodyData({ body: body ?? {}, path: path ?? '' });
   const isAuthorized = await getAuthorizationForRequest(
-    token,
+    token ?? '',
     params,
-    requestKey
+    requestKey ?? ''
   );
   if (!isAuthorized) {
     return generateReturnPayload(403, { message: 'Unauthorized request' });
   }
 
   const command = new PutCommand({
-    TableName: tableNames[path],
+    TableName: tableNames[path ?? ''],
     Item: {
       ...bodyData,
       dateUpdated: new Date().toISOString(),
@@ -403,12 +433,25 @@ export const updateItem = async params => {
   });
 };
 
-export const deleteItemById = async params => {
+/**
+ * Deletes an item from a DynamoDB table by its ID.
+ *
+ * @param params - The parameters object containing the necessary information for deletion
+ * @param params.path - The path used to determine the table name from tableNames mapping
+ * @param params.dynamoDb - The DynamoDB client instance used to send commands
+ * @param params.searchParams - Optional search parameters object
+ * @param params.searchParams.id - The ID of the item to delete
+ *
+ * @returns A promise that resolves to a payload object with status 200
+ * - If deletion is successful: `{ success: true, item: null }`
+ * - If ID is missing or invalid: `{ success: false, item: null }`
+ */
+export const deleteItemById = async (params: Params) => {
   const { path, dynamoDb, searchParams } = params;
   const id = searchParams?.id ?? null;
-  if (searchParams?.id && id.length > 0) {
+  if (searchParams?.id && id && id.length > 0) {
     const command = new DeleteCommand({
-      TableName: tableNames[path],
+      TableName: tableNames[path ?? ''],
       Key: {
         id,
       },
