@@ -1,5 +1,10 @@
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
+import {
+  Context,
+  APIGatewayProxyEvent,
+  APIGatewayProxyResult,
+} from 'aws-lambda';
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import {
   getItems,
   getItemsByUserId,
@@ -9,22 +14,25 @@ import {
   updateItem,
   returnOptionsResponse,
   deleteItemById,
-} from "./utils.mjs";
+} from './utils';
 
 const client = new DynamoDBClient({});
 const dynamoDb = DynamoDBDocumentClient.from(client);
 
-export const handler = async (event, context) => {
+export const handler = async (
+  event: APIGatewayProxyEvent,
+  context: Context
+): Promise<APIGatewayProxyResult> => {
   try {
-    const path = event.path.replace(/^\//, ""); // Remove leading slash
+    const path = event.path.replace(/^\//, ''); // Remove leading slash
     const method = `${event.httpMethod}`.toLocaleLowerCase(); // Get HTTP method
     const headers = event.headers || {};
-    const token = headers["x-access-token"] || null;
+    const token = headers['x-access-token'] || null;
     const body = event?.body ? JSON.parse(event?.body) : null;
     const searchParams = event?.queryStringParameters ?? {};
-    const searchKeys = Object.keys(searchParams).join("-");
+    const searchKeys = Object.keys(searchParams).join('-');
     const requestKey = `${path}_${method}${
-      searchKeys.length ? "_" : ""
+      searchKeys.length ? '_' : ''
     }${searchKeys}`;
 
     const params = {
@@ -37,7 +45,7 @@ export const handler = async (event, context) => {
       token,
     };
 
-    const functionMap = {
+    const functionMap: { [key: string]: Function } = {
       games_get: getItems,
       games_get_userId: getItemsByUserId,
       games_get_id: getItemById,
