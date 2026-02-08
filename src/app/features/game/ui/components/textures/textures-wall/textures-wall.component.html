@@ -1,64 +1,44 @@
-<svg
-  [attr.viewBox]="svgViewBox"
-  version="1.1"
-  xmlns="http://www.w3.org/2000/svg"
-  xmlns:svg="http://www.w3.org/2000/svg"
+<svg [attr.viewBox]="svgViewBox" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"
   style="position: absolute; bottom: 0; left: 0; width: 100%"
-  [attr.class]="wallType + ' wall-position-' + wallPosition"
->
+  [attr.class]="wallType + ' wall-position-' + wallPosition">
   <defs>
-    @if(wallType === 'test') {
-    <!-- OTHER TEXTURES -->
+    @if(wallType === 'cave') {
+    <pattern [id]="textureId" x="0" y="100%" width="50" height="70" patternUnits="userSpaceOnUse"
+      [attr.patternTransform]="'scale(' + (wallPosition === 'r' ? -1 : 1) + ', 1)'">
+      <rect class="bgRect" width="50" height="70" x="0" y="0" />
+      <path class="crack-light"
+        d="M 0,0 5.124646,5.5163772 9.123938,4.4212998 16.9213,10.781692 27.250708,11.796654 29.843308,9.8575608 31.169884,17.483977 43.75,21.875 50,25" />
+      <path class="crack-dark"
+        d="m 0,55.5 11.314093,1.999646 -1.7681473,2.984331 10.1887393,7.907754 2.029922,3.406339 5.124647,-1.798424 4.28063,2.984331 8.360039,0.592953 L 50,80.5" />
+      <path class="crack-light" d="m 0,30 5,2.5 6.255282,0.568796 L 15,37.5 l 3.744718,0.08599" />
+      <path class="crack-dark" d="m 22.880705,26 5,2.5 6.255282,0.568796 4.816848,4.724199" />
+      <path class="crack-light" d="M 36.759213,44.710319 40,50 50,55" />
+      <path class="crack-dark" d="m 5.8052063,48.852938 4.0759708,-0.977267 9.9999999,5" />
+    </pattern>
     } @else {
-    <pattern
-      [id]="
+    <pattern [id]="
         'texture_' +
         positionKey +
         '_' +
         wallPosition +
         '_' +
         (isFlat ? 'flat' : 'wall')
-      "
-      x="0"
-      y="0"
-      width="1"
-      height="1"
-    >
+      " x="0" y="0" width="1" height="1">
       <rect x="0" y="0" width="100" height="325" class="bgRect" />
       @for(i of halfUnits; track i; let idx = $index) {
-      <line
-        x1="0"
-        [attr.y1]="wallPosition === 'l' ? i : i + 50"
-        x2="100"
-        [attr.y2]="wallPosition === 'l' ? i + 50 : i"
-        class="brick"
-      />
+      <line x1="0" [attr.y1]="wallPosition === 'l' ? i : i + 50" x2="100" [attr.y2]="wallPosition === 'l' ? i + 50 : i"
+        class="brick" />
 
       @if((h + idx) % 2 === 0) {
       <!-- EVEN -->
-      <line
-        [attr.x1]="0"
-        [attr.y1]="wallPosition === 'l' ? i : i - 12.5"
-        [attr.x2]="0"
-        [attr.y2]="wallPosition === 'l' ? i - 12.5 : i"
-        class="brick"
-      />
-      <line
-        [attr.x1]="50"
-        [attr.y1]="wallPosition === 'l' ? i + 12.5 : i + 25"
-        [attr.x2]="50"
-        [attr.y2]="wallPosition === 'l' ? i + 25 : i + 12.5"
-        class="brick"
-      />
+      <line [attr.x1]="0" [attr.y1]="wallPosition === 'l' ? i : i - 12.5" [attr.x2]="0"
+        [attr.y2]="wallPosition === 'l' ? i - 12.5 : i" class="brick" />
+      <line [attr.x1]="50" [attr.y1]="wallPosition === 'l' ? i + 12.5 : i + 25" [attr.x2]="50"
+        [attr.y2]="wallPosition === 'l' ? i + 25 : i + 12.5" class="brick" />
       } @else {
       <!-- ODD -->
-      <line
-        [attr.x1]="25"
-        [attr.y1]="wallPosition === 'l' ? i : i + 12.5"
-        [attr.x2]="25"
-        [attr.y2]="wallPosition === 'l' ? i + 12.5 : i"
-        class="brick"
-      />
+      <line [attr.x1]="25" [attr.y1]="wallPosition === 'l' ? i : i + 12.5" [attr.x2]="25"
+        [attr.y2]="wallPosition === 'l' ? i + 12.5 : i" class="brick" />
 
       } }
     </pattern>
