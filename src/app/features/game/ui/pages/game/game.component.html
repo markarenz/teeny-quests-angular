@@ -4,14 +4,15 @@
       @if(!isLoading) {
       <div>
         <app-game-area [isFullWidthMode]="isFullWidthMode" />
-        <div class="absolute z-[110] {{isFullWidthMode ? 'left-4 bottom-4' : 'left-0 bottom-0'}}  flex flex-row gap-4">
+        <div
+          class="absolute z-[110] {{isFullWidthMode ? 'left-4 top-[calc(100vh_-_4rem)]' : 'left-0 bottom-0'}}  flex flex-row gap-4">
           <app-tooltip content="Inventory" align="left" position="top">
             <app-icon-button size="md" label="Open Inventory" icon="backpack" (onButtonClick)="handleInventoryClick()"
               [showDot]="showInventoryDot" />
           </app-tooltip>
         </div>
         <div
-          class="absolute z-[110] {{isFullWidthMode ? 'right-4 bottom-4' : 'right-0 bottom-0'}}  flex flex-row gap-2">
+          class="absolute z-[110] {{isFullWidthMode ? 'right-4 top-[calc(100vh_-_4rem)]' : 'right-0 bottom-0'}}  flex flex-row gap-2">
           <app-tooltip content="Goals for this level" position="top">
             <app-icon-button label="Goals for this level" size="sm" icon="info" (onButtonClick)="handleInfoClick()" />
           </app-tooltip>

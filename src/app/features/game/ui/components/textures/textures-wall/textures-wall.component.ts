@@ -16,6 +16,7 @@ export class TexturesWallComponent {
   @Input('isFlat') isFlat: boolean = false;
   @Input('h') h: number = 1;
 
+  public readonly halfUnit = 12.5;
   public textureId: string = '';
   public textureYOffset: number = 0;
   public wallTexture: string = '';
@@ -30,6 +31,10 @@ export class TexturesWallComponent {
   ngOnChanges() {
     this.updateProps();
   }
+  public getHalfUnitHright(y: number): number {
+    return (y - 1) * this.halfUnit;
+  }
+
   ngOnInit() {
     for (let i = 0; i < 26; i++) {
       this.halfUnits.push((i - 1) * 12.5);

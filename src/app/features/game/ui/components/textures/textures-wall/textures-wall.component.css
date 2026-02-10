@@ -70,3 +70,59 @@
     }
   }
 }
+
+.red-stone {
+  &.wall-position-l {
+    .bgRect {
+      fill: #5a1313;
+    }
+    .base {
+      fill: #742020;
+    }
+    .shadow {
+      fill: #5b1919;
+    }
+    .highlight {
+      fill: #933232;
+    }
+  }
+  &.wall-position-r {
+    .bgRect {
+      fill: #461212;
+    }
+    .base {
+      fill: #6c1b1b;
+    }
+    .shadow {
+      fill: #501212;
+    }
+    .highlight {
+      fill: #862525;
+    }
+  }
+}
+
+.blue-shine {
+  &.wall-position-l {
+    .bgRect {
+      fill: #132d5a;
+    }
+    .facet-01 {
+      fill: #1a3970;
+    }
+    .facet-02 {
+      fill: #234786;
+    }
+  }
+  &.wall-position-r {
+    .bgRect {
+      fill: #061c43;
+    }
+    .facet-01 {
+      fill: #10326c;
+    }
+    .facet-02 {
+      fill: #0d2b5e;
+    }
+  }
+}
