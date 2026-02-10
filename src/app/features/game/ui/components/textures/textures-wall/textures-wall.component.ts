@@ -16,20 +16,25 @@ export class TexturesWallComponent {
   @Input('isFlat') isFlat: boolean = false;
   @Input('h') h: number = 1;
 
-  textureYOffset: number = 0;
-  wallTexture: string = '';
-  halfUnits: number[] = [];
+  public readonly halfUnit = 12.5;
+  public textureId: string = '';
+  public textureYOffset: number = 0;
+  public wallTexture: string = '';
+  public halfUnits: number[] = [];
 
   updateProps() {
     this.textureYOffset = this.h % 2 === 0 ? 0.055 : 0;
-    this.wallTexture = `url(#texture_${this.positionKey}_${this.wallPosition}_${
-      this.isFlat ? 'flat' : 'wall'
-    })`;
+    this.textureId = `texture_${this.positionKey}_${this.wallPosition}_${this.isFlat ? 'flat' : 'wall'}`;
+    this.wallTexture = `url(#${this.textureId})`;
   }
 
   ngOnChanges() {
     this.updateProps();
   }
+  public getHalfUnitHright(y: number): number {
+    return (y - 1) * this.halfUnit;
+  }
+
   ngOnInit() {
     for (let i = 0; i < 26; i++) {
       this.halfUnits.push((i - 1) * 12.5);

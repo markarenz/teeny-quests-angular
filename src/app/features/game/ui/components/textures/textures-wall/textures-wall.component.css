@@ -39,3 +39,90 @@
 .brick {
   stroke-width: 2;
 }
+
+.cave {
+  .crack-light,
+  .crack-dark {
+    fill: none;
+    stroke-width: 1;
+    stroke-linecap: round;
+  }
+  &.wall-position-l {
+    .bgRect {
+      fill: #493727;
+    }
+    .crack-light {
+      stroke: #695035;
+    }
+    .crack-dark {
+      stroke: #241607;
+    }
+  }
+  &.wall-position-r {
+    .bgRect {
+      fill: #3d2b1c;
+    }
+    .crack-light {
+      stroke: #5b442c;
+    }
+    .crack-dark {
+      stroke: #180e03;
+    }
+  }
+}
+
+.red-stone {
+  &.wall-position-l {
+    .bgRect {
+      fill: #5a1313;
+    }
+    .base {
+      fill: #742020;
+    }
+    .shadow {
+      fill: #5b1919;
+    }
+    .highlight {
+      fill: #933232;
+    }
+  }
+  &.wall-position-r {
+    .bgRect {
+      fill: #461212;
+    }
+    .base {
+      fill: #6c1b1b;
+    }
+    .shadow {
+      fill: #501212;
+    }
+    .highlight {
+      fill: #862525;
+    }
+  }
+}
+
+.blue-shine {
+  &.wall-position-l {
+    .bgRect {
+      fill: #132d5a;
+    }
+    .facet-01 {
+      fill: #1a3970;
+    }
+    .facet-02 {
+      fill: #234786;
+    }
+  }
+  &.wall-position-r {
+    .bgRect {
+      fill: #061c43;
+    }
+    .facet-01 {
+      fill: #10326c;
+    }
+    .facet-02 {
+      fill: #0d2b5e;
+    }
+  }
+}

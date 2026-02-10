@@ -18,19 +18,17 @@ export const wallDefinitions: WallDefinition[] = [
     id: 'cave',
     name: 'Cave Wall',
   },
+  {
+    id: 'red-stone',
+    name: 'Red Stone',
+  },
+  {
+    id: 'blue-shine',
+    name: 'Blue Crystal',
+  },
 ];
 
-export const wallOptionsData: SelectIUIOption[] = [
-  {
-    value: 'default',
-    label: 'Stone',
-  },
-  {
-    value: 'dark-stone',
-    label: 'Dark Stone',
-  },
-  {
-    value: 'cave',
-    label: 'Cave Wall',
-  },
-];
+export const wallOptionsData: SelectIUIOption[] = wallDefinitions.map(def => ({
+  value: def.id,
+  label: def.name,
+}));
