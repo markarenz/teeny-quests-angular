@@ -8,69 +8,6 @@
   }
 }
 
-.spikes-group {
-  .border {
-    fill: #333;
-  }
-  .bg {
-    fill: #4d4d4d;
-  }
-  .spike {
-    fill: #e6e6e6;
-  }
-}
-
-.roof-group {
-  .border {
-    fill: #921c1c;
-  }
-  .bg {
-    fill: #7a1c1c;
-  }
-  .roof-1 {
-    fill: #cc4949;
-  }
-  .roof-2 {
-    fill: #bc3535;
-  }
-  .roof-3 {
-    fill: #a52e2e;
-  }
-}
-
-.tile-dark-group {
-  .bg {
-    fill: #555;
-  }
-  .poly {
-    fill: #666;
-  }
-}
-
-.wall-top-group {
-  .bg {
-    fill: #ccc;
-  }
-  .rock {
-    stroke: #aaa;
-    fill: none;
-  }
-  .rock-filled {
-    fill: #aaa;
-  }
-}
-.parquet-group {
-  .border {
-    fill: #666666;
-  }
-  .bg {
-    fill: #9c755c;
-  }
-  .board {
-    fill: #a9846c;
-  }
-}
-
 .stone-dark-group {
   .bg {
     fill: #555;

@@ -4,12 +4,14 @@ export enum FloorTileType {
   DEFAULT = 'default',
   SINGLE = 'single',
 }
+
 export type FloorDefinition = {
   id: string;
   name: string;
   walkable: boolean;
   tileType?: FloorTileType;
   flipOdds?: boolean;
+  isTall?: boolean;
 };
 
 export const floorDefinitions: { [key: string]: FloorDefinition } = {
@@ -30,6 +32,7 @@ export const floorDefinitions: { [key: string]: FloorDefinition } = {
     name: 'Wall Top',
     walkable: false,
     tileType: FloorTileType.DEFAULT,
+    isTall: true,
   },
   water: {
     id: 'water',
@@ -76,3 +79,5 @@ export const floorOptionsData: SelectIUIOption[] = Object.values(
   value: floor.id,
   label: floor.name,
 }));
+
+export const defaultFloor = floorDefinitions['default'];

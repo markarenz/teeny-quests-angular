@@ -1,0 +1,17 @@
+.bg {
+  fill: #4444bb;
+}
+
+.wave {
+  stroke: #6666cc;
+}
+
+.editor-mode {
+  cursor: pointer;
+  &.selected,
+  &:hover {
+    stroke: var(--color-primary);
+    stroke-width: 4px;
+    z-index: 100;
+  }
+}

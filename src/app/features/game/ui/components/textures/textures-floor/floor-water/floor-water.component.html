@@ -1,0 +1,17 @@
+<svg [attr.viewBox]="floorProps.svg.viewBox" version="1.1" xmlns="http://www.w3.org/2000/svg"
+  xmlns:svg="http://www.w3.org/2000/svg" [attr.style]="floorProps.svg.style">
+  <defs>
+    <pattern [id]="floorProps.textureId" x="0" y="0" width="1" [attr.height]="floorProps.height">
+      <rect x="0" y="0" width="100" height="100" class="bg" />
+      <path
+        d="m 8.1360044,25.285197 c 0,0 2.9787586,-4.27515 9.2672496,-4.446156 6.288489,-0.171006 5.29557,6.84024 12.41149,6.84024 7.115921,0 9.432732,-4.788169 9.432732,-4.788169"
+        fill="none" class="wave" stroke-width="2" />
+      <path
+        d="m 8.1360044,25.285197 c 0,0 2.9787586,-4.27515 9.2672496,-4.446156 6.288489,-0.171006 5.29557,6.84024 12.41149,6.84024 7.115921,0 9.432732,-4.788169 9.432732,-4.788169"
+        fill="none" class="wave" stroke-width="2" transform="translate(50, 0)" />
+    </pattern>
+  </defs>
+  <polygon (click)="handleClick()" [attr.stroke]="floorProps.poly.stroke"
+    [attr.stroke-width]="floorProps.poly.strokeWidth" [attr.class]="floorProps.poly.class"
+    [attr.points]="floorProps.poly.points" [attr.fill]="floorProps.poly.fill" />
+</svg>

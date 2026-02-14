@@ -1,0 +1,22 @@
+<div class="relative w-full aspect-square">
+  <svg viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"
+    [attr.style]="'position: absolute; ' + (floorProps.isFlat ? 'top: -10%; left: -75%; width: 250%' : 'top: -50%; left: 0; width: 100%')">
+    <defs>
+      <pattern [id]="floorProps.textureId" x="0" y="100%" height="100" width="100" patternUnits="userSpaceOnUse">
+        <path class="bg" d="M 50.000003,0.5 99,25 50.000003,49.5 1,25 Z" />
+      </pattern>
+    </defs>
+    <polygon (click)="handleClick()" [attr.stroke]="floorProps.poly.stroke"
+      [attr.stroke-width]="floorProps.poly.strokeWidth" [attr.class]="floorProps.poly.class"
+      [attr.points]="floorProps.poly.points" [attr.fill]="floorProps.poly.fill" transform="translate(0, 50)" />
+    <g class="roof-group">
+      <path class="roof1" d="M 50,50 100,75 50,100 0,75 Z" />
+      <path class="roof2" d="M 50,50.5 99,75 50,99.5 1,75 Z" />
+      <path class="roof3" d="M 10,75 50,23 v 72.5 z" />
+      <path class="roof4" d="M 90,75 50,23 v 72.5 z" />
+      <path class="flag"
+        d="m 50,2.0428771 v 9.9999999 c 0,0 2.755457,1.246142 4.375,0.866667 1.619543,-0.379476 2.755457,-2.987192 4.375,-3.366667 1.619543,-0.379475 2.755457,1.246142 4.375,0.866667 1.619543,-0.379476 4.375,-3.366667 4.375,-3.366667 0,0 -2.755457,1.246142 -4.375,0.866667 C 61.505457,7.530068 60.369543,4.9223521 58.75,4.5428771 57.130457,4.1634017 55.994543,5.7890191 54.375,5.4095441 52.755457,5.0300681 50,2.0428771 50,2.0428771 Z" />
+      <path class="flagpole" d="M 50,25.5 V 2" />
+    </g>
+  </svg>
+</div>

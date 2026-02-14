@@ -14,6 +14,10 @@ describe('TexturesFloorComponent', () => {
 
     fixture = TestBed.createComponent(TexturesFloorComponent);
     component = fixture.componentInstance;
+    component.floorType = 'default';
+    component.isFlat = false;
+    component.positionKey = '0_0';
+    component.isEditorMode = false;
     fixture.detectChanges();
   });
 
