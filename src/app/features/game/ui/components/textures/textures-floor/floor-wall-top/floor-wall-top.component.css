@@ -1,0 +1,20 @@
+.bg {
+  fill: #ccc;
+}
+.rock {
+  stroke: #aaa;
+  fill: none;
+}
+.rock-filled {
+  fill: #aaa;
+}
+
+.editor-mode {
+  cursor: pointer;
+  &.selected,
+  &:hover {
+    stroke: var(--color-primary);
+    stroke-width: 4px;
+    z-index: 100;
+  }
+}

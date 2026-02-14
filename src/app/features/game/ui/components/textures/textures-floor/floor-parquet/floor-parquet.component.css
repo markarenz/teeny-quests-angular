@@ -1,0 +1,19 @@
+.border {
+  fill: #666666;
+}
+.bg {
+  fill: #9c755c;
+}
+.board {
+  fill: #a9846c;
+}
+
+.editor-mode {
+  cursor: pointer;
+  &.selected,
+  &:hover {
+    stroke: var(--color-primary);
+    stroke-width: 4px;
+    z-index: 100;
+  }
+}

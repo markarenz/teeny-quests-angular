@@ -1,0 +1,24 @@
+.bg {
+  fill: #555;
+}
+.stone-shadow {
+  fill: #0d0d0d;
+}
+.stone-top {
+  fill: #666666;
+}
+.highlight {
+  fill: none;
+  stroke: #7a7a7a;
+  stroke-width: 1.25;
+}
+
+.editor-mode {
+  cursor: pointer;
+  &.selected,
+  &:hover {
+    stroke: var(--color-primary);
+    stroke-width: 4px;
+    z-index: 100;
+  }
+}

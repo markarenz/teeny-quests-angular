@@ -1,0 +1,38 @@
+<svg [attr.viewBox]="floorProps.svg.viewBox" version="1.1" xmlns="http://www.w3.org/2000/svg"
+  xmlns:svg="http://www.w3.org/2000/svg" [attr.style]="floorProps.svg.style">
+  <defs>
+    <pattern [id]="floorProps.textureId" x="0" y="0" [attr.width]="floorProps.isFlat ? '100' : '1'"
+      [attr.height]="floorProps.isFlat ? '100' : '1'"
+      [attr.patternUnits]="floorProps.isFlat ? 'userSpaceOnUse' : 'objectBoundingBox'">
+      <path class="border" d="M 50.000003,0 100,25 50.000003,50 0,25 Z" />
+      <path class="bg" d="M 50.000003,0.5 99,25 50.000003,49.5 1,25 Z" />
+      <path class="spike"
+        d="m 55.291663,3.175 -2.5,9.113515 c 0,0 0.556819,0.750201 2.5,0.776 1.943181,0.0258 2.5,-0.776 2.5,-0.776 z" />
+      <path class="spike"
+        d="m 65.874997,8.4666663 -2.5,9.1135157 c 0,0 0.556819,0.750201 2.5,0.776 1.943181,0.0258 2.5,-0.776 2.5,-0.776 z" />
+      <path class="spike"
+        d="m 76.458331,13.758333 -2.5,9.113516 c 0,0 0.556819,0.750201 2.5,0.776 1.943181,0.0258 2.5,-0.776 2.5,-0.776 z" />
+      <path class="spike"
+        d="m 44.708329,8.4666663 -2.5,9.1135157 c 0,0 0.556819,0.750201 2.5,0.776 1.943181,0.0258 2.5,-0.776 2.5,-0.776 z" />
+      <path class="spike"
+        d="m 55.291663,13.758333 -2.5,9.113516 c 0,0 0.556819,0.750201 2.5,0.776 1.943181,0.0258 2.5,-0.776 2.5,-0.776 z" />
+      <path class="spike"
+        d="m 65.874997,19.05 -2.5,9.113516 c 0,0 0.556819,0.750201 2.5,0.776 1.943181,0.0258 2.5,-0.776 2.5,-0.776 z" />
+      <path class="spike"
+        d="m 34.124995,13.758333 -2.5,9.113516 c 0,0 0.556819,0.750201 2.5,0.776 1.943181,0.0258 2.5,-0.776 2.5,-0.776 z" />
+      <path class="spike"
+        d="m 44.708329,19.05 -2.5,9.113516 c 0,0 0.556819,0.750201 2.5,0.776 1.943181,0.0258 2.5,-0.776 2.5,-0.776 z" />
+      <path class="spike"
+        d="m 55.291663,24.341667 -2.5,9.113516 c 0,0 0.556819,0.750201 2.5,0.776 1.943181,0.0258 2.5,-0.776 2.5,-0.776 z" />
+      <path class="spike"
+        d="m 23.541661,19.05 -2.5,9.113516 c 0,0 0.556819,0.750201 2.5,0.776 1.943181,0.0258 2.5,-0.776 2.5,-0.776 z" />
+      <path class="spike"
+        d="m 34.124995,24.341667 -2.5,9.113516 c 0,0 0.556819,0.750201 2.5,0.776 1.943181,0.0258 2.5,-0.776 2.5,-0.776 z" />
+      <path class="spike"
+        d="m 44.708329,29.633334 -2.5,9.113516 c 0,0 0.556819,0.750201 2.5,0.776 1.943181,0.0258 2.5,-0.776 2.5,-0.776 z" />
+    </pattern>
+  </defs>
+  <polygon (click)="handleClick()" [attr.stroke]="floorProps.poly.stroke"
+    [attr.stroke-width]="floorProps.poly.strokeWidth" [attr.class]="floorProps.poly.class"
+    [attr.points]="floorProps.poly.points" [attr.fill]="floorProps.poly.fill" />
+</svg>

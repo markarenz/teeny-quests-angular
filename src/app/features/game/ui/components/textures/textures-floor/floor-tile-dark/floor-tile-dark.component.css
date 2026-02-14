@@ -1,0 +1,16 @@
+.bg {
+  fill: #555;
+}
+.poly {
+  fill: #666;
+}
+
+.editor-mode {
+  cursor: pointer;
+  &.selected,
+  &:hover {
+    stroke: var(--color-primary);
+    stroke-width: 4px;
+    z-index: 100;
+  }
+}

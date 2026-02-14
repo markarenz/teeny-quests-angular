@@ -1,0 +1,39 @@
+.bg {
+  fill: #7a1c1c;
+}
+
+.roof-group {
+  pointer-events: none;
+  .roof1 {
+    fill: #921c1c;
+  }
+  .roof2 {
+    fill: #7a1c1c;
+  }
+  .roof3 {
+    fill: #cc4949;
+  }
+  .roof4 {
+    fill: #bc3535;
+  }
+  .flag {
+    fill: #5cc357;
+  }
+  .flagpole {
+    stroke: #313131;
+    stroke-width: 1;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: none;
+  }
+}
+
+.editor-mode {
+  cursor: pointer;
+  &.selected,
+  &:hover {
+    stroke: var(--color-primary);
+    stroke-width: 4px;
+    z-index: 100;
+  }
+}
