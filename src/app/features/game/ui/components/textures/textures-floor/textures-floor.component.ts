@@ -50,11 +50,6 @@ export class TexturesFloorComponent {
   public floorProps = this.getFloorPropsLocal();
 
   private getFloorPropsLocal() {
-    console.log('>>: getFloorPropsLocal called with:', {
-      tust: this.floorType,
-      test: floorDefinitions[this.floorType],
-    });
-
     if (!this.floorType || !floorDefinitions[this.floorType]) {
       return defaultFloorProps;
     }

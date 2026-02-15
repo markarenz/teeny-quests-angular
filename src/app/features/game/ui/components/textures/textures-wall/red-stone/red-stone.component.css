@@ -1,0 +1,30 @@
+.red-stone {
+  &.wall-position-l {
+    .bgRect {
+      fill: #5a1313;
+    }
+    .base {
+      fill: #742020;
+    }
+    .shadow {
+      fill: #5b1919;
+    }
+    .highlight {
+      fill: #933232;
+    }
+  }
+  &.wall-position-r {
+    .bgRect {
+      fill: #461212;
+    }
+    .base {
+      fill: #6c1b1b;
+    }
+    .shadow {
+      fill: #501212;
+    }
+    .highlight {
+      fill: #862525;
+    }
+  }
+}

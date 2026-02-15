@@ -1,0 +1,44 @@
+<svg [attr.viewBox]="wallProps.svgViewBox" version="1.1" xmlns="http://www.w3.org/2000/svg"
+  xmlns:svg="http://www.w3.org/2000/svg" style="position: absolute; bottom: 0; left: 0; width: 100%"
+  [attr.class]="wallProps.wallType + ' wall-position-' + wallProps.wallPosition">
+  <defs>
+    <pattern [id]="wallProps.textureId" x="0" y="100%" width="50" height="50" patternUnits="userSpaceOnUse"
+      [attr.patternTransform]="'scale(' + (wallProps.wallPosition === 'r' ? -1 : 1) + ', 1)'">
+      <rect class="bgRect" width="50" height="325" x="0" y="0" />
+      <g>
+        <path class="facet-01" d="M 0,-12.5 V 0 l 8.333333,-8.333334 z" id="path262" />
+        <path class="facet-01" d="M 0,0 8.333333,16.666666 0,12.5 Z" id="path228" />
+        <path class="facet-01" d="M 0,37.5 V 50 l 8.333333,-8.333334 z" id="path243" />
+        <path class="facet-01" d="M 16.66667,8.333335 25,25 33.33334,16.66667 Z" id="path219" />
+        <path class="facet-01" d="M 25,25 41.66667,33.333335 33.33334,16.66667 Z" id="path220" />
+        <path class="facet-01" d="M 33.33334,-8.33333 50,0 41.66667,8.333335 Z" id="path258" />
+        <path class="facet-01" d="M 33.33334,41.66667 50,50 41.66667,58.333335 Z" id="path239" />
+        <path class="facet-01" d="M 41.66667,58.333335 50,75 V 62.5 Z" id="path245" />
+        <path class="facet-01" d="M 41.66667,8.333335 50,25 V 12.5 Z" id="path264" />
+        <path class="facet-01" d="M 50,25 V 37.5 L 41.66667,33.333335 Z" id="path230" />
+        <path class="facet-01" d="M 8.333333,16.666666 16.66667,33.333335 0,25 Z" id="path224" />
+        <path class="facet-02" d="M 0,-25 8.333333,-8.333334 0,-12.5 Z" id="path261" />
+        <path class="facet-02" d="M 0,25 8.333333,41.666666 0,37.5 Z" id="path242" />
+        <path class="facet-02" d="M 16.66667,-16.666665 0,-25 8.333333,-8.333334 Z" id="path259" />
+        <path class="facet-02" d="M 16.66667,-16.666665 25,0 33.33334,-8.33333 Z" id="path253" />
+        <path class="facet-02" d="M 16.66667,33.333335 0,25 8.333333,41.666666 Z" id="path240" />
+        <path class="facet-02" d="M 16.66667,33.333335 25,50 33.33334,41.66667 Z" id="path233" />
+        <path class="facet-02" d="M 16.66667,8.333335 25,25 8.333333,16.666666 Z" id="path221" />
+        <path class="facet-02" d="m 25,25 8.33334,16.66667 8.33333,-8.333335 z" id="path232" />
+        <path class="facet-02" d="M 33.33334,16.66667 50,25 41.66667,33.333335 Z" id="path225" />
+        <path class="facet-02" d="M 41.66667,33.333335 50,50 33.33334,41.66667 Z" id="path223" />
+        <path class="facet-02" d="M 50,0 V 12.5 L 41.66667,8.333335 Z" id="path263" />
+        <path class="facet-02" d="M 50,50 V 62.5 L 41.66667,58.333335 Z" id="path244" />
+        <path class="facet-02" d="M 8.333333,-8.333334 16.66667,8.333335 0,0 Z" id="path257" />
+        <path class="facet-02" d="M 8.333333,-8.333334 16.66667,8.333335 25,0 Z" id="path260" />
+        <path class="facet-02" d="M 8.333333,41.666666 16.66667,58.333335 0,50 Z" id="path238" />
+        <path class="facet-02" d="M 8.333333,41.666666 16.66667,58.333335 25,50 Z" id="path241" />
+      </g>
+    </pattern>
+  </defs>
+  @if(wallProps.wallPosition === 'l') {
+  <polygon [attr.points]="wallProps.svgPolygonPoints[0]" [attr.fill]="wallProps.wallTexture" />
+  } @if(wallProps.wallPosition === 'r') {
+  <polygon [attr.points]="wallProps.svgPolygonPoints[1]" [attr.fill]="wallProps.wallTexture" />
+  }
+</svg>
