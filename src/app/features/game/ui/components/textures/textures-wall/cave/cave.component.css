@@ -1,0 +1,30 @@
+.cave {
+  .crack-light,
+  .crack-dark {
+    fill: none;
+    stroke-width: 1;
+    stroke-linecap: round;
+  }
+  &.wall-position-l {
+    .bgRect {
+      fill: #493727;
+    }
+    .crack-light {
+      stroke: #695035;
+    }
+    .crack-dark {
+      stroke: #241607;
+    }
+  }
+  &.wall-position-r {
+    .bgRect {
+      fill: #3d2b1c;
+    }
+    .crack-light {
+      stroke: #5b442c;
+    }
+    .crack-dark {
+      stroke: #180e03;
+    }
+  }
+}

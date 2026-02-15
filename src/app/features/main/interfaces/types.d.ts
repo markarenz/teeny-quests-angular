@@ -282,3 +282,13 @@ export type LightCell = {
   dy: number;
   lightAdd: number;
 };
+
+export type WallTextureProps = {
+  wallType: string;
+  svgViewBox: string;
+  wallPosition: string;
+  wallTexture: string;
+  textureId: string;
+  svgPolygonPoints: string[];
+  h: number;
+};

@@ -1,0 +1,28 @@
+<svg [attr.viewBox]="wallProps.svgViewBox" version="1.1" xmlns="http://www.w3.org/2000/svg"
+  xmlns:svg="http://www.w3.org/2000/svg" style="position: absolute; bottom: 0; left: 0; width: 100%"
+  [attr.class]="wallProps.wallType + ' wall-position-' + wallProps.wallPosition">
+  <defs>
+    @if(wallProps.wallType === 'cave') {
+    } @else {
+    <pattern [id]="wallProps.textureId" x="0" y="100%" width="50" height="50" patternUnits="userSpaceOnUse"
+      [attr.patternTransform]="'scale(' + (wallProps.wallPosition === 'r' ? -1 : 1) + ', 1)'">
+      <rect x="0" y="0" width="100" height="50" class="bgRect" />
+      @for(i of halfUnits.slice(0,6); track i; let idx = $index) {
+      <line x1="0" [attr.y1]="i" x2="100" [attr.y2]="i + 50" class="brick" />
+      @if((wallProps.h + idx) % 2 === 0) {
+      <!-- EVEN -->
+      <line [attr.x1]="0" [attr.y1]="i" [attr.x2]="0" [attr.y2]="i - 12.5" class="brick" />
+      <line [attr.x1]="50" [attr.y1]="i + 12.5" [attr.x2]="50" [attr.y2]="i + 25" class="brick" />
+      } @else {
+      <!-- ODD -->
+      <line [attr.x1]="25" [attr.y1]="i" [attr.x2]="25" [attr.y2]="i + 12.5" class="brick" />
+      } }
+    </pattern>
+    }
+  </defs>
+  @if(wallProps.wallPosition === 'l') {
+  <polygon [attr.points]="wallProps.svgPolygonPoints[0]" [attr.fill]="wallProps.wallTexture" />
+  } @if(wallProps.wallPosition === 'r') {
+  <polygon [attr.points]="wallProps.svgPolygonPoints[1]" [attr.fill]="wallProps.wallTexture" />
+  }
+</svg>
