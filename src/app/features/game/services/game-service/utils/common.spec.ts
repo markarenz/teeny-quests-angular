@@ -88,7 +88,7 @@ describe('calcScore', () => {
     mockGameState.numTurns = 5;
     const score = calcScore(mockGameState, mockGameROM);
     // Assuming gold has a score value of 1 and key-silver has a score value of 10
-    // gold (10) + key-silver (5) + flag1 (20) - numTurns (5) = 30
-    expect(score).toBe(30);
+    // gold (10 * 5 ) + key-silver (1) + flag1 (20) - numTurns (5) = 66
+    expect(score).toBe(66);
   });
 });

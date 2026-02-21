@@ -12,6 +12,14 @@
   <app-svg-item-coins />
   } @else if (item.itemType === 'coins-100') {
   <app-svg-item-bag-of-coins />
+  } @else if (item.itemType === 'ruby') {
+  <app-svg-item-ruby />
+  } @else if (item.itemType === 'diamond') {
+  <app-svg-item-diamond />
+  } @else if (item.itemType === 'emerald') {
+  <app-svg-item-emerald />
+  } @else if (item.itemType === 'sapphire') {
+  <app-svg-item-sapphire />
   } @if (isEditorSelected) {
   <div
     class="absolute top-[45%] left-[30%] w-[40%] h-[40%] bg-transparent rounded-full z-index-[100] border-4 border-primary border-dashed ring-2 ring-offset-2 ring-offset-primaryDarker ring-primaryDark"

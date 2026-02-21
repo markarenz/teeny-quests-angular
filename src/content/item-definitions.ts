@@ -58,6 +58,39 @@ export const itemDefinitions: { [key: string]: ItemDefinition } = {
     amount: 100,
     inventoryActions: ['use'],
   },
+
+  ruby: {
+    id: 'ruby',
+    name: 'Ruby',
+    action: 'take',
+    inventoryKey: 'ruby',
+    amount: 1,
+    inventoryActions: ['use', 'drop'],
+  },
+  diamond: {
+    id: 'diamond',
+    name: 'Diamond',
+    action: 'take',
+    inventoryKey: 'diamond',
+    amount: 1,
+    inventoryActions: ['use', 'drop'],
+  },
+  emerald: {
+    id: 'emerald',
+    name: 'Emerald',
+    action: 'take',
+    inventoryKey: 'emerald',
+    amount: 1,
+    inventoryActions: ['use', 'drop'],
+  },
+  sapphire: {
+    id: 'sapphire',
+    name: 'Sapphire',
+    action: 'take',
+    inventoryKey: 'sapphire',
+    amount: 1,
+    inventoryActions: ['use', 'drop'],
+  },
 };
 
 export type InventoryDefinition = {
@@ -74,14 +107,14 @@ export const inventoryDefinitions: { [key: string]: InventoryDefinition } = {
     name: 'Gold',
     pluralName: 'Gold Coins',
     article: 'a',
-    scoreValue: 1,
+    scoreValue: 5,
   },
   'key-silver': {
     id: 'key-silver',
     name: 'Silver Key',
     pluralName: 'Silver Keys',
     article: 'a',
-    scoreValue: 5,
+    scoreValue: 1,
   },
   'key-gold': {
     id: 'key-gold',
@@ -90,13 +123,49 @@ export const inventoryDefinitions: { [key: string]: InventoryDefinition } = {
     article: 'a',
     scoreValue: 10,
   },
+  ruby: {
+    id: 'ruby',
+    name: 'Ruby',
+    pluralName: 'Rubies',
+    article: 'a',
+    scoreValue: 1000,
+  },
+  diamond: {
+    id: 'diamond',
+    name: 'Diamond',
+    pluralName: 'Diamonds',
+    article: 'a',
+    scoreValue: 500,
+  },
+  emerald: {
+    id: 'emerald',
+    name: 'Emerald',
+    pluralName: 'Emeralds',
+    article: 'an',
+    scoreValue: 200,
+  },
+  sapphire: {
+    id: 'sapphire',
+    name: 'Sapphire',
+    pluralName: 'Sapphires',
+    article: 'a',
+    scoreValue: 100,
+  },
 };
 
+export const additionalItemOptions: SelectIUIOption[] = Object.values(
+  inventoryDefinitions
+)
+  .filter(def => !['gold', 'coins-25', 'coins-100'].includes(def.id))
+  .map(def => ({
+    value: def.id,
+    label: def.name,
+  }));
+
 export const itemOptions: SelectIUIOption[] = [
-  { value: 'key-silver', label: 'Silver Key' },
-  { value: 'key-gold', label: 'Gold Key' },
   { value: 'coins-25', label: 'Coins' },
   { value: 'coins-100', label: 'Bag of Coins' },
+  ...additionalItemOptions,
 ];
 
 const itemKeyOptionsRaw: string[] = [];
