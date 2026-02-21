@@ -9,6 +9,10 @@ import {
 import { SvgItemCoinsComponent } from './items/svg-item-coins/svg-item-coins.component';
 import { SvgItemKeyComponent } from './items/svg-item-key/svg-item-key.component';
 import { SvgItemBagOfCoinsComponent } from './items/svg-item-bag-of-coins/svg-item-bag-of-coins.component';
+import { SvgItemDiamondComponent } from './items/svg-item-diamond/svg-item-diamond.component';
+import { SvgItemEmeraldComponent } from './items/svg-item-emerald/svg-item-emerald.component';
+import { SvgItemRubyComponent } from './items/svg-item-ruby/svg-item-ruby.component';
+import { SvgItemSapphireComponent } from './items/svg-item-sapphire/svg-item-sapphire.component';
 import { itemDefinitions } from '@content/item-definitions';
 
 @Component({
@@ -18,6 +22,10 @@ import { itemDefinitions } from '@content/item-definitions';
     SvgItemCoinsComponent,
     SvgItemKeyComponent,
     SvgItemBagOfCoinsComponent,
+    SvgItemDiamondComponent,
+    SvgItemEmeraldComponent,
+    SvgItemRubyComponent,
+    SvgItemSapphireComponent,
   ],
   templateUrl: './area-item.component.html',
   styleUrl: './area-item.component.css',
