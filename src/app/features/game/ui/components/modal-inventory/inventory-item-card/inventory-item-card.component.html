@@ -1,0 +1,41 @@
+<div class="flex flex-col gap-2 items-center bg-gray-800 rounded-md p-4 h-full">
+  <div class="flex flex-row flex-grow gap-2 w-full">
+    <!-- LEFT SIDE -->
+    <div class="w-14 h-full flex items-start justify-center py-2">
+      <div class="w-14 h-14 relative rounded-full bg-gray-700">
+        <div class="w-12 h-12 absolute left-1 top-1">
+          <app-area-item [inventoryItemType]="key" [isLockedOut]="true" [lightLevel]="1" />
+        </div>
+      </div>
+    </div>
+    <!-- RIGHT SIDE -->
+    <div class="flex flex-col flex-grow gap-2">
+      <!-- ITEM NAME AND QTY -->
+      <div class="flex-grow whitespace-nowrap overflow-hidden text-ellipsis text-xl ">
+        <span class="font-bold">
+          {{ itemDefinitions[key] ? itemDefinitions[key].name : key }}
+        </span>
+        <sup>
+          x{{ currentInventory![key] }}
+        </sup>
+      </div>
+      @if(uiMode === 'info') {
+      <div class="leading-tight">
+        {{ inventoryDefinitions[itemDefinitions[key].inventoryKey] ?
+        inventoryDefinitions[itemDefinitions[key].inventoryKey].description : key }}
+      </div>
+      }
+
+      <!-- ITEM BUTTONS -->
+      <div class="flex flex-row gap-2 justify-end">
+        <app-icon-button label="Item Info" icon="info" size="sm" (onButtonClick)="handleItemActionClick('info')" />
+        @if(itemDefinitions[key].inventoryActions.includes('drop') && canDrop) {
+        <app-icon-button label="Drop Item" icon="drop" size="sm" (onButtonClick)="handleItemActionClick('drop')" />
+        } @if(itemDefinitions[key].inventoryActions.includes('use')) {
+        <app-icon-button label="Use Item" icon="use" size="sm" (onButtonClick)="handleItemActionClick('use')"
+          [isDisabled]="!getCanUseItem()" />
+        }
+      </div>
+    </div>
+  </div>
+</div>

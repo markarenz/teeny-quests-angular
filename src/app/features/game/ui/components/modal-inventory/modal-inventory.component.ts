@@ -4,12 +4,13 @@ import { CommonModalComponent } from '@app/features/main/ui/components/common-mo
 import { GameService } from '@app/features/game/services/game-service/game-service.service';
 import { GameState, Inventory } from '@app/features/main/interfaces/types';
 import { itemDefinitions } from '@content/item-definitions';
-import { IconButtonComponent } from '@app/features/main/ui/components/icons/icon-button/icon-button.component';
+import { inventoryDefinitions } from '@content/item-definitions';
+import { InventoryItemCardComponent } from './inventory-item-card/inventory-item-card.component';
 
 @Component({
   selector: 'app-modal-inventory',
   standalone: true,
-  imports: [CommonModalComponent, IconButtonComponent],
+  imports: [CommonModalComponent, InventoryItemCardComponent],
   templateUrl: './modal-inventory.component.html',
   styleUrl: './modal-inventory.component.css',
 })
@@ -21,6 +22,7 @@ export class ModalInventoryComponent {
   public currentInventory: Inventory | null = null;
   public currentInventoryKeys: string[] = [];
   public itemDefinitions = itemDefinitions;
+  public inventoryDefinitions = inventoryDefinitions;
   public canDrop = false;
 
   handleInventoryClose = () => {
@@ -63,17 +65,5 @@ export class ModalInventoryComponent {
 
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
-  }
-
-  getCanUseItem(itemId: string): boolean {
-    return this._gameService.getCanUseItem(itemId);
-  }
-  handleItemActionClick(itemId: string, action: string) {
-    if (action === 'drop' && this.canDrop) {
-      this._gameService.processTurn({ verb: 'item-drop', noun: itemId });
-    }
-    if (action === 'use') {
-      this._gameService.processTurn({ verb: 'item-use', noun: itemId });
-    }
   }
 }

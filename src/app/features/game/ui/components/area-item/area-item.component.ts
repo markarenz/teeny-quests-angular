@@ -37,28 +37,44 @@ export class AreaItemComponent {
   @Input('isNearPlayer') isNearPlayer: boolean = false;
   @Input('isEditorMode') isEditorMode: boolean = false;
   @Input('isLockedOut') isLockedOut: boolean = false;
+  @Input('inventoryItemType') inventoryItemType: string | null = null;
   @Output() onClick = new EventEmitter<string>();
 
   gridSize: number = defaultGridSize;
 
-  left: string = '';
-  bottom: string = '';
-  height: string = '0%';
-  width: string = '0%';
-  isClickable: boolean = false;
-  shouldDisplauHighlightBelow: boolean = false;
-  positionStyle: AreaPosition = { left: '0', bottom: '0', z: 0 };
-  ariaLabel: string = '';
+  public itemType: string = '';
+  public left: string = '';
+  public bottom: string = '';
+  public height: string = '0%';
+  public width: string = '0%';
+  public isClickable: boolean = false;
+  public isFlat: boolean = false;
+  public shouldDisplayHighlightBelow: boolean = false;
+  public positionStyle: AreaPosition = { left: '0', bottom: '0', z: 0 };
+  public ariaLabel: string = '';
 
   updateItemProps() {
-    if (this.item) {
-      const { x, y, h } = this.item;
+    if (this.inventoryItemType) {
+      this.width = '100%';
+      this.height = '100%';
+      this.itemType = this.inventoryItemType;
+      const itemDef = itemDefinitions[this.inventoryItemType];
+      this.isClickable = false;
+      this.positionStyle = { left: '0', bottom: '0', z: 0 };
+      this.ariaLabel = itemDef
+        ? `Inventory Item: ${itemDef.name}`
+        : 'Inventory Item';
+      this.shouldDisplayHighlightBelow = false;
+      this.isFlat = true;
+    } else {
       const cellW = 100 / this.gridSize;
-      this.positionStyle = getAreaElementPositionStyle(this.gridSize, y, x, h);
       this.width = `${cellW}%`;
+      const { x, y, h } = this.item;
+      this.itemType = this.item.itemType;
+      this.positionStyle = getAreaElementPositionStyle(this.gridSize, y, x, h);
       this.ariaLabel = `Select Item ${this.item.y}_${this.item.x}`;
       const b = parseFloat(this.positionStyle.bottom.replace('%', ''));
-      this.shouldDisplauHighlightBelow = b > 80;
+      this.shouldDisplayHighlightBelow = b > 80;
       const itemDef = itemDefinitions[this.item.itemType];
       this.isClickable = itemDef?.action !== '';
     }

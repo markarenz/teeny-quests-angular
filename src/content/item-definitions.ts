@@ -98,6 +98,7 @@ export type InventoryDefinition = {
   name: string;
   pluralName: string;
   article: string;
+  description: string;
   scoreValue: number;
 };
 
@@ -107,6 +108,7 @@ export const inventoryDefinitions: { [key: string]: InventoryDefinition } = {
     name: 'Gold',
     pluralName: 'Gold Coins',
     article: 'a',
+    description: 'Shiny gold coins that can be used to buy items.',
     scoreValue: 5,
   },
   'key-silver': {
@@ -114,6 +116,7 @@ export const inventoryDefinitions: { [key: string]: InventoryDefinition } = {
     name: 'Silver Key',
     pluralName: 'Silver Keys',
     article: 'a',
+    description: 'A key made of silver. It can unlock certain doors.',
     scoreValue: 1,
   },
   'key-gold': {
@@ -121,6 +124,7 @@ export const inventoryDefinitions: { [key: string]: InventoryDefinition } = {
     name: 'Gold Key',
     pluralName: 'Gold Keys',
     article: 'a',
+    description: 'A key made of gold. It can unlock certain doors.',
     scoreValue: 10,
   },
   ruby: {
@@ -128,6 +132,7 @@ export const inventoryDefinitions: { [key: string]: InventoryDefinition } = {
     name: 'Ruby',
     pluralName: 'Rubies',
     article: 'a',
+    description: 'A precious red gemstone.',
     scoreValue: 1000,
   },
   diamond: {
@@ -135,6 +140,7 @@ export const inventoryDefinitions: { [key: string]: InventoryDefinition } = {
     name: 'Diamond',
     pluralName: 'Diamonds',
     article: 'a',
+    description: 'A valuable clear gemstone.',
     scoreValue: 500,
   },
   emerald: {
@@ -142,6 +148,7 @@ export const inventoryDefinitions: { [key: string]: InventoryDefinition } = {
     name: 'Emerald',
     pluralName: 'Emeralds',
     article: 'an',
+    description: 'A precious green gemstone.',
     scoreValue: 200,
   },
   sapphire: {
@@ -149,6 +156,7 @@ export const inventoryDefinitions: { [key: string]: InventoryDefinition } = {
     name: 'Sapphire',
     pluralName: 'Sapphires',
     article: 'a',
+    description: 'A precious blue gemstone.',
     scoreValue: 100,
   },
 };

@@ -1,25 +1,25 @@
 <div [style.width]="width" [style.height]="width" [style.z-index]="isNearPlayer && !isLockedOut ? 98 : positionStyle.z"
   class="area-item group {{
     isNearPlayer && !isLockedOut ? 'near-player' : ''
-  }} {{ shouldDisplauHighlightBelow ? 'highlight-below' : '' }}" [style.bottom]="positionStyle.bottom"
+  }} {{ shouldDisplayHighlightBelow ? 'highlight-below' : '' }}" [style.bottom]="positionStyle.bottom"
   [style.left]="positionStyle.left" [style.filter]="'brightness(' + (lightLevel * 100) + '%)'">
   <div aria-hidden="=true" class="highlighted-object {{
       isNearPlayer && !isLockedOut ? 'active-highlight' : ''
     }}"></div>
-  @if (item.itemType.startsWith('key-')) {
-  <app-svg-item-key [variant]="item.itemType.replace('key-', '')" />
-  } @else if (item.itemType === 'coins-25') {
-  <app-svg-item-coins />
-  } @else if (item.itemType === 'coins-100') {
-  <app-svg-item-bag-of-coins />
-  } @else if (item.itemType === 'ruby') {
-  <app-svg-item-ruby />
-  } @else if (item.itemType === 'diamond') {
-  <app-svg-item-diamond />
-  } @else if (item.itemType === 'emerald') {
-  <app-svg-item-emerald />
-  } @else if (item.itemType === 'sapphire') {
-  <app-svg-item-sapphire />
+  @if (itemType.startsWith('key-')) {
+  <app-svg-item-key [variant]="itemType.replace('key-', '')" />
+  } @else if (['coins-25', 'gold'].includes(itemType)) {
+  <app-svg-item-coins [isFlat]="isFlat" />
+  } @else if (itemType === 'coins-100') {
+  <app-svg-item-bag-of-coins [isFlat]="isFlat" />
+  } @else if (itemType === 'ruby') {
+  <app-svg-item-ruby [isFlat]="isFlat" />
+  } @else if (itemType === 'diamond') {
+  <app-svg-item-diamond [isFlat]="isFlat" />
+  } @else if (itemType === 'emerald') {
+  <app-svg-item-emerald [isFlat]="isFlat" />
+  } @else if (itemType === 'sapphire') {
+  <app-svg-item-sapphire [isFlat]="isFlat" />
   } @if (isEditorSelected) {
   <div
     class="absolute top-[45%] left-[30%] w-[40%] h-[40%] bg-transparent rounded-full z-index-[100] border-4 border-primary border-dashed ring-2 ring-offset-2 ring-offset-primaryDarker ring-primaryDark"
