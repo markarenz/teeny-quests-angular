@@ -151,6 +151,7 @@ export class GameService {
         ambientLight += propDef.ambientLight;
       }
     });
+    ambientLight = Math.min(1.0, ambientLight);
 
     positionKeys.forEach(pk => {
       lighting[pk] = ambientLight;
@@ -175,6 +176,7 @@ export class GameService {
         lighting
       );
     });
+    console.log('Calculated light map:', lighting);
     this.lightMap.next(lighting);
   }
 
@@ -538,15 +540,12 @@ export class GameService {
 
   turnActionItemUse = async (itemId: string): Promise<GameState> => {
     let nextGameState = structuredClone(this.gameState.value)!;
-    console.log(`Setting prop ${itemId} status? 0`);
     nextGameState.player.inventory[itemId] = Math.max(
       nextGameState.player.inventory[itemId] - 1,
       0
     );
-    console.log(`Setting prop ${itemId} status? 0.5`);
     const use = itemDefinitions[itemId]?.use;
     if (!use) {
-      console.log(`Setting prop ${itemId} status? NO USE DEFINED`, use);
       return nextGameState;
     }
     if (use?.includes('unlock-exit')) {
@@ -582,11 +581,9 @@ export class GameService {
     propId: string,
     status: string
   ): Promise<GameState> => {
-    console.log(`Setting prop ${propId} status to ${status}`);
     const area = nextGameState.areas[nextGameState.player.areaId];
     const prop = area.props.find(p => p.id === propId);
     if (prop) {
-      console.log(`Setting prop ${propId} status to ${status} 2`);
       prop.status = status;
       nextGameState.areas[nextGameState.player.areaId].props = area.props.map(
         p => (p.id === propId ? prop : p)
@@ -601,7 +598,6 @@ export class GameService {
         this._messageService.showMessage(msg);
       });
       this.calcLightMap(nextGameState);
-      console.log(`Setting prop ${propId} status to ${status} n`);
       return nextGameState;
     }
     return nextGameState;
@@ -611,7 +607,6 @@ export class GameService {
     propId: string,
     forceStatus?: string
   ): Promise<GameState> => {
-    console.log('>>: turnActionPropClick 1');
     let nextGameState = structuredClone(this.gameState.value)!;
     if (this.gameState.value === null) {
       return nextGameState;

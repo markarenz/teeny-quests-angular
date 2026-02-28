@@ -44,6 +44,10 @@ export class EditorPanelItemsComponent {
   public lockouts: string[] = [];
   public area: GameArea | null = null;
 
+  private refreshUIData() {
+    this.items = this._gameEditorService.getItemsForCurrentArea();
+    this.updateItemPositionLockouts();
+  }
   updateItemPositionLockouts() {
     if (this.area) {
       const newLockouts: string[] = [];
@@ -91,6 +95,11 @@ export class EditorPanelItemsComponent {
         this.updateItemPositionLockouts();
       })
     );
+    this.subscriptions.push(
+      this._gameEditorService.gameObs.subscribe((data: any) => {
+        this.refreshUIData();
+      })
+    );
   }
 
   ngOnDestroy() {
@@ -99,7 +108,6 @@ export class EditorPanelItemsComponent {
 
   handleDeleteClick(id: string) {
     this._gameEditorService.deleteItem(id);
-    this.updateItemPositionLockouts();
   }
 
   updateUiAfterItemSelection(id: string) {

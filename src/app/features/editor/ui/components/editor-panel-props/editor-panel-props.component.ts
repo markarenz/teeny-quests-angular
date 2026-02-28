@@ -90,7 +90,6 @@ export class EditorPanelPropsComponent {
     const prop = this.props?.find(prop => prop.x === x && prop.y === y);
     const neighborWValid = neighborW && neighborW.h > currentH + 3;
     const neighborNValid = neighborN && neighborN.h > currentH + 3;
-
     return propDecoWallOptions.filter(option => {
       if (prop && option.value === prop.wall) {
         return true;
@@ -173,19 +172,6 @@ export class EditorPanelPropsComponent {
           newLockouts.push(`${prop.y}_${prop.x}`);
         }
       });
-      // this.area.exits.forEach(exit => {
-      //   // If there is an exit AND a prop, lock out that position
-      //   if (
-      //     this.area?.props.some(
-      //       prop =>
-      //         this.selectedPropId !== prop.id &&
-      //         prop.x === exit.x &&
-      //         prop.y === exit.y
-      //     )
-      //   ) {
-      //     newLockouts.push(`${exit.y}_${exit.x}`);
-      //   }
-      // });
       positionKeys.forEach((position: string) => {
         const floor = floorDefinitions[map[position].floor];
         const currentH = map[position].h;
@@ -198,8 +184,8 @@ export class EditorPanelPropsComponent {
           currentH
         );
         const wallOptionValid = wallOptions.length > 0;
-        const cellValid =
-          floor.walkable && !map[position].isHidden && currentH > 0;
+        // Allow non-walkable and h 0
+        const cellValid = !map[position].isHidden;
         if (
           (!wallOptionValid || !cellValid) &&
           !newLockouts.includes(position)

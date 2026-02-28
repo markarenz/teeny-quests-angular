@@ -38,7 +38,14 @@ export const utilCreateProp = ({
     const area = areas[selectedAreaId] ?? {
       props: [],
     };
-    const openCellPosition = findAnOpenCell({ game, selectedAreaId, lockouts });
+    const openCellPosition = findAnOpenCell({
+      game,
+      selectedAreaId,
+      lockouts,
+      allowNonWalkable: true,
+      allowZeroHeight: true,
+    });
+    console.log('Open cell position for new prop:', openCellPosition);
     if (openCellPosition) {
       const [y, x] = openCellPosition.split('_');
       let h = area ? area.map[openCellPosition].h : 1;
