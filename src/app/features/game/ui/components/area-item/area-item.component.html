@@ -7,7 +7,7 @@
       isNearPlayer && !isLockedOut ? 'active-highlight' : ''
     }}"></div>
   @if (itemType.startsWith('key-')) {
-  <app-svg-item-key [variant]="itemType.replace('key-', '')" />
+  <app-svg-item-key [variant]="itemType.replace('key-', '')" [isFlat]="isFlat" />
   } @else if (['coins-25', 'gold'].includes(itemType)) {
   <app-svg-item-coins [isFlat]="isFlat" />
   } @else if (itemType === 'coins-100') {

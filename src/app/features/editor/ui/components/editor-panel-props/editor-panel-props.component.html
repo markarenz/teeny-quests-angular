@@ -63,7 +63,7 @@
     </div>
     } @if (propStatusOptions.length > 0) {
     <div>
-      <label for="prop-height-selector">Status</label>
+      <label for="prop-status-selector">Status</label>
       <select id="prop-status-selector" [(ngModel)]="inputPropStatus" (change)="handlePropInputChange()">
         @for(item of propStatusOptions; track item.value) {
         <option [value]="item.value">{{ item.label }}</option>

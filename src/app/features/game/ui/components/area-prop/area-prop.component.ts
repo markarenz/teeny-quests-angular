@@ -9,6 +9,10 @@ import {
 import { SvgPropTorchComponent } from './props/svg-prop-torch/svg-prop-torch.component';
 import { SvgPropSwitchComponent } from './props/svg-prop-switch/svg-prop-switch.component';
 import { SvgPropBannerComponent } from './props/svg-prop-banner/svg-prop-banner.component';
+import { SvgPropGemFrameEmeraldComponent } from './props/svg-prop-gem-frame-emerald/svg-prop-gem-frame-emerald.component';
+import { SvgPropGemFrameSapphireComponent } from './props/svg-prop-gem-frame-sapphire/svg-prop-gem-frame-sapphire.component';
+import { SvgPropGemFrameRubyComponent } from './props/svg-prop-gem-frame-ruby/svg-prop-gem-frame-ruby.component';
+import { SvgPropGemFrameDiamondComponent } from './props/svg-prop-gem-frame-diamond/svg-prop-gem-frame-diamond.component';
 import { propDecoDefinitions } from '@content/prop-definitions';
 import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 
@@ -19,6 +23,10 @@ import { AudioService } from '@app/features/main/services/audio/audio-service.se
     SvgPropTorchComponent,
     SvgPropSwitchComponent,
     SvgPropBannerComponent,
+    SvgPropGemFrameEmeraldComponent,
+    SvgPropGemFrameSapphireComponent,
+    SvgPropGemFrameRubyComponent,
+    SvgPropGemFrameDiamondComponent,
   ],
   templateUrl: './area-prop.component.html',
   styleUrl: './area-prop.component.css',
