@@ -360,6 +360,20 @@ export class GameService {
           e.lock === color
       );
     }
+    if (['emerald', 'diamond', 'ruby', 'sapphire'].includes(itemId)) {
+      const area =
+        this.gameState.value?.areas[this.gameState.value.player.areaId];
+      if (!area || !this.gameState.value) {
+        return false;
+      }
+      return area.props.some(
+        p =>
+          p.x === this.gameState.value?.player.x &&
+          p.y === this.gameState.value?.player.y &&
+          p.propType.toLowerCase().includes('frame') &&
+          p.propType.toLowerCase().includes(itemId)
+      );
+    }
     return false;
   };
   turnActionExit = async (exitId: string): Promise<GameState> => {
@@ -512,10 +526,6 @@ export class GameService {
     );
     if (exit && exit.lock === color) {
       exit.lock = '';
-      nextGameState.player.inventory[itemId] = Math.max(
-        nextGameState.player.inventory[itemId] - 1,
-        0
-      );
       this._messageService.showMessage({
         title: 'Exit Unlocked',
         message: `Unlocked the exit with the ${color} key.`,
@@ -526,24 +536,83 @@ export class GameService {
     return nextGameState;
   };
 
-  turnActionItemUse = (itemId: string): GameState => {
-    let nextGameState = JSON.parse(JSON.stringify(this.gameState.value));
-    const item = nextGameState.player.inventory[itemId];
-    const use = itemDefinitions[itemId]?.use; // e.g. 'unlock-exit-silver'
-    if (!item || !use) {
+  turnActionItemUse = async (itemId: string): Promise<GameState> => {
+    let nextGameState = structuredClone(this.gameState.value)!;
+    console.log(`Setting prop ${itemId} status? 0`);
+    nextGameState.player.inventory[itemId] = Math.max(
+      nextGameState.player.inventory[itemId] - 1,
+      0
+    );
+    console.log(`Setting prop ${itemId} status? 0.5`);
+    const use = itemDefinitions[itemId]?.use;
+    if (!use) {
+      console.log(`Setting prop ${itemId} status? NO USE DEFINED`, use);
       return nextGameState;
     }
     if (use?.includes('unlock-exit')) {
       return this.turnActionUnlockExit(nextGameState, use, itemId);
     }
+    if (use === 'fill-gem-frame') {
+      const area = nextGameState.areas[nextGameState.player.areaId];
+      const prop = area.props.find(
+        p =>
+          p.x === nextGameState.player.x &&
+          p.y === nextGameState.player.y &&
+          p.propType.toLowerCase().includes('frame') &&
+          p.propType.toLowerCase().includes(itemId)
+      );
+      setTimeout(() => {
+        this._audioService.playSound('chime');
+      }, 200);
+
+      if (prop) {
+        return await this.turnActionPropSetStatus(
+          nextGameState,
+          prop.id,
+          'filled'
+        );
+      }
+    }
     // other uses
     return nextGameState;
   };
 
-  turnActionPropClick = async (propId: string): Promise<GameState> => {
-    let nextGameState = <GameState>(
-      JSON.parse(JSON.stringify(this.gameState.value))
-    );
+  turnActionPropSetStatus = async (
+    nextGameState: GameState,
+    propId: string,
+    status: string
+  ): Promise<GameState> => {
+    console.log(`Setting prop ${propId} status to ${status}`);
+    const area = nextGameState.areas[nextGameState.player.areaId];
+    const prop = area.props.find(p => p.id === propId);
+    if (prop) {
+      console.log(`Setting prop ${propId} status to ${status} 2`);
+      prop.status = status;
+      nextGameState.areas[nextGameState.player.areaId].props = area.props.map(
+        p => (p.id === propId ? prop : p)
+      );
+      const turnActionResult = processTurnActions(
+        nextGameState,
+        prop.statusActions[prop.status ?? ''] ?? [],
+        this._audioService
+      );
+      nextGameState = turnActionResult.nextGameState;
+      turnActionResult.messages.forEach(msg => {
+        this._messageService.showMessage(msg);
+      });
+      this.calcLightMap(nextGameState);
+      console.log(`Setting prop ${propId} status to ${status} n`);
+      return nextGameState;
+    }
+    return nextGameState;
+  };
+
+  turnActionPropClick = async (
+    propId: string,
+    forceStatus?: string
+  ): Promise<GameState> => {
+    console.log('>>: turnActionPropClick 1');
+    let nextGameState = structuredClone(this.gameState.value)!;
     if (this.gameState.value === null) {
       return nextGameState;
     }
@@ -552,15 +621,18 @@ export class GameService {
     );
     if (prop) {
       const propDef = propDecoDefinitions[prop.propType];
-      // Increment status
-      if (propDef) {
-        const max = propDef.statuses?.length ?? 2;
-        let idx = propDef.statuses?.indexOf(prop.status ?? '') ?? 0;
-        idx += 1;
-        if (idx >= max) {
-          idx = 0;
+      if (forceStatus) {
+        prop.status = forceStatus;
+      } else {
+        if (propDef) {
+          const max = propDef.statuses?.length ?? 2;
+          let idx = propDef.statuses?.indexOf(prop.status ?? '') ?? 0;
+          idx += 1;
+          if (idx >= max) {
+            idx = 0;
+          }
+          prop.status = propDef.statuses ? propDef.statuses[idx] : '';
         }
-        prop.status = propDef.statuses ? propDef.statuses[idx] : '';
       }
       nextGameState = {
         ...nextGameState,
@@ -602,7 +674,7 @@ export class GameService {
   };
 
   turnActionItemClick = async (itemId: string): Promise<GameState> => {
-    let nextGameState = JSON.parse(JSON.stringify(this.gameState.value));
+    let nextGameState = structuredClone(this.gameState.value)!;
 
     const area = this.gameState.value?.areas[nextGameState.player.areaId];
     const item = area?.items.find(i => i.id === itemId);
@@ -632,7 +704,7 @@ export class GameService {
           // Add item to player's inventory
           const qty = nextGameState.player.inventory[itemDef.inventoryKey] ?? 0;
           nextGameState.player.inventory[itemDef.inventoryKey] =
-            qty + itemDef.amount || 1;
+            qty + (itemDef.amount ?? 1);
           // Remove item from area
           nextGameState.areas[nextGameState.player.areaId].items =
             nextGameState.areas[nextGameState.player.areaId].items.filter(

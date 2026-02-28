@@ -1,19 +1,19 @@
 <svg viewBox="0 0 100 100" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"
   xmlns:svg="http://www.w3.org/2000/svg" class="{{isFlat ? 'flat' : 'isometric'}} {{ variant }}">
   <defs>
-    <linearGradient id="gradientItemKeySilver02">
+    <linearGradient [attr.id]="patternIds[1]">
       <stop style="stop-opacity: 1" offset="0.11692651" class="stop1" />
       <stop style="stop-opacity: 1" offset="0.5066815" class="stop2" />
       <stop style="stop-opacity: 1" offset="0.89643651" class="stop3" />
     </linearGradient>
-    <linearGradient xlink:href="#gradientItemKeySilver02" id="gradientItemKeySilver01" x1="15" y1="30" x2="87.272346"
+    <linearGradient [attr.xlink:href]="patternIds[3]" [attr.id]="patternIds[0]" x1="15" y1="30" x2="87.272346"
       y2="70.144279" gradientUnits="userSpaceOnUse" />
   </defs>
   <g>
     <path style="
         color: #000000;
         display: inline;
-        fill: url(#gradientItemKeySilver01);
+        fill: url({{patternIds[2]}});
         stroke: #595959;
         stroke-width: 4;
         stroke-linecap: round;

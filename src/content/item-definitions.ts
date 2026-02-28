@@ -65,6 +65,7 @@ export const itemDefinitions: { [key: string]: ItemDefinition } = {
     action: 'take',
     inventoryKey: 'ruby',
     amount: 1,
+    use: 'fill-gem-frame',
     inventoryActions: ['use', 'drop'],
   },
   diamond: {
@@ -73,6 +74,7 @@ export const itemDefinitions: { [key: string]: ItemDefinition } = {
     action: 'take',
     inventoryKey: 'diamond',
     amount: 1,
+    use: 'fill-gem-frame',
     inventoryActions: ['use', 'drop'],
   },
   emerald: {
@@ -81,6 +83,7 @@ export const itemDefinitions: { [key: string]: ItemDefinition } = {
     action: 'take',
     inventoryKey: 'emerald',
     amount: 1,
+    use: 'fill-gem-frame',
     inventoryActions: ['use', 'drop'],
   },
   sapphire: {
@@ -89,6 +92,7 @@ export const itemDefinitions: { [key: string]: ItemDefinition } = {
     action: 'take',
     inventoryKey: 'sapphire',
     amount: 1,
+    use: 'fill-gem-frame',
     inventoryActions: ['use', 'drop'],
   },
 };

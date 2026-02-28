@@ -54,13 +54,54 @@ export const propDecoDefinitions: { [key: string]: PropDefinition } = {
     isClickable: true,
     sound: 'bounce',
   },
+  gemFrameEmerald: {
+    id: 'gemFrameEmerald',
+    name: 'Gem Frame Emerald',
+    hasStatusEffects: true,
+    statuses: ['empty', 'filled'],
+    canSetHeight: false,
+    isClickable: false,
+    // TODO: CHANGE THIS
+    sound: 'bounce',
+  },
+  gemFrameSapphire: {
+    id: 'gemFrameSapphire',
+    name: 'Gem Frame Sapphire',
+    hasStatusEffects: true,
+    statuses: ['empty', 'filled'],
+    canSetHeight: false,
+    isClickable: false,
+    // TODO: CHANGE THIS
+    sound: 'bounce',
+  },
+  gemFrameRuby: {
+    id: 'gemFrameRuby',
+    name: 'Gem Frame Ruby',
+    hasStatusEffects: true,
+    statuses: ['empty', 'filled'],
+    canSetHeight: false,
+    isClickable: false,
+    // TODO: CHANGE THIS
+    sound: 'bounce',
+  },
+  gemFrameDiamond: {
+    id: 'gemFrameDiamond',
+    name: 'Gem Frame Diamond',
+    hasStatusEffects: true,
+    statuses: ['empty', 'filled'],
+    canSetHeight: false,
+    isClickable: false,
+    // TODO: CHANGE THIS
+    sound: 'bounce',
+  },
 };
 
-export const propDecoOptions: SelectIUIOption[] = [
-  { value: 'torch', label: 'Torch' },
-  { value: 'switch', label: 'Switch' },
-  { value: 'banner', label: 'Banner' },
-];
+export const propDecoOptions: SelectIUIOption[] = Object.values(
+  propDecoDefinitions
+).map(def => ({
+  value: def.id,
+  label: def.name,
+}));
 
 export const propDecoWallOptions: SelectIUIOption[] = [
   {
