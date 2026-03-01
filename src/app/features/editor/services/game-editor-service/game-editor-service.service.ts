@@ -101,6 +101,7 @@ export class GameEditorService {
 
   updateGame(game: GameROM) {
     this.game.next(game);
+    this.saveToLocalStorage(game);
   }
 
   updateStarterInventory(newInventory: { [key: string]: number }) {
@@ -116,6 +117,7 @@ export class GameEditorService {
         },
       };
       this.game.next(nextGame);
+      this.saveToLocalStorage(nextGame);
     }
   }
 
@@ -164,6 +166,7 @@ export class GameEditorService {
       this.game.next(gameObj);
       this.selectedCell.next(cellData);
       this.selectedArea.next(nextArea);
+      this.saveToLocalStorage(gameObj);
     }
   }
 
@@ -214,6 +217,7 @@ export class GameEditorService {
         },
       };
       this.game.next(nextGame);
+      this.saveToLocalStorage(nextGame);
     }
   }
 
@@ -243,6 +247,7 @@ export class GameEditorService {
     this.flags.next(nextFlags);
     this.updateFlagsInGame(nextFlags);
   }
+
   updateFlag(updatedFlag: GameFlag) {
     {
       const nextFlags = this.flags.value.map(flag =>
@@ -274,6 +279,7 @@ export class GameEditorService {
         this.game.next(nextGame);
         this.refreshAreaItems(nextGame);
         this.selectedItemId.next(newItem.id);
+        this.saveToLocalStorage(nextGame);
       }
     }
     return null;
@@ -289,6 +295,7 @@ export class GameEditorService {
       if (nextGame) {
         this.game.next(nextGame);
         this.refreshAreaItems(nextGame);
+        this.saveToLocalStorage(nextGame);
       }
     }
   }
@@ -306,6 +313,7 @@ export class GameEditorService {
       });
       this.game.next(nextGame);
       this.refreshAreaItems(nextGame);
+      this.saveToLocalStorage(nextGame);
     }
   }
 
@@ -330,6 +338,7 @@ export class GameEditorService {
         this.game.next(nextGame);
         this.refreshAreaProps(nextGame);
         this.selectedPropId.next(newProp.id);
+        this.saveToLocalStorage(nextGame);
       }
     }
     return null;
@@ -345,6 +354,7 @@ export class GameEditorService {
       if (nextGame) {
         this.game.next(nextGame);
         this.refreshAreaProps(nextGame);
+        this.saveToLocalStorage(nextGame);
       }
     }
   }
@@ -363,6 +373,7 @@ export class GameEditorService {
       this.selectProp('');
       this.game.next(nextGame);
       this.refreshAreaProps(nextGame);
+      this.saveToLocalStorage(nextGame);
     }
   }
 
@@ -384,7 +395,8 @@ export class GameEditorService {
       if (nextGame && newExit) {
         this.game.next(nextGame);
         this.selectedExitId.next(newExit.id);
-        this.refreshAreaExits(nextGame as GameROM);
+        this.refreshAreaExits(nextGame);
+        this.saveToLocalStorage(nextGame);
         return newExit;
       }
     }
@@ -406,7 +418,8 @@ export class GameEditorService {
       this.selectExit('');
       if (nextGame) {
         this.game.next(nextGame);
-        this.refreshAreaExits(nextGame as GameROM);
+        this.refreshAreaExits(nextGame);
+        this.saveToLocalStorage(nextGame);
       }
     }
   }
@@ -443,7 +456,8 @@ export class GameEditorService {
       }
       if (nextGame) {
         this.game.next(nextGame);
-        this.refreshAreaExits(nextGame as GameROM);
+        this.refreshAreaExits(nextGame);
+        this.saveToLocalStorage(nextGame);
       }
     }
   }
@@ -461,6 +475,7 @@ export class GameEditorService {
         this.refreshEvents(nextGame);
         this.events.next(nextGame.content.events);
         this.game.next(nextGame);
+        this.saveToLocalStorage(nextGame);
       }
     }
   }
@@ -482,6 +497,7 @@ export class GameEditorService {
         },
       };
       this.game.next(nextGame);
+      this.saveToLocalStorage(nextGame);
       this.events.next(nextEvents);
     }
   }
@@ -506,6 +522,7 @@ export class GameEditorService {
         this.game.next(nextGame);
         this.events.next(nextGame.content.events);
         this.refreshEvents(nextGame);
+        this.saveToLocalStorage(nextGame);
       }
     }
   }
@@ -612,10 +629,10 @@ export class GameEditorService {
     }
   }
 
-  async saveGame(game: GameROM): Promise<void> {
+  async saveGame(game: GameROM): Promise<string> {
     const token = this.authProviderService.getToken();
     if (this.game?.value?.content) {
-      return fetch(gamesApiUrl, {
+      const response = await fetch(gamesApiUrl, {
         method: 'PUT',
         headers: {
           Accept: 'application/json',
@@ -625,10 +642,10 @@ export class GameEditorService {
           ...game,
           content: JSON.stringify(this.game.value.content),
         }),
-      }).then(() => {
-        return Promise.resolve();
       });
+      return response.ok ? 'success' : 'error';
     }
+    return 'error';
   }
 
   getAreasListOptions(): SelectIUIOption[] {
@@ -728,6 +745,7 @@ export class GameEditorService {
       };
 
       this.game.next(nextGameData);
+      this.saveToLocalStorage(nextGameData);
       this.setSelectedAreaId(id);
     }
   }
@@ -748,6 +766,7 @@ export class GameEditorService {
         },
       };
       this.game.next(nextGameData);
+      this.saveToLocalStorage(nextGameData);
     }
   }
 
@@ -761,6 +780,7 @@ export class GameEditorService {
       const areasList = Object.keys(nextGameData.content.areas);
       this.setSelectedAreaId(areasList[0]);
       this.game.next(nextGameData);
+      this.saveToLocalStorage(nextGameData);
     }
   }
 
@@ -790,6 +810,7 @@ export class GameEditorService {
         },
       };
       this.game.next(nextGameData);
+      this.saveToLocalStorage(nextGameData);
       const currentAreaId = this.selectedAreaId.value;
       this.selectedAreaId.next('NOTHING');
       setTimeout(() => {
@@ -862,6 +883,7 @@ export class GameEditorService {
         });
     }
   };
+
   public deleteContentVersion = async (versionId: string) => {
     if (this.game.value) {
       const token = this.authProviderService.getToken();
@@ -929,4 +951,28 @@ export class GameEditorService {
       !conflictExits && !conflictItems && !conflictProps && !conflictWithPlayer
     );
   };
+
+  loadFromLocalStorage(gameId: string) {
+    const savedGame = localStorage.getItem(`editor-save--${gameId}`);
+    if (savedGame) {
+      try {
+        const parsedGame = JSON.parse(savedGame) as GameROM;
+        this.game.next(parsedGame);
+        const nextArea = parsedGame.content.areas[this.selectedAreaId.value];
+        this.selectedArea.next(nextArea);
+      } catch (error) {
+        console.error('Error parsing saved game from local storage', error);
+      }
+    }
+  }
+
+  saveToLocalStorage(nextGame?: GameROM) {
+    const gameToSave = nextGame ?? this.game.value;
+    if (gameToSave) {
+      localStorage.setItem(
+        `editor-save--${gameToSave.id}`,
+        JSON.stringify(gameToSave)
+      );
+    }
+  }
 }

@@ -20,6 +20,7 @@ import { BreadcrumbsComponent } from '@app/features/main/ui/components/breadcrum
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import { AuthProviderService } from '@app/features/auth/services/auth-provider-service';
 import { ContentVersionsModalComponent } from '../../components/content-versions-modal/content-versions-modal.component';
+import { CommonModalComponent } from '@app/features/main/ui/components/common-modal/common-modal.component';
 
 @Component({
   selector: 'app-editor-game',
@@ -27,6 +28,7 @@ import { ContentVersionsModalComponent } from '../../components/content-versions
   imports: [
     ContainerComponent,
     MainLayoutComponent,
+    CommonModalComponent,
     LoaderAnimationComponent,
     FormsModule,
     ButtonComponent,
@@ -57,10 +59,11 @@ export class EditorGameComponent {
     private router: Router
   ) {}
 
-  title = '';
-  isLoading: boolean = false;
-  isValid: boolean = false;
-  game: GameROM | null = null;
+  public title = '';
+  public isLoading: boolean = false;
+  public isValid: boolean = false;
+  public game: GameROM | null = null;
+  public hasSaveError: boolean = false;
 
   breadcrumbLinks: Link[] = [
     { label: 'Home', href: '' },
@@ -100,11 +103,22 @@ export class EditorGameComponent {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
+  public loadGameFromLocalStorage() {
+    if (this.game?.id) {
+      this._gameEditorService.loadFromLocalStorage(this.game.id);
+    }
+  }
+
   async handleSaveClick() {
     this.isLoading = true;
-    console.log('Saving game...', this.game?.itemStatus);
-    await this._gameEditorService.saveGame(this.game!);
+    const response = await this._gameEditorService.saveGame(this.game!);
+    if (response !== 'success') {
+      this.hasSaveError = true;
+    }
     this.isLoading = false;
+  }
+  handleErrorModalDismiss() {
+    this.hasSaveError = false;
   }
 
   private setShowAreaSelector() {
@@ -149,7 +163,6 @@ export class EditorGameComponent {
     this.setShowAreaSelector();
   }
   handlePlayClick() {
-    localStorage.removeItem(`save--${this.game?.id ?? ''}`);
     this.router.navigate([`/game/${this.game?.id ?? ''}`]);
   }
 

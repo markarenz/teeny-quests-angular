@@ -10,6 +10,8 @@
           <app-button variant="outlined" label="Play" [isDisabled]="isLoading" (onButtonClick)="handlePlayClick()" />
           <app-button variant="outlined" label="Versions" [isDisabled]="isLoading"
             (onButtonClick)="handleContentVersionModalToggle(true)" />
+          <app-button variant="contained" label="Restore Local" [isDisabled]="isLoading"
+            (onButtonClick)="loadGameFromLocalStorage()" />
           <app-button variant="contained" label="Save" [isDisabled]="isLoading" (onButtonClick)="handleSaveClick()" />
         </div>
       </div>
@@ -65,5 +67,13 @@
   @if (isContentVersionModalOpen) {
   <app-content-versions-modal gameId="{{ game?.id }}"
     (onCloseModal)="handleContentVersionModalToggle(false)"></app-content-versions-modal>
+  }
+  @if(hasSaveError) {
+  <app-common-modal title="Error Saving" (onConfirm)="handleErrorModalDismiss()">
+    <p class="mb-4">An error occurred while saving the game.
+      Your game should be saved in your browser's local storage, so you can log back in and select "Restore Local" to
+      load the most recent update from your browser's local storage and not lose your work.
+    </p>
+  </app-common-modal>
   }
 </app-main-layout>

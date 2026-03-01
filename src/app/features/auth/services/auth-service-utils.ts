@@ -13,7 +13,7 @@ export const getUserByIdOrCreateUser = async ({
   userDataResponse = await fetch(`${usersApiUrl}?id=${id}`, {
     method: 'GET',
     headers: { Accept: 'application/json' },
-  }).then((res) => res.json());
+  }).then(res => res.json());
 
   if (userDataResponse.success && userDataResponse.item) {
     logger({ type: 'info', message: '[getUserByIdOrCreateUser]: User found' });
@@ -35,7 +35,7 @@ export const getUserByIdOrCreateUser = async ({
         'X-Access-Token': token || '',
       },
       body: JSON.stringify(newUser),
-    }).then((res) => res.json());
+    }).then(res => res.json());
     return newUser;
   }
 };
