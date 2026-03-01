@@ -176,7 +176,6 @@ export class GameService {
         lighting
       );
     });
-    console.log('Calculated light map:', lighting);
     this.lightMap.next(lighting);
   }
 

@@ -45,7 +45,6 @@ export const utilCreateProp = ({
       allowNonWalkable: true,
       allowZeroHeight: true,
     });
-    console.log('Open cell position for new prop:', openCellPosition);
     if (openCellPosition) {
       const [y, x] = openCellPosition.split('_');
       let h = area ? area.map[openCellPosition].h : 1;
