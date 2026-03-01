@@ -6,10 +6,14 @@ export const findAnOpenCell = ({
   game,
   selectedAreaId,
   lockouts = [],
+  allowZeroHeight = false,
+  allowNonWalkable = false,
 }: {
   game: GameROM;
   selectedAreaId: string;
   lockouts?: string[];
+  allowZeroHeight?: boolean;
+  allowNonWalkable?: boolean;
 }): string | null => {
   const area = game.content.areas[selectedAreaId];
   if (area) {
@@ -19,8 +23,9 @@ export const findAnOpenCell = ({
       return (
         !lockouts.includes(key) &&
         !area.map[key].isHidden &&
-        area.map[key].h > 0 &&
-        floorDefinitions[area.map[key].floor ?? 'default'].walkable &&
+        (allowZeroHeight || area.map[key].h > 0) &&
+        (allowNonWalkable ||
+          floorDefinitions[area.map[key].floor ?? 'default'].walkable) &&
         !area.exits.some(exit => exit.x === +x && exit.y === +y) &&
         !area.items.some(item => item.x === +x && item.y === +y)
       );

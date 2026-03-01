@@ -15,7 +15,7 @@
           </div>
           <div>
             <label for="new-game--itemStatus" class="block text">Status</label>
-            <select id="new-game--itemStatus" [(ngModel)]="inputItemStatus">
+            <select id="new-game--itemStatus" [(ngModel)]="inputItemStatus" (ngModelChange)="handleInfoChange()">
               @if(game?.itemStatus === 'suspended' ) {
               <option value="suspended">Suspended</option>
               } @else {

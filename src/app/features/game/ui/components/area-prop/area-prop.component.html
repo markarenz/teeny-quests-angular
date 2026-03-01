@@ -10,6 +10,18 @@
   } @else if (prop.propType === 'banner') {
   <app-svg-prop-banner [isPropSelected]="isPropSelected" [isClickable]="isClickable && !isLockedOut"
     [flipH]="prop.wall !== 'north'" [status]="prop.status ?? ''" [isTouched]="isTouched" />
+  } @else if (prop.propType === 'gemFrameEmerald') {
+  <app-svg-prop-gem-frame-emerald [isPropSelected]="isPropSelected" [isClickable]="isClickable && !isLockedOut"
+    [flipH]="prop.wall !== 'north'" [status]="prop.status ?? ''" />
+  } @else if (prop.propType === 'gemFrameSapphire') {
+  <app-svg-prop-gem-frame-sapphire [isPropSelected]="isPropSelected" [isClickable]="isClickable && !isLockedOut"
+    [flipH]="prop.wall !== 'north'" [status]="prop.status ?? ''" />
+  } @else if (prop.propType === 'gemFrameRuby') {
+  <app-svg-prop-gem-frame-ruby [isPropSelected]="isPropSelected" [isClickable]="isClickable && !isLockedOut"
+    [flipH]="prop.wall !== 'north'" [status]="prop.status ?? ''" />
+  } @else if (prop.propType === 'gemFrameDiamond') {
+  <app-svg-prop-gem-frame-diamond [isPropSelected]="isPropSelected" [isClickable]="isClickable && !isLockedOut"
+    [flipH]="prop.wall !== 'north'" [status]="prop.status ?? ''" />
   } @if (isPropSelected) {
   <div
     class="absolute top-[15%] {{

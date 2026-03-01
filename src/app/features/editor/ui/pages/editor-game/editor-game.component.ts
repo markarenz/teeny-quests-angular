@@ -102,6 +102,7 @@ export class EditorGameComponent {
 
   async handleSaveClick() {
     this.isLoading = true;
+    console.log('Saving game...', this.game?.itemStatus);
     await this._gameEditorService.saveGame(this.game!);
     this.isLoading = false;
   }

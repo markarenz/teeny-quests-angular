@@ -1,0 +1,42 @@
+<svg viewBox="0 0 100 100" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"
+  xmlns:svg="http://www.w3.org/2000/svg" class="{{ flipH ? 'flip-horizontal' : '' }} {{ status }}">
+  <defs>
+    <linearGradient id="gradientEmeraldFrameGold0">
+      <stop style="stop-color:#d0d076;stop-opacity:1;" offset="0" id="stop3" />
+      <stop style="stop-color:#7c5a06;stop-opacity:1;" offset="1" id="stop4" />
+    </linearGradient>
+    <linearGradient xlink:href="#gradientEmeraldFrameGold0" id="gradientEmeraldFrameGold1" x1="74.444672" y1="25.334925"
+      x2="75.072914" y2="47.393639" gradientUnits="userSpaceOnUse" />
+    <linearGradient xlink:href="#gradientEmeraldFrameGold0" id="gradientEmeraldFrameGold2" x1="73.832748" y1="43.071495"
+      x2="73.832748" y2="20.813328" gradientUnits="userSpaceOnUse" />
+    <linearGradient id="gradientEmeraldFrameSilver0">
+      <stop style="stop-color:#c8c8c8;stop-opacity:1;" offset="0" id="stop3" />
+      <stop style="stop-color:#6c6c6c;stop-opacity:1;" offset="1" id="stop4" />
+    </linearGradient>
+    <linearGradient xlink:href="#gradientEmeraldFrameSilver0" id="gradientEmeraldFrameSilver1" x1="74.444672"
+      y1="25.334925" x2="75.072914" y2="47.393639" gradientUnits="userSpaceOnUse" />
+    <linearGradient xlink:href="#gradientEmeraldFrameSilver0" id="gradientEmeraldFrameSilver2" x1="73.832748"
+      y1="43.071495" x2="73.832748" y2="20.813328" gradientUnits="userSpaceOnUse" />
+  </defs>
+  <g transform="matrix(0.81709714,0,0,0.81709714,14.421472,8.4264378)">
+    <path [attr.fill]="status === 'filled' ? 'url(#gradientEmeraldFrameGold1)' : 'url(#gradientEmeraldFrameSilver1)'"
+      d="m 61.806641,5.1367188 c -2.728767,0.281522 -4.735139,2.3426002 -7.040258,3.60354 -2.123043,1.3907832 -4.469544,2.5444102 -6.23581,4.3996572 -1.477289,2.096294 -0.761338,4.967346 0.7014,6.868369 7.333707,12.55098 14.583818,25.150403 22.041465,37.626481 1.977113,2.273212 5.843995,1.898102 7.761718,-0.261719 7.334178,-5.875607 14.78788,-11.608921 22.003904,-17.626953 1.64429,-1.999183 1.10575,-4.958492 -0.30104,-6.929993 C 98.356715,28.474467 96.326105,23.919994 93.568359,19.798828 91.111631,17.732941 87.93156,16.915148 85.154116,15.400345 77.773805,12.004449 70.471581,8.4276812 63.005859,5.2265625 62.609135,5.1645287 62.209234,5.1076644 61.806641,5.1367188 Z" />
+    <path [attr.fill]="status === 'filled' ? 'url(#gradientEmeraldFrameGold2)' : 'url(#gradientEmeraldFrameSilver2)'"
+      d="M 61.871094,7.4804688 C 60.374452,7.65903 59.248325,8.7815787 57.976129,9.4834794 55.54569,11.085199 52.963057,12.512548 50.617188,14.263672 c -1.073984,1.228049 -0.455639,3.016458 0.421874,4.162109 7.311038,12.526624 14.58295,25.078308 21.93148,37.581663 1.128481,1.379193 3.332781,0.918549 4.390786,-0.308225 C 84.611344,49.926576 91.898126,44.196367 99.115234,38.384766 100.23624,37.1611 99.616979,35.348187 98.783203,34.154297 96.53337,29.950529 94.432047,25.659214 92.020795,21.547175 90.36409,20.095142 88.147881,19.553031 86.24221,18.509285 78.357261,14.85371 70.510104,11.113567 62.59375,7.5332031 62.355325,7.4875568 62.113832,7.4622578 61.871094,7.4804688 Z" />
+    <path style="fill:#4d4d4d"
+      d="M 52.27272,15.87356 61.926117,9.7697739 90.230374,22.96827 97.483818,36.712329 74.878268,54.665914 Z" />
+    <path style="fill:#666666"
+      d="M 55.333057,13.938684 52.272778,15.87345 74.878117,54.665914 97.483972,36.712488 96.98915,35.775012 77.237575,51.512789 Z" />
+  </g>
+  @if(status === 'filled') {
+  <g transform="matrix(0.42332664,0.19740053,0,0.42332664,130.64816,54.421396)">
+    <path style="fill:#529ca0" d="m -173.65983,2.9665485 23.63281,-0.47004 20,55.0069835 z" />
+    <path style="fill:#c1dfe3" d="m -86.394206,2.4965085 -43.632814,54.9999985 20,-54.9999985 z" />
+    <path style="fill:#8cc5c4" d="m -150.02702,2.4965085 h 40 l -20,54.9999985 z" />
+    <path style="fill:#469eaa" d="m -173.65983,2.9665485 18.63281,-20.4700405 5,20.0000005 z" />
+    <path style="fill:#73b2c8" d="m -155.02702,-17.503492 h 25 l -20,20.0000005 z" />
+    <path style="fill:#acd4da" d="m -130.02702,-17.503492 20,20.0000005 h -40 z" />
+    <path style="fill:#94bfc0" d="m -130.02702,-17.503492 h 29.63235 l -9.63235,20.0000005 z" />
+    <path style="fill:#ebf9f8" d="M -100.39467,-17.503492 -86.394206,2.4965085 H -110.02702 Z" />
+  </g> }
+</svg>

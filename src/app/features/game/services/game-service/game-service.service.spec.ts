@@ -296,6 +296,8 @@ describe('getCanUseItem', () => {
     service.initGameState(gameMock);
   });
 
+  // TODO: add scenarios for gem frames and gems
+
   it('should return whether an item can be used', fakeAsync(() => {
     tick(1000);
     const result = service.getCanUseItem('key-silver');

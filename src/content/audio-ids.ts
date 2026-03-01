@@ -97,4 +97,11 @@ export const audioIdMap: Map<string, AudioDefinition> = new Map([
       volume: 0.4,
     },
   ],
+  [
+    'chime',
+    {
+      filename: '383979__chrisreierson__frozen-wind-chime-ding.mp3',
+      volume: 0.5,
+    },
+  ],
 ]);
