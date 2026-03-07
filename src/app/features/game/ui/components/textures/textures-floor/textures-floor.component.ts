@@ -40,6 +40,7 @@ import { FloorRoofSimpleComponent } from './floor-roof-simple/floor-roof-simple.
 export class TexturesFloorComponent {
   @Input('floorType') floorType: string = 'default';
   @Input('isFlat') isFlat: boolean = false;
+  @Input('isHighlighted') isHighlighted: boolean = false;
   @Input('positionKey') positionKey: string = '';
   @Input('isEditorMode') isEditorMode: boolean = false;
   @Output() onClick = new EventEmitter<string>();

@@ -87,7 +87,7 @@ export class AuthProviderService implements OnDestroy {
   }
 
   login() {
-    this.oAuthService.initLoginFlow();
+    this.oAuthService.initImplicitFlow();
   }
 
   logout() {

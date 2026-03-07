@@ -24,3 +24,9 @@
     stroke-width: 1.25;
   }
 }
+
+.highlight-arrow {
+  fill: var(--color-gray-200);
+  stroke: var(--color-primary);
+  stroke-width: 2;
+}

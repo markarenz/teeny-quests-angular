@@ -49,6 +49,7 @@ export class EditorAreaComponent {
   selectedPropId: string = '';
   selectedExitDestination: string = '';
   selectedCell: GameAreaMapCell | null = null;
+  secondarySelectedCellPosition: string = '';
   anyCellSelected: boolean = false;
   areaDataPositionKeys: string[] = [];
   playerPosition: string = '';
@@ -103,6 +104,13 @@ export class EditorAreaComponent {
       this._gameEditorService.selectedCellPositionObs.subscribe(
         (data: string) => {
           this.selectedAreaCellPosition = data;
+        }
+      )
+    );
+    this.subscriptions.push(
+      this._gameEditorService.secondarySelectedCellPositionObs.subscribe(
+        (data: string) => {
+          this.secondarySelectedCellPosition = data;
         }
       )
     );
