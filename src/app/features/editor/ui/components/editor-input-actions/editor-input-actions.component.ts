@@ -94,6 +94,8 @@ export class EditorInputActionsComponent {
       this.shouldShowPositionSelector =
         def.objectType === ActionObjectType.MAP_CELL;
 
+      this.updateHighlightedCell();
+
       // set object options based on type and sub type
       if (!this.shouldShowPositionSelector) {
         if (def.objectType === ActionObjectType.PROP_ID) {
@@ -205,6 +207,7 @@ export class EditorInputActionsComponent {
     const newActions = (this.actions ?? []).map(action =>
       action.id === this.selectedActionId ? updatedAction : action
     );
+    this.updateHighlightedCell();
     this.onActionsChange.emit(newActions);
   }
 
@@ -225,5 +228,15 @@ export class EditorInputActionsComponent {
       action => action.id !== actionId
     );
     this.onActionsChange.emit(newActions);
+  }
+  updateHighlightedCell() {
+    if (this.shouldShowPositionSelector) {
+      this._gameEditorService.setHighlightedCell(
+        this.inputActionObjectId &&
+          this.inputActionAreaId === this.selectedAreaId
+          ? this.inputActionObjectId
+          : ''
+      );
+    }
   }
 }

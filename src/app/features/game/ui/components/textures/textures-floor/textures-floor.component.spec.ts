@@ -18,6 +18,7 @@ describe('TexturesFloorComponent', () => {
     component.isFlat = false;
     component.positionKey = '0_0';
     component.isEditorMode = false;
+    component.isHighlighted = true;
     fixture.detectChanges();
   });
 

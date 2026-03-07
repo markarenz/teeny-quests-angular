@@ -1,3 +1,10 @@
+@if(isHighlighted) {
+<div id="floor-highlight" class="absolute top-0 left-[37.5%] w-[25%] h-full pointer-events-none z-[90]">
+  <svg viewBox="0 0 30 35" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+    <path class="highlight-arrow" d="m 10,0 h 10 v 19.999997 h 10 l -15,15 -15,-15 h 10 z" />
+  </svg>
+</div>
+}
 @if(floorType === 'dirt') {
 <app-floor-dirt [floorProps]="floorProps" (onClick)="handleClick()" />
 } @else if(floorType === 'water') {

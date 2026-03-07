@@ -59,6 +59,10 @@ export class GameEditorService {
   private selectedCellPosition = new BehaviorSubject<string>('');
   selectedCellPositionObs = this.selectedCellPosition.asObservable();
 
+  private secondarySelectedCellPosition = new BehaviorSubject<string>('');
+  secondarySelectedCellPositionObs =
+    this.secondarySelectedCellPosition.asObservable();
+
   private selectedCell = new BehaviorSubject<GameAreaMapCell | null>(null);
   selectedCellObs = this.selectedCell.asObservable();
 
@@ -167,6 +171,7 @@ export class GameEditorService {
       this.selectedCell.next(cellData);
       this.selectedArea.next(nextArea);
       this.saveToLocalStorage(gameObj);
+      this.setHighlightedCell('');
     }
   }
 
@@ -178,6 +183,7 @@ export class GameEditorService {
   }
 
   setSelectedAreaId(areaId: string) {
+    this.setHighlightedCell('');
     this.selectedAreaId.next('');
     setTimeout(() => {
       this.selectedAreaId.next(areaId);
@@ -974,5 +980,9 @@ export class GameEditorService {
         JSON.stringify(gameToSave)
       );
     }
+  }
+
+  setHighlightedCell(cellPosition: string) {
+    this.secondarySelectedCellPosition.next(cellPosition);
   }
 }

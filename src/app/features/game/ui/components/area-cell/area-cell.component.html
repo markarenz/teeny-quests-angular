@@ -13,8 +13,8 @@
   }
   <!-- FLOOR -->
   @if(cell && displayElements.top) {
-  <app-textures-floor [floorType]="cell.floor" [isEditorMode]="isEditorMode" [positionKey]="positionKey"
-    (onClick)="handleClick()" />
+  <app-textures-floor [floorType]="cell.floor" [isHighlighted]="isHighlighted" [isEditorMode]="isEditorMode"
+    [positionKey]="positionKey" (onClick)="handleClick()" />
   }
   @if(cell && displayElements.top && cell.decal) {
   <app-decals [decalType]="cell.decal" />
