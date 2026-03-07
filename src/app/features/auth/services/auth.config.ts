@@ -6,5 +6,7 @@ export const authConfig: AuthConfig = {
   redirectUri: window.location.origin,
   scope: 'openid profile email',
   strictDiscoveryDocumentValidation: false,
+  sessionChecksEnabled: true,
+  showDebugInformation: true,
   ...googleConfigConstants,
 };

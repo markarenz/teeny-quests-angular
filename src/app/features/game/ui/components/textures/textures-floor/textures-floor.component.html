@@ -8,6 +8,8 @@
 <app-floor-parquet [floorProps]="floorProps" (onClick)="handleClick()" />
 } @else if(floorType === 'roof') {
 <app-floor-roof [floorProps]="floorProps" (onClick)="handleClick()" />
+} @else if(floorType === 'roof-simple') {
+<app-floor-roof-simple [floorProps]="floorProps" (onClick)="handleClick()" />
 } @else if(floorType === 'spikes') {
 <app-floor-spikes [floorProps]="floorProps" (onClick)="handleClick()" />
 } @else if(floorType === 'wall-top') {

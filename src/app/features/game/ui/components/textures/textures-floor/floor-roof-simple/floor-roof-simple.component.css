@@ -1,0 +1,28 @@
+.bg {
+  fill: #7a1c1c;
+}
+
+.roof-simple-group {
+  .roof1 {
+    fill: #6b6b6b;
+  }
+  .roof2 {
+    fill: #232323;
+  }
+  .roof3 {
+    fill: #444444;
+  }
+  .roof4 {
+    fill: #484848;
+  }
+}
+
+.editor-mode {
+  cursor: pointer;
+  &.selected,
+  &:hover {
+    stroke: var(--color-primary);
+    stroke-width: 4px;
+    z-index: 100;
+  }
+}

@@ -95,7 +95,7 @@ export const getFloorProps = (
         floorDefinition,
         isFlat
       ),
-      stroke: '#aaa',
+      stroke: '#444',
       strokeWidth: '2',
       class: isEditorMode ? 'editor-mode' : '',
     },

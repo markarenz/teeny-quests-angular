@@ -49,9 +49,9 @@ describe('AuthProviderService', () => {
   }));
 
   it('should handle login', () => {
-    spyOn(oAuthService, 'initImplicitFlow').and.callThrough();
+    spyOn(oAuthService, 'initLoginFlow').and.callThrough();
     service.login();
-    expect(oAuthService.initImplicitFlow).toHaveBeenCalled();
+    expect(oAuthService.initLoginFlow).toHaveBeenCalled();
   });
 
   it('should handle logout', () => {

@@ -71,6 +71,12 @@ export const floorDefinitions: { [key: string]: FloorDefinition } = {
     walkable: false,
     tileType: FloorTileType.SINGLE,
   },
+  'roof-simple': {
+    id: 'roof-simple',
+    name: 'Simple Wall Top',
+    walkable: false,
+    tileType: FloorTileType.SINGLE,
+  },
 };
 
 export const floorOptionsData: SelectIUIOption[] = Object.values(

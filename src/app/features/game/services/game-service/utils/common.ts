@@ -57,6 +57,5 @@ export const calcScore = (gameState: GameState, gameROM: GameROM): number => {
     }
   });
   score -= gameState.numTurns;
-
   return Math.max(0, score);
 };
