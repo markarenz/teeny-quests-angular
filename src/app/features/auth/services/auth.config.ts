@@ -2,11 +2,12 @@ import { AuthConfig } from 'angular-oauth2-oidc';
 import { googleConfigConstants } from '@config/configConstants';
 
 export const authConfig: AuthConfig = {
-  issuer: 'https://accounts.google.com',
+  issuer: googleConfigConstants.issuer,
+  clientId: googleConfigConstants.clientId,
   redirectUri: window.location.origin,
-  scope: 'openid profile email',
-  strictDiscoveryDocumentValidation: false,
-  sessionChecksEnabled: true,
+  scope: 'openid email',
+  responseType: 'code',
+  disablePKCE: false,
   showDebugInformation: true,
-  ...googleConfigConstants,
+  strictDiscoveryDocumentValidation: false,
 };
