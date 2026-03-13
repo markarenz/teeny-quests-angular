@@ -2,7 +2,7 @@ import { randomBytes } from 'crypto';
 import { PutCommand, GetCommand, DeleteCommand } from '@aws-sdk/lib-dynamodb';
 import { unmarshall } from '@aws-sdk/util-dynamodb';
 import { QueryCommand } from '@aws-sdk/client-dynamodb';
-import { JwtVerifier } from 'aws-jwt-verify';
+import { CognitoJwtVerifier } from 'aws-jwt-verify';
 import { SimpleJwksCache } from 'aws-jwt-verify/jwk';
 import {
   fieldNames,
@@ -30,8 +30,9 @@ const unmarshallArray = (items: any[]) => items.map(i => unmarshall(i));
  * @throws {Error} If the fetch request fails or the response is invalid.
  */
 const getJwksUri = async (): Promise<string> => {
+  console.log('Fetching JWKS URI from Google OpenID configuration...');
   const response = await fetch(
-    'https://accounts.google.com/.well-known/openid-configuration'
+    'https://cognito-idp.us-east-1.amazonaws.com/us-east-1_84MJ8QPWD/.well-known/jwks.json'
   );
   const data = await response.json();
   return data.jwks_uri;
@@ -43,22 +44,17 @@ const getJwksUri = async (): Promise<string> => {
  * @async
  * @param {string} jwksUri - The URI to the JSON Web Key Set (JWKS) used for verifying JWT signatures.
  * @param {string} clientId - The client ID (audience) that the JWT must be issued for.
- * @returns {Promise<JwtVerifier>} A promise that resolves to a configured JwtVerifier instance.
+ * @returns {Promise<CognitoJwtVerifier>} A promise that resolves to a configured CognitoJwtVerifier instance.
  */
 
 async function createVerifier(jwksUri: string, clientId: string) {
   const jwksCache = new SimpleJwksCache(); // Use a cache for better performance
-  const verifier = JwtVerifier.create(
-    {
-      issuer: 'https://accounts.google.com',
-      tokenUse: 'id',
-      audience: clientId,
-      jwksUri: jwksUri, // Use the retrieved JWKS URI
-    },
-    {
-      jwksCache: jwksCache,
-    }
-  );
+
+  const verifier = CognitoJwtVerifier.create({
+    userPoolId: process.env.COGNITO_USER_POOL_ID ?? '',
+    tokenUse: 'id',
+    clientId,
+  });
   return verifier;
 }
 

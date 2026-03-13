@@ -19,7 +19,7 @@ describe('AuthProviderService', () => {
     setupAutomaticSilentRefresh: () => of(true),
     hasValidIdToken: () => of(true),
     getIdentityClaims: () => of(true),
-    initImplicitFlow: () => of(true),
+    initLoginFlow: () => of(true),
     revokeTokenAndLogout: () => of(true),
     events: of<OAuthEvent>({ type: 'token_received' } as OAuthEvent),
   };
@@ -49,9 +49,9 @@ describe('AuthProviderService', () => {
   }));
 
   it('should handle login', () => {
-    spyOn(oAuthService, 'initImplicitFlow').and.callThrough();
+    spyOn(oAuthService, 'initLoginFlow').and.callThrough();
     service.login();
-    expect(oAuthService.initImplicitFlow).toHaveBeenCalled();
+    expect(oAuthService.initLoginFlow).toHaveBeenCalled();
   });
 
   it('should handle logout', () => {

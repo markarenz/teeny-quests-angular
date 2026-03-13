@@ -12,6 +12,10 @@ import { User } from '../interfaces/types';
   providedIn: 'root',
 })
 export class AuthProviderService implements OnDestroy {
+  constructor() {
+    this.initConfiguration();
+  }
+
   private oAuthService = inject(OAuthService);
 
   private router = inject(Router);
@@ -25,10 +29,6 @@ export class AuthProviderService implements OnDestroy {
   userObs = this.user.asObservable();
 
   private token = signal<string | null>(null);
-
-  constructor() {
-    this.initConfiguration();
-  }
 
   ngOnDestroy(): void {
     this.isLoggedIn.complete();
@@ -87,11 +87,13 @@ export class AuthProviderService implements OnDestroy {
   }
 
   login() {
-    this.oAuthService.initImplicitFlow();
+    this.oAuthService.initCodeFlow();
   }
 
   logout() {
     this.oAuthService.revokeTokenAndLogout();
+    sessionStorage.clear();
+
     this.user.next(null);
     this.isLoggedIn.next(false);
   }
