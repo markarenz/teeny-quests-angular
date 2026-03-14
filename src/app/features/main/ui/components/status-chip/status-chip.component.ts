@@ -2,10 +2,11 @@ import { Component, Input } from '@angular/core';
 import { capitalizeWords } from '@main/utils';
 
 @Component({
-    selector: 'app-status-chip',
-    imports: [],
-    templateUrl: './status-chip.component.html',
-    styleUrl: './status-chip.component.css'
+  selector: 'app-status-chip',
+  imports: [],
+  templateUrl: './status-chip.component.html',
+  styleUrl: './status-chip.component.css',
+  standalone: true,
 })
 export class StatusChipComponent {
   @Input('itemStatus') itemStatus: string = '';

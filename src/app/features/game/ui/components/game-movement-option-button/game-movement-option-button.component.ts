@@ -6,10 +6,11 @@ import { GameService } from '@game/services/game-service/game-service.service';
 import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 
 @Component({
-    selector: 'app-game-movement-option-button',
-    imports: [],
-    templateUrl: './game-movement-option-button.component.html',
-    styleUrl: './game-movement-option-button.component.css'
+  selector: 'app-game-movement-option-button',
+  imports: [],
+  templateUrl: './game-movement-option-button.component.html',
+  styleUrl: './game-movement-option-button.component.css',
+  standalone: true,
 })
 export class GameMovementOptionButtonComponent {
   @Input('positionKey') positionKey: string = '0_0';

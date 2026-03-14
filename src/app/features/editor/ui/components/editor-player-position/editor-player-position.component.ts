@@ -10,10 +10,11 @@ import {
 import { SvgPlayerComponent } from '@app/features/game/ui/components/svg-player/svg-player.component';
 
 @Component({
-    selector: 'app-editor-player-position',
-    imports: [SvgPlayerComponent],
-    templateUrl: './editor-player-position.component.html',
-    styleUrl: './editor-player-position.component.css'
+  selector: 'app-editor-player-position',
+  imports: [SvgPlayerComponent],
+  templateUrl: './editor-player-position.component.html',
+  styleUrl: './editor-player-position.component.css',
+  standalone: true,
 })
 export class EditorPlayerPositionComponent {
   constructor(private _gameEditorService: GameEditorService) {}

@@ -24,10 +24,11 @@ import {
 import { getLabelFromSlug } from '@app/features/main/utils';
 
 @Component({
-    selector: 'app-editor-input-conditions',
-    imports: [FormsModule, CollapsibleCardComponent, IconButtonComponent],
-    templateUrl: './editor-input-conditions.component.html',
-    styleUrl: './editor-input-conditions.component.css'
+  selector: 'app-editor-input-conditions',
+  imports: [FormsModule, CollapsibleCardComponent, IconButtonComponent],
+  templateUrl: './editor-input-conditions.component.html',
+  styleUrl: './editor-input-conditions.component.css',
+  standalone: true,
 })
 export class EditorInputConditionsComponent {
   @Input('title') title: string = 'Conditions';

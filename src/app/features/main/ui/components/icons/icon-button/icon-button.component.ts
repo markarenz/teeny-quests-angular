@@ -2,10 +2,11 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 
 @Component({
-    selector: 'app-icon-button',
-    imports: [],
-    templateUrl: './icon-button.component.html',
-    styleUrl: './icon-button.component.css'
+  selector: 'app-icon-button',
+  imports: [],
+  templateUrl: './icon-button.component.html',
+  styleUrl: './icon-button.component.css',
+  standalone: true,
 })
 export class IconButtonComponent {
   @Input('enableSound') enableSound: boolean = true;

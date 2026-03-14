@@ -14,10 +14,11 @@ import {
 import { IconButtonComponent } from '@app/features/main/ui/components/icons/icon-button/icon-button.component';
 
 @Component({
-    selector: 'app-editor-inventory',
-    imports: [FormsModule, IconButtonComponent],
-    templateUrl: './editor-inventory.component.html',
-    styleUrl: './editor-inventory.component.css'
+  selector: 'app-editor-inventory',
+  imports: [FormsModule, IconButtonComponent],
+  templateUrl: './editor-inventory.component.html',
+  styleUrl: './editor-inventory.component.css',
+  standalone: true,
 })
 export class EditorInventoryComponent {
   constructor(private _gameEditorService: GameEditorService) {}
@@ -33,8 +34,8 @@ export class EditorInventoryComponent {
     this.inventoryKeys = Object.keys(this.inventory);
     const inventoryItemKeys = Object.keys(inventoryDefinitions);
     this.itemOptions = inventoryItemKeys
-      .filter((key) => !this.inventoryKeys.includes(key))
-      .map((key) => ({
+      .filter(key => !this.inventoryKeys.includes(key))
+      .map(key => ({
         value: key,
         label: this.inventoryDefinitions[key].name,
       }));
@@ -52,7 +53,7 @@ export class EditorInventoryComponent {
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   handleDeleteInventoryItem(itemId: string) {

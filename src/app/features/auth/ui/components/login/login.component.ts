@@ -13,6 +13,7 @@ import { AudioService } from '@app/features/main/services/audio/audio-service.se
   imports: [ModalBgComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
+  standalone: true,
 })
 export class LoginComponent {
   private authService = inject(AuthProviderService);

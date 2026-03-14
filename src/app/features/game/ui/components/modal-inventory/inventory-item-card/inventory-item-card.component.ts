@@ -14,10 +14,11 @@ enum UIMode {
 }
 
 @Component({
-    selector: 'app-inventory-item-card',
-    imports: [AreaItemComponent, IconButtonComponent],
-    templateUrl: './inventory-item-card.component.html',
-    styleUrl: './inventory-item-card.component.css'
+  selector: 'app-inventory-item-card',
+  imports: [AreaItemComponent, IconButtonComponent],
+  templateUrl: './inventory-item-card.component.html',
+  styleUrl: './inventory-item-card.component.css',
+  standalone: true,
 })
 export class InventoryItemCardComponent {
   constructor(private _gameService: GameService) {}

@@ -2,10 +2,11 @@ import { Component, Input } from '@angular/core';
 import { SkeletonTextComponent } from '../skeleton-text/skeleton-text.component';
 
 @Component({
-    selector: 'app-game-link-card',
-    imports: [SkeletonTextComponent],
-    templateUrl: './game-link-card.component.html',
-    styleUrl: './game-link-card.component.css'
+  selector: 'app-game-link-card',
+  imports: [SkeletonTextComponent],
+  templateUrl: './game-link-card.component.html',
+  styleUrl: './game-link-card.component.css',
+  standalone: true,
 })
 export class GameLinkCardComponent {
   @Input('isSkeleton') isSkeleton: boolean = false;

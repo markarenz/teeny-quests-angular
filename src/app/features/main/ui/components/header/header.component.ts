@@ -9,16 +9,17 @@ import { Subscription } from 'rxjs';
 import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 
 @Component({
-    selector: 'app-header',
-    imports: [
-        ContainerComponent,
-        MenuToggleComponent,
-        RouterLink,
-        LoginComponent,
-        SvgMiniLogoComponent,
-    ],
-    templateUrl: './header.component.html',
-    styleUrl: './header.component.css'
+  selector: 'app-header',
+  imports: [
+    ContainerComponent,
+    MenuToggleComponent,
+    RouterLink,
+    LoginComponent,
+    SvgMiniLogoComponent,
+  ],
+  templateUrl: './header.component.html',
+  styleUrl: './header.component.css',
+  standalone: true,
 })
 export class HeaderComponent {
   @Input('title') title = '';

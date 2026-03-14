@@ -3,10 +3,11 @@ import { MainAppService } from '@main/services/main-app-service';
 import { Subscription } from 'rxjs';
 
 @Component({
-    selector: 'app-menu-toggle',
-    imports: [],
-    templateUrl: './menu-toggle.component.html',
-    styleUrl: './menu-toggle.component.css'
+  selector: 'app-menu-toggle',
+  imports: [],
+  templateUrl: './menu-toggle.component.html',
+  styleUrl: './menu-toggle.component.css',
+  standalone: true,
 })
 export class MenuToggleComponent {
   private subscription: Subscription;

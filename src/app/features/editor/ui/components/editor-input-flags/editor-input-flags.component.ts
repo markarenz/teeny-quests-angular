@@ -8,10 +8,11 @@ import { CollapsibleCardComponent } from '@app/features/main/ui/components/colla
 import { IconButtonComponent } from '@app/features/main/ui/components/icons/icon-button/icon-button.component';
 
 @Component({
-    selector: 'app-editor-input-flags',
-    imports: [CollapsibleCardComponent, IconButtonComponent, FormsModule],
-    templateUrl: './editor-input-flags.component.html',
-    styleUrl: './editor-input-flags.component.css'
+  selector: 'app-editor-input-flags',
+  imports: [CollapsibleCardComponent, IconButtonComponent, FormsModule],
+  templateUrl: './editor-input-flags.component.html',
+  styleUrl: './editor-input-flags.component.css',
+  standalone: true,
 })
 export class EditorInputFlagsComponent {
   constructor(private _gameEditorService: GameEditorService) {}

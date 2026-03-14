@@ -17,16 +17,17 @@ import { getPositionKeysForGridSize } from '@main/utils';
 import { floorDefinitions } from '@content/floor-definitions';
 
 @Component({
-    selector: 'app-editor-panel-exits',
-    imports: [
-        FormsModule,
-        CollapsibleCardComponent,
-        AreaCellSelectorComponent,
-        IconButtonComponent,
-        TooltipComponent,
-    ],
-    templateUrl: './editor-panel-exits.component.html',
-    styleUrl: './editor-panel-exits.component.css'
+  selector: 'app-editor-panel-exits',
+  imports: [
+    FormsModule,
+    CollapsibleCardComponent,
+    AreaCellSelectorComponent,
+    IconButtonComponent,
+    TooltipComponent,
+  ],
+  templateUrl: './editor-panel-exits.component.html',
+  styleUrl: './editor-panel-exits.component.css',
+  standalone: true,
 })
 export class EditorPanelExitsComponent {
   constructor(private _gameEditorService: GameEditorService) {}

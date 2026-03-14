@@ -7,10 +7,11 @@ import { defaultGridSize } from '@config/index';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 
 @Component({
-    selector: 'app-area-cell-button',
-    imports: [],
-    templateUrl: './area-cell-button.component.html',
-    styleUrl: './area-cell-button.component.css'
+  selector: 'app-area-cell-button',
+  imports: [],
+  templateUrl: './area-cell-button.component.html',
+  styleUrl: './area-cell-button.component.css',
+  standalone: true,
 })
 export class AreaCellButtonComponent {
   constructor(private _gameEditorService: GameEditorService) {}

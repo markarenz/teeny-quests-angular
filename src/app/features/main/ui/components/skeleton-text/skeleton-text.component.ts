@@ -1,10 +1,11 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-    selector: 'app-skeleton-text',
-    imports: [],
-    templateUrl: './skeleton-text.component.html',
-    styleUrl: './skeleton-text.component.css'
+  selector: 'app-skeleton-text',
+  imports: [],
+  templateUrl: './skeleton-text.component.html',
+  styleUrl: './skeleton-text.component.css',
+  standalone: true,
 })
 export class SkeletonTextComponent {
   @Input('width') width: number = 50;

@@ -10,16 +10,17 @@ import { GameROM } from '@app/features/main/interfaces/types';
 import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 
 @Component({
-    selector: 'app-home',
-    imports: [
-        ContainerComponent,
-        MainLayoutComponent,
-        RouterLink,
-        LogoMainComponent,
-        GameLinkCardComponent,
-    ],
-    templateUrl: './home.component.html',
-    styleUrl: './home.component.css'
+  selector: 'app-home',
+  imports: [
+    ContainerComponent,
+    MainLayoutComponent,
+    RouterLink,
+    LogoMainComponent,
+    GameLinkCardComponent,
+  ],
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.css',
+  standalone: true,
 })
 export class HomeComponent {
   constructor(

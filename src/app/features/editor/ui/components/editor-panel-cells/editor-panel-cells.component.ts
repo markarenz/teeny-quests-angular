@@ -17,22 +17,24 @@ import { getLabelFromSlug } from '@app/features/main/utils';
 import { commonText } from '@content/text';
 
 @Component({
-    selector: 'app-editor-panel-cells',
-    imports: [
-        FormsModule,
-        AreaCellSelectorComponent,
-        CollapsibleCardComponent,
-        EditorTextureSelectorComponent,
-        IconButtonComponent,
-        ButtonComponent,
-        TooltipComponent,
-    ],
-    templateUrl: './editor-panel-cells.component.html',
-    styleUrl: './editor-panel-cells.component.css'
+  selector: 'app-editor-panel-cells',
+  imports: [
+    FormsModule,
+    AreaCellSelectorComponent,
+    CollapsibleCardComponent,
+    EditorTextureSelectorComponent,
+    IconButtonComponent,
+    ButtonComponent,
+    TooltipComponent,
+  ],
+  standalone: true,
+  templateUrl: './editor-panel-cells.component.html',
+  styleUrl: './editor-panel-cells.component.css',
 })
 export class EditorPanelCellsComponent {
   constructor(private _gameEditorService: GameEditorService) {}
   private subscriptions: Subscription[] = [];
+  public selectionMode: 'single' | 'multiple' = 'single';
   public selectedCellPositions: string[] = [];
   public selectedCell: GameAreaMapCell | null = null;
   public maxHeight: number = maxAreaCellHeight;
@@ -136,6 +138,10 @@ export class EditorPanelCellsComponent {
   }
   handleResetTexturesClick() {
     this._gameEditorService.resetTexturesForCurrentArea();
+  }
+  handleToggleSelectionMode() {
+    this.selectionMode =
+      this.selectionMode === 'single' ? 'multiple' : 'single';
   }
 
   hideMapCell() {

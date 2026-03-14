@@ -7,15 +7,16 @@ import { formatDate } from '@app/features/main/utils';
 import { IconButtonComponent } from '../icons/icon-button/icon-button.component';
 
 @Component({
-    selector: 'app-table',
-    imports: [
-        RouterLink,
-        StatusChipComponent,
-        LoaderAnimationComponent,
-        IconButtonComponent,
-    ],
-    templateUrl: './table.component.html',
-    styleUrl: './table.component.css'
+  selector: 'app-table',
+  imports: [
+    RouterLink,
+    StatusChipComponent,
+    LoaderAnimationComponent,
+    IconButtonComponent,
+  ],
+  templateUrl: './table.component.html',
+  styleUrl: './table.component.css',
+  standalone: true,
 })
 export class TableComponent {
   @Input('title') title: string = 'Title';

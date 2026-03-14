@@ -2,10 +2,11 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 
 @Component({
-    selector: 'app-button',
-    imports: [],
-    templateUrl: './button.component.html',
-    styleUrl: './button.component.css'
+  selector: 'app-button',
+  imports: [],
+  templateUrl: './button.component.html',
+  styleUrl: './button.component.css',
+  standalone: true,
 })
 export class ButtonComponent {
   @Input('label') label: string = 'Click';

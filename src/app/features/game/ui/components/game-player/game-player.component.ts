@@ -10,10 +10,11 @@ import { defaultGridSize } from '@config/index';
 import { GameAreaMapCell } from '@app/features/main/interfaces/types';
 
 @Component({
-    selector: 'app-game-player',
-    imports: [SvgPlayerComponent],
-    templateUrl: './game-player.component.html',
-    styleUrl: './game-player.component.css'
+  selector: 'app-game-player',
+  imports: [SvgPlayerComponent],
+  templateUrl: './game-player.component.html',
+  styleUrl: './game-player.component.css',
+  standalone: true,
 })
 export class GamePlayerComponent {
   private subscriptions: Subscription[] = [];

@@ -8,10 +8,11 @@ import { inventoryDefinitions } from '@content/item-definitions';
 import { InventoryItemCardComponent } from './inventory-item-card/inventory-item-card.component';
 
 @Component({
-    selector: 'app-modal-inventory',
-    imports: [CommonModalComponent, InventoryItemCardComponent],
-    templateUrl: './modal-inventory.component.html',
-    styleUrl: './modal-inventory.component.css'
+  selector: 'app-modal-inventory',
+  imports: [CommonModalComponent, InventoryItemCardComponent],
+  templateUrl: './modal-inventory.component.html',
+  styleUrl: './modal-inventory.component.css',
+  standalone: true,
 })
 export class ModalInventoryComponent {
   constructor(private _gameService: GameService) {}

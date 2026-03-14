@@ -20,21 +20,22 @@ import { FloorDefaultComponent } from './floor-default/floor-default.component';
 import { FloorRoofSimpleComponent } from './floor-roof-simple/floor-roof-simple.component';
 
 @Component({
-    selector: 'app-textures-floor',
-    imports: [
-        FloorDirtComponent,
-        FloorWaterComponent,
-        FloorStoneDarkComponent,
-        FloorParquetComponent,
-        FloorRoofComponent,
-        FloorSpikesComponent,
-        FloorWallTopComponent,
-        FloorTileDarkComponent,
-        FloorDefaultComponent,
-        FloorRoofSimpleComponent,
-    ],
-    templateUrl: './textures-floor.component.html',
-    styleUrl: './textures-floor.component.css'
+  selector: 'app-textures-floor',
+  imports: [
+    FloorDirtComponent,
+    FloorWaterComponent,
+    FloorStoneDarkComponent,
+    FloorParquetComponent,
+    FloorRoofComponent,
+    FloorSpikesComponent,
+    FloorWallTopComponent,
+    FloorTileDarkComponent,
+    FloorDefaultComponent,
+    FloorRoofSimpleComponent,
+  ],
+  templateUrl: './textures-floor.component.html',
+  styleUrl: './textures-floor.component.css',
+  standalone: true,
 })
 export class TexturesFloorComponent {
   @Input('floorType') floorType: string = 'default';

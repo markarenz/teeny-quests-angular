@@ -16,16 +16,17 @@ import { AreaPropComponent } from '@app/features/game/ui/components/area-prop/ar
 import { EditorPlayerPositionComponent } from '../editor-player-position/editor-player-position.component';
 
 @Component({
-    selector: 'app-editor-area',
-    imports: [
-        AreaCellComponent,
-        AreaExitComponent,
-        AreaItemComponent,
-        AreaPropComponent,
-        EditorPlayerPositionComponent,
-    ],
-    templateUrl: './editor-area.component.html',
-    styleUrl: './editor-area.component.css'
+  selector: 'app-editor-area',
+  imports: [
+    AreaCellComponent,
+    AreaExitComponent,
+    AreaItemComponent,
+    AreaPropComponent,
+    EditorPlayerPositionComponent,
+  ],
+  templateUrl: './editor-area.component.html',
+  styleUrl: './editor-area.component.css',
+  standalone: true,
 })
 export class EditorAreaComponent {
   constructor(private _gameEditorService: GameEditorService) {}

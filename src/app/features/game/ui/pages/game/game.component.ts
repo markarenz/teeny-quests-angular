@@ -21,19 +21,20 @@ import { AuthProviderService } from '@app/features/auth/services/auth-provider-s
 import { logger } from '@app/features/main/utils/logger';
 
 @Component({
-    selector: 'app-game',
-    imports: [
-        MainLayoutComponent,
-        GameAreaComponent,
-        IconButtonComponent,
-        ModalPageComponent,
-        ModalInventoryComponent,
-        GameEndMessageComponent,
-        LoaderAnimationComponent,
-        TooltipComponent,
-    ],
-    templateUrl: './game.component.html',
-    styleUrl: './game.component.css'
+  selector: 'app-game',
+  imports: [
+    MainLayoutComponent,
+    GameAreaComponent,
+    IconButtonComponent,
+    ModalPageComponent,
+    ModalInventoryComponent,
+    GameEndMessageComponent,
+    LoaderAnimationComponent,
+    TooltipComponent,
+  ],
+  templateUrl: './game.component.html',
+  styleUrl: './game.component.css',
+  standalone: true,
 })
 export class GameComponent {
   private windowWidth: number;

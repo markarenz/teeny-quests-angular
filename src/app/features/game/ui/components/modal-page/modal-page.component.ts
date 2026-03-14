@@ -4,14 +4,15 @@ import { LoaderAnimationComponent } from '@app/features/main/ui/components/loade
 import { ContentGameHelpComponent } from '../content-game-help/content-game-help.component';
 import { Paragraph } from '@app/features/main/interfaces/types';
 @Component({
-    selector: 'app-modal-page',
-    imports: [
-        CommonModalComponent,
-        LoaderAnimationComponent,
-        ContentGameHelpComponent,
-    ],
-    templateUrl: './modal-page.component.html',
-    styleUrl: './modal-page.component.css'
+  selector: 'app-modal-page',
+  imports: [
+    CommonModalComponent,
+    LoaderAnimationComponent,
+    ContentGameHelpComponent,
+  ],
+  templateUrl: './modal-page.component.html',
+  styleUrl: './modal-page.component.css',
+  standalone: true,
 })
 export class ModalPageComponent {
   @Input('levelGoals') levelGoals: string = '';

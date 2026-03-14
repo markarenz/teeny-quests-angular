@@ -9,16 +9,17 @@ import { EditorInputActionsComponent } from '../editor-input-actions/editor-inpu
 import { EditorInputConditionsComponent } from '../editor-input-conditions/editor-input-conditions.component';
 
 @Component({
-    selector: 'app-editor-panel-events',
-    imports: [
-        FormsModule,
-        CollapsibleCardComponent,
-        IconButtonComponent,
-        EditorInputActionsComponent,
-        EditorInputConditionsComponent,
-    ],
-    templateUrl: './editor-panel-events.component.html',
-    styleUrl: './editor-panel-events.component.css'
+  selector: 'app-editor-panel-events',
+  imports: [
+    FormsModule,
+    CollapsibleCardComponent,
+    IconButtonComponent,
+    EditorInputActionsComponent,
+    EditorInputConditionsComponent,
+  ],
+  templateUrl: './editor-panel-events.component.html',
+  styleUrl: './editor-panel-events.component.css',
+  standalone: true,
 })
 export class EditorPanelEventsComponent {
   constructor(private _gameEditorService: GameEditorService) {}

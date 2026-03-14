@@ -1,10 +1,11 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-    selector: 'app-svg-item-key',
-    imports: [],
-    templateUrl: './svg-item-key.component.html',
-    styleUrl: './svg-item-key.component.css'
+  selector: 'app-svg-item-key',
+  imports: [],
+  templateUrl: './svg-item-key.component.html',
+  styleUrl: './svg-item-key.component.css',
+  standalone: true,
 })
 export class SvgItemKeyComponent {
   @Input('isFlat') isFlat: boolean = false;
