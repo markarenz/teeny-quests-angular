@@ -11,8 +11,8 @@
           }}
         </label>
         <div class="flex flex-row gap-2">
-          <app-button [label]="selectionMode === 'single' ? 'Single Select' : 'Multi Select'"
-            (click)="handleToggleSelectionMode()" [isDisabled]="!selectedCellPositions.length" />
+          <app-icon-toggle tooltipContent="Toggle Single or Multiple Cell Selection Mode"
+            [toggleState]="isMultiSelection" (onToggleChange)="handleToggleSelectionMode($event)" />
           <app-icon-button icon="close" theme="danger" label="Deselect Cell" (click)="handleCellDeselect()"
             [isDisabled]="!selectedCellPositions.length" />
         </div>

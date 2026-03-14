@@ -36,7 +36,8 @@ describe('EditorPanelCellsComponent', () => {
     spyOn(gameEditorService, 'setSelectedCellPositions');
     component.handleCellSelect(positionKey);
     expect(gameEditorService.setSelectedCellPositions).toHaveBeenCalledWith(
-      positionKey
+      positionKey,
+      false
     );
   });
 

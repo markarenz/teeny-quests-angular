@@ -579,26 +579,33 @@ export class GameEditorService {
 
   // SELECTED -----------------------------------------------------------------
 
-  setSelectedCellPositions(cellPosition: string | null) {
+  setSelectedCellPositions(
+    cellPosition: string | null,
+    isMultiSelection: boolean = false
+  ) {
     if (cellPosition === null) {
       this.selectedCellPositions.next([]);
       this.selectedCell.next(null);
       return;
     }
     const area = this.game.value?.content.areas[this.selectedAreaId.value];
-    if (this.selectedCellPositions.value.includes(cellPosition)) {
-      const nextSelectedCellPositions = this.selectedCellPositions.value.filter(
-        pos => pos !== cellPosition
-      );
-      this.selectedCellPositions.next(nextSelectedCellPositions);
-      // Fall back to first remaining cell
-      this.selectedCell.next(area?.map[nextSelectedCellPositions[0]] ?? null);
+    if (isMultiSelection) {
+      if (this.selectedCellPositions.value.includes(cellPosition)) {
+        const nextSelectedCellPositions =
+          this.selectedCellPositions.value.filter(pos => pos !== cellPosition);
+        this.selectedCellPositions.next(nextSelectedCellPositions);
+        // Fall back to first remaining cell
+        this.selectedCell.next(area?.map[nextSelectedCellPositions[0]] ?? null);
+      } else {
+        const nextSelectedCellPositions = [
+          ...this.selectedCellPositions.value,
+          cellPosition,
+        ];
+        this.selectedCellPositions.next(nextSelectedCellPositions);
+        this.selectedCell.next(area?.map[cellPosition] ?? null);
+      }
     } else {
-      const nextSelectedCellPositions = [
-        ...this.selectedCellPositions.value,
-        cellPosition,
-      ];
-      this.selectedCellPositions.next(nextSelectedCellPositions);
+      this.selectedCellPositions.next([cellPosition]);
       this.selectedCell.next(area?.map[cellPosition] ?? null);
     }
   }
@@ -1000,30 +1007,35 @@ export class GameEditorService {
     return null;
   };
 
-  public getCanMapCellBeHidden = (positionKey: string): boolean => {
+  public getCanMapCellsBeHidden = (positionKeys: string[]): boolean => {
     const areaId = this.selectedAreaId.value;
     const area = this.game.value?.content.areas[areaId];
     const player = this.game.value?.content.player;
     if (!area || !player) {
       return false;
     }
-    const conflictWithPlayer =
-      `${player.y}_${player.x}` === positionKey && player?.areaId === areaId;
-    const conflictExits = area.exits.some(exit => {
-      const exitPositionKey = `${exit.y}_${exit.x}`;
-      return exitPositionKey === positionKey;
+    return positionKeys.every(positionKey => {
+      const conflictWithPlayer =
+        `${player.y}_${player.x}` === positionKey && player?.areaId === areaId;
+      const conflictExits = area.exits.some(exit => {
+        const exitPositionKey = `${exit.y}_${exit.x}`;
+        return exitPositionKey === positionKey;
+      });
+      const conflictItems = area.items.some(item => {
+        const exitPositionKey = `${item.y}_${item.x}`;
+        return exitPositionKey === positionKey;
+      });
+      const conflictProps = area.props.some(prop => {
+        const exitPositionKey = `${prop.y}_${prop.x}`;
+        return exitPositionKey === positionKey;
+      });
+      return (
+        !conflictExits &&
+        !conflictItems &&
+        !conflictProps &&
+        !conflictWithPlayer
+      );
     });
-    const conflictItems = area.items.some(item => {
-      const exitPositionKey = `${item.y}_${item.x}`;
-      return exitPositionKey === positionKey;
-    });
-    const conflictProps = area.props.some(prop => {
-      const exitPositionKey = `${prop.y}_${prop.x}`;
-      return exitPositionKey === positionKey;
-    });
-    return (
-      !conflictExits && !conflictItems && !conflictProps && !conflictWithPlayer
-    );
   };
 
   loadFromLocalStorage(gameId: string) {

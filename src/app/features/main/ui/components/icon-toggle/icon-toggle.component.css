@@ -1,0 +1,58 @@
+.icon {
+  width: 2.5rem;
+  height: 2rem;
+  padding: 0.1rem;
+  position: relative;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-color: var(--color-primary-dark);
+  border-style: solid;
+  cursor: pointer;
+  &:hover {
+    border-color: var(--color-primary);
+  }
+  &.active {
+    background-color: var(--color-primary-dark);
+    border-color: var(--color-primary);
+  }
+
+  svg {
+    width: 24px;
+    height: 24px;
+    path {
+      fill: var(--color-gray-400);
+      .active & {
+        fill: var(--color-gray-100);
+      }
+    }
+  }
+  .icon-toggle-button:before {
+    content: '';
+    position: absolute;
+    z-index: 0;
+    top: -9px;
+    left: -4px;
+    width: 44px;
+    height: 44px;
+    background-color: transparent;
+  }
+}
+.icon-off {
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+  border-width: 2px 0 2px 2px;
+  background-color: var(--color-gray-700);
+  padding-left: 0.5rem;
+  padding-right: 0.25rem;
+}
+.icon-on {
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+  border-width: 2px 2px 2px 0;
+  background-color: var(--color-gray-600);
+  padding-left: 0.25rem;
+  padding-right: 0.5rem;
+}
