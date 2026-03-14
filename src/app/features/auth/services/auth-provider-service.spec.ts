@@ -20,6 +20,7 @@ describe('AuthProviderService', () => {
     hasValidIdToken: () => of(true),
     getIdentityClaims: () => of(true),
     initLoginFlow: () => of(true),
+    initCodeFlow: () => of(true),
     revokeTokenAndLogout: () => of(true),
     events: of<OAuthEvent>({ type: 'token_received' } as OAuthEvent),
   };
@@ -49,9 +50,9 @@ describe('AuthProviderService', () => {
   }));
 
   it('should handle login', () => {
-    spyOn(oAuthService, 'initLoginFlow').and.callThrough();
+    spyOn(oAuthService, 'initCodeFlow').and.callThrough();
     service.login();
-    expect(oAuthService.initLoginFlow).toHaveBeenCalled();
+    expect(oAuthService.initCodeFlow).toHaveBeenCalled();
   });
 
   it('should handle logout', () => {
