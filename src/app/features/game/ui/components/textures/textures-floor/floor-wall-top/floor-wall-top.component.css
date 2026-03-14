@@ -1,12 +1,13 @@
 .bg {
-  fill: #ccc;
+  fill: #5a514c;
 }
+
 .rock {
-  stroke: #aaa;
+  stroke: #736c6c;
   fill: none;
 }
 .rock-filled {
-  fill: #aaa;
+  fill: #413a3a;
 }
 
 .editor-mode {
