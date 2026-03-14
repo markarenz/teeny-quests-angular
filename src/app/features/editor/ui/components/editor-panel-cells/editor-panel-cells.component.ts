@@ -10,6 +10,7 @@ import { wallOptionsData } from '@content/wall-definitions';
 import { floorOptionsData } from '@content/floor-definitions';
 import { EditorTextureSelectorComponent } from '../editor-texture-selector/editor-texture-selector.component';
 import { IconButtonComponent } from '@app/features/main/ui/components/icons/icon-button/icon-button.component';
+import { IconToggleComponent } from '@app/features/main/ui/components/icon-toggle/icon-toggle.component';
 import { ButtonComponent } from '@app/features/main/ui/components/button/button.component';
 import { mapCellDecalOptions } from '@content/constants';
 import { TooltipComponent } from '@app/features/main/ui/components/tooltip/tooltip.component';
@@ -24,6 +25,7 @@ import { commonText } from '@content/text';
     CollapsibleCardComponent,
     EditorTextureSelectorComponent,
     IconButtonComponent,
+    IconToggleComponent,
     ButtonComponent,
     TooltipComponent,
   ],
@@ -34,7 +36,7 @@ import { commonText } from '@content/text';
 export class EditorPanelCellsComponent {
   constructor(private _gameEditorService: GameEditorService) {}
   private subscriptions: Subscription[] = [];
-  public selectionMode: 'single' | 'multiple' = 'single';
+  public isMultiSelection: boolean = false;
   public selectedCellPositions: string[] = [];
   public selectedCell: GameAreaMapCell | null = null;
   public maxHeight: number = maxAreaCellHeight;
@@ -60,10 +62,9 @@ export class EditorPanelCellsComponent {
       this._gameEditorService.selectedCellPositionsObs.subscribe(
         (data: string[] | null) => {
           this.selectedCellPositions = data ?? [];
-          // TODO: below
-          // this.canHideCell = this._gameEditorService.getCanMapCellsBeHidden(
-          //   data ?? []
-          // );
+          this.canHideCell = this._gameEditorService.getCanMapCellsBeHidden(
+            data ?? []
+          );
         }
       )
     );
@@ -95,7 +96,10 @@ export class EditorPanelCellsComponent {
   }
 
   handleCellSelect(position: string) {
-    this._gameEditorService.setSelectedCellPositions(position);
+    this._gameEditorService.setSelectedCellPositions(
+      position,
+      this.isMultiSelection
+    );
   }
 
   handleCellDeselect() {
@@ -139,18 +143,17 @@ export class EditorPanelCellsComponent {
   handleResetTexturesClick() {
     this._gameEditorService.resetTexturesForCurrentArea();
   }
-  handleToggleSelectionMode() {
-    this.selectionMode =
-      this.selectionMode === 'single' ? 'multiple' : 'single';
+  handleToggleSelectionMode(newValue: boolean) {
+    this.isMultiSelection = newValue;
   }
 
   hideMapCell() {
-    // if (this.selectedCell && this.selectedCellPositions) {
-    //   this.inputCellHidden = !this.inputCellHidden;
-    //   this._gameEditorService.setCellsData({
-    //     ...this.selectedCell,
-    //     isHidden: this.inputCellHidden,
-    //   });
-    // }
+    if (this.selectedCell && this.selectedCellPositions) {
+      this.inputCellHidden = !this.inputCellHidden;
+      this._gameEditorService.setCellsData({
+        ...this.selectedCell,
+        isHidden: this.inputCellHidden,
+      });
+    }
   }
 }

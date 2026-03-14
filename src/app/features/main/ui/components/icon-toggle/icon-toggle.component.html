@@ -1,0 +1,40 @@
+<app-tooltip [content]="tooltipContent">
+  <div class="flex flex-row gap-0">
+    <div class="icon icon-off {{ !toggleState ? 'active' : null }}">
+      <button (click)=" handleToggle()" label="Toggle Selection Mode" aria-pressed="{{toggleState}}"
+        class="icon-toggle-button" [disabled]="!toggleState">
+        @if(iconSet === 'single-multi') {
+        <svg viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg"
+          xmlns:svg="http://www.w3.org/2000/svg">
+          <g>
+            <path
+              d="M 5.0002116,5.0002116 V 94.999886 H 94.999886 V 5.0002116 Z M 9.9999064,9.9999064 H 90.000191 V 90.000191 H 9.9999064 Z" />
+            <path
+              d="M 29.117655,19.118029 18.897349,29.338335 39.338701,49.77969 18.897346,70.220308 29.117655,80.441363 49.559015,60.000003 70.000368,80.441356 80.22068,70.220306 59.779321,49.779695 80.220681,29.338335 70.000368,19.118022 49.559008,39.559382 Z" />
+          </g>
+        </svg>
+        }
+      </button>
+    </div>
+    <div class="icon icon-on {{ toggleState ? 'active' : null }}">
+      <button (click)="handleToggle()" label="Toggle Selection Mode" aria-pressed="{{toggleState}}"
+        class="icon-toggle-button" [disabled]="toggleState">
+        @if(iconSet === 'single-multi') {
+        <svg viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg"
+          xmlns:svg="http://www.w3.org/2000/svg">
+          <g>
+            <path
+              d="M 5.000306,25 5,94.9997 H 74.999391 L 74.999697,25 Z m 4.999696,4.999695 h 60 l -3.06e-4,60.000306 H 9.9996947 Z" />
+            <path
+              d="m 15.000047,15.00007 v 9.999906 h 4.999695 v -5.000212 h 59.999955 v 60.000473 h -4.999695 v 4.999695 h 9.99939 V 15.00007 Z" />
+            <path
+              d="m 25.00005,5.000306 v 9.999906 h 4.999695 V 10 h 59.999952 v 60.000473 h -4.999692 v 4.999695 h 9.999392 V 5.000306 Z" />
+            <path
+              d="m 22.664513,33.99717 -8.667348,8.66735 17.335328,17.33533 -17.335328,17.3347 8.667348,8.66799 L 39.999847,68.6672 57.335181,86.00253 66.002533,77.33455 48.667199,59.99985 66.002533,42.66452 57.335181,33.99716 39.999847,51.3325 Z" />
+          </g>
+        </svg>
+        }
+      </button>
+    </div>
+  </div>
+</app-tooltip>

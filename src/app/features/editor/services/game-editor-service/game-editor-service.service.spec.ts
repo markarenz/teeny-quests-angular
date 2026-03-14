@@ -785,7 +785,7 @@ describe('loadContentVersion', () => {
   });
 });
 
-describe('getCanMapCellBeHidden', () => {
+describe('getCanMapCellsBeHidden', () => {
   let service: GameEditorService;
   beforeEach(() => {
     service = TestBed.inject(GameEditorService);
@@ -798,15 +798,15 @@ describe('getCanMapCellBeHidden', () => {
     // player 2_2
   });
   it('should determine if map cell can be hidden', () => {
-    const canBeHidden = service.getCanMapCellBeHidden('1_1');
+    const canBeHidden = service.getCanMapCellsBeHidden(['1_1']);
     expect(canBeHidden).toBeTrue();
   });
   it('should determine map cell cannot be hidden due to conflict', () => {
-    const canBeHidden = service.getCanMapCellBeHidden('3_4');
+    const canBeHidden = service.getCanMapCellsBeHidden(['3_4']);
     expect(canBeHidden).toBeFalse();
   });
   it('should determine map cell cannot be hidden due player start', () => {
-    const canBeHidden = service.getCanMapCellBeHidden('2_2');
+    const canBeHidden = service.getCanMapCellsBeHidden(['2_2']);
     expect(canBeHidden).toBeFalse();
   });
 });
