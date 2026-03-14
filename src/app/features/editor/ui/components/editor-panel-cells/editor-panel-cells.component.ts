@@ -17,19 +17,18 @@ import { getLabelFromSlug } from '@app/features/main/utils';
 import { commonText } from '@content/text';
 
 @Component({
-  selector: 'app-editor-panel-cells',
-  standalone: true,
-  imports: [
-    FormsModule,
-    AreaCellSelectorComponent,
-    CollapsibleCardComponent,
-    EditorTextureSelectorComponent,
-    IconButtonComponent,
-    ButtonComponent,
-    TooltipComponent,
-  ],
-  templateUrl: './editor-panel-cells.component.html',
-  styleUrl: './editor-panel-cells.component.css',
+    selector: 'app-editor-panel-cells',
+    imports: [
+        FormsModule,
+        AreaCellSelectorComponent,
+        CollapsibleCardComponent,
+        EditorTextureSelectorComponent,
+        IconButtonComponent,
+        ButtonComponent,
+        TooltipComponent,
+    ],
+    templateUrl: './editor-panel-cells.component.html',
+    styleUrl: './editor-panel-cells.component.css'
 })
 export class EditorPanelCellsComponent {
   constructor(private _gameEditorService: GameEditorService) {}

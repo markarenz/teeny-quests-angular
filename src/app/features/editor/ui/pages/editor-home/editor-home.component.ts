@@ -13,18 +13,17 @@ import { User } from '@app/features/auth/interfaces/types';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 
 @Component({
-  selector: 'app-editor-home',
-  standalone: true,
-  imports: [
-    MainLayoutComponent,
-    ContainerComponent,
-    ButtonComponent,
-    TableComponent,
-    NewGameModalComponent,
-    BreadcrumbsComponent,
-  ],
-  templateUrl: './editor-home.component.html',
-  styleUrl: './editor-home.component.css',
+    selector: 'app-editor-home',
+    imports: [
+        MainLayoutComponent,
+        ContainerComponent,
+        ButtonComponent,
+        TableComponent,
+        NewGameModalComponent,
+        BreadcrumbsComponent,
+    ],
+    templateUrl: './editor-home.component.html',
+    styleUrl: './editor-home.component.css'
 })
 export class EditorHomeComponent {
   constructor(

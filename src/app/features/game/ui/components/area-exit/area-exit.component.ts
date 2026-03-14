@@ -13,16 +13,15 @@ import { SvgExitDefaultEComponent } from './exits/svg-exit-default-e/svg-exit-de
 import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 
 @Component({
-  selector: 'app-area-exit',
-  standalone: true,
-  imports: [
-    SvgExitDefaultWComponent,
-    SvgExitDefaultNComponent,
-    SvgExitDefaultSComponent,
-    SvgExitDefaultEComponent,
-  ],
-  templateUrl: './area-exit.component.html',
-  styleUrl: './area-exit.component.css',
+    selector: 'app-area-exit',
+    imports: [
+        SvgExitDefaultWComponent,
+        SvgExitDefaultNComponent,
+        SvgExitDefaultSComponent,
+        SvgExitDefaultEComponent,
+    ],
+    templateUrl: './area-exit.component.html',
+    styleUrl: './area-exit.component.css'
 })
 export class AreaExitComponent {
   constructor(private _audioService: AudioService) {}

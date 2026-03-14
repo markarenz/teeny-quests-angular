@@ -10,11 +10,10 @@ import { ModalBgComponent } from '@main/ui/components/modal-bg/modal-bg.componen
 import { ButtonComponent } from '@app/features/main/ui/components/button/button.component';
 
 @Component({
-  selector: 'app-common-modal',
-  standalone: true,
-  imports: [ModalBgComponent, ButtonComponent],
-  templateUrl: './common-modal.component.html',
-  styleUrl: './common-modal.component.css',
+    selector: 'app-common-modal',
+    imports: [ModalBgComponent, ButtonComponent],
+    templateUrl: './common-modal.component.html',
+    styleUrl: './common-modal.component.css'
 })
 export class CommonModalComponent {
   @Input('title') title: string = '';

@@ -9,11 +9,10 @@ import { User } from '@app/features/auth/interfaces/types';
 import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [CommonModule, ModalBgComponent],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css',
+    selector: 'app-login',
+    imports: [CommonModule, ModalBgComponent],
+    templateUrl: './login.component.html',
+    styleUrl: './login.component.css'
 })
 export class LoginComponent {
   private authService = inject(AuthProviderService);

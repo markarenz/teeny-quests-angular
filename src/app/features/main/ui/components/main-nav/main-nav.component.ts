@@ -11,11 +11,10 @@ import { MenuItem } from '@content/menus/user-menu-data';
 import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 
 @Component({
-  selector: 'app-main-nav',
-  standalone: true,
-  imports: [RouterLink, RouterLinkActive, ContainerComponent, ModalBgComponent],
-  templateUrl: './main-nav.component.html',
-  styleUrl: './main-nav.component.css',
+    selector: 'app-main-nav',
+    imports: [RouterLink, RouterLinkActive, ContainerComponent, ModalBgComponent],
+    templateUrl: './main-nav.component.html',
+    styleUrl: './main-nav.component.css'
 })
 export class MainNavComponent {
   public menuItems: MenuItem[] = [];

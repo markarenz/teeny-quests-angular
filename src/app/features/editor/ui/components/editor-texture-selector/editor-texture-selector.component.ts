@@ -4,11 +4,10 @@ import { TexturesWallComponent } from '@app/features/game/ui/components/textures
 import { SelectIUIOption } from '@app/features/main/interfaces/types';
 
 @Component({
-  selector: 'app-editor-texture-selector',
-  standalone: true,
-  imports: [TexturesFloorComponent, TexturesWallComponent],
-  templateUrl: './editor-texture-selector.component.html',
-  styleUrl: './editor-texture-selector.component.css',
+    selector: 'app-editor-texture-selector',
+    imports: [TexturesFloorComponent, TexturesWallComponent],
+    templateUrl: './editor-texture-selector.component.html',
+    styleUrl: './editor-texture-selector.component.css'
 })
 export class EditorTextureSelectorComponent {
   @Input('surfaceType') surfaceType: string = 'floor';

@@ -10,16 +10,15 @@ import { AuthProviderService } from '@app/features/auth/services/auth-provider-s
 import { User } from '@app/features/auth/interfaces/types';
 
 @Component({
-  selector: 'app-new-game-modal',
-  standalone: true,
-  imports: [
-    ModalBgComponent,
-    ButtonComponent,
-    FormsModule,
-    LoaderAnimationComponent,
-  ],
-  templateUrl: './new-game-modal.component.html',
-  styleUrl: './new-game-modal.component.css',
+    selector: 'app-new-game-modal',
+    imports: [
+        ModalBgComponent,
+        ButtonComponent,
+        FormsModule,
+        LoaderAnimationComponent,
+    ],
+    templateUrl: './new-game-modal.component.html',
+    styleUrl: './new-game-modal.component.css'
 })
 export class NewGameModalComponent {
   subscription: Subscription;

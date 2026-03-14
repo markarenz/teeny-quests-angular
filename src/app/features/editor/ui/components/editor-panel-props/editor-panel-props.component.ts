@@ -25,17 +25,16 @@ import {
 } from '@content/prop-definitions';
 
 @Component({
-  selector: 'app-editor-panel-props',
-  standalone: true,
-  imports: [
-    FormsModule,
-    CollapsibleCardComponent,
-    AreaCellSelectorComponent,
-    IconButtonComponent,
-    EditorInputActionsComponent,
-  ],
-  templateUrl: './editor-panel-props.component.html',
-  styleUrl: './editor-panel-props.component.css',
+    selector: 'app-editor-panel-props',
+    imports: [
+        FormsModule,
+        CollapsibleCardComponent,
+        AreaCellSelectorComponent,
+        IconButtonComponent,
+        EditorInputActionsComponent,
+    ],
+    templateUrl: './editor-panel-props.component.html',
+    styleUrl: './editor-panel-props.component.css'
 })
 export class EditorPanelPropsComponent {
   constructor(private _gameEditorService: GameEditorService) {}

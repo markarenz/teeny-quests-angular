@@ -6,11 +6,10 @@ import { GameROM, SelectIUIOption } from '@app/features/main/interfaces/types';
 import { IconButtonComponent } from '@app/features/main/ui/components/icons/icon-button/icon-button.component';
 
 @Component({
-  selector: 'app-editor-area-selector',
-  standalone: true,
-  imports: [FormsModule, IconButtonComponent],
-  templateUrl: './editor-area-selector.component.html',
-  styleUrl: './editor-area-selector.component.css',
+    selector: 'app-editor-area-selector',
+    imports: [FormsModule, IconButtonComponent],
+    templateUrl: './editor-area-selector.component.html',
+    styleUrl: './editor-area-selector.component.css'
 })
 export class EditorAreaSelectorComponent {
   constructor(private _gameEditorService: GameEditorService) {}

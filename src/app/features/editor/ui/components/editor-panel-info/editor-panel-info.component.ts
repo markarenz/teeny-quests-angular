@@ -12,18 +12,17 @@ import { floorDefinitions } from '@content/floor-definitions';
 import { EditorInputFlagsComponent } from '../editor-input-flags/editor-input-flags.component';
 
 @Component({
-  selector: 'app-editor-panel-info',
-  standalone: true,
-  imports: [
-    FormsModule,
-    CollapsibleCardComponent,
-    AreaCellSelectorComponent,
-    EditorAreaSelectorGeneralComponent,
-    EditorInventoryComponent,
-    EditorInputFlagsComponent,
-  ],
-  templateUrl: './editor-panel-info.component.html',
-  styleUrl: './editor-panel-info.component.css',
+    selector: 'app-editor-panel-info',
+    imports: [
+        FormsModule,
+        CollapsibleCardComponent,
+        AreaCellSelectorComponent,
+        EditorAreaSelectorGeneralComponent,
+        EditorInventoryComponent,
+        EditorInputFlagsComponent,
+    ],
+    templateUrl: './editor-panel-info.component.html',
+    styleUrl: './editor-panel-info.component.css'
 })
 export class EditorPanelInfoComponent {
   constructor(private _gameEditorService: GameEditorService) {}

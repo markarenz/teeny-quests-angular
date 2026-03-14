@@ -14,11 +14,10 @@ import {
 import { IconButtonComponent } from '@app/features/main/ui/components/icons/icon-button/icon-button.component';
 
 @Component({
-  selector: 'app-editor-inventory',
-  standalone: true,
-  imports: [FormsModule, IconButtonComponent],
-  templateUrl: './editor-inventory.component.html',
-  styleUrl: './editor-inventory.component.css',
+    selector: 'app-editor-inventory',
+    imports: [FormsModule, IconButtonComponent],
+    templateUrl: './editor-inventory.component.html',
+    styleUrl: './editor-inventory.component.css'
 })
 export class EditorInventoryComponent {
   constructor(private _gameEditorService: GameEditorService) {}

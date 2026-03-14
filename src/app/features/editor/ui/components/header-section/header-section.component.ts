@@ -2,11 +2,10 @@ import { Component, Input } from '@angular/core';
 import { IconCaretComponent } from '@app/features/main/ui/components/icons/icon-caret/icon-caret.component';
 
 @Component({
-  selector: 'app-header-section',
-  standalone: true,
-  imports: [IconCaretComponent],
-  templateUrl: './header-section.component.html',
-  styleUrl: './header-section.component.css',
+    selector: 'app-header-section',
+    imports: [IconCaretComponent],
+    templateUrl: './header-section.component.html',
+    styleUrl: './header-section.component.css'
 })
 export class HeaderSectionComponent {
   @Input('title') title: string = '';

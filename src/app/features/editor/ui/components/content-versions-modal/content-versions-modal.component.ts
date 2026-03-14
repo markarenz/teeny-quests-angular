@@ -16,11 +16,10 @@ import { TableComponent } from '@app/features/main/ui/components/table/table.com
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-content-versions-modal',
-  standalone: true,
-  imports: [CommonModalComponent, ButtonComponent, TableComponent],
-  templateUrl: './content-versions-modal.component.html',
-  styleUrl: './content-versions-modal.component.css',
+    selector: 'app-content-versions-modal',
+    imports: [CommonModalComponent, ButtonComponent, TableComponent],
+    templateUrl: './content-versions-modal.component.html',
+    styleUrl: './content-versions-modal.component.css'
 })
 export class ContentVersionsModalComponent {
   @Input() gameId: string = '';

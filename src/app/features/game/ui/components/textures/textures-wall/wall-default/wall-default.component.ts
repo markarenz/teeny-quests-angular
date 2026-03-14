@@ -3,11 +3,10 @@ import { WallTextureProps } from '@app/features/main/interfaces/types';
 import { defaultWallProps } from '../constants';
 
 @Component({
-  selector: 'app-wall-default',
-  standalone: true,
-  imports: [],
-  templateUrl: './wall-default.component.html',
-  styleUrl: './wall-default.component.css',
+    selector: 'app-wall-default',
+    imports: [],
+    templateUrl: './wall-default.component.html',
+    styleUrl: './wall-default.component.css'
 })
 export class WallDefaultComponent {
   public halfUnits: number[] = [];

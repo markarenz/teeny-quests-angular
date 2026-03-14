@@ -26,16 +26,15 @@ import { maxAreaCellHeight } from '@config/index';
 import { logger } from '@app/features/main/utils/logger';
 
 @Component({
-  selector: 'app-editor-input-actions',
-  standalone: true,
-  imports: [
-    FormsModule,
-    CollapsibleCardComponent,
-    IconButtonComponent,
-    AreaCellSelectorComponent,
-  ],
-  templateUrl: './editor-input-actions.component.html',
-  styleUrl: './editor-input-actions.component.css',
+    selector: 'app-editor-input-actions',
+    imports: [
+        FormsModule,
+        CollapsibleCardComponent,
+        IconButtonComponent,
+        AreaCellSelectorComponent,
+    ],
+    templateUrl: './editor-input-actions.component.html',
+    styleUrl: './editor-input-actions.component.css'
 })
 export class EditorInputActionsComponent {
   @Input('title') title: string = 'Actions';

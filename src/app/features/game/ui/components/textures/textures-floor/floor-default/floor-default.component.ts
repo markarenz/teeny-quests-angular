@@ -2,11 +2,10 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { defaultFloorProps, FloorProps } from '../floor-utils';
 
 @Component({
-  selector: 'app-floor-default',
-  standalone: true,
-  imports: [],
-  templateUrl: './floor-default.component.html',
-  styleUrl: './floor-default.component.css',
+    selector: 'app-floor-default',
+    imports: [],
+    templateUrl: './floor-default.component.html',
+    styleUrl: './floor-default.component.css'
 })
 export class FloorDefaultComponent {
   @Input('floorProps') floorProps: FloorProps = defaultFloorProps;

@@ -3,11 +3,10 @@ import { IconCaretComponent } from '../icons/icon-caret/icon-caret.component';
 import { IconButtonComponent } from '../icons/icon-button/icon-button.component';
 
 @Component({
-  selector: 'app-collapsible-card',
-  standalone: true,
-  imports: [IconCaretComponent, IconButtonComponent],
-  templateUrl: './collapsible-card.component.html',
-  styleUrl: './collapsible-card.component.css',
+    selector: 'app-collapsible-card',
+    imports: [IconCaretComponent, IconButtonComponent],
+    templateUrl: './collapsible-card.component.html',
+    styleUrl: './collapsible-card.component.css'
 })
 export class CollapsibleCardComponent {
   isOpen: boolean = false;

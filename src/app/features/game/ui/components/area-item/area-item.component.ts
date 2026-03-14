@@ -16,19 +16,18 @@ import { SvgItemSapphireComponent } from './items/svg-item-sapphire/svg-item-sap
 import { itemDefinitions } from '@content/item-definitions';
 
 @Component({
-  selector: 'app-area-item',
-  standalone: true,
-  imports: [
-    SvgItemCoinsComponent,
-    SvgItemKeyComponent,
-    SvgItemBagOfCoinsComponent,
-    SvgItemDiamondComponent,
-    SvgItemEmeraldComponent,
-    SvgItemRubyComponent,
-    SvgItemSapphireComponent,
-  ],
-  templateUrl: './area-item.component.html',
-  styleUrl: './area-item.component.css',
+    selector: 'app-area-item',
+    imports: [
+        SvgItemCoinsComponent,
+        SvgItemKeyComponent,
+        SvgItemBagOfCoinsComponent,
+        SvgItemDiamondComponent,
+        SvgItemEmeraldComponent,
+        SvgItemRubyComponent,
+        SvgItemSapphireComponent,
+    ],
+    templateUrl: './area-item.component.html',
+    styleUrl: './area-item.component.css'
 })
 export class AreaItemComponent {
   @Input('item') item: GameItem = defaultItem;

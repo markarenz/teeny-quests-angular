@@ -18,18 +18,17 @@ import { GamePlayerComponent } from '../game-player/game-player.component';
 import { GameMovementOptionButtonComponent } from '../game-movement-option-button/game-movement-option-button.component';
 
 @Component({
-  selector: 'app-game-area',
-  standalone: true,
-  imports: [
-    AreaCellComponent,
-    AreaExitComponent,
-    AreaItemComponent,
-    AreaPropComponent,
-    GameMovementOptionButtonComponent,
-    GamePlayerComponent,
-  ],
-  templateUrl: './game-area.component.html',
-  styleUrl: './game-area.component.css',
+    selector: 'app-game-area',
+    imports: [
+        AreaCellComponent,
+        AreaExitComponent,
+        AreaItemComponent,
+        AreaPropComponent,
+        GameMovementOptionButtonComponent,
+        GamePlayerComponent,
+    ],
+    templateUrl: './game-area.component.html',
+    styleUrl: './game-area.component.css'
 })
 export class GameAreaComponent {
   @Input('isFullWidthMode') isFullWidthMode: boolean = false;

@@ -23,28 +23,27 @@ import { ContentVersionsModalComponent } from '../../components/content-versions
 import { CommonModalComponent } from '@app/features/main/ui/components/common-modal/common-modal.component';
 
 @Component({
-  selector: 'app-editor-game',
-  standalone: true,
-  imports: [
-    ContainerComponent,
-    MainLayoutComponent,
-    CommonModalComponent,
-    LoaderAnimationComponent,
-    FormsModule,
-    ButtonComponent,
-    BreadcrumbsComponent,
-    EditorAreaComponent,
-    EditorAreaSelectorComponent,
-    EditorPanelInfoComponent,
-    EditorPanelExitsComponent,
-    EditorPanelCellsComponent,
-    EditorPanelItemsComponent,
-    EditorPanelPropsComponent,
-    EditorPanelEventsComponent,
-    ContentVersionsModalComponent,
-  ],
-  templateUrl: './editor-game.component.html',
-  styleUrl: './editor-game.component.css',
+    selector: 'app-editor-game',
+    imports: [
+        ContainerComponent,
+        MainLayoutComponent,
+        CommonModalComponent,
+        LoaderAnimationComponent,
+        FormsModule,
+        ButtonComponent,
+        BreadcrumbsComponent,
+        EditorAreaComponent,
+        EditorAreaSelectorComponent,
+        EditorPanelInfoComponent,
+        EditorPanelExitsComponent,
+        EditorPanelCellsComponent,
+        EditorPanelItemsComponent,
+        EditorPanelPropsComponent,
+        EditorPanelEventsComponent,
+        ContentVersionsModalComponent,
+    ],
+    templateUrl: './editor-game.component.html',
+    styleUrl: './editor-game.component.css'
 })
 export class EditorGameComponent {
   private subscriptions: Subscription[] = [];

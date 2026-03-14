@@ -6,15 +6,14 @@ import { SvgJoystickComponent } from '../svg-joystick/svg-joystick.component';
 import versionData from '@content/version.json';
 
 @Component({
-  selector: 'app-footer',
-  standalone: true,
-  imports: [
-    ContainerComponent,
-    SvgMiniLogoComponent,
-    SvgGithubComponent,
-    SvgJoystickComponent,
-  ],
-  templateUrl: './footer.component.html',
+    selector: 'app-footer',
+    imports: [
+        ContainerComponent,
+        SvgMiniLogoComponent,
+        SvgGithubComponent,
+        SvgJoystickComponent,
+    ],
+    templateUrl: './footer.component.html'
 })
 export class FooterComponent {
   public version: string = versionData.version;

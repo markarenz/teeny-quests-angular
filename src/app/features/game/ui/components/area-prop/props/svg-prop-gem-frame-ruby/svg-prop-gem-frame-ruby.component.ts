@@ -1,11 +1,10 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-svg-prop-gem-frame-ruby',
-  standalone: true,
-  imports: [],
-  templateUrl: './svg-prop-gem-frame-ruby.component.html',
-  styleUrl: './svg-prop-gem-frame-ruby.component.css',
+    selector: 'app-svg-prop-gem-frame-ruby',
+    imports: [],
+    templateUrl: './svg-prop-gem-frame-ruby.component.html',
+    styleUrl: './svg-prop-gem-frame-ruby.component.css'
 })
 export class SvgPropGemFrameRubyComponent {
   @Input('isPropSelected') isPropSelected: boolean = false;

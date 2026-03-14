@@ -1,11 +1,10 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'app-svg-exit-default-n',
-  standalone: true,
-  imports: [],
-  templateUrl: './svg-exit-default-n.component.html',
-  styleUrl: './svg-exit-default-n.component.css',
+    selector: 'app-svg-exit-default-n',
+    imports: [],
+    templateUrl: './svg-exit-default-n.component.html',
+    styleUrl: './svg-exit-default-n.component.css'
 })
 export class SvgExitDefaultNComponent {
   @Input('isEditorSelected') isEditorSelected: boolean = false;

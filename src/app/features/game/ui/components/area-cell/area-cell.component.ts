@@ -10,11 +10,10 @@ import { TexturesWallComponent } from '@app/features/game/ui/components/textures
 import { DecalsComponent } from '../area-cell/decals/decals.component';
 
 @Component({
-  selector: 'app-area-cell',
-  standalone: true,
-  imports: [TexturesFloorComponent, TexturesWallComponent, DecalsComponent],
-  templateUrl: './area-cell.component.html',
-  styleUrl: './area-cell.component.css',
+    selector: 'app-area-cell',
+    imports: [TexturesFloorComponent, TexturesWallComponent, DecalsComponent],
+    templateUrl: './area-cell.component.html',
+    styleUrl: './area-cell.component.css'
 })
 export class AreaCellComponent {
   @Input('positionKey') positionKey: string = '';

@@ -7,16 +7,15 @@ import { RedStoneComponent } from './red-stone/red-stone.component';
 import { WallDefaultComponent } from './wall-default/wall-default.component';
 
 @Component({
-  selector: 'app-textures-wall',
-  standalone: true,
-  imports: [
-    BlueShineComponent,
-    CaveComponent,
-    RedStoneComponent,
-    WallDefaultComponent,
-  ],
-  templateUrl: './textures-wall.component.html',
-  styleUrl: './textures-wall.component.css',
+    selector: 'app-textures-wall',
+    imports: [
+        BlueShineComponent,
+        CaveComponent,
+        RedStoneComponent,
+        WallDefaultComponent,
+    ],
+    templateUrl: './textures-wall.component.html',
+    styleUrl: './textures-wall.component.css'
 })
 export class TexturesWallComponent {
   @Input('wallType') wallType: string = 'default';

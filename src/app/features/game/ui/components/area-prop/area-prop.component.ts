@@ -17,19 +17,18 @@ import { propDecoDefinitions } from '@content/prop-definitions';
 import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 
 @Component({
-  selector: 'app-area-prop',
-  standalone: true,
-  imports: [
-    SvgPropTorchComponent,
-    SvgPropSwitchComponent,
-    SvgPropBannerComponent,
-    SvgPropGemFrameEmeraldComponent,
-    SvgPropGemFrameSapphireComponent,
-    SvgPropGemFrameRubyComponent,
-    SvgPropGemFrameDiamondComponent,
-  ],
-  templateUrl: './area-prop.component.html',
-  styleUrl: './area-prop.component.css',
+    selector: 'app-area-prop',
+    imports: [
+        SvgPropTorchComponent,
+        SvgPropSwitchComponent,
+        SvgPropBannerComponent,
+        SvgPropGemFrameEmeraldComponent,
+        SvgPropGemFrameSapphireComponent,
+        SvgPropGemFrameRubyComponent,
+        SvgPropGemFrameDiamondComponent,
+    ],
+    templateUrl: './area-prop.component.html',
+    styleUrl: './area-prop.component.css'
 })
 export class AreaPropComponent {
   constructor(private _audioService: AudioService) {}
