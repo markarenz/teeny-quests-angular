@@ -27,7 +27,7 @@ describe('AreaCellComponent', () => {
   });
 
   it('should create', () => {
-    component.selectedAreaCellPosition = '3_3';
+    component.selectedAreaCellPositions = ['3_3'];
     component.ngOnChanges();
     expect(component).toBeTruthy();
   });

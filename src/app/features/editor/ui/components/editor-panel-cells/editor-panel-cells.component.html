@@ -5,25 +5,21 @@
         <label>
           Selected Cell:
           {{
-          selectedCellPosition
-          ? selectedCellPosition.replace("_", ", ")
+          selectedCellPositions.length
+          ? selectedCellPositions.join(', ')
           : "None"
           }}
         </label>
         <div class="flex flex-row gap-2">
-          <app-icon-button icon="edit" label="Select Cell" (click)="handleToggleCellSelector()" />
           <app-icon-button icon="close" theme="danger" label="Deselect Cell" (click)="handleCellDeselect()"
-            [isDisabled]="!selectedCellPosition" />
+            [isDisabled]="!selectedCellPositions.length" />
         </div>
       </div>
-
-      @if(isCellSelectorOpen) {
-      <app-area-cell-selector id="editor-cell-selector" [selectedCellPosition]="selectedCellPosition"
+      <app-area-cell-selector id="editor-cell-selector" [selectedCellPositions]="selectedCellPositions"
         (onPositionSelect)="handleCellSelect($event)" />
-      }
     </div>
 
-    @if(selectedCellPosition && selectedCell) {
+    @if(selectedCellPositions.length && selectedCell) {
     <div class="flex flex-col gap-4">
       <div class="flex items-center justify-between">
         <label>Cell Height</label>

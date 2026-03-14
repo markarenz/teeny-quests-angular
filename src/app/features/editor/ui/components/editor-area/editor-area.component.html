@@ -14,7 +14,7 @@
     @for(positionKey of areaDataPositionKeys; track positionKey;) {
     @if (!selectedAreaMap[positionKey].isHidden) {
     <app-area-cell [positionKey]="positionKey" [cellData]="selectedAreaMap[positionKey]" [isEditorMode]="true"
-      [selectedAreaCellPosition]="selectedAreaCellPosition"
+      [selectedAreaCellPositions]="selectedAreaCellPositions"
       [secondarySelectedCellPosition]="secondarySelectedCellPosition" (onClick)="handleMapCellClick($event)"
       [lightLevel]="1" />
     }

@@ -34,8 +34,7 @@ import { commonText } from '@content/text';
 export class EditorPanelCellsComponent {
   constructor(private _gameEditorService: GameEditorService) {}
   private subscriptions: Subscription[] = [];
-  public isCellSelectorOpen: boolean = false;
-  public selectedCellPosition: string = '';
+  public selectedCellPositions: string[] = [];
   public selectedCell: GameAreaMapCell | null = null;
   public maxHeight: number = maxAreaCellHeight;
   public floorOptions = floorOptionsData;
@@ -57,12 +56,13 @@ export class EditorPanelCellsComponent {
 
   ngOnInit() {
     this.subscriptions.push(
-      this._gameEditorService.selectedCellPositionObs.subscribe(
-        (data: string | null) => {
-          this.selectedCellPosition = data ?? '';
-          this.canHideCell = this._gameEditorService.getCanMapCellBeHidden(
-            data ?? ''
-          );
+      this._gameEditorService.selectedCellPositionsObs.subscribe(
+        (data: string[] | null) => {
+          this.selectedCellPositions = data ?? [];
+          // TODO: below
+          // this.canHideCell = this._gameEditorService.getCanMapCellsBeHidden(
+          //   data ?? []
+          // );
         }
       )
     );
@@ -93,22 +93,17 @@ export class EditorPanelCellsComponent {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  handleToggleCellSelector() {
-    this.isCellSelectorOpen = !this.isCellSelectorOpen;
-  }
-
   handleCellSelect(position: string) {
-    this._gameEditorService.setSelectedCellPosition(position);
+    this._gameEditorService.setSelectedCellPositions(position);
   }
 
   handleCellDeselect() {
-    this._gameEditorService.setSelectedCellPosition('');
-    this.isCellSelectorOpen = false;
+    this._gameEditorService.setSelectedCellPositions(null);
   }
 
   handleCellHeightChange(direction: string) {
     if (this.selectedCell) {
-      this._gameEditorService.setCellData({
+      this._gameEditorService.setCellsData({
         ...this.selectedCell,
         h: this.selectedCell.h + (direction === 'up' ? 1 : -1),
       });
@@ -116,7 +111,7 @@ export class EditorPanelCellsComponent {
   }
   handleFloorChange(floorType: string) {
     if (this.selectedCell) {
-      this._gameEditorService.setCellData({
+      this._gameEditorService.setCellsData({
         ...this.selectedCell,
         floor: floorType,
       });
@@ -125,7 +120,7 @@ export class EditorPanelCellsComponent {
   handleDecalChange() {
     if (this.selectedCell) {
       this.currentDecalLabel = getLabelFromSlug(this.currentDecal);
-      this._gameEditorService.setCellData({
+      this._gameEditorService.setCellsData({
         ...this.selectedCell,
         decal: this.currentDecal,
       });
@@ -134,7 +129,7 @@ export class EditorPanelCellsComponent {
 
   handleWallChange(wallId: string, wallPosition: string) {
     if (this.selectedCell) {
-      this._gameEditorService.setCellData({
+      this._gameEditorService.setCellsData({
         ...this.selectedCell,
         [wallPosition === 'south' ? 'wallSouth' : 'wallEast']: wallId,
       });
@@ -145,12 +140,12 @@ export class EditorPanelCellsComponent {
   }
 
   hideMapCell() {
-    if (this.selectedCell && this.selectedCellPosition) {
-      this.inputCellHidden = !this.inputCellHidden;
-      this._gameEditorService.setCellData({
-        ...this.selectedCell,
-        isHidden: this.inputCellHidden,
-      });
-    }
+    // if (this.selectedCell && this.selectedCellPositions) {
+    //   this.inputCellHidden = !this.inputCellHidden;
+    //   this._gameEditorService.setCellsData({
+    //     ...this.selectedCell,
+    //     isHidden: this.inputCellHidden,
+    //   });
+    // }
   }
 }
