@@ -158,7 +158,7 @@ export class EditorGameComponent {
     this._gameEditorService.selectExit('');
     this._gameEditorService.selectItem('');
     this._gameEditorService.selectProp('');
-    this._gameEditorService.setSelectedCellPosition(id);
+    this._gameEditorService.setSelectedCellPositions(id);
     this.subNavCurrent = 'map';
     this.setShowAreaSelector();
   }

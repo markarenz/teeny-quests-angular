@@ -59,6 +59,9 @@ export class GameEditorService {
   private selectedCellPosition = new BehaviorSubject<string>('');
   selectedCellPositionObs = this.selectedCellPosition.asObservable();
 
+  private selectedCellPositions = new BehaviorSubject<string[]>([]);
+  selectedCellPositionsObs = this.selectedCellPositions.asObservable();
+
   private secondarySelectedCellPosition = new BehaviorSubject<string>('');
   secondarySelectedCellPositionObs =
     this.secondarySelectedCellPosition.asObservable();
@@ -145,6 +148,47 @@ export class GameEditorService {
 
   toggleMenu() {
     this.isMenuOpen.next(!this.isMenuOpen.value);
+  }
+
+  setCellsData(cellData: GameAreaMapCell) {
+    if (this.game.value?.content.areas[this.selectedAreaId.value]) {
+      const gameObj = { ...this.game.value } as GameROM;
+
+      const exits = gameObj?.content.areas[this.selectedAreaId.value].exits.map(
+        exit =>
+          exit.x === cellData.x && exit.y === cellData.y
+            ? { ...exit, h: cellData.h }
+            : exit
+      );
+      const changedCellsData: { [key: string]: GameAreaMapCell } = {};
+      this.selectedCellPositions.value.forEach(pos => {
+        const originalCell =
+          gameObj?.content.areas[this.selectedAreaId.value].map[pos];
+        changedCellsData[pos] = {
+          ...cellData,
+          x: originalCell?.x ?? cellData.x,
+          y: originalCell?.y ?? cellData.y,
+        };
+      });
+
+      const nextArea = {
+        ...gameObj?.content.areas[this.selectedAreaId.value],
+        map: {
+          ...gameObj?.content.areas[this.selectedAreaId.value].map,
+          ...changedCellsData,
+          // [`${cellData.y}_${cellData.x}`]: cellData,
+        },
+        exits,
+      };
+
+      gameObj.content.areas[this.selectedAreaId.value] = nextArea;
+
+      this.game.next(gameObj);
+      this.selectedCell.next(cellData);
+      this.selectedArea.next(nextArea);
+      this.saveToLocalStorage(gameObj);
+      this.setHighlightedCell('');
+    }
   }
 
   setCellData(cellData: GameAreaMapCell) {
@@ -534,6 +578,30 @@ export class GameEditorService {
   }
 
   // SELECTED -----------------------------------------------------------------
+
+  setSelectedCellPositions(cellPosition: string | null) {
+    if (cellPosition === null) {
+      this.selectedCellPositions.next([]);
+      this.selectedCell.next(null);
+      return;
+    }
+    const area = this.game.value?.content.areas[this.selectedAreaId.value];
+    if (this.selectedCellPositions.value.includes(cellPosition)) {
+      const nextSelectedCellPositions = this.selectedCellPositions.value.filter(
+        pos => pos !== cellPosition
+      );
+      this.selectedCellPositions.next(nextSelectedCellPositions);
+      // Fall back to first remaining cell
+      this.selectedCell.next(area?.map[nextSelectedCellPositions[0]] ?? null);
+    } else {
+      const nextSelectedCellPositions = [
+        ...this.selectedCellPositions.value,
+        cellPosition,
+      ];
+      this.selectedCellPositions.next(nextSelectedCellPositions);
+      this.selectedCell.next(area?.map[cellPosition] ?? null);
+    }
+  }
 
   setSelectedCellPosition(cellPosition: string) {
     this.selectedCellPosition.next(cellPosition);

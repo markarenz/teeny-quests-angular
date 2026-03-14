@@ -20,7 +20,7 @@ export class AreaCellComponent {
   @Input('positionKey') positionKey: string = '';
   @Input('lightLevel') lightLevel: number = 0;
   @Input('isEditorMode') isEditorMode: boolean = false;
-  @Input('selectedAreaCellPosition') selectedAreaCellPosition: string = '';
+  @Input('selectedAreaCellPositions') selectedAreaCellPositions: string[] = [];
   @Input('secondarySelectedCellPosition')
   secondarySelectedCellPosition: string = '';
   @Input('cellData') cellData: GameAreaMapCell | null = null;
@@ -88,7 +88,7 @@ export class AreaCellComponent {
   }
   ngOnChanges() {
     this.cell = this.cellData;
-    this.isSelected = this.selectedAreaCellPosition === this.positionKey;
+    this.isSelected = this.selectedAreaCellPositions.includes(this.positionKey);
     this.isHighlighted =
       this.secondarySelectedCellPosition === this.positionKey;
     this.updateCellProps();

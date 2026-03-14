@@ -31,77 +31,69 @@ describe('EditorPanelCellsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should handle toggling cell selector', () => {
-    component.isCellSelectorOpen = false;
-    component.handleToggleCellSelector();
-    expect(component.isCellSelectorOpen).toBeTrue();
-
-    component.isCellSelectorOpen = true;
-    component.handleToggleCellSelector();
-    expect(component.isCellSelectorOpen).toBeFalse();
-  });
-
   it('should handle cell selection', () => {
     const positionKey = '5_4';
-    spyOn(gameEditorService, 'setSelectedCellPosition');
+    spyOn(gameEditorService, 'setSelectedCellPositions');
     component.handleCellSelect(positionKey);
-    expect(gameEditorService.setSelectedCellPosition).toHaveBeenCalledWith(
+    expect(gameEditorService.setSelectedCellPositions).toHaveBeenCalledWith(
       positionKey
     );
   });
 
   it('should handle cell deselection', () => {
-    spyOn(gameEditorService, 'setSelectedCellPosition');
+    spyOn(gameEditorService, 'setSelectedCellPositions');
     component.handleCellDeselect();
-    expect(gameEditorService.setSelectedCellPosition).toHaveBeenCalledWith('');
+    expect(gameEditorService.setSelectedCellPositions).toHaveBeenCalledWith(
+      null
+    );
   });
   it('should handle cell height change - up', () => {
-    spyOn(gameEditorService, 'setCellData');
+    spyOn(gameEditorService, 'setCellsData');
     component.selectedCell = {
       ...mockCell,
       h: 1,
     };
     component.handleCellHeightChange('up');
-    expect(gameEditorService.setCellData).toHaveBeenCalledWith({
+    expect(gameEditorService.setCellsData).toHaveBeenCalledWith({
       ...component.selectedCell,
       h: 2,
     });
   });
 
   it('should handle cell height change - down', () => {
-    spyOn(gameEditorService, 'setCellData');
+    spyOn(gameEditorService, 'setCellsData');
     component.selectedCell = mockCell;
     component.handleCellHeightChange('down');
-    expect(gameEditorService.setCellData).toHaveBeenCalledWith({
+    expect(gameEditorService.setCellsData).toHaveBeenCalledWith({
       ...component.selectedCell,
       h: 1,
     });
   });
 
   it('should handle floor change', () => {
-    spyOn(gameEditorService, 'setCellData');
+    spyOn(gameEditorService, 'setCellsData');
     component.selectedCell = mockCell;
     component.handleFloorChange('wood');
-    expect(gameEditorService.setCellData).toHaveBeenCalledWith({
+    expect(gameEditorService.setCellsData).toHaveBeenCalledWith({
       ...component.selectedCell,
       floor: 'wood',
     });
   });
   it('should handle wall change', () => {
-    spyOn(gameEditorService, 'setCellData');
+    spyOn(gameEditorService, 'setCellsData');
     component.selectedCell = mockCell;
     component.handleWallChange('brick', 'south');
-    expect(gameEditorService.setCellData).toHaveBeenCalledWith({
+    expect(gameEditorService.setCellsData).toHaveBeenCalledWith({
       ...component.selectedCell,
       wallSouth: 'brick',
     });
   });
 
   it('should handle wall change for east wall', () => {
-    spyOn(gameEditorService, 'setCellData');
+    spyOn(gameEditorService, 'setCellsData');
     component.selectedCell = mockCell;
     component.handleWallChange('brick', 'east');
-    expect(gameEditorService.setCellData).toHaveBeenCalledWith({
+    expect(gameEditorService.setCellsData).toHaveBeenCalledWith({
       ...component.selectedCell,
       wallEast: 'brick',
     });

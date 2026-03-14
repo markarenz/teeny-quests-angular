@@ -15,6 +15,7 @@ export class AreaCellSelectorComponent {
   @Input('lockouts') lockouts: string[] = [];
   @Input('disabledCells') disabledCells: string[] = [];
   @Input('selectedCellPosition') selectedCellPosition: string = '';
+  @Input('selectedCellPositions') selectedCellPositions: string[] = [];
   @Output() onPositionSelect: EventEmitter<string> = new EventEmitter<string>();
 
   areaDataPositionKeys: string[] = [];

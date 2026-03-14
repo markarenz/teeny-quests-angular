@@ -43,7 +43,7 @@ export class EditorAreaComponent {
   selectedAreaExits: GameArea['exits'] | null = null;
   selectedAreaItems: GameArea['items'] | null = null;
   selectedAreaProps: GameArea['props'] | null = null;
-  selectedAreaCellPosition: string = '';
+  selectedAreaCellPositions: string[] = [];
   selectedItemId: string = '';
   selectedExitId: string = '';
   selectedPropId: string = '';
@@ -101,9 +101,9 @@ export class EditorAreaComponent {
       )
     );
     this.subscriptions.push(
-      this._gameEditorService.selectedCellPositionObs.subscribe(
-        (data: string) => {
-          this.selectedAreaCellPosition = data;
+      this._gameEditorService.selectedCellPositionsObs.subscribe(
+        (data: string[]) => {
+          this.selectedAreaCellPositions = data;
         }
       )
     );
@@ -158,15 +158,16 @@ export class EditorAreaComponent {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  handleAreaCellClick(areaId: string, cellPosition: string) {
-    this.selectedAreaCellPosition = cellPosition;
+  handleAreaCellClick(_areaId: string, cellPosition: string) {
+    this.selectedAreaCellPositions = [cellPosition];
     this.selectedCell = this.selectedArea?.map[cellPosition] ?? null;
+    this._gameEditorService.setSelectedCellPositions(cellPosition);
   }
 
   clearCellSelection() {
-    this.selectedAreaCellPosition = '';
+    this.selectedAreaCellPositions = [];
     this.selectedCell = null;
-    this._gameEditorService.setSelectedCellPosition('');
+    this._gameEditorService.setSelectedCellPositions(null);
   }
 
   handleBackgroundClick() {
