@@ -22,7 +22,6 @@ import { logger } from '@app/features/main/utils/logger';
 
 @Component({
   selector: 'app-game',
-  standalone: true,
   imports: [
     MainLayoutComponent,
     GameAreaComponent,
@@ -35,6 +34,7 @@ import { logger } from '@app/features/main/utils/logger';
   ],
   templateUrl: './game.component.html',
   styleUrl: './game.component.css',
+  standalone: true,
 })
 export class GameComponent {
   private windowWidth: number;

@@ -12,10 +12,10 @@ import { AudioService } from '@app/features/main/services/audio/audio-service.se
 
 @Component({
   selector: 'app-main-nav',
-  standalone: true,
   imports: [RouterLink, RouterLinkActive, ContainerComponent, ModalBgComponent],
   templateUrl: './main-nav.component.html',
   styleUrl: './main-nav.component.css',
+  standalone: true,
 })
 export class MainNavComponent {
   public menuItems: MenuItem[] = [];

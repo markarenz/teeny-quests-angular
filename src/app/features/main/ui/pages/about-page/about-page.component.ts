@@ -4,9 +4,9 @@ import { ContainerComponent } from '@main/ui/components/container/container.comp
 
 @Component({
   selector: 'app-about-page',
-  standalone: true,
   imports: [MainLayoutComponent, ContainerComponent],
   templateUrl: './about-page.component.html',
   styleUrl: './about-page.component.css',
+  standalone: true,
 })
 export class AboutPageComponent {}

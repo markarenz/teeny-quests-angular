@@ -19,7 +19,6 @@ import { GameMovementOptionButtonComponent } from '../game-movement-option-butto
 
 @Component({
   selector: 'app-game-area',
-  standalone: true,
   imports: [
     AreaCellComponent,
     AreaExitComponent,
@@ -30,6 +29,7 @@ import { GameMovementOptionButtonComponent } from '../game-movement-option-butto
   ],
   templateUrl: './game-area.component.html',
   styleUrl: './game-area.component.css',
+  standalone: true,
 })
 export class GameAreaComponent {
   @Input('isFullWidthMode') isFullWidthMode: boolean = false;

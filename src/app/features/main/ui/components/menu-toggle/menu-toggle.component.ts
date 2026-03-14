@@ -4,10 +4,10 @@ import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-menu-toggle',
-  standalone: true,
   imports: [],
   templateUrl: './menu-toggle.component.html',
   styleUrl: './menu-toggle.component.css',
+  standalone: true,
 })
 export class MenuToggleComponent {
   private subscription: Subscription;

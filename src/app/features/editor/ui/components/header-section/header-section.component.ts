@@ -3,10 +3,10 @@ import { IconCaretComponent } from '@app/features/main/ui/components/icons/icon-
 
 @Component({
   selector: 'app-header-section',
-  standalone: true,
   imports: [IconCaretComponent],
   templateUrl: './header-section.component.html',
   styleUrl: './header-section.component.css',
+  standalone: true,
 })
 export class HeaderSectionComponent {
   @Input('title') title: string = '';

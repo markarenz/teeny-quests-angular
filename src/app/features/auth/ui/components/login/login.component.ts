@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthProviderService } from '@app/features/auth/services/auth-provider-service';
-import { CommonModule } from '@angular/common';
+
 import { MenuItem, userMenuData } from '@content/menus/user-menu-data';
 import { Subscription } from 'rxjs';
 import { ModalBgComponent } from '@app/features/main/ui/components/modal-bg/modal-bg.component';
@@ -10,10 +10,10 @@ import { AudioService } from '@app/features/main/services/audio/audio-service.se
 
 @Component({
   selector: 'app-login',
-  standalone: true,
-  imports: [CommonModule, ModalBgComponent],
+  imports: [ModalBgComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
+  standalone: true,
 })
 export class LoginComponent {
   private authService = inject(AuthProviderService);

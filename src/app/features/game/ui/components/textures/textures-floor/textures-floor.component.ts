@@ -21,7 +21,6 @@ import { FloorRoofSimpleComponent } from './floor-roof-simple/floor-roof-simple.
 
 @Component({
   selector: 'app-textures-floor',
-  standalone: true,
   imports: [
     FloorDirtComponent,
     FloorWaterComponent,
@@ -36,6 +35,7 @@ import { FloorRoofSimpleComponent } from './floor-roof-simple/floor-roof-simple.
   ],
   templateUrl: './textures-floor.component.html',
   styleUrl: './textures-floor.component.css',
+  standalone: true,
 })
 export class TexturesFloorComponent {
   @Input('floorType') floorType: string = 'default';

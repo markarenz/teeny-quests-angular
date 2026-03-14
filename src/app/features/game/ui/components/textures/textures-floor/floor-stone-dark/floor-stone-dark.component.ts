@@ -3,10 +3,10 @@ import { defaultFloorProps, FloorProps } from '../floor-utils';
 
 @Component({
   selector: 'app-floor-stone-dark',
-  standalone: true,
   imports: [],
   templateUrl: './floor-stone-dark.component.html',
   styleUrl: './floor-stone-dark.component.css',
+  standalone: true,
 })
 export class FloorStoneDarkComponent {
   @Input('floorProps') floorProps: FloorProps = defaultFloorProps;

@@ -3,10 +3,10 @@ import { AudioService } from '@app/features/main/services/audio/audio-service.se
 
 @Component({
   selector: 'app-button',
-  standalone: true,
   imports: [],
   templateUrl: './button.component.html',
   styleUrl: './button.component.css',
+  standalone: true,
 })
 export class ButtonComponent {
   @Input('label') label: string = 'Click';

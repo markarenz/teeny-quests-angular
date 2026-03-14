@@ -2,10 +2,10 @@ import { Component, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-modal-bg',
-  standalone: true,
   imports: [],
   templateUrl: './modal-bg.component.html',
   styleUrl: './modal-bg.component.css',
+  standalone: true,
 })
 export class ModalBgComponent {
   @Output() onBgClick = new EventEmitter<string>();

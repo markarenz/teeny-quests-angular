@@ -11,10 +11,10 @@ import { DecalsComponent } from '../area-cell/decals/decals.component';
 
 @Component({
   selector: 'app-area-cell',
-  standalone: true,
   imports: [TexturesFloorComponent, TexturesWallComponent, DecalsComponent],
   templateUrl: './area-cell.component.html',
   styleUrl: './area-cell.component.css',
+  standalone: true,
 })
 export class AreaCellComponent {
   @Input('positionKey') positionKey: string = '';

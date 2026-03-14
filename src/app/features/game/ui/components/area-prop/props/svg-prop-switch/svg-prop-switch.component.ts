@@ -2,10 +2,10 @@ import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-svg-prop-switch',
-  standalone: true,
   imports: [],
   templateUrl: './svg-prop-switch.component.html',
   styleUrl: './svg-prop-switch.component.css',
+  standalone: true,
 })
 export class SvgPropSwitchComponent {
   @Input('isPropSelected') isPropSelected: boolean = false;

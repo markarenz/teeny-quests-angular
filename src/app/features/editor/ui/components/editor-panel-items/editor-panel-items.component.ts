@@ -18,7 +18,6 @@ import { floorDefinitions } from '@content/floor-definitions';
 
 @Component({
   selector: 'app-editor-panel-items',
-  standalone: true,
   imports: [
     FormsModule,
     CollapsibleCardComponent,
@@ -27,6 +26,7 @@ import { floorDefinitions } from '@content/floor-definitions';
   ],
   templateUrl: './editor-panel-items.component.html',
   styleUrl: './editor-panel-items.component.css',
+  standalone: true,
 })
 export class EditorPanelItemsComponent {
   constructor(private _gameEditorService: GameEditorService) {}

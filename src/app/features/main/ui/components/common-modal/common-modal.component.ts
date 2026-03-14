@@ -11,10 +11,10 @@ import { ButtonComponent } from '@app/features/main/ui/components/button/button.
 
 @Component({
   selector: 'app-common-modal',
-  standalone: true,
   imports: [ModalBgComponent, ButtonComponent],
   templateUrl: './common-modal.component.html',
   styleUrl: './common-modal.component.css',
+  standalone: true,
 })
 export class CommonModalComponent {
   @Input('title') title: string = '';

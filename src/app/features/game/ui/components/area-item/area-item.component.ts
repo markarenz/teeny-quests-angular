@@ -17,7 +17,6 @@ import { itemDefinitions } from '@content/item-definitions';
 
 @Component({
   selector: 'app-area-item',
-  standalone: true,
   imports: [
     SvgItemCoinsComponent,
     SvgItemKeyComponent,
@@ -29,6 +28,7 @@ import { itemDefinitions } from '@content/item-definitions';
   ],
   templateUrl: './area-item.component.html',
   styleUrl: './area-item.component.css',
+  standalone: true,
 })
 export class AreaItemComponent {
   @Input('item') item: GameItem = defaultItem;

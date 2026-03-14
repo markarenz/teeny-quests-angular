@@ -10,7 +10,6 @@ import { EditorInputConditionsComponent } from '../editor-input-conditions/edito
 
 @Component({
   selector: 'app-editor-panel-events',
-  standalone: true,
   imports: [
     FormsModule,
     CollapsibleCardComponent,
@@ -20,6 +19,7 @@ import { EditorInputConditionsComponent } from '../editor-input-conditions/edito
   ],
   templateUrl: './editor-panel-events.component.html',
   styleUrl: './editor-panel-events.component.css',
+  standalone: true,
 })
 export class EditorPanelEventsComponent {
   constructor(private _gameEditorService: GameEditorService) {}

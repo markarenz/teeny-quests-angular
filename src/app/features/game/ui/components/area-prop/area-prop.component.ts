@@ -18,7 +18,6 @@ import { AudioService } from '@app/features/main/services/audio/audio-service.se
 
 @Component({
   selector: 'app-area-prop',
-  standalone: true,
   imports: [
     SvgPropTorchComponent,
     SvgPropSwitchComponent,
@@ -30,6 +29,7 @@ import { AudioService } from '@app/features/main/services/audio/audio-service.se
   ],
   templateUrl: './area-prop.component.html',
   styleUrl: './area-prop.component.css',
+  standalone: true,
 })
 export class AreaPropComponent {
   constructor(private _audioService: AudioService) {}

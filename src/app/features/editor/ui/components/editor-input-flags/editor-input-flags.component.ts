@@ -9,10 +9,10 @@ import { IconButtonComponent } from '@app/features/main/ui/components/icons/icon
 
 @Component({
   selector: 'app-editor-input-flags',
-  standalone: true,
   imports: [CollapsibleCardComponent, IconButtonComponent, FormsModule],
   templateUrl: './editor-input-flags.component.html',
   styleUrl: './editor-input-flags.component.css',
+  standalone: true,
 })
 export class EditorInputFlagsComponent {
   constructor(private _gameEditorService: GameEditorService) {}

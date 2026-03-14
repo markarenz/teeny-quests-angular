@@ -2,11 +2,9 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-svg-github',
-  standalone: true,
   imports: [],
   templateUrl: './svg-github.component.html',
-  styleUrl: './svg-github.component.css'
+  styleUrl: './svg-github.component.css',
+  standalone: true,
 })
-export class SvgGithubComponent {
-
-}
+export class SvgGithubComponent {}

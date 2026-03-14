@@ -9,10 +9,10 @@ import { InventoryItemCardComponent } from './inventory-item-card/inventory-item
 
 @Component({
   selector: 'app-modal-inventory',
-  standalone: true,
   imports: [CommonModalComponent, InventoryItemCardComponent],
   templateUrl: './modal-inventory.component.html',
   styleUrl: './modal-inventory.component.css',
+  standalone: true,
 })
 export class ModalInventoryComponent {
   constructor(private _gameService: GameService) {}

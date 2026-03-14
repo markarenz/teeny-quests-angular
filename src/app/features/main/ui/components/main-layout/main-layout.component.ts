@@ -6,10 +6,10 @@ import { MainNavComponent } from '@main/ui/components/main-nav/main-nav.componen
 
 @Component({
   selector: 'app-main-layout',
-  standalone: true,
   imports: [HeaderComponent, FooterComponent, MainNavComponent],
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.css',
+  standalone: true,
 })
 export class MainLayoutComponent {
   constructor(

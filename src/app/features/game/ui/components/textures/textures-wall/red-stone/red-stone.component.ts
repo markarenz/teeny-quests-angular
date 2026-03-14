@@ -4,10 +4,10 @@ import { defaultWallProps } from '../constants';
 
 @Component({
   selector: 'app-red-stone',
-  standalone: true,
   imports: [],
   templateUrl: './red-stone.component.html',
   styleUrl: './red-stone.component.css',
+  standalone: true,
 })
 export class RedStoneComponent {
   @Input('wallProps') wallProps: WallTextureProps = defaultWallProps;

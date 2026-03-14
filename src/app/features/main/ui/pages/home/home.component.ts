@@ -11,7 +11,6 @@ import { AudioService } from '@app/features/main/services/audio/audio-service.se
 
 @Component({
   selector: 'app-home',
-  standalone: true,
   imports: [
     ContainerComponent,
     MainLayoutComponent,
@@ -19,9 +18,9 @@ import { AudioService } from '@app/features/main/services/audio/audio-service.se
     LogoMainComponent,
     GameLinkCardComponent,
   ],
-
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
+  standalone: true,
 })
 export class HomeComponent {
   constructor(

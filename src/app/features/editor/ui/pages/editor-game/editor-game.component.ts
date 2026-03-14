@@ -24,7 +24,6 @@ import { CommonModalComponent } from '@app/features/main/ui/components/common-mo
 
 @Component({
   selector: 'app-editor-game',
-  standalone: true,
   imports: [
     ContainerComponent,
     MainLayoutComponent,
@@ -45,6 +44,7 @@ import { CommonModalComponent } from '@app/features/main/ui/components/common-mo
   ],
   templateUrl: './editor-game.component.html',
   styleUrl: './editor-game.component.css',
+  standalone: true,
 })
 export class EditorGameComponent {
   private subscriptions: Subscription[] = [];

@@ -3,9 +3,9 @@ import { LogoGlintComponent } from '@main/ui/components/logo-glint/logo-glint.co
 
 @Component({
   selector: 'app-logo-main',
-  standalone: true,
   imports: [LogoGlintComponent],
   templateUrl: './logo-main.component.html',
   styleUrl: './logo-main.component.css',
+  standalone: true,
 })
 export class LogoMainComponent {}

@@ -4,10 +4,10 @@ import { IconButtonComponent } from '../icons/icon-button/icon-button.component'
 
 @Component({
   selector: 'app-collapsible-card',
-  standalone: true,
   imports: [IconCaretComponent, IconButtonComponent],
   templateUrl: './collapsible-card.component.html',
   styleUrl: './collapsible-card.component.css',
+  standalone: true,
 })
 export class CollapsibleCardComponent {
   isOpen: boolean = false;

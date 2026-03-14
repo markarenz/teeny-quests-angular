@@ -4,10 +4,10 @@ import { defaultWallProps } from '../constants';
 
 @Component({
   selector: 'app-wall-default',
-  standalone: true,
   imports: [],
   templateUrl: './wall-default.component.html',
   styleUrl: './wall-default.component.css',
+  standalone: true,
 })
 export class WallDefaultComponent {
   public halfUnits: number[] = [];

@@ -13,7 +13,6 @@ import { EditorInputFlagsComponent } from '../editor-input-flags/editor-input-fl
 
 @Component({
   selector: 'app-editor-panel-info',
-  standalone: true,
   imports: [
     FormsModule,
     CollapsibleCardComponent,
@@ -24,6 +23,7 @@ import { EditorInputFlagsComponent } from '../editor-input-flags/editor-input-fl
   ],
   templateUrl: './editor-panel-info.component.html',
   styleUrl: './editor-panel-info.component.css',
+  standalone: true,
 })
 export class EditorPanelInfoComponent {
   constructor(private _gameEditorService: GameEditorService) {}

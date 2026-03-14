@@ -17,7 +17,6 @@ import { EditorPlayerPositionComponent } from '../editor-player-position/editor-
 
 @Component({
   selector: 'app-editor-area',
-  standalone: true,
   imports: [
     AreaCellComponent,
     AreaExitComponent,
@@ -27,6 +26,7 @@ import { EditorPlayerPositionComponent } from '../editor-player-position/editor-
   ],
   templateUrl: './editor-area.component.html',
   styleUrl: './editor-area.component.css',
+  standalone: true,
 })
 export class EditorAreaComponent {
   constructor(private _gameEditorService: GameEditorService) {}

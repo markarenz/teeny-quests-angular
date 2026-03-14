@@ -4,10 +4,10 @@ import { defaultWallProps } from '../constants';
 
 @Component({
   selector: 'app-blue-shine',
-  standalone: true,
   imports: [],
   templateUrl: './blue-shine.component.html',
   styleUrl: './blue-shine.component.css',
+  standalone: true,
 })
 export class BlueShineComponent {
   @Input('wallProps') wallProps: WallTextureProps = defaultWallProps;

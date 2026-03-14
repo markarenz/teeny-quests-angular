@@ -8,7 +8,6 @@ import { IconButtonComponent } from '../icons/icon-button/icon-button.component'
 
 @Component({
   selector: 'app-table',
-  standalone: true,
   imports: [
     RouterLink,
     StatusChipComponent,
@@ -17,6 +16,7 @@ import { IconButtonComponent } from '../icons/icon-button/icon-button.component'
   ],
   templateUrl: './table.component.html',
   styleUrl: './table.component.css',
+  standalone: true,
 })
 export class TableComponent {
   @Input('title') title: string = 'Title';

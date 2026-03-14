@@ -3,10 +3,10 @@ import { defaultFloorProps, FloorProps } from '../floor-utils';
 
 @Component({
   selector: 'app-floor-default',
-  standalone: true,
   imports: [],
   templateUrl: './floor-default.component.html',
   styleUrl: './floor-default.component.css',
+  standalone: true,
 })
 export class FloorDefaultComponent {
   @Input('floorProps') floorProps: FloorProps = defaultFloorProps;

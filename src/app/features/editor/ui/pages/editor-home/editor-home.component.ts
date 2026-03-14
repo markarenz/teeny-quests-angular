@@ -14,7 +14,6 @@ import { GameEditorService } from '@app/features/editor/services/game-editor-ser
 
 @Component({
   selector: 'app-editor-home',
-  standalone: true,
   imports: [
     MainLayoutComponent,
     ContainerComponent,
@@ -25,6 +24,7 @@ import { GameEditorService } from '@app/features/editor/services/game-editor-ser
   ],
   templateUrl: './editor-home.component.html',
   styleUrl: './editor-home.component.css',
+  standalone: true,
 })
 export class EditorHomeComponent {
   constructor(

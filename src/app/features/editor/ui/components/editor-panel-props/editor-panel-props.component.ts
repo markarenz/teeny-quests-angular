@@ -26,7 +26,6 @@ import {
 
 @Component({
   selector: 'app-editor-panel-props',
-  standalone: true,
   imports: [
     FormsModule,
     CollapsibleCardComponent,
@@ -36,6 +35,7 @@ import {
   ],
   templateUrl: './editor-panel-props.component.html',
   styleUrl: './editor-panel-props.component.css',
+  standalone: true,
 })
 export class EditorPanelPropsComponent {
   constructor(private _gameEditorService: GameEditorService) {}

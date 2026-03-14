@@ -3,10 +3,10 @@ import { AudioService } from '@app/features/main/services/audio/audio-service.se
 
 @Component({
   selector: 'app-icon-button',
-  standalone: true,
   imports: [],
   templateUrl: './icon-button.component.html',
   styleUrl: './icon-button.component.css',
+  standalone: true,
 })
 export class IconButtonComponent {
   @Input('enableSound') enableSound: boolean = true;

@@ -8,10 +8,10 @@ import { GameEditorService } from '@app/features/editor/services/game-editor-ser
 
 @Component({
   selector: 'app-area-cell-button',
-  standalone: true,
   imports: [],
   templateUrl: './area-cell-button.component.html',
   styleUrl: './area-cell-button.component.css',
+  standalone: true,
 })
 export class AreaCellButtonComponent {
   constructor(private _gameEditorService: GameEditorService) {}

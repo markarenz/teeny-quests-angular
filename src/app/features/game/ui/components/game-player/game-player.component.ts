@@ -11,10 +11,10 @@ import { GameAreaMapCell } from '@app/features/main/interfaces/types';
 
 @Component({
   selector: 'app-game-player',
-  standalone: true,
   imports: [SvgPlayerComponent],
   templateUrl: './game-player.component.html',
   styleUrl: './game-player.component.css',
+  standalone: true,
 })
 export class GamePlayerComponent {
   private subscriptions: Subscription[] = [];

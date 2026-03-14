@@ -11,7 +11,6 @@ import { User } from '@app/features/auth/interfaces/types';
 
 @Component({
   selector: 'app-new-game-modal',
-  standalone: true,
   imports: [
     ModalBgComponent,
     ButtonComponent,
@@ -20,6 +19,7 @@ import { User } from '@app/features/auth/interfaces/types';
   ],
   templateUrl: './new-game-modal.component.html',
   styleUrl: './new-game-modal.component.css',
+  standalone: true,
 })
 export class NewGameModalComponent {
   subscription: Subscription;

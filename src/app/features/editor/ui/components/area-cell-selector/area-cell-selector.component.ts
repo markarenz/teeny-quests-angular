@@ -4,10 +4,10 @@ import { getPositionKeysForGridSize } from '@main/utils';
 
 @Component({
   selector: 'app-area-cell-selector',
-  standalone: true,
   imports: [],
   templateUrl: './area-cell-selector.component.html',
   styleUrl: './area-cell-selector.component.css',
+  standalone: true,
 })
 export class AreaCellSelectorComponent {
   constructor(private _gameEditorService: GameEditorService) {}

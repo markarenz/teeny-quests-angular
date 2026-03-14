@@ -7,10 +7,10 @@ import { IconButtonComponent } from '@app/features/main/ui/components/icons/icon
 
 @Component({
   selector: 'app-editor-area-selector-general',
-  standalone: true,
   imports: [FormsModule],
   templateUrl: './editor-area-selector-general.component.html',
   styleUrl: './editor-area-selector-general.component.css',
+  standalone: true,
 })
 export class EditorAreaSelectorGeneralComponent {
   constructor(private _gameEditorService: GameEditorService) {}

@@ -27,7 +27,6 @@ import { logger } from '@app/features/main/utils/logger';
 
 @Component({
   selector: 'app-editor-input-actions',
-  standalone: true,
   imports: [
     FormsModule,
     CollapsibleCardComponent,
@@ -36,6 +35,7 @@ import { logger } from '@app/features/main/utils/logger';
   ],
   templateUrl: './editor-input-actions.component.html',
   styleUrl: './editor-input-actions.component.css',
+  standalone: true,
 })
 export class EditorInputActionsComponent {
   @Input('title') title: string = 'Actions';

@@ -10,7 +10,6 @@ import { AudioService } from '@app/features/main/services/audio/audio-service.se
 
 @Component({
   selector: 'app-header',
-  standalone: true,
   imports: [
     ContainerComponent,
     MenuToggleComponent,
@@ -20,6 +19,7 @@ import { AudioService } from '@app/features/main/services/audio/audio-service.se
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
+  standalone: true,
 })
 export class HeaderComponent {
   @Input('title') title = '';

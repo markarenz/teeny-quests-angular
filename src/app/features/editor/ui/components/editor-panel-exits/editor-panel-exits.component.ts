@@ -18,7 +18,6 @@ import { floorDefinitions } from '@content/floor-definitions';
 
 @Component({
   selector: 'app-editor-panel-exits',
-  standalone: true,
   imports: [
     FormsModule,
     CollapsibleCardComponent,
@@ -28,6 +27,7 @@ import { floorDefinitions } from '@content/floor-definitions';
   ],
   templateUrl: './editor-panel-exits.component.html',
   styleUrl: './editor-panel-exits.component.css',
+  standalone: true,
 })
 export class EditorPanelExitsComponent {
   constructor(private _gameEditorService: GameEditorService) {}

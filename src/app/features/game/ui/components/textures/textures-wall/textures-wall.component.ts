@@ -8,7 +8,6 @@ import { WallDefaultComponent } from './wall-default/wall-default.component';
 
 @Component({
   selector: 'app-textures-wall',
-  standalone: true,
   imports: [
     BlueShineComponent,
     CaveComponent,
@@ -17,6 +16,7 @@ import { WallDefaultComponent } from './wall-default/wall-default.component';
   ],
   templateUrl: './textures-wall.component.html',
   styleUrl: './textures-wall.component.css',
+  standalone: true,
 })
 export class TexturesWallComponent {
   @Input('wallType') wallType: string = 'default';

@@ -14,7 +14,6 @@ import { AudioService } from '@app/features/main/services/audio/audio-service.se
 
 @Component({
   selector: 'app-area-exit',
-  standalone: true,
   imports: [
     SvgExitDefaultWComponent,
     SvgExitDefaultNComponent,
@@ -23,6 +22,7 @@ import { AudioService } from '@app/features/main/services/audio/audio-service.se
   ],
   templateUrl: './area-exit.component.html',
   styleUrl: './area-exit.component.css',
+  standalone: true,
 })
 export class AreaExitComponent {
   constructor(private _audioService: AudioService) {}

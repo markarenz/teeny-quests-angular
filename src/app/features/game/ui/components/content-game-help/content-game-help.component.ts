@@ -2,11 +2,9 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-content-game-help',
-  standalone: true,
   imports: [],
   templateUrl: './content-game-help.component.html',
-  styleUrl: './content-game-help.component.css'
+  styleUrl: './content-game-help.component.css',
+  standalone: true,
 })
-export class ContentGameHelpComponent {
-
-}
+export class ContentGameHelpComponent {}

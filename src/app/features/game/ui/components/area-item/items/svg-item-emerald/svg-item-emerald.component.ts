@@ -3,10 +3,10 @@ import { SvgShadowComponent } from '../svg-shadow/svg-shadow.component';
 
 @Component({
   selector: 'app-svg-item-emerald',
-  standalone: true,
   imports: [SvgShadowComponent],
   templateUrl: './svg-item-emerald.component.html',
   styleUrl: './svg-item-emerald.component.css',
+  standalone: true,
 })
 export class SvgItemEmeraldComponent {
   @Input('isFlat') isFlat: boolean = false;

@@ -17,10 +17,10 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-content-versions-modal',
-  standalone: true,
   imports: [CommonModalComponent, ButtonComponent, TableComponent],
   templateUrl: './content-versions-modal.component.html',
   styleUrl: './content-versions-modal.component.css',
+  standalone: true,
 })
 export class ContentVersionsModalComponent {
   @Input() gameId: string = '';
@@ -120,6 +120,6 @@ export class ContentVersionsModalComponent {
     );
   }
   ngOnDestroy() {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }

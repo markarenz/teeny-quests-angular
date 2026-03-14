@@ -2,10 +2,10 @@ import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-svg-prop-banner',
-  standalone: true,
   imports: [],
   templateUrl: './svg-prop-banner.component.html',
   styleUrl: './svg-prop-banner.component.css',
+  standalone: true,
 })
 export class SvgPropBannerComponent {
   @Input('isPropSelected') isPropSelected: boolean = false;
