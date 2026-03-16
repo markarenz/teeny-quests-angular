@@ -21,7 +21,7 @@ export type SubNavItem = {
   slug: string;
 };
 
-export type GameEventActionCondition = {
+export type QuestEventActionCondition = {
   id: string;
   conditionType: EventConditionType;
   identifier: string; // based on cidition type: inventory-key, flagId-select, itemId-select,
@@ -41,11 +41,11 @@ export type ActionEffect = {
   actionValue: boolean | number | string;
 };
 
-export type GameActionEffects = {
+export type QuestActionEffects = {
   [key: string]: ActionEffect[];
 };
 
-export type GameProp = {
+export type QuestProp = {
   id: string;
   name?: string;
   propType: string; // e.g., 'torch', 'painting', 'switch'
@@ -55,10 +55,10 @@ export type GameProp = {
   h: number;
   wall: string;
   status?: string; // e.g., 'on', 'off', 'activated'
-  statusActions: GameActionEffects;
+  statusActions: QuestActionEffects;
 };
 
-export type GameAreaMapCell = {
+export type QuestAreaMapCell = {
   x: number;
   y: number;
   h: number;
@@ -69,7 +69,7 @@ export type GameAreaMapCell = {
   decal?: string;
 };
 
-export type GameItem = {
+export type QuestItem = {
   id: string;
   name?: string;
   itemType: string;
@@ -80,7 +80,7 @@ export type GameItem = {
   status?: string;
 };
 
-export type GameAreaExit = {
+export type QuestAreaExit = {
   id: string;
   name?: string;
   exitType: string;
@@ -94,24 +94,24 @@ export type GameAreaExit = {
   lock?: string; // e.g., 'gold', 'silver', 'bronze', 'rocks'
 };
 
-export type GameAreaMap = {
-  [key: string]: GameAreaMapCell;
+export type QuestAreaMap = {
+  [key: string]: QuestAreaMapCell;
 };
 
-export type GameArea = {
+export type QuestArea = {
   id: string;
   name: string;
-  map: GameAreaMap;
-  exits: GameAreaExit[];
-  items: GameItem[];
-  props: GameProp[];
+  map: QuestAreaMap;
+  exits: QuestAreaExit[];
+  items: QuestItem[];
+  props: QuestProp[];
 };
 
-export type GameEvent = {
+export type QuestEvent = {
   id: string;
   name: string;
   isUnidirectional: boolean; // if true, event can only trigger once
-  conditions: GameEventActionCondition[];
+  conditions: QuestEventActionCondition[];
   actions: ActionEffect[];
 };
 
@@ -119,21 +119,21 @@ export type Inventory = {
   [key: string]: number;
 };
 
-export type GameStateValues = {
+export type QuestStateValues = {
   [key: string]: boolean | number | string;
 };
 
-export type GameFlag = {
+export type QuestFlag = {
   id: string;
   name: string;
   scoreValue: number;
 };
 
-export type GameContent = {
-  areas: { [key: string]: GameArea };
-  events: GameEvent[];
-  flags?: GameFlag[];
-  flagValues: GameStateValues;
+export type QuestContent = {
+  areas: { [key: string]: QuestArea };
+  events: QuestEvent[];
+  flags?: QuestFlag[];
+  flagValues: QuestStateValues;
   player: {
     areaId: string;
     x: number;
@@ -142,7 +142,7 @@ export type GameContent = {
   };
 };
 
-export type GameROM = {
+export type QuestROM = {
   id: string;
   title: string;
   description: string;
@@ -151,7 +151,7 @@ export type GameROM = {
   userId: string;
   username: string;
   rating?: string;
-  content: GameContent;
+  content: QuestContent;
 };
 
 export type StatusEffect = {
@@ -159,14 +159,14 @@ export type StatusEffect = {
   expirationTurn: number;
 };
 
-export type GameStateArea = {
-  map: GameAreaMap;
-  items: GameItem[];
-  exits: GameAreaExit[];
-  props: GameProp[];
+export type QuestStateArea = {
+  map: QuestAreaMap;
+  items: QuestItem[];
+  exits: QuestAreaExit[];
+  props: QuestProp[];
 };
 
-export type GameState = {
+export type QuestState = {
   gameId: string;
   player: {
     areaId: string;
@@ -178,9 +178,9 @@ export type GameState = {
     statusActions: StatusEffect[];
   };
   numTurns: number;
-  flagValues: GameStateValues;
+  flagValues: QuestStateValues;
   areas: {
-    [key: string]: GameStateArea;
+    [key: string]: QuestStateArea;
   };
   firstSaveDate: string;
   lastUpdateDate: string;

@@ -3,14 +3,14 @@ import { Subscription } from 'rxjs';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import { FormsModule } from '@angular/forms';
 import {
-  GameArea,
-  GameProp,
+  QuestArea,
+  QuestProp,
   SelectIUIOption,
-  GameActionEffects,
+  QuestActionEffects,
   ActionEffect,
   PropDefinition,
-  GameAreaExit,
-  GameAreaMapCell,
+  QuestAreaExit,
+  QuestAreaMapCell,
 } from '@app/features/main/interfaces/types';
 import { AreaCellSelectorComponent } from '../area-cell-selector/area-cell-selector.component';
 import { CollapsibleCardComponent } from '@app/features/main/ui/components/collapsible-card/collapsible-card.component';
@@ -44,22 +44,22 @@ export class EditorPanelPropsComponent {
   public propTypeOptions: SelectIUIOption[] = propDecoOptions;
 
   public selectedPropDefinition: PropDefinition | null = null;
-  public selectedPropActions: GameActionEffects = {};
+  public selectedPropActions: QuestActionEffects = {};
   public inputPropType: string = '';
   public inputPropPosition: string = '1_1';
   public inputPropWall: string = 'west';
   public inputPropHeight = '1';
   public inputPropStatus: string = '';
   public inputPropName: string = '';
-  public inputPropStatusEffects: GameActionEffects = {};
+  public inputPropStatusEffects: QuestActionEffects = {};
 
   public canSetHeight: boolean = true;
   public selectedPropId: string = '';
-  public props: GameProp[] = [];
+  public props: QuestProp[] = [];
   public isSelectedPositionValid: boolean = false;
 
   public lockouts: string[] = [];
-  public area: GameArea | null = null;
+  public area: QuestArea | null = null;
   public propWallOptions = propDecoWallOptions;
   public propStatusOptions: SelectIUIOption[] = [];
   public propHeightOptions: SelectIUIOption[] = [];
@@ -73,7 +73,7 @@ export class EditorPanelPropsComponent {
     return { neighborN, neighborW };
   }
 
-  private getExitOnCell = (y: number, x: number): GameAreaExit | null => {
+  private getExitOnCell = (y: number, x: number): QuestAreaExit | null => {
     return (
       this.area?.exits.find(exit => exit.x === +x && exit.y === +y) || null
     );
@@ -81,8 +81,8 @@ export class EditorPanelPropsComponent {
 
   private getPropWallOptions = (
     position: string,
-    neighborN: GameAreaMapCell | null = null,
-    neighborW: GameAreaMapCell | null = null,
+    neighborN: QuestAreaMapCell | null = null,
+    neighborW: QuestAreaMapCell | null = null,
     currentH: number = 0
   ): SelectIUIOption[] => {
     const [y, x] = position.split('_').map(Number);
@@ -277,7 +277,7 @@ export class EditorPanelPropsComponent {
   }
 
   public handleCreateClick() {
-    const prop: GameProp | null = this._gameEditorService.createProp(
+    const prop: QuestProp | null = this._gameEditorService.createProp(
       this.lockouts
     );
     if (prop) {
@@ -306,7 +306,7 @@ export class EditorPanelPropsComponent {
       }
 
       this.inputPropWall = wall;
-      const updatedProp: GameProp = {
+      const updatedProp: QuestProp = {
         ...selectedProp,
         id: this.selectedPropId,
         name: this.inputPropName,

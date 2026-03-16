@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EditorPlayerPositionComponent } from './editor-player-position.component';
-import gameMockData from '@app/features/editor/mocks/game.mock';
-import { GameROM } from '@app/features/main/interfaces/types';
+import questMockData from '@app/features/editor/mocks/game.mock';
+import { QuestROM } from '@app/features/main/interfaces/types';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 
 describe('EditorPlayerPositionComponent', () => {
   let component: EditorPlayerPositionComponent;
   let fixture: ComponentFixture<EditorPlayerPositionComponent>;
-  let gameMock: GameROM;
+  let gameMock: QuestROM;
   let gameEditorService: GameEditorService;
 
   beforeEach(async () => {
@@ -15,7 +15,7 @@ describe('EditorPlayerPositionComponent', () => {
       imports: [EditorPlayerPositionComponent],
       teardown: { destroyAfterEach: false },
     }).compileComponents();
-    gameMock = <GameROM>JSON.parse(JSON.stringify(gameMockData));
+    gameMock = <QuestROM>JSON.parse(JSON.stringify(questMockData));
 
     gameEditorService = TestBed.inject(GameEditorService);
     fixture = TestBed.createComponent(EditorPlayerPositionComponent);

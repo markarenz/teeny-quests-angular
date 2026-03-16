@@ -3,8 +3,8 @@ import { ToastrModule, ToastrService } from 'ngx-toastr';
 import fetchMock from 'fetch-mock';
 import { GameService } from './game-service.service';
 import { gamesApiUrl } from '@config/index';
-import gameMockData, {
-  gameStateMockData,
+import questMockData, {
+  questStateMockData,
 } from '@app/features/editor/mocks/game.mock';
 import { MovementOptions } from '@app/features/main/interfaces/types';
 import { firstValueFrom, skip, take } from 'rxjs';
@@ -12,25 +12,25 @@ import { MessageService } from '../message/message.service';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 
-let gameMock = { ...gameMockData };
-let gameMockFromDB = { ...gameMockData };
+let gameMock = { ...questMockData };
+let gameMockFromDB = { ...questMockData };
 let messageService: MessageService;
 let mockAudioService: jasmine.SpyObj<AudioService>;
 
 beforeEach(async () => {
   gameMock = await JSON.parse(
     JSON.stringify({
-      ...gameMockData,
+      ...questMockData,
     })
   );
   gameMockFromDB = await JSON.parse(
     JSON.stringify({
-      ...gameMockData,
+      ...questMockData,
     })
   );
-  // GameROM `content` is stringified when saved to DB
+  // QuestROM `content` is stringified when saved to DB
   // @ts-expect-error
-  gameMockFromDB.content = JSON.stringify(gameMockData.content);
+  gameMockFromDB.content = JSON.stringify(questMockData.content);
 });
 
 afterEach(() => {
@@ -78,7 +78,7 @@ describe('loadGameROM', () => {
     service = TestBed.inject(GameService);
   });
 
-  it('should load gameROM by id', () => {
+  it('should load questROM by id', () => {
     const url = `${gamesApiUrl}?id=test`;
     fetchMock.mockGlobal().get(
       url,
@@ -291,7 +291,7 @@ describe('getCanUseItem', () => {
     });
     messageService = TestBed.inject(MessageService);
     service = TestBed.inject(GameService);
-    const gameMock = JSON.parse(JSON.stringify({ ...gameMockData }));
+    const gameMock = JSON.parse(JSON.stringify({ ...questMockData }));
     service.testInit(gameMock);
     service.initGameState(gameMock);
   });
@@ -386,7 +386,7 @@ describe('turnActionExit', () => {
     service = TestBed.inject(GameService);
     const gameMockLevelExit = JSON.parse(
       JSON.stringify({
-        ...gameMockData,
+        ...questMockData,
       })
     );
     gameMockLevelExit.content.areas['start'].exits[0].exitType = 'game-end';
@@ -510,7 +510,7 @@ describe('calcLightMap', () => {
 
   it('should calculate light map', fakeAsync(async () => {
     tick(1000);
-    const mockState = JSON.parse(JSON.stringify({ ...gameStateMockData }));
+    const mockState = JSON.parse(JSON.stringify({ ...questStateMockData }));
     mockState.areas['start'].props[0].status = 'on';
     service.calcLightMap(mockState);
 
@@ -522,7 +522,7 @@ describe('calcLightMap', () => {
   }));
   it('should calculate light map - full light', fakeAsync(async () => {
     tick(1000);
-    const mockState = JSON.parse(JSON.stringify({ ...gameStateMockData }));
+    const mockState = JSON.parse(JSON.stringify({ ...questStateMockData }));
     mockState.areas['start'].props[0].status = 'on';
     mockState.areas['start'].props.push({
       ...mockState.areas['start'].props[0],

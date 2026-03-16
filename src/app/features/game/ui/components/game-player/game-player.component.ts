@@ -7,7 +7,7 @@ import {
   getAreaElementPositionStyle,
 } from '@app/features/game/lib/utils';
 import { defaultGridSize } from '@config/index';
-import { GameAreaMapCell } from '@app/features/main/interfaces/types';
+import { QuestAreaMapCell } from '@app/features/main/interfaces/types';
 
 @Component({
   selector: 'app-game-player',
@@ -20,7 +20,7 @@ export class GamePlayerComponent {
   private subscriptions: Subscription[] = [];
   @Input('playerPosition') playerPosition: string = '0_0';
   @Input('playerFacing') playerFacing: string = 'north';
-  @Input('cellData') cellData: GameAreaMapCell | null = null;
+  @Input('cellData') cellData: QuestAreaMapCell | null = null;
 
   h: number = 0;
   positionStyle: AreaPosition = { left: '0', bottom: '0', z: 0 };

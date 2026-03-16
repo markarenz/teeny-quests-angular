@@ -1,4 +1,4 @@
-import { GameROM, GameItem } from '@app/features/main/interfaces/types';
+import { QuestROM, QuestItem } from '@app/features/main/interfaces/types';
 import { findAnOpenCell } from './common-utils';
 import { defaultGridSize } from '@config/index';
 import { v4 as uuidv4 } from 'uuid';
@@ -8,14 +8,14 @@ export const utilDeleteItem = ({
   selectedAreaId,
   itemId,
 }: {
-  game: GameROM;
+  game: QuestROM;
   selectedAreaId: string;
   itemId: string;
 }) => {
-  const nextGame = { ...game } as GameROM;
+  const nextGame = { ...game } as QuestROM;
   const items = game.content.areas[selectedAreaId].items;
   if (items) {
-    const newItems = items.filter((item) => item.id !== itemId);
+    const newItems = items.filter(item => item.id !== itemId);
     nextGame.content.areas[selectedAreaId] = {
       ...nextGame?.content.areas[selectedAreaId],
       items: newItems,
@@ -30,10 +30,10 @@ export const utilCreateItem = ({
   selectedAreaId,
   lockouts,
 }: {
-  game: GameROM;
+  game: QuestROM;
   selectedAreaId: string;
   lockouts: string[];
-}): { nextGame: GameROM | null; newItem: GameItem | null } => {
+}): { nextGame: QuestROM | null; newItem: QuestItem | null } => {
   const areas = game.content.areas;
   if (areas) {
     const area = areas[selectedAreaId] ?? {
@@ -54,7 +54,7 @@ export const utilCreateItem = ({
       }
 
       let h = area ? area.map[openCellPosition].h : 1;
-      const newItem: GameItem = {
+      const newItem: QuestItem = {
         id: uuidv4(),
         itemType: 'coins-25',
         areaId: selectedAreaId,
@@ -63,7 +63,7 @@ export const utilCreateItem = ({
         h,
       };
 
-      const nextGame = { ...game } as GameROM;
+      const nextGame = { ...game } as QuestROM;
       nextGame.content.areas[selectedAreaId] = {
         ...nextGame?.content.areas[selectedAreaId],
         items: [
@@ -85,16 +85,16 @@ export const utilUpdateItem = ({
   updatedItem,
   selectedAreaId,
 }: {
-  game: GameROM;
-  updatedItem: GameItem;
+  game: QuestROM;
+  updatedItem: QuestItem;
   selectedAreaId: string;
-}): GameROM => {
+}): QuestROM => {
   const id = updatedItem.id;
-  const gameObj = { ...game } as GameROM;
+  const gameObj = { ...game } as QuestROM;
   const area = gameObj?.content.areas[selectedAreaId];
 
   if (area) {
-    const newItems = area.items.map((item) =>
+    const newItems = area.items.map(item =>
       item.id === id
         ? {
             ...updatedItem,

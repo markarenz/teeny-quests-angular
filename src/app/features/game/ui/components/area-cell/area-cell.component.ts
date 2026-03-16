@@ -3,7 +3,10 @@ import {
   AreaPosition,
   getAreaElementPositionStyle,
 } from '@app/features/game/lib/utils/index';
-import { GameAreaMapCell, LightMap } from '@app/features/main/interfaces/types';
+import {
+  QuestAreaMapCell,
+  LightMap,
+} from '@app/features/main/interfaces/types';
 import { areaHeightFactor, defaultGridSize } from '@config/index';
 import { TexturesFloorComponent } from '@app/features/game/ui/components/textures/textures-floor/textures-floor.component';
 import { TexturesWallComponent } from '@app/features/game/ui/components/textures/textures-wall/textures-wall.component';
@@ -23,7 +26,7 @@ export class AreaCellComponent {
   @Input('selectedAreaCellPositions') selectedAreaCellPositions: string[] = [];
   @Input('secondarySelectedCellPosition')
   secondarySelectedCellPosition: string = '';
-  @Input('cellData') cellData: GameAreaMapCell | null = null;
+  @Input('cellData') cellData: QuestAreaMapCell | null = null;
   @Output() onClick = new EventEmitter<string>();
 
   gridSize: number = defaultGridSize;

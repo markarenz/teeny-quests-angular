@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import {
-  GameArea,
-  GameAreaMap,
-  GameItem,
-  GameROM,
-  GameState,
-  GameStateArea,
+  QuestArea,
+  QuestAreaMap,
+  QuestItem,
+  QuestROM,
+  QuestState,
+  QuestStateArea,
   LightMap,
   MovementOptions,
 } from '@app/features/main/interfaces/types';
@@ -36,10 +36,10 @@ export class GameService {
 
   private aspectRatio: number = 1.0;
   public v: string | null = null; // game version
-  private gameROM = new BehaviorSubject<GameROM | null>(null);
-  gameROMObs = this.gameROM.asObservable();
+  private questROM = new BehaviorSubject<QuestROM | null>(null);
+  gameROMObs = this.questROM.asObservable();
 
-  private gameState = new BehaviorSubject<GameState | null>(null);
+  private gameState = new BehaviorSubject<QuestState | null>(null);
   gameStateObs = this.gameState.asObservable();
 
   private score = new BehaviorSubject<number>(0);
@@ -72,8 +72,8 @@ export class GameService {
   private levelGoals = new BehaviorSubject<string>('');
   levelGoalsObs = this.levelGoals.asObservable();
 
-  testInit(nextGameROM: GameROM): void {
-    this.gameROM.next(nextGameROM);
+  testInit(nextGameROM: QuestROM): void {
+    this.questROM.next(nextGameROM);
   }
 
   testSetValue(key: string, value: unknown): void {
@@ -89,7 +89,7 @@ export class GameService {
     this.aspectRatio = aspectRatio;
   };
 
-  calculateMovementOptions(nextGameState: GameState): void {
+  calculateMovementOptions(nextGameState: QuestState): void {
     const nextMovementOptions = getMoveOptions({
       positionKeyStart: `${nextGameState.player.y}_${nextGameState.player.x}`,
       areaMap: nextGameState.areas[nextGameState.player.areaId].map,
@@ -101,7 +101,7 @@ export class GameService {
   public getLocalSaveKey = (gameId: string) =>
     `save--${gameId}${this.v ? `--v${this.v}` : ''}`;
 
-  saveLocalGameState(nextGameState: GameState): void {
+  saveLocalGameState(nextGameState: QuestState): void {
     localStorage.setItem(
       this.getLocalSaveKey(nextGameState.gameId),
       JSON.stringify({
@@ -130,7 +130,7 @@ export class GameService {
     return lightMap;
   }
 
-  public calcLightMap(nextGameState: GameState): void {
+  public calcLightMap(nextGameState: QuestState): void {
     const positionKeys = getPositionKeysForGridSize();
     let lighting: LightMap = {};
     const lightEmittingProps = nextGameState.areas[
@@ -189,7 +189,7 @@ export class GameService {
       );
     }
   };
-  public setFullWidthOffsetY = (y: number, x: number, map: GameAreaMap) => {
+  public setFullWidthOffsetY = (y: number, x: number, map: QuestAreaMap) => {
     if (map) {
       const positionStyles = getAreaElementPositionStyle(
         defaultGridSize,
@@ -207,10 +207,10 @@ export class GameService {
     }
   };
 
-  initGameState(nextGameROM: GameROM): void {
+  initGameState(nextGameROM: QuestROM): void {
     const nowStr = new Date().toISOString();
     const areas: any = {};
-    let nextGameState: GameState;
+    let nextGameState: QuestState;
     Object.keys(nextGameROM.content.areas).forEach((areaId: string) => {
       areas[areaId] = {
         exits: nextGameROM.content.areas[areaId].exits,
@@ -253,8 +253,8 @@ export class GameService {
     if (localGameState) {
       nextGameState = localGameState;
     }
-    if (this.gameROM.value) {
-      this.score.next(calcScore(nextGameState, this.gameROM.value));
+    if (this.questROM.value) {
+      this.score.next(calcScore(nextGameState, this.questROM.value));
     }
     this.gameState.next(nextGameState);
     this.levelGoals.next(getLevelGoals(nextGameROM));
@@ -264,8 +264,8 @@ export class GameService {
   }
 
   loadGameROM(gameId: string | null, v?: string | null): void {
-    if (this.gameROM.value) {
-      this.gameROM.next(null);
+    if (this.questROM.value) {
+      this.questROM.next(null);
     }
     if (gameId) {
       this.areaTransitionMode.next('cover');
@@ -289,7 +289,7 @@ export class GameService {
                   nextGameROM.content = JSON.parse(versionData.item.content);
                 }
                 if (nextGameROM) {
-                  this.gameROM.next(nextGameROM);
+                  this.questROM.next(nextGameROM);
                   this.initGameState(nextGameROM);
                 }
                 this.isLockedOut.next(false);
@@ -302,7 +302,7 @@ export class GameService {
             }
 
             if (nextGameROM) {
-              this.gameROM.next(nextGameROM);
+              this.questROM.next(nextGameROM);
               this.initGameState(nextGameROM);
             }
             this.isLockedOut.next(false);
@@ -311,16 +311,16 @@ export class GameService {
     }
   }
 
-  getGameStateArea(areaId: string): GameStateArea | null {
+  getGameStateArea(areaId: string): QuestStateArea | null {
     if (this.gameState.value && this.gameState.value.areas[areaId]) {
       return this.gameState.value.areas[areaId];
     }
     return null;
   }
 
-  getArea(areaId: string): GameArea | null {
-    if (this.gameROM.value && this.gameROM.value.content.areas[areaId]) {
-      return this.gameROM.value.content.areas[areaId];
+  getArea(areaId: string): QuestArea | null {
+    if (this.questROM.value && this.questROM.value.content.areas[areaId]) {
+      return this.questROM.value.content.areas[areaId];
     }
 
     return null;
@@ -377,7 +377,7 @@ export class GameService {
     }
     return false;
   };
-  turnActionExit = async (exitId: string): Promise<GameState> => {
+  turnActionExit = async (exitId: string): Promise<QuestState> => {
     this._audioService.playSound('exit');
     let nextGameState = JSON.parse(JSON.stringify(this.gameState.value));
     const areaId = nextGameState.player.areaId;
@@ -447,11 +447,11 @@ export class GameService {
     return nextGameState;
   };
 
-  turnActionMovePlayer = async (destination: string): Promise<GameState> => {
+  turnActionMovePlayer = async (destination: string): Promise<QuestState> => {
     const path = this.movementOptions.value[destination];
     let nextGameState = JSON.parse(JSON.stringify(this.gameState.value));
     if (!path || path.length < 2) {
-      return this.gameState.value as GameState;
+      return this.gameState.value as QuestState;
     }
 
     const [cy, cx] = destination.split('_').map(v => parseInt(v));
@@ -487,22 +487,22 @@ export class GameService {
     await this.delay(250);
     this.playerAnim.next('');
     this.isLockedOut.next(false);
-    return this.gameState.value as GameState;
+    return this.gameState.value as QuestState;
   };
 
-  turnActionDropItem = async (itemType: string): Promise<GameState> => {
+  turnActionDropItem = async (itemType: string): Promise<QuestState> => {
     let nextGameState = JSON.parse(JSON.stringify(this.gameState.value));
     nextGameState.player.inventory[itemType] -= 1;
     const itemDef = itemDefinitions[itemType];
     const area = nextGameState.areas[nextGameState.player.areaId];
     const positionKey = `${nextGameState.player.y}_${nextGameState.player.x}`;
-    const newItem: GameItem = {
+    const newItem: QuestItem = {
       id: `item-${Date.now()}`,
       areaId: nextGameState.player.areaId,
       itemType,
       x: nextGameState.player.x,
       y: nextGameState.player.y,
-      h: this.gameROM.value!.content.areas[nextGameState.player.areaId].map[
+      h: this.questROM.value!.content.areas[nextGameState.player.areaId].map[
         positionKey
       ].h,
     };
@@ -516,10 +516,10 @@ export class GameService {
   };
 
   turnActionUnlockExit = (
-    nextGameState: GameState,
+    nextGameState: QuestState,
     use: string,
     itemId: string
-  ): GameState => {
+  ): QuestState => {
     const color = use.split('unlock-exit-')[1]; // e.g. 'silver'
     const area = nextGameState.areas[nextGameState.player.areaId];
     const exit = area.exits.find(
@@ -537,7 +537,7 @@ export class GameService {
     return nextGameState;
   };
 
-  turnActionItemUse = async (itemId: string): Promise<GameState> => {
+  turnActionItemUse = async (itemId: string): Promise<QuestState> => {
     let nextGameState = structuredClone(this.gameState.value)!;
     nextGameState.player.inventory[itemId] = Math.max(
       nextGameState.player.inventory[itemId] - 1,
@@ -576,10 +576,10 @@ export class GameService {
   };
 
   turnActionPropSetStatus = async (
-    nextGameState: GameState,
+    nextGameState: QuestState,
     propId: string,
     status: string
-  ): Promise<GameState> => {
+  ): Promise<QuestState> => {
     const area = nextGameState.areas[nextGameState.player.areaId];
     const prop = area.props.find(p => p.id === propId);
     if (prop) {
@@ -605,7 +605,7 @@ export class GameService {
   turnActionPropClick = async (
     propId: string,
     forceStatus?: string
-  ): Promise<GameState> => {
+  ): Promise<QuestState> => {
     let nextGameState = structuredClone(this.gameState.value)!;
     if (this.gameState.value === null) {
       return nextGameState;
@@ -661,13 +661,13 @@ export class GameService {
   };
 
   public resetGameProgress = (): void => {
-    const gameId = this.gameROM.value?.id;
+    const gameId = this.questROM.value?.id;
     if (gameId) {
       localStorage.removeItem(this.getLocalSaveKey(gameId));
     }
   };
 
-  turnActionItemClick = async (itemId: string): Promise<GameState> => {
+  turnActionItemClick = async (itemId: string): Promise<QuestState> => {
     let nextGameState = structuredClone(this.gameState.value)!;
 
     const area = this.gameState.value?.areas[nextGameState.player.areaId];
@@ -702,7 +702,7 @@ export class GameService {
           // Remove item from area
           nextGameState.areas[nextGameState.player.areaId].items =
             nextGameState.areas[nextGameState.player.areaId].items.filter(
-              (i: GameItem) => i.id !== itemId
+              (i: QuestItem) => i.id !== itemId
             );
           this._messageService.showMessage({
             title: 'Inventory Updated',
@@ -727,7 +727,7 @@ export class GameService {
     noun: string;
     amount?: number;
   }): Promise<void> {
-    if (this.gameROM.value && this.gameState.value) {
+    if (this.questROM.value && this.gameState.value) {
       let nextGameState = JSON.parse(JSON.stringify(this.gameState.value));
       switch (verb) {
         case 'move':
@@ -769,7 +769,7 @@ export class GameService {
       }
       nextGameState = processEvents(
         nextGameState,
-        this.gameROM.value,
+        this.questROM.value,
         this._audioService,
         this._messageService
       );
@@ -779,7 +779,7 @@ export class GameService {
       }
 
       nextGameState.numTurns += 1;
-      this.score.next(calcScore(nextGameState, this.gameROM.value));
+      this.score.next(calcScore(nextGameState, this.questROM.value));
       this.saveLocalGameState(nextGameState);
       this.gameState.next(nextGameState);
       this.calculateMovementOptions(nextGameState);

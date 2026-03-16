@@ -5,17 +5,17 @@ import { gamesApiUrl, versionsApiUrl } from '@config/index';
 import { AuthProviderService } from '@app/features/auth/services/auth-provider-service';
 import { User } from '@app/features/auth/interfaces/types';
 import {
-  GameROM,
-  GameArea,
-  GameItem,
-  GameAreaExit,
-  GameAreaMapCell,
+  QuestROM,
+  QuestArea,
+  QuestItem,
+  QuestAreaExit,
+  QuestAreaMapCell,
   SelectIUIOption,
-  GameContent,
+  QuestContent,
   ContentVersionListItem,
-  GameProp,
-  GameEvent,
-  GameFlag,
+  QuestProp,
+  QuestEvent,
+  QuestFlag,
 } from '@app/features/main/interfaces/types';
 import {
   utilDeleteItem,
@@ -44,16 +44,16 @@ export class GameEditorService {
   private isLoading = new BehaviorSubject<boolean>(false);
   isLoadingObs = this.isLoading.asObservable();
 
-  private games = new BehaviorSubject<GameROM[]>([]);
+  private games = new BehaviorSubject<QuestROM[]>([]);
   gamesObs = this.games.asObservable();
 
-  private game = new BehaviorSubject<GameROM | null>(null);
+  private game = new BehaviorSubject<QuestROM | null>(null);
   gameObs = this.game.asObservable();
 
   private selectedAreaId = new BehaviorSubject<string>('');
   selectedAreaIdObs = this.selectedAreaId.asObservable();
 
-  private selectedArea = new BehaviorSubject<GameArea | null>(null);
+  private selectedArea = new BehaviorSubject<QuestArea | null>(null);
   selectedAreaObs = this.selectedArea.asObservable();
 
   private selectedCellPosition = new BehaviorSubject<string>('');
@@ -66,7 +66,7 @@ export class GameEditorService {
   secondarySelectedCellPositionObs =
     this.secondarySelectedCellPosition.asObservable();
 
-  private selectedCell = new BehaviorSubject<GameAreaMapCell | null>(null);
+  private selectedCell = new BehaviorSubject<QuestAreaMapCell | null>(null);
   selectedCellObs = this.selectedCell.asObservable();
 
   private isMenuOpen = new BehaviorSubject<boolean>(false);
@@ -84,19 +84,19 @@ export class GameEditorService {
   private selectedItemId = new BehaviorSubject<string>('');
   selectedItemIdObs = this.selectedItemId.asObservable();
 
-  private areaExits = new BehaviorSubject<GameAreaExit[]>([]);
+  private areaExits = new BehaviorSubject<QuestAreaExit[]>([]);
   areaExitsObs = this.areaExits.asObservable();
 
-  private areaItems = new BehaviorSubject<GameItem[]>([]);
+  private areaItems = new BehaviorSubject<QuestItem[]>([]);
   areaItemsObs = this.areaItems.asObservable();
 
-  private areaProps = new BehaviorSubject<GameProp[]>([]);
+  private areaProps = new BehaviorSubject<QuestProp[]>([]);
   areaPropsObs = this.areaProps.asObservable();
 
-  private events = new BehaviorSubject<GameEvent[]>([]);
+  private events = new BehaviorSubject<QuestEvent[]>([]);
   eventsObs = this.events.asObservable();
 
-  private flags = new BehaviorSubject<GameFlag[]>([]);
+  private flags = new BehaviorSubject<QuestFlag[]>([]);
   flagsObs = this.flags.asObservable();
 
   private contentVersions = new BehaviorSubject<ContentVersionListItem[]>([]);
@@ -106,7 +106,7 @@ export class GameEditorService {
     this.isMenuOpen.next(false);
   }
 
-  updateGame(game: GameROM) {
+  updateGame(game: QuestROM) {
     this.game.next(game);
     this.saveToLocalStorage(game);
   }
@@ -150,9 +150,9 @@ export class GameEditorService {
     this.isMenuOpen.next(!this.isMenuOpen.value);
   }
 
-  setCellsData(cellData: GameAreaMapCell) {
+  setCellsData(cellData: QuestAreaMapCell) {
     if (this.game.value?.content.areas[this.selectedAreaId.value]) {
-      const gameObj = { ...this.game.value } as GameROM;
+      const gameObj = { ...this.game.value } as QuestROM;
 
       const exits = gameObj?.content.areas[this.selectedAreaId.value].exits.map(
         exit =>
@@ -160,7 +160,7 @@ export class GameEditorService {
             ? { ...exit, h: cellData.h }
             : exit
       );
-      const changedCellsData: { [key: string]: GameAreaMapCell } = {};
+      const changedCellsData: { [key: string]: QuestAreaMapCell } = {};
       this.selectedCellPositions.value.forEach(pos => {
         const originalCell =
           gameObj?.content.areas[this.selectedAreaId.value].map[pos];
@@ -191,9 +191,9 @@ export class GameEditorService {
     }
   }
 
-  setCellData(cellData: GameAreaMapCell) {
+  setCellData(cellData: QuestAreaMapCell) {
     if (this.game.value?.content.areas[this.selectedAreaId.value]) {
-      const gameObj = { ...this.game.value } as GameROM;
+      const gameObj = { ...this.game.value } as QuestROM;
 
       const exits = gameObj?.content.areas[this.selectedAreaId.value].exits.map(
         exit =>
@@ -219,7 +219,7 @@ export class GameEditorService {
     }
   }
 
-  getAreaById(areaId: string): GameArea | null {
+  getAreaById(areaId: string): QuestArea | null {
     return this.game.value?.content.areas[areaId] ?? null;
   }
   getSelectedAreaId(): string {
@@ -231,33 +231,33 @@ export class GameEditorService {
     this.selectedAreaId.next('');
     setTimeout(() => {
       this.selectedAreaId.next(areaId);
-      this.refreshAreaExits(this.game.value as GameROM);
-      this.refreshAreaItems(this.game.value as GameROM);
-      this.refreshAreaProps(this.game.value as GameROM);
-      this.refreshEvents(this.game.value as GameROM);
+      this.refreshAreaExits(this.game.value as QuestROM);
+      this.refreshAreaItems(this.game.value as QuestROM);
+      this.refreshAreaProps(this.game.value as QuestROM);
+      this.refreshEvents(this.game.value as QuestROM);
     }, 100);
   }
 
-  getPropsForCurrentArea(): GameProp[] {
+  getPropsForCurrentArea(): QuestProp[] {
     return (
       this.game.value?.content.areas[this.selectedAreaId.value]?.props ?? []
     );
   }
 
-  getItemsForCurrentArea(): GameItem[] {
+  getItemsForCurrentArea(): QuestItem[] {
     return (
       this.game.value?.content.areas[this.selectedAreaId.value]?.items ?? []
     );
   }
 
-  getExitsForCurrentArea(): GameAreaExit[] {
+  getExitsForCurrentArea(): QuestAreaExit[] {
     return (
       this.game.value?.content.areas[this.selectedAreaId.value]?.exits ?? []
     );
   }
 
   // FLAGS --------------------------------------------------------------------
-  updateFlagsInGame(nextFlags: GameFlag[]) {
+  updateFlagsInGame(nextFlags: QuestFlag[]) {
     if (this.game.value) {
       const nextGame = {
         ...this.game.value,
@@ -282,7 +282,7 @@ export class GameEditorService {
   }
 
   createFlag() {
-    const newFlag: GameFlag = {
+    const newFlag: QuestFlag = {
       id: uuidv4(),
       name: 'New Flag',
       scoreValue: 0,
@@ -298,7 +298,7 @@ export class GameEditorService {
     this.updateFlagsInGame(nextFlags);
   }
 
-  updateFlag(updatedFlag: GameFlag) {
+  updateFlag(updatedFlag: QuestFlag) {
     {
       const nextFlags = this.flags.value.map(flag =>
         flag.id === updatedFlag.id ? updatedFlag : flag
@@ -309,7 +309,7 @@ export class GameEditorService {
   }
 
   // ITEMS -------------------------------------------------------------------
-  refreshAreaItems(nextGame: GameROM) {
+  refreshAreaItems(nextGame: QuestROM) {
     const nextItems = [
       ...nextGame.content.areas[this.selectedAreaId.value].items,
     ];
@@ -317,7 +317,7 @@ export class GameEditorService {
     this.areaItems.next(nextItems);
   }
 
-  createItem(lockouts: string[]): GameItem | null {
+  createItem(lockouts: string[]): QuestItem | null {
     if (this.game.value && this.selectedAreaId.value) {
       const { nextGame, newItem } = utilCreateItem({
         game: this.game.value,
@@ -335,7 +335,7 @@ export class GameEditorService {
     return null;
   }
 
-  updateItem(updatedItem: GameItem) {
+  updateItem(updatedItem: QuestItem) {
     if (this.game.value) {
       const nextGame = utilUpdateItem({
         game: this.game.value,
@@ -368,7 +368,7 @@ export class GameEditorService {
   }
 
   // PANELS -------------------------------------------------------------------
-  refreshAreaProps(nextGame: GameROM) {
+  refreshAreaProps(nextGame: QuestROM) {
     const nextProps = [
       ...nextGame.content.areas[this.selectedAreaId.value].props,
     ];
@@ -376,7 +376,7 @@ export class GameEditorService {
     this.areaProps.next(nextProps);
   }
 
-  createProp(lockouts: string[]): GameProp | null {
+  createProp(lockouts: string[]): QuestProp | null {
     if (this.game.value && this.selectedAreaId.value) {
       const { nextGame, newProp } = utilCreateProp({
         game: this.game.value,
@@ -394,7 +394,7 @@ export class GameEditorService {
     return null;
   }
 
-  updateProp(updatedProp: GameProp) {
+  updateProp(updatedProp: QuestProp) {
     if (this.game.value) {
       const nextGame = utilUpdateProp({
         game: this.game.value,
@@ -429,13 +429,13 @@ export class GameEditorService {
 
   // EXITS --------------------------------------------------------------------
 
-  refreshAreaExits(nextGame: GameROM) {
+  refreshAreaExits(nextGame: QuestROM) {
     this.areaExits.next(
       nextGame.content.areas[this.selectedAreaId.value].exits
     );
   }
 
-  createExit(): GameAreaExit | null {
+  createExit(): QuestAreaExit | null {
     if (this.game.value) {
       const { newExit, nextGame } = utilCreateExit({
         game: this.game.value,
@@ -474,7 +474,7 @@ export class GameEditorService {
     }
   }
 
-  updateExit(updatedExit: GameAreaExit, isEnabledReciprocalExits: boolean) {
+  updateExit(updatedExit: QuestAreaExit, isEnabledReciprocalExits: boolean) {
     if (this.game.value) {
       const { nextGame } = utilUpdateExit({
         game: this.game.value,
@@ -534,7 +534,7 @@ export class GameEditorService {
     this.selectedEventId.next(eventId);
   }
 
-  updateEventData(eventId: string, updatedData: Partial<GameEvent>) {
+  updateEventData(eventId: string, updatedData: Partial<QuestEvent>) {
     if (this.game.value) {
       const nextEvents = this.game.value.content.events.map(event =>
         event.id === eventId ? { ...event, ...updatedData } : event
@@ -552,11 +552,11 @@ export class GameEditorService {
     }
   }
 
-  getEvents(): GameEvent[] {
+  getEvents(): QuestEvent[] {
     return this.events.value;
   }
 
-  refreshEvents(nextGame: GameROM) {
+  refreshEvents(nextGame: QuestROM) {
     const nextEvents = [...nextGame.content.events];
     this.events.next(nextEvents);
   }
@@ -616,7 +616,7 @@ export class GameEditorService {
     this.selectedCell.next(area?.map[cellPosition] ?? null);
   }
 
-  processGameData(rawGameData: GameROM): GameROM {
+  processGameData(rawGameData: QuestROM): QuestROM {
     try {
       const parsedContent = JSON.parse(`${rawGameData.content}`);
       return {
@@ -642,7 +642,7 @@ export class GameEditorService {
     description: string;
   }): Promise<string> {
     const { id: userId, username } = user;
-    const defaultGameContent: GameContent = {
+    const defaultGameContent: QuestContent = {
       areas: {
         start: {
           id: 'start',
@@ -710,7 +710,7 @@ export class GameEditorService {
     }
   }
 
-  async saveGame(game: GameROM): Promise<string> {
+  async saveGame(game: QuestROM): Promise<string> {
     const token = this.authProviderService.getToken();
     if (this.game?.value?.content) {
       const response = await fetch(gamesApiUrl, {
@@ -782,14 +782,14 @@ export class GameEditorService {
     }
   }
 
-  getDefaultMap(): { [key: string]: GameAreaMapCell } {
-    const newMap: { [key: string]: GameAreaMapCell } = {};
+  getDefaultMap(): { [key: string]: QuestAreaMapCell } {
+    const newMap: { [key: string]: QuestAreaMapCell } = {};
 
     const positionKeys = getPositionKeysForGridSize();
 
     positionKeys.forEach(key => {
       const [y, x] = key.split('_');
-      const cell: GameAreaMapCell = {
+      const cell: QuestAreaMapCell = {
         x: +x,
         y: +y,
         h: x === '0' || y === '0' ? 10 : 1,
@@ -806,7 +806,7 @@ export class GameEditorService {
   createArea() {
     if (this.game.value) {
       const id = uuidv4();
-      const newArea: GameArea = {
+      const newArea: QuestArea = {
         id,
         name: `Area ${id.slice(-5)}`,
         map: this.getDefaultMap(),
@@ -923,9 +923,9 @@ export class GameEditorService {
         .then(res => res.json())
         .then(data => {
           if (this.game.value) {
-            const nextGameData: GameROM = {
+            const nextGameData: QuestROM = {
               ...this.game.value,
-              content: JSON.parse(data?.item?.content || '{}') as GameContent,
+              content: JSON.parse(data?.item?.content || '{}') as QuestContent,
             };
             const areasList = Object.keys(nextGameData.content.areas);
             this.game.next(nextGameData);
@@ -996,7 +996,7 @@ export class GameEditorService {
     return propsOptions;
   };
 
-  public getPropById = (propId: string, areaId: string): GameProp | null => {
+  public getPropById = (propId: string, areaId: string): QuestProp | null => {
     if (this.game.value) {
       const prop =
         this.game.value.content.areas[areaId]?.props.find(
@@ -1042,7 +1042,7 @@ export class GameEditorService {
     const savedGame = localStorage.getItem(`editor-save--${gameId}`);
     if (savedGame) {
       try {
-        const parsedGame = JSON.parse(savedGame) as GameROM;
+        const parsedGame = JSON.parse(savedGame) as QuestROM;
         this.game.next(parsedGame);
         const nextArea = parsedGame.content.areas[this.selectedAreaId.value];
         this.selectedArea.next(nextArea);
@@ -1052,7 +1052,7 @@ export class GameEditorService {
     }
   }
 
-  saveToLocalStorage(nextGame?: GameROM) {
+  saveToLocalStorage(nextGame?: QuestROM) {
     const gameToSave = nextGame ?? this.game.value;
     if (gameToSave) {
       localStorage.setItem(

@@ -3,17 +3,17 @@ import { GameEditorService } from '@app/features/editor/services/game-editor-ser
 import { EditorInputActionsComponent } from './editor-input-actions.component';
 import { EventEmitter } from '@angular/core';
 import { ActionEffect } from '@app/features/main/interfaces/types';
-import gameMockData from '@app/features/editor/mocks/game.mock';
+import questMockData from '@app/features/editor/mocks/game.mock';
 
 describe('EditorInputActionsComponent', () => {
   let component: EditorInputActionsComponent;
   let fixture: ComponentFixture<EditorInputActionsComponent>;
   let gameEditorService: GameEditorService;
   let mockEventEmitter: EventEmitter<ActionEffect[]>;
-  let gameMock = JSON.parse(JSON.stringify(gameMockData));
+  let gameMock = JSON.parse(JSON.stringify(questMockData));
 
   beforeEach(async () => {
-    gameMock = JSON.parse(JSON.stringify(gameMockData));
+    gameMock = JSON.parse(JSON.stringify(questMockData));
     mockEventEmitter = new EventEmitter<ActionEffect[]>();
     await TestBed.configureTestingModule({
       imports: [EditorInputActionsComponent],

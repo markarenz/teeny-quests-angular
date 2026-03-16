@@ -1,10 +1,10 @@
 import { utilCreateExit, utilDeleteExit, utilUpdateExit } from './exits-utils';
 import { getPositionKeysForGridSize } from '@main/utils';
-import gameMockData from '@app/features/editor/mocks/game.mock';
+import questMockData from '@app/features/editor/mocks/game.mock';
 
 describe('utilCreateExit', () => {
   it('creates a new exit in an open spot- facing north', () => {
-    const gameMock = JSON.parse(JSON.stringify(gameMockData));
+    const gameMock = JSON.parse(JSON.stringify(questMockData));
     const { nextGame, newExit } = utilCreateExit({
       game: gameMock,
       selectedAreaId: 'start',
@@ -14,9 +14,9 @@ describe('utilCreateExit', () => {
   });
 
   it('Unable to create a new exit since map is full', () => {
-    const gameMock = JSON.parse(JSON.stringify(gameMockData));
+    const gameMock = JSON.parse(JSON.stringify(questMockData));
     const positionKeys = getPositionKeysForGridSize();
-    const mockExit = { ...gameMockData.content.areas['start'].exits[0] };
+    const mockExit = { ...questMockData.content.areas['start'].exits[0] };
     positionKeys.forEach((key, idx) => {
       const [y, x] = key.split('_');
       gameMock.content.areas['start'].exits[idx] = {
@@ -37,7 +37,7 @@ describe('utilCreateExit', () => {
 
 describe('utilDeleteExit', () => {
   it('should delete an exit', () => {
-    const gameMock = JSON.parse(JSON.stringify(gameMockData));
+    const gameMock = JSON.parse(JSON.stringify(questMockData));
     const selectedAreaId = 'start';
     const exitId = '1735602762347';
     const { nextGame } = utilDeleteExit({
@@ -49,7 +49,7 @@ describe('utilDeleteExit', () => {
   });
 
   it('should return null when data is invalid ', () => {
-    const gameMock = JSON.parse(JSON.stringify(gameMockData));
+    const gameMock = JSON.parse(JSON.stringify(questMockData));
     gameMock.content.areas['start'].exits = null;
     const selectedAreaId = 'start';
     const exitId = '1735602762347';
@@ -64,7 +64,7 @@ describe('utilDeleteExit', () => {
 
 describe('utilUpdateExit', () => {
   it('should update an exit', () => {
-    const gameMock = JSON.parse(JSON.stringify(gameMockData));
+    const gameMock = JSON.parse(JSON.stringify(questMockData));
     const selectedAreaId = 'start';
     const updatedExit = {
       id: '1735602762347',
@@ -86,7 +86,7 @@ describe('utilUpdateExit', () => {
   });
 
   it('should return null when data is invalid ', () => {
-    const gameMock = JSON.parse(JSON.stringify(gameMockData));
+    const gameMock = JSON.parse(JSON.stringify(questMockData));
     const selectedAreaId = 'test';
     const updatedExit = {
       id: '1735602762347',

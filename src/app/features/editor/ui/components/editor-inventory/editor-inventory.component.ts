@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import {
-  GameROM,
+  QuestROM,
   Inventory,
   SelectIUIOption,
 } from '@app/features/main/interfaces/types';
@@ -43,7 +43,7 @@ export class EditorInventoryComponent {
 
   ngOnInit() {
     this.subscriptions.push(
-      this._gameEditorService.gameObs.subscribe((data: GameROM | null) => {
+      this._gameEditorService.gameObs.subscribe((data: QuestROM | null) => {
         if (data) {
           this.inventory = data.content.player.inventory;
           this.updateInventoryKeys();

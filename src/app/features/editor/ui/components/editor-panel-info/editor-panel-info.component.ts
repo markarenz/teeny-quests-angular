@@ -2,7 +2,7 @@ import { Component, input } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import { FormsModule } from '@angular/forms';
-import { GameArea, GameROM } from '@app/features/main/interfaces/types';
+import { QuestArea, QuestROM } from '@app/features/main/interfaces/types';
 import { AreaCellSelectorComponent } from '../area-cell-selector/area-cell-selector.component';
 import { CollapsibleCardComponent } from '@app/features/main/ui/components/collapsible-card/collapsible-card.component';
 import { EditorAreaSelectorGeneralComponent } from '../editor-area-selector-general/editor-area-selector-general.component';
@@ -40,11 +40,11 @@ export class EditorPanelInfoComponent {
   inputStartingAreaPositionY: number = 4;
   lockouts: string[] = [];
 
-  game: GameROM | null = null;
+  game: QuestROM | null = null;
 
   ngOnInit() {
     this.subscriptions.push(
-      this._gameEditorService.gameObs.subscribe((data: GameROM | null) => {
+      this._gameEditorService.gameObs.subscribe((data: QuestROM | null) => {
         if (data) {
           this.game = data;
           this.inputTitle = this.game?.title || '';
@@ -65,7 +65,7 @@ export class EditorPanelInfoComponent {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  public getLockouts(area: GameArea): string[] {
+  public getLockouts(area: QuestArea): string[] {
     const newLockouts: string[] = [];
     area.items.forEach(item => {
       newLockouts.push(`${item.y}_${item.x}`);

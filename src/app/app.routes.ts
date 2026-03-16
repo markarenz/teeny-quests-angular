@@ -8,7 +8,7 @@ import { AboutPageComponent } from './features/main/ui/pages/about-page/about-pa
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'game/:id', component: GameComponent },
+  { path: 'quest/:id', component: GameComponent },
   { path: 'about', component: AboutPageComponent },
   {
     path: 'editor',

@@ -1,11 +1,11 @@
 import { utilCreateItem, utilUpdateItem, utilDeleteItem } from './items-utils';
 import { getPositionKeysForGridSize } from '@main/utils';
-import gameMockData from '@app/features/editor/mocks/game.mock';
-import { GameItem } from '@app/features/main/interfaces/types';
+import questMockData from '@app/features/editor/mocks/game.mock';
+import { QuestItem } from '@app/features/main/interfaces/types';
 
 describe('utilDeleteItem', () => {
   it('should delete an item', () => {
-    const gameMock = JSON.parse(JSON.stringify(gameMockData));
+    const gameMock = JSON.parse(JSON.stringify(questMockData));
     gameMock.content.areas['start'].items = [
       {
         id: 'item-1',
@@ -29,7 +29,7 @@ describe('utilDeleteItem', () => {
 
 describe('utilCreateItem', () => {
   it('creates a new default item in an open spot- facing north', () => {
-    const gameMock = JSON.parse(JSON.stringify(gameMockData));
+    const gameMock = JSON.parse(JSON.stringify(questMockData));
     const { nextGame, newItem } = utilCreateItem({
       game: gameMock,
       selectedAreaId: 'start',
@@ -39,9 +39,9 @@ describe('utilCreateItem', () => {
     expect(newItem?.id).toBeTruthy();
   });
   it('creates a new default item in an open spot- facing south', () => {
-    const gameMock = JSON.parse(JSON.stringify(gameMockData));
+    const gameMock = JSON.parse(JSON.stringify(questMockData));
     const positionKeys = getPositionKeysForGridSize();
-    const mockItem = { ...gameMockData.content.areas['start'].items[0] };
+    const mockItem = { ...questMockData.content.areas['start'].items[0] };
     positionKeys.forEach((key, idx) => {
       const [y, x] = key.split('_');
       gameMock.content.areas['start'].items[idx] = {
@@ -62,10 +62,10 @@ describe('utilCreateItem', () => {
 
 describe('utilUpdateItem', () => {
   it('should update an item', () => {
-    const gameMock = JSON.parse(JSON.stringify(gameMockData));
+    const gameMock = JSON.parse(JSON.stringify(questMockData));
     const selectedAreaId = 'start';
     const itemId = '1234abc';
-    const mockUpdatedItem: GameItem = {
+    const mockUpdatedItem: QuestItem = {
       id: itemId,
       itemType: 'key',
       areaId: 'start',

@@ -1,4 +1,4 @@
-import { GameArea, GameROM } from '@app/features/main/interfaces/types';
+import { QuestArea, QuestROM } from '@app/features/main/interfaces/types';
 import { floorDefinitions } from '@content/floor-definitions';
 import { getPositionKeysForGridSize } from '@main/utils';
 
@@ -9,7 +9,7 @@ export const findAnOpenCell = ({
   allowZeroHeight = false,
   allowNonWalkable = false,
 }: {
-  game: GameROM;
+  game: QuestROM;
   selectedAreaId: string;
   lockouts?: string[];
   allowZeroHeight?: boolean;

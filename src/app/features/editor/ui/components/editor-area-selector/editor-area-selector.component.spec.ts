@@ -1,14 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import { EditorAreaSelectorComponent } from './editor-area-selector.component';
-import gameMockData from '@app/features/editor/mocks/game.mock';
-import { GameROM } from '@app/features/main/interfaces/types';
+import questMockData from '@app/features/editor/mocks/game.mock';
+import { QuestROM } from '@app/features/main/interfaces/types';
 
 describe('EditorAreaSelectorComponent', () => {
   let component: EditorAreaSelectorComponent;
   let fixture: ComponentFixture<EditorAreaSelectorComponent>;
   let gameEditorService: GameEditorService;
-  let gameMock: GameROM;
+  let gameMock: QuestROM;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -16,7 +16,7 @@ describe('EditorAreaSelectorComponent', () => {
       teardown: { destroyAfterEach: false },
     }).compileComponents();
 
-    gameMock = <GameROM>JSON.parse(JSON.stringify(gameMockData));
+    gameMock = <QuestROM>JSON.parse(JSON.stringify(questMockData));
     gameEditorService = TestBed.inject(GameEditorService);
     gameEditorService.setTestValue('start', 'selectedAreaId');
     gameEditorService.setTestValue(gameMock, 'game');

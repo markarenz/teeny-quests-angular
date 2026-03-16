@@ -1,14 +1,14 @@
-import { GameEvent, GameROM } from '@app/features/main/interfaces/types';
+import { QuestEvent, QuestROM } from '@app/features/main/interfaces/types';
 import { v4 as uuidv4 } from 'uuid';
 
 export const utilCreateEvent = ({
   game,
 }: {
-  game: GameROM;
-}): { nextGame: GameROM | null; newEvent: GameEvent | null } => {
-  const nextGame = { ...game } as GameROM;
+  game: QuestROM;
+}): { nextGame: QuestROM | null; newEvent: QuestEvent | null } => {
+  const nextGame = { ...game } as QuestROM;
   const newEventId = uuidv4();
-  const newEvent: GameEvent = {
+  const newEvent: QuestEvent = {
     id: newEventId,
     name: `Event ${newEventId.slice(-5)}`,
     isUnidirectional: true,
@@ -24,10 +24,10 @@ export const utilDeleteEvent = ({
   game,
   eventId,
 }: {
-  game: GameROM;
+  game: QuestROM;
   eventId: string;
 }) => {
-  const nextGame = { ...game } as GameROM;
+  const nextGame = { ...game } as QuestROM;
   const events = game.content.events;
   if (events) {
     const newEvents = events.filter(event => event.id !== eventId);

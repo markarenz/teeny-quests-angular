@@ -1,8 +1,8 @@
 import { utilCreateEvent, utilDeleteEvent } from './event-utils';
-import { GameEvent, GameROM } from '@app/features/main/interfaces/types';
+import { QuestEvent, QuestROM } from '@app/features/main/interfaces/types';
 
 describe('Event Utils', () => {
-  let mockGame: GameROM;
+  let mockGame: QuestROM;
 
   beforeEach(() => {
     mockGame = {
@@ -13,7 +13,7 @@ describe('Event Utils', () => {
         ],
         areas: {},
       },
-    } as unknown as GameROM;
+    } as unknown as QuestROM;
   });
 
   describe('utilCreateEvent', () => {

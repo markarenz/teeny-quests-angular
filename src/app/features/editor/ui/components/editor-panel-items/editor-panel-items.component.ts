@@ -3,10 +3,10 @@ import { Subscription } from 'rxjs';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import { FormsModule } from '@angular/forms';
 import {
-  GameArea,
-  GameAreaExit,
-  GameItem,
-  GameProp,
+  QuestArea,
+  QuestAreaExit,
+  QuestItem,
+  QuestProp,
   SelectIUIOption,
 } from '@app/features/main/interfaces/types';
 import { AreaCellSelectorComponent } from '../area-cell-selector/area-cell-selector.component';
@@ -39,10 +39,10 @@ export class EditorPanelItemsComponent {
   public inputItemPosition: string = '';
   public inputItemName: string = '';
   public selectedItemId: string = '';
-  public items: GameItem[] = [];
+  public items: QuestItem[] = [];
   public isSelectedPositionValid: boolean = false;
   public lockouts: string[] = [];
-  public area: GameArea | null = null;
+  public area: QuestArea | null = null;
 
   private refreshUIData() {
     this.items = this._gameEditorService.getItemsForCurrentArea();
@@ -51,15 +51,15 @@ export class EditorPanelItemsComponent {
   updateItemPositionLockouts() {
     if (this.area) {
       const newLockouts: string[] = [];
-      this.area.items.forEach((item: GameItem) => {
+      this.area.items.forEach((item: QuestItem) => {
         if (item.id !== this.selectedItemId) {
           newLockouts.push(`${item.y}_${item.x}`);
         }
       });
-      this.area.exits.forEach((exit: GameAreaExit) => {
+      this.area.exits.forEach((exit: QuestAreaExit) => {
         newLockouts.push(`${exit.y}_${exit.x}`);
       });
-      this.area.props.forEach((prop: GameProp) => {
+      this.area.props.forEach((prop: QuestProp) => {
         newLockouts.push(`${prop.y}_${prop.x}`);
       });
       const positionKeys = getPositionKeysForGridSize();
@@ -136,7 +136,7 @@ export class EditorPanelItemsComponent {
   }
 
   handleCreateClick() {
-    const item: GameItem | null = this._gameEditorService.createItem(
+    const item: QuestItem | null = this._gameEditorService.createItem(
       this.lockouts
     );
     if (item) {
@@ -151,7 +151,7 @@ export class EditorPanelItemsComponent {
     );
     const [y, x] = this.inputItemPosition.split('_');
     if (selectedItem) {
-      const updatedItem: GameItem = {
+      const updatedItem: QuestItem = {
         ...selectedItem,
         id: this.selectedItemId,
         name: this.inputItemName,

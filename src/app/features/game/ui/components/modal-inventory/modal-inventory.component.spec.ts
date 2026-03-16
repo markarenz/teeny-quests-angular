@@ -6,12 +6,12 @@ import {
 } from '@angular/core/testing';
 import { GameService } from '@app/features/game/services/game-service/game-service.service';
 import { ModalInventoryComponent } from './modal-inventory.component';
-import gameMockData from '@app/features/editor/mocks/game.mock';
-import { GameROM } from '@app/features/main/interfaces/types';
+import questMockData from '@app/features/editor/mocks/game.mock';
+import { QuestROM } from '@app/features/main/interfaces/types';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { MessageService } from '@app/features/game/services/message/message.service';
 
-let gameMock = { ...gameMockData };
+let gameMock = { ...questMockData };
 
 describe('ModalInventoryComponent', () => {
   let component: ModalInventoryComponent;
@@ -24,9 +24,9 @@ describe('ModalInventoryComponent', () => {
   });
 
   beforeEach(async () => {
-    gameMock = <GameROM>await JSON.parse(
+    gameMock = <QuestROM>await JSON.parse(
       JSON.stringify({
-        ...gameMockData,
+        ...questMockData,
       })
     );
     await TestBed.configureTestingModule({

@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { GameROM } from '../interfaces/types';
+import { QuestROM } from '../interfaces/types';
 import { gamesApiUrl } from '@config/index';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MainAppService {
-  private games = new BehaviorSubject<GameROM[]>([]);
+  private games = new BehaviorSubject<QuestROM[]>([]);
   gamesObs = this.games.asObservable();
 
   private isLoading = new BehaviorSubject<boolean>(false);
@@ -32,8 +32,8 @@ export class MainAppService {
       method: 'GET',
       headers: { Accept: 'text/plain' },
     })
-      .then((res) => res.json())
-      .then((responseObj) => {
+      .then(res => res.json())
+      .then(responseObj => {
         setTimeout(() => {
           this.games.next(responseObj?.items ?? []);
           this.isLoading.next(false);

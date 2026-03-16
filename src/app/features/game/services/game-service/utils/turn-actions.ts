@@ -1,18 +1,18 @@
 import { EventAction } from '@app/features/main/interfaces/enums';
 import {
   ActionEffect,
-  GameArea,
-  GameState,
+  QuestArea,
+  QuestState,
   ToastMessage,
 } from '@app/features/main/interfaces/types';
 import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 import { propDecoDefinitions } from '@content/prop-definitions';
 
 export const processTurnActions = (
-  nextGameState: GameState,
+  nextGameState: QuestState,
   actions: ActionEffect[],
   audioService: AudioService
-): { nextGameState: GameState; messages: ToastMessage[] } => {
+): { nextGameState: QuestState; messages: ToastMessage[] } => {
   const messages: ToastMessage[] = [];
   let actionGameState = { ...nextGameState };
   actions.forEach(action => {
@@ -31,14 +31,14 @@ export const processTurnActions = (
 };
 
 export const processTurnAction = (
-  nextGameState: GameState,
+  nextGameState: QuestState,
   action: ActionEffect,
   audioService: AudioService
-): { actionGameState: GameState; message: ToastMessage | null } => {
+): { actionGameState: QuestState; message: ToastMessage | null } => {
   let actionGameState = { ...nextGameState };
   let message = null;
   let processActionResult: {
-    nextGameState: GameState;
+    nextGameState: QuestState;
     message: ToastMessage | null;
   } = {
     nextGameState: actionGameState,
@@ -75,16 +75,16 @@ export const processTurnAction = (
 };
 
 export const processActionSetPropStatus = (
-  actionGameState: GameState,
+  actionGameState: QuestState,
   action: ActionEffect,
   audioService: AudioService
-): { nextGameState: GameState; message: ToastMessage | null } => {
+): { nextGameState: QuestState; message: ToastMessage | null } => {
   const areaId = action.actionObject.areaId;
   const propId = action.actionObject.identifier;
   const newStatus = <string>action.actionValue || 'off';
   let message = null;
   if (areaId && propId) {
-    const area = <GameArea>actionGameState.areas[areaId];
+    const area = <QuestArea>actionGameState.areas[areaId];
     const prop = area.props.find(prop => prop.id === propId);
     if (area && area.props && prop) {
       const propDef = propDecoDefinitions[prop?.propType];
@@ -116,10 +116,10 @@ export const processActionSetPropStatus = (
 };
 
 export const processActionSetMapCell = (
-  actionGameState: GameState,
+  actionGameState: QuestState,
   action: ActionEffect,
   audioService: AudioService
-): { nextGameState: GameState; message: ToastMessage | null } => {
+): { nextGameState: QuestState; message: ToastMessage | null } => {
   let message = null;
   const areaId = action.actionObject.areaId;
   const positionKey = action.actionObject.identifier;
@@ -139,7 +139,7 @@ export const processActionSetMapCell = (
   }
 
   if (areaId && positionKey) {
-    const area = <GameArea>actionGameState.areas[areaId];
+    const area = <QuestArea>actionGameState.areas[areaId];
     if (area && area.map[positionKey]) {
       area.map[positionKey] = {
         ...area.map[positionKey],
@@ -166,9 +166,9 @@ export const processActionSetMapCell = (
 };
 
 export const processActionSetFlag = (
-  actionGameState: GameState,
+  actionGameState: QuestState,
   action: ActionEffect
-): { nextGameState: GameState; message: ToastMessage | null } => {
+): { nextGameState: QuestState; message: ToastMessage | null } => {
   let message = null;
   const flagId = action.actionObject.identifier;
   const flagValue = action.actionValue === 'true';

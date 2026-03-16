@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { GameROM, Link, SubNavItem } from '@app/features/main/interfaces/types';
+import {
+  QuestROM,
+  Link,
+  SubNavItem,
+} from '@app/features/main/interfaces/types';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MainLayoutComponent } from '@main/ui/components/main-layout/main-layout.component';
@@ -62,13 +66,13 @@ export class EditorGameComponent {
   public title = '';
   public isLoading: boolean = false;
   public isValid: boolean = false;
-  public game: GameROM | null = null;
+  public game: QuestROM | null = null;
   public hasSaveError: boolean = false;
 
   breadcrumbLinks: Link[] = [
     { label: 'Home', href: '' },
-    { label: 'Game Editor', href: '/editor' },
-    { label: 'Editing Game' },
+    { label: 'Quest Editor', href: '/editor' },
+    { label: 'Editing Quest' },
   ];
 
   subNavLinks: SubNavItem[] = [
@@ -82,7 +86,7 @@ export class EditorGameComponent {
 
   ngOnInit() {
     this.subscriptions.push(
-      this._gameEditorService.gameObs.subscribe((data: GameROM | null) => {
+      this._gameEditorService.gameObs.subscribe((data: QuestROM | null) => {
         const userId = this._authGoogleService.getUserId();
         if (data && data.userId !== userId) {
           this.router.navigate(['/']);
@@ -163,7 +167,7 @@ export class EditorGameComponent {
     this.setShowAreaSelector();
   }
   handlePlayClick() {
-    this.router.navigate([`/game/${this.game?.id ?? ''}`]);
+    this.router.navigate([`/quest/${this.game?.id ?? ''}`]);
   }
 
   public handleContentVersionModalToggle(isOpen: boolean) {

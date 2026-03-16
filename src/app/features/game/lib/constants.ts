@@ -1,10 +1,10 @@
 import {
-  GameAreaExit,
-  GameItem,
-  GameProp,
+  QuestAreaExit,
+  QuestItem,
+  QuestProp,
 } from '@app/features/main/interfaces/types';
 
-export const defaultExit: GameAreaExit = {
+export const defaultExit: QuestAreaExit = {
   id: 'test',
   exitType: 'default',
   areaId: '',
@@ -16,7 +16,7 @@ export const defaultExit: GameAreaExit = {
   destinationExitId: '',
 };
 
-export const defaultItem: GameItem = {
+export const defaultItem: QuestItem = {
   id: 'test',
   itemType: 'default',
   areaId: 'start',
@@ -25,7 +25,7 @@ export const defaultItem: GameItem = {
   h: 1,
 };
 
-export const defaultProp: GameProp = {
+export const defaultProp: QuestProp = {
   id: 'test',
   propType: 'torch',
   areaId: 'start',

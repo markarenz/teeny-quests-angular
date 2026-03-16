@@ -13,8 +13,8 @@ import { Location } from '@angular/common';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { GameService } from '@app/features/game/services/game-service/game-service.service';
-import gameMockData from '@app/features/editor/mocks/game.mock';
-import { GameROM } from '@app/features/main/interfaces/types';
+import questMockData from '@app/features/editor/mocks/game.mock';
+import { QuestROM } from '@app/features/main/interfaces/types';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { MessageService } from '@app/features/game/services/message/message.service';
 
@@ -22,7 +22,7 @@ describe('GameComponent', () => {
   let component: GameComponent;
   let fixture: ComponentFixture<GameComponent>;
   let service: GameService;
-  let gameMockDataClean: GameROM;
+  let gameMockDataClean: QuestROM;
   let router: Router;
   let location: Location;
   let messageService: MessageService;
@@ -43,7 +43,7 @@ describe('GameComponent', () => {
 
     gameMockDataClean = await JSON.parse(
       JSON.stringify({
-        ...gameMockData,
+        ...questMockData,
       })
     );
     fixture = TestBed.createComponent(GameComponent);

@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import { AreaCellSelectorComponent } from '../area-cell-selector/area-cell-selector.component';
 import { CollapsibleCardComponent } from '@app/features/main/ui/components/collapsible-card/collapsible-card.component';
-import { GameAreaMapCell } from '@app/features/main/interfaces/types';
+import { QuestAreaMapCell } from '@app/features/main/interfaces/types';
 import { maxAreaCellHeight } from '@config/index';
 import { wallOptionsData } from '@content/wall-definitions';
 import { floorOptionsData } from '@content/floor-definitions';
@@ -38,7 +38,7 @@ export class EditorPanelCellsComponent {
   private subscriptions: Subscription[] = [];
   public isMultiSelection: boolean = false;
   public selectedCellPositions: string[] = [];
-  public selectedCell: GameAreaMapCell | null = null;
+  public selectedCell: QuestAreaMapCell | null = null;
   public maxHeight: number = maxAreaCellHeight;
   public floorOptions = floorOptionsData;
   public currentFloorOption = 'default';
@@ -70,7 +70,7 @@ export class EditorPanelCellsComponent {
     );
     this.subscriptions.push(
       this._gameEditorService.selectedCellObs.subscribe(
-        (data: GameAreaMapCell | null) => {
+        (data: QuestAreaMapCell | null) => {
           this.selectedCell = data ?? null;
           const thisFloor = this.floorOptions.find(
             floor => floor.value === this.selectedCell?.floor

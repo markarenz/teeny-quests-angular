@@ -1,7 +1,7 @@
 import { ExitType } from '@content/exit-definitions';
 import { calcScore, getLevelGoals } from './common';
-import { gameStateMockData } from '@app/features/editor/mocks/game.mock';
-import gameMockData from '@app/features/editor/mocks/game.mock';
+import { questStateMockData } from '@app/features/editor/mocks/game.mock';
+import questMockData from '@app/features/editor/mocks/game.mock';
 import {
   ConditionComparison,
   EventAction,
@@ -9,7 +9,7 @@ import {
 } from '@app/features/main/interfaces/enums';
 describe('getLevelGoals', () => {
   it('should return correct level goals string', () => {
-    const mockGameROM = structuredClone(gameMockData);
+    const mockGameROM = structuredClone(questMockData);
     mockGameROM.content.areas['start'].exits[0].exitType = ExitType.GAME_END;
     mockGameROM.content.events = [
       {
@@ -39,7 +39,7 @@ describe('getLevelGoals', () => {
     expect(result).toBe('Collect 5 Gold Coins -or- explore and find the exit.');
   });
   it('should return correct level goals string - single inventory item', () => {
-    const mockGameROM = structuredClone(gameMockData);
+    const mockGameROM = structuredClone(questMockData);
     mockGameROM.content.events = [
       {
         id: 'event1',
@@ -71,12 +71,12 @@ describe('getLevelGoals', () => {
 
 describe('calcScore', () => {
   it('should calculate score based on inventory and flags', () => {
-    const mockGameROM = structuredClone(gameMockData);
+    const mockGameROM = structuredClone(questMockData);
     mockGameROM.content.flags = [
       { id: 'flag1', name: 'Flag 1', scoreValue: 20 },
       { id: 'flag2', name: 'Flag 2', scoreValue: 30 },
     ];
-    const mockGameState = structuredClone(gameStateMockData);
+    const mockGameState = structuredClone(questStateMockData);
     mockGameState.player.inventory = {
       gold: 10,
       'key-silver': 1,

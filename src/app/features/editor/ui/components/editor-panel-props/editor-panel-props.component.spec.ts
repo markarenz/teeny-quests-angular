@@ -5,12 +5,12 @@ import {
   tick,
 } from '@angular/core/testing';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
-import gameMockData from '@app/features/editor/mocks/game.mock';
-import { GameProp } from '@app/features/main/interfaces/types';
+import questMockData from '@app/features/editor/mocks/game.mock';
+import { QuestProp } from '@app/features/main/interfaces/types';
 import { EditorPanelPropsComponent } from './editor-panel-props.component';
 
 let service: GameEditorService;
-let gameMock = JSON.parse(JSON.stringify(gameMockData));
+let gameMock = JSON.parse(JSON.stringify(questMockData));
 
 describe('EditorPanelPropsComponent', () => {
   let component: EditorPanelPropsComponent;
@@ -69,7 +69,7 @@ describe('EditorPanelPropsComponent', () => {
   });
 
   it('should handle create click', () => {
-    const mockPanel: GameProp = {
+    const mockPanel: QuestProp = {
       ...gameMock.content.areas['start'].props[0],
       id: 'prop1',
     };
@@ -81,7 +81,7 @@ describe('EditorPanelPropsComponent', () => {
   });
 
   it('should handle input update', () => {
-    const mockPanel: GameProp = {
+    const mockPanel: QuestProp = {
       ...gameMock.content.areas['start'].props[0],
       id: 'panel',
     };
@@ -110,10 +110,10 @@ describe('EditorPanelPropsComponent', () => {
     fixture.detectChanges();
     component.area = gameMock.content.areas['start'];
     component.selectedAreaId = 'start';
-    component.props = gameMockData.content.areas['start'].props;
+    component.props = questMockData.content.areas['start'].props;
     fixture.detectChanges();
     const actions =
-      gameMockData.content.areas['start'].props[0].statusActions['on'];
+      questMockData.content.areas['start'].props[0].statusActions['on'];
     actions[0].actionObject = {
       ...actions[0].actionObject,
       identifier: '5_5',

@@ -1,6 +1,6 @@
-import { GameROM } from '../app/features/main/interfaces/types';
+import { QuestROM } from '../app/features/main/interfaces/types';
 
-const game: GameROM = {
+const game: QuestROM = {
   id: 'abcd123',
   title: 'My first game',
   description: 'This is a simple game',

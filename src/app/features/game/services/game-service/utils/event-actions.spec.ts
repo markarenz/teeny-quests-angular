@@ -6,20 +6,20 @@ import {
   EventAction,
 } from '@app/features/main/interfaces/enums';
 import {
-  GameEvent,
-  GameROM,
-  GameState,
+  QuestEvent,
+  QuestROM,
+  QuestState,
 } from '@app/features/main/interfaces/types';
-import { gameStateMockData } from '@app/features/editor/mocks/game.mock';
-import gameMockData from '@app/features/editor/mocks/game.mock';
+import { questStateMockData } from '@app/features/editor/mocks/game.mock';
+import questMockData from '@app/features/editor/mocks/game.mock';
 
 describe('Event Actions', () => {
   let mockAudioService: AudioService;
   let mockMessageService: MessageService;
-  let mockGameROM = structuredClone(gameMockData);
-  let mockGameState = structuredClone(gameStateMockData);
+  let mockGameROM = structuredClone(questMockData);
+  let mockGameState = structuredClone(questStateMockData);
 
-  const mockEvent: GameEvent = {
+  const mockEvent: QuestEvent = {
     id: 'event1',
     isUnidirectional: true,
     name: 'Test Event',
@@ -46,8 +46,8 @@ describe('Event Actions', () => {
   };
 
   beforeEach(() => {
-    mockGameROM = structuredClone(gameMockData);
-    mockGameState = structuredClone(gameStateMockData);
+    mockGameROM = structuredClone(questMockData);
+    mockGameState = structuredClone(questStateMockData);
     mockGameState.player.inventory = { gold: 150 };
     mockGameROM.content.events = [mockEvent];
     mockAudioService = jasmine.createSpyObj('AudioService', ['playSound']);
@@ -95,8 +95,8 @@ describe('Event Actions', () => {
     });
 
     it('should not trigger actions if conditions are not met', () => {
-      const mockROMlocal = <GameROM>JSON.parse(JSON.stringify(mockGameROM));
-      const mockGameStateLocal = <GameState>(
+      const mockROMlocal = <QuestROM>JSON.parse(JSON.stringify(mockGameROM));
+      const mockGameStateLocal = <QuestState>(
         JSON.parse(JSON.stringify(mockGameState))
       );
       mockGameStateLocal.player.inventory = { gold: 0 }; // Not enough gold to meet condition
