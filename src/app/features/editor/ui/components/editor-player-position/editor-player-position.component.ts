@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
-import { GameROM, GameArea } from '@app/features/main/interfaces/types';
+import { QuestROM, QuestArea } from '@app/features/main/interfaces/types';
 import { Subscription } from 'rxjs';
 import { defaultGridSize } from '@config/index';
 import {
@@ -21,7 +21,7 @@ export class EditorPlayerPositionComponent {
   private subscriptions: Subscription[] = [];
 
   selectedAreaId: string = '';
-  selectedArea: GameArea | null = null;
+  selectedArea: QuestArea | null = null;
   h: number = 0;
   positionStyle: AreaPosition = { left: '0', bottom: '0', z: 0 };
   width: string = '0%';
@@ -57,7 +57,7 @@ export class EditorPlayerPositionComponent {
           }
         }
       ),
-      this._gameEditorService.gameObs.subscribe((data: GameROM | null) => {
+      this._gameEditorService.gameObs.subscribe((data: QuestROM | null) => {
         if (data) {
           const area = data.content.areas[this.selectedAreaId];
           if (area) {

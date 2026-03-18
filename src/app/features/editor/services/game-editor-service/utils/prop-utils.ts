@@ -1,4 +1,4 @@
-import { GameROM, GameProp } from '@app/features/main/interfaces/types';
+import { QuestROM, QuestProp } from '@app/features/main/interfaces/types';
 import { findAnOpenCell } from './common-utils';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -7,11 +7,11 @@ export const utilDeleteProp = ({
   selectedAreaId,
   propId,
 }: {
-  game: GameROM;
+  game: QuestROM;
   selectedAreaId: string;
   propId: string;
 }) => {
-  const nextGame = { ...game } as GameROM;
+  const nextGame = { ...game } as QuestROM;
   const props = game.content.areas[selectedAreaId].props;
   if (props) {
     const newProps = props.filter(prop => prop.id !== propId);
@@ -29,10 +29,10 @@ export const utilCreateProp = ({
   selectedAreaId,
   lockouts,
 }: {
-  game: GameROM;
+  game: QuestROM;
   selectedAreaId: string;
   lockouts: string[];
-}): { nextGame: GameROM | null; newProp: GameProp | null } => {
+}): { nextGame: QuestROM | null; newProp: QuestProp | null } => {
   const areas = game.content.areas;
   if (areas) {
     const area = areas[selectedAreaId] ?? {
@@ -49,7 +49,7 @@ export const utilCreateProp = ({
       const [y, x] = openCellPosition.split('_');
       let h = area ? area.map[openCellPosition].h : 1;
 
-      const newProp: GameProp = {
+      const newProp: QuestProp = {
         id: uuidv4(),
         propType: 'torch',
         wall: 'north',
@@ -64,7 +64,7 @@ export const utilCreateProp = ({
         h,
       };
 
-      const nextGame = { ...game } as GameROM;
+      const nextGame = { ...game } as QuestROM;
       nextGame.content.areas[selectedAreaId] = {
         ...nextGame?.content.areas[selectedAreaId],
         props: [
@@ -86,12 +86,12 @@ export const utilUpdateProp = ({
   updatedProp,
   selectedAreaId,
 }: {
-  game: GameROM;
-  updatedProp: GameProp;
+  game: QuestROM;
+  updatedProp: QuestProp;
   selectedAreaId: string;
-}): GameROM => {
+}): QuestROM => {
   const id = updatedProp.id;
-  const gameObj = { ...game } as GameROM;
+  const gameObj = { ...game } as QuestROM;
   const area = gameObj?.content.areas[selectedAreaId];
 
   if (area) {

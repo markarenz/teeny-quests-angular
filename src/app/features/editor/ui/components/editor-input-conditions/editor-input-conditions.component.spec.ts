@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EditorInputConditionsComponent } from './editor-input-conditions.component';
-import { GameEventActionCondition } from '@app/features/main/interfaces/types';
+import { QuestEventActionCondition } from '@app/features/main/interfaces/types';
 import {
   ConditionComparison,
   EventConditionType,
 } from '@app/features/main/interfaces/enums';
 
-const mockCondition: GameEventActionCondition = {
+const mockCondition: QuestEventActionCondition = {
   id: 'condition-1',
   conditionType: EventConditionType.INVENTORY,
   identifier: 'gold',

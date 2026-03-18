@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
-  GameEventActionCondition,
+  QuestEventActionCondition,
   SelectIUIOption,
 } from '@app/features/main/interfaces/types';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
@@ -32,14 +32,14 @@ import { getLabelFromSlug } from '@app/features/main/utils';
 })
 export class EditorInputConditionsComponent {
   @Input('title') title: string = 'Conditions';
-  @Input('conditions') conditions: GameEventActionCondition[] = [];
+  @Input('conditions') conditions: QuestEventActionCondition[] = [];
   @Output('onConditionsChange') onConditionsChange = new EventEmitter<
-    GameEventActionCondition[]
+    QuestEventActionCondition[]
   >();
 
   constructor(private _gameEditorService: GameEditorService) {}
 
-  public selectedCondition: GameEventActionCondition | null = null;
+  public selectedCondition: QuestEventActionCondition | null = null;
   public selectedConditionId: string | null = null;
   public conditionTypeOptions = conditionOptions;
   public inventoryKeyOptions = itemKeyOptions;
@@ -94,12 +94,12 @@ export class EditorInputConditionsComponent {
     }
   }
 
-  public getConditionLabel(action: GameEventActionCondition): string {
+  public getConditionLabel(action: QuestEventActionCondition): string {
     return getLabelFromSlug(action.conditionType);
   }
 
   public handleCreateClick() {
-    const defaultNewAction: GameEventActionCondition = {
+    const defaultNewAction: QuestEventActionCondition = {
       id: `action-${Date.now()}`,
       conditionType: EventConditionType.INVENTORY,
       identifier: 'gold',

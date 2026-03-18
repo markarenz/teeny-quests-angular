@@ -3,7 +3,7 @@ import { GameEditorService } from '@app/features/editor/services/game-editor-ser
 import { EditorPanelEventsComponent } from './editor-panel-events.component';
 import {
   ActionEffect,
-  GameEventActionCondition,
+  QuestEventActionCondition,
 } from '@app/features/main/interfaces/types';
 import {
   ConditionComparison,
@@ -23,7 +23,7 @@ const mockActions: ActionEffect[] = [
   },
 ];
 
-const mockConditions: GameEventActionCondition[] = [
+const mockConditions: QuestEventActionCondition[] = [
   {
     id: 'condition-1',
     conditionType: EventConditionType.INVENTORY,

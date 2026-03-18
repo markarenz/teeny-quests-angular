@@ -1,4 +1,4 @@
-import { GameROM, GameAreaExit } from '@app/features/main/interfaces/types';
+import { QuestROM, QuestAreaExit } from '@app/features/main/interfaces/types';
 import { v4 as uuidv4 } from 'uuid';
 import { defaultGridSize } from '@config/index';
 import { findAnOpenCell } from './common-utils';
@@ -7,7 +7,7 @@ export const utilCreateExit = ({
   game,
   selectedAreaId,
 }: {
-  game: GameROM;
+  game: QuestROM;
   selectedAreaId: string;
 }) => {
   let destinationAreaId = '';
@@ -17,7 +17,7 @@ export const utilCreateExit = ({
   if (areas) {
   }
   const areaOptions = Object.keys(areas).filter(
-    (item) => item !== selectedAreaId
+    item => item !== selectedAreaId
   );
   destinationAreaId = areaOptions[areaOptions.length - 1];
 
@@ -46,7 +46,7 @@ export const utilCreateExit = ({
 
     let h = area ? area.map[`${y}_${x}`].h : 1;
 
-    const newExit: GameAreaExit = {
+    const newExit: QuestAreaExit = {
       id: uuidv4(),
       destinationAreaId,
       destinationExitId,
@@ -59,7 +59,7 @@ export const utilCreateExit = ({
       lock: '',
     };
 
-    const nextGame = { ...game } as GameROM;
+    const nextGame = { ...game } as QuestROM;
     nextGame.content.areas[selectedAreaId] = {
       ...nextGame?.content.areas[selectedAreaId],
       exits: [
@@ -78,14 +78,14 @@ export const utilDeleteExit = ({
   selectedAreaId,
   exitId,
 }: {
-  game: GameROM;
+  game: QuestROM;
   selectedAreaId: string;
   exitId: string;
 }) => {
   const exits = game.content.areas[selectedAreaId]?.exits;
   if (exits) {
-    const newExits = exits.filter((exit) => exit.id !== exitId);
-    const nextGame = { ...game } as GameROM;
+    const newExits = exits.filter(exit => exit.id !== exitId);
+    const nextGame = { ...game } as QuestROM;
     nextGame.content.areas[selectedAreaId] = {
       ...nextGame?.content.areas[selectedAreaId],
       exits: newExits,
@@ -102,16 +102,16 @@ export const utilUpdateExit = ({
   selectedAreaId,
   updatedExit,
 }: {
-  game: GameROM;
+  game: QuestROM;
   selectedAreaId: string;
-  updatedExit: GameAreaExit;
+  updatedExit: QuestAreaExit;
 }) => {
   const id = updatedExit.id;
-  const nextGame = { ...game } as GameROM;
+  const nextGame = { ...game } as QuestROM;
   const area = nextGame?.content.areas[selectedAreaId];
 
   if (area) {
-    const newExits = area.exits.map((exit) =>
+    const newExits = area.exits.map(exit =>
       exit.id === id
         ? {
             ...updatedExit,

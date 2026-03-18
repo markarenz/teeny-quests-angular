@@ -1,6 +1,6 @@
 import {
-  GameAreaMap,
-  GameItem,
+  QuestAreaMap,
+  QuestItem,
   MovementOptions,
   PathfindingGridCell,
 } from '@main/interfaces/types';
@@ -21,7 +21,7 @@ export const validateMovePositionKey = ({
   areaMap,
   positionKey,
 }: {
-  areaMap: GameAreaMap;
+  areaMap: QuestAreaMap;
   positionKey: string;
 }): boolean => {
   const [y, x] = positionKey.split('_');
@@ -60,8 +60,8 @@ export const getPathBetweenPoints = ({
 }: {
   start: string;
   end: string;
-  areaMap: GameAreaMap;
-  areaItems: GameItem[];
+  areaMap: QuestAreaMap;
+  areaItems: QuestItem[];
   positionKeys: string[];
 }): string[] => {
   // Initialize open and closed sets
@@ -184,8 +184,8 @@ export const getMoveOptions = ({
   areaItems,
 }: {
   positionKeyStart: string;
-  areaMap: GameAreaMap;
-  areaItems: GameItem[];
+  areaMap: QuestAreaMap;
+  areaItems: QuestItem[];
 }): MovementOptions => {
   const movementOptions: MovementOptions = {};
   if (

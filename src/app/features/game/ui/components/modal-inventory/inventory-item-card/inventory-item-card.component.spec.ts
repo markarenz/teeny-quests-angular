@@ -2,10 +2,10 @@ import { ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
 import { InventoryItemCardComponent } from './inventory-item-card.component';
 import { GameService } from '@app/features/game/services/game-service/game-service.service';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
-import gameMockData from '@app/features/editor/mocks/game.mock';
+import questMockData from '@app/features/editor/mocks/game.mock';
 import { MessageService } from '@app/features/game/services/message/message.service';
 
-let gameMock = { ...gameMockData };
+let gameMock = { ...questMockData };
 
 describe('InventoryItemCardComponent', () => {
   let component: InventoryItemCardComponent;
@@ -14,7 +14,7 @@ describe('InventoryItemCardComponent', () => {
   let messageService: MessageService;
 
   beforeEach(async () => {
-    let gameMock = structuredClone(gameMockData);
+    let gameMock = structuredClone(questMockData);
 
     await TestBed.configureTestingModule({
       imports: [InventoryItemCardComponent, ToastrModule.forRoot()],

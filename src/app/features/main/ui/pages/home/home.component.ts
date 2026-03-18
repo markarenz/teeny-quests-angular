@@ -6,7 +6,7 @@ import { MainLayoutComponent } from '@main/ui/components/main-layout/main-layout
 import { LogoMainComponent } from '../../components/logo-main/logo-main.component';
 import { GameLinkCardComponent } from '../../components/game-link-card/game-link-card.component';
 import { MainAppService } from '@app/features/main/services/main-app-service';
-import { GameROM } from '@app/features/main/interfaces/types';
+import { QuestROM } from '@app/features/main/interfaces/types';
 import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 
 @Component({
@@ -46,7 +46,7 @@ export class HomeComponent {
       })
     );
     this.subscriptions.push(
-      this._mainAppService.gamesObs.subscribe((data: GameROM[]) => {
+      this._mainAppService.gamesObs.subscribe((data: QuestROM[]) => {
         this.games = data;
       })
     );

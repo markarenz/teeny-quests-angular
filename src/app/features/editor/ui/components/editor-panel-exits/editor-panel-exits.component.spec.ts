@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EventEmitter } from '@angular/core';
 import { EditorPanelExitsComponent } from './editor-panel-exits.component';
-import gameMockData from '@app/features/editor/mocks/game.mock';
+import questMockData from '@app/features/editor/mocks/game.mock';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
-import { GameAreaExit } from '@app/features/main/interfaces/types';
+import { QuestAreaExit } from '@app/features/main/interfaces/types';
 
-let gameMock = JSON.parse(JSON.stringify(gameMockData));
+let gameMock = JSON.parse(JSON.stringify(questMockData));
 let service: GameEditorService;
 
 describe('EditorPanelExitsComponent', () => {
@@ -24,7 +24,7 @@ describe('EditorPanelExitsComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     service = TestBed.inject(GameEditorService);
-    service.updateGame(gameMockData);
+    service.updateGame(questMockData);
   });
 
   it('should create', () => {
@@ -48,7 +48,7 @@ describe('EditorPanelExitsComponent', () => {
   });
 
   it('should handle creation', () => {
-    const mockExit: GameAreaExit = {
+    const mockExit: QuestAreaExit = {
       ...gameMock.content.areas['start'].exits[0],
       id: '12345',
     };

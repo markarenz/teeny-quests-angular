@@ -1,21 +1,21 @@
 import { fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { gamesApiUrl, versionsApiUrl } from '@config/index';
-import gameMockData from '@app/features/editor/mocks/game.mock';
+import questMockData from '@app/features/editor/mocks/game.mock';
 import fetchMock from 'fetch-mock';
 import { AuthProviderService } from '@app/features/auth/services/auth-provider-service';
 import { GameEditorService } from './game-editor-service.service';
 import {
-  GameAreaExit,
-  GameItem,
-  GameProp,
+  QuestAreaExit,
+  QuestItem,
+  QuestProp,
 } from '@app/features/main/interfaces/types';
 import { firstValueFrom, skip, take } from 'rxjs';
 import { provideOAuthClient } from 'angular-oauth2-oidc'; // Assuming a similar provider function exists
 import { provideHttpClient } from '@angular/common/http';
-let gameMock = JSON.parse(JSON.stringify(gameMockData));
+let gameMock = JSON.parse(JSON.stringify(questMockData));
 
 beforeEach(async () => {
-  gameMock = await JSON.parse(JSON.stringify(gameMockData));
+  gameMock = await JSON.parse(JSON.stringify(questMockData));
   TestBed.configureTestingModule({
     imports: [],
     providers: [AuthProviderService, provideOAuthClient(), provideHttpClient()],
@@ -397,7 +397,7 @@ describe('updateitem', () => {
   });
 
   it('should update item', () => {
-    const item: GameItem = {
+    const item: QuestItem = {
       id: '1735602762347',
       itemType: 'coins',
       areaId: 'start',
@@ -516,7 +516,7 @@ describe('updateExit', () => {
   });
 
   it('should update exit', () => {
-    const exit: GameAreaExit = {
+    const exit: QuestAreaExit = {
       id: '1735602762347',
       destinationAreaId: '1735602762347',
       destinationExitId: '123',
@@ -542,7 +542,7 @@ describe('updateExit', () => {
   });
 
   it('should update exit with reciprocal exits enabled', () => {
-    const exit: GameAreaExit = {
+    const exit: QuestAreaExit = {
       id: 'new-exit-id',
       destinationAreaId: 'area2',
       destinationExitId: '17356027612345',
@@ -622,7 +622,7 @@ describe('updateProp', () => {
   });
 
   it('should update prop', () => {
-    const prop: GameProp = {
+    const prop: QuestProp = {
       ...gameMock.content.areas['start'].props[0],
       status: 'on',
     };

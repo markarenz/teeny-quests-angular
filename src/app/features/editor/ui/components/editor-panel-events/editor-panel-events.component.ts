@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ActionEffect, GameEvent } from '@app/features/main/interfaces/types';
+import { ActionEffect, QuestEvent } from '@app/features/main/interfaces/types';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import { CollapsibleCardComponent } from '@app/features/main/ui/components/collapsible-card/collapsible-card.component';
 import { IconButtonComponent } from '@app/features/main/ui/components/icons/icon-button/icon-button.component';
@@ -24,16 +24,16 @@ import { EditorInputConditionsComponent } from '../editor-input-conditions/edito
 export class EditorPanelEventsComponent {
   constructor(private _gameEditorService: GameEditorService) {}
   private subscriptions: Subscription[] = [];
-  public events: GameEvent[] = [];
+  public events: QuestEvent[] = [];
   public selectedEventId: string | null = null;
   public inputEventName: string = '';
   public inputEventIsUnidirectional: boolean = false;
-  public selectedEvent: GameEvent | null = null;
+  public selectedEvent: QuestEvent | null = null;
 
   ngOnInit() {
     this.events = this._gameEditorService.getEvents();
     this.subscriptions.push(
-      this._gameEditorService.eventsObs.subscribe((data: GameEvent[]) => {
+      this._gameEditorService.eventsObs.subscribe((data: QuestEvent[]) => {
         this.events = data;
       })
     );
@@ -81,7 +81,7 @@ export class EditorPanelEventsComponent {
     this.handleEventInputChange();
   }
 
-  public handleEventConditionInputChange(conditions: GameEvent['conditions']) {
+  public handleEventConditionInputChange(conditions: QuestEvent['conditions']) {
     if (!this.selectedEventId || !this.selectedEvent) return;
     this.selectedEvent.conditions = conditions;
     this.handleEventInputChange();

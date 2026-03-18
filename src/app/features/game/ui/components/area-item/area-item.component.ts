@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { GameItem } from '@app/features/main/interfaces/types';
+import { QuestItem } from '@app/features/main/interfaces/types';
 import { defaultItem } from '@app/features/game/lib/constants';
 import { defaultGridSize } from '@config/index';
 import {
@@ -31,7 +31,7 @@ import { itemDefinitions } from '@content/item-definitions';
   standalone: true,
 })
 export class AreaItemComponent {
-  @Input('item') item: GameItem = defaultItem;
+  @Input('item') item: QuestItem = defaultItem;
   @Input('isEditorSelected') isEditorSelected: boolean = false;
   @Input('lightLevel') lightLevel: number = 0;
   @Input('isNearPlayer') isNearPlayer: boolean = false;

@@ -2,12 +2,12 @@ import { Component, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import {
-  GameROM,
-  GameArea,
-  GameAreaExit,
-  GameAreaMapCell,
-  GameItem,
-  GameProp,
+  QuestROM,
+  QuestArea,
+  QuestAreaExit,
+  QuestAreaMapCell,
+  QuestItem,
+  QuestProp,
 } from '@app/features/main/interfaces/types';
 import { AreaCellComponent } from '@app/features/game/ui/components/area-cell/area-cell.component';
 import { AreaExitComponent } from '@app/features/game/ui/components/area-exit/area-exit.component';
@@ -36,19 +36,19 @@ export class EditorAreaComponent {
   @Output() onSelectExit = new EventEmitter<string>();
   @Output() onSelectMapCell = new EventEmitter<string>();
 
-  game: GameROM | null = null;
+  game: QuestROM | null = null;
   selectedAreaId: string = '';
-  selectedArea: GameArea | null = null;
-  selectedAreaMap: GameArea['map'] | null = null;
-  selectedAreaExits: GameArea['exits'] | null = null;
-  selectedAreaItems: GameArea['items'] | null = null;
-  selectedAreaProps: GameArea['props'] | null = null;
+  selectedArea: QuestArea | null = null;
+  selectedAreaMap: QuestArea['map'] | null = null;
+  selectedAreaExits: QuestArea['exits'] | null = null;
+  selectedAreaItems: QuestArea['items'] | null = null;
+  selectedAreaProps: QuestArea['props'] | null = null;
   selectedAreaCellPositions: string[] = [];
   selectedItemId: string = '';
   selectedExitId: string = '';
   selectedPropId: string = '';
   selectedExitDestination: string = '';
-  selectedCell: GameAreaMapCell | null = null;
+  selectedCell: QuestAreaMapCell | null = null;
   secondarySelectedCellPosition: string = '';
   anyCellSelected: boolean = false;
   areaDataPositionKeys: string[] = [];
@@ -73,7 +73,7 @@ export class EditorAreaComponent {
 
   ngOnInit(): void {
     this.subscriptions.push(
-      this._gameEditorService.gameObs.subscribe((data: GameROM | null) => {
+      this._gameEditorService.gameObs.subscribe((data: QuestROM | null) => {
         this.game = data;
         this.updatePlayerPosition();
       })
@@ -95,7 +95,7 @@ export class EditorAreaComponent {
     );
     this.subscriptions.push(
       this._gameEditorService.selectedCellObs.subscribe(
-        (data: GameAreaMapCell | null) => {
+        (data: QuestAreaMapCell | null) => {
           this.anyCellSelected = data !== null;
         }
       )
@@ -123,28 +123,30 @@ export class EditorAreaComponent {
       })
     );
     this.subscriptions.push(
-      this._gameEditorService.areaExitsObs.subscribe((data: GameAreaExit[]) => {
-        this.selectedAreaExits = data;
-      })
+      this._gameEditorService.areaExitsObs.subscribe(
+        (data: QuestAreaExit[]) => {
+          this.selectedAreaExits = data;
+        }
+      )
     );
     this.subscriptions.push(
-      this._gameEditorService.areaPropsObs.subscribe((data: GameProp[]) => {
+      this._gameEditorService.areaPropsObs.subscribe((data: QuestProp[]) => {
         this.selectedAreaProps = data;
       })
     );
     this.subscriptions.push(
-      this._gameEditorService.areaItemsObs.subscribe((data: GameItem[]) => {
+      this._gameEditorService.areaItemsObs.subscribe((data: QuestItem[]) => {
         this.selectedAreaItems = data;
       })
     );
     this.subscriptions.push(
-      this._gameEditorService.areaPropsObs.subscribe((data: GameProp[]) => {
+      this._gameEditorService.areaPropsObs.subscribe((data: QuestProp[]) => {
         this.selectedAreaProps = data;
       })
     );
     this.subscriptions.push(
       this._gameEditorService.selectedAreaObs.subscribe(
-        (data: GameArea | null) => {
+        (data: QuestArea | null) => {
           if (data) {
             this.selectedArea = data;
             this.getAreaData();

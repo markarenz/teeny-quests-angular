@@ -1,11 +1,11 @@
 import { fakeAsync, TestBed, tick, flush } from '@angular/core/testing';
 import { gamesApiUrl } from '@config/index';
-import gameMockData from '@app/features/editor/mocks/game.mock';
+import questMockData from '@app/features/editor/mocks/game.mock';
 import fetchMock from 'fetch-mock';
 import { MainAppService } from './main-app-service';
 import { skip, take, first, firstValueFrom } from 'rxjs';
 
-let gameMock = JSON.parse(JSON.stringify(gameMockData));
+let gameMock = JSON.parse(JSON.stringify(questMockData));
 
 afterEach(() => {
   TestBed.resetTestingModule();

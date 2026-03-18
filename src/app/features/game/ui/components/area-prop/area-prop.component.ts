@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { GameProp } from '@app/features/main/interfaces/types';
+import { QuestProp } from '@app/features/main/interfaces/types';
 import { defaultProp } from '@app/features/game/lib/constants';
 import { defaultGridSize } from '@config/index';
 import {
@@ -34,7 +34,7 @@ import { AudioService } from '@app/features/main/services/audio/audio-service.se
 export class AreaPropComponent {
   constructor(private _audioService: AudioService) {}
 
-  @Input('prop') prop: GameProp = defaultProp;
+  @Input('prop') prop: QuestProp = defaultProp;
   @Input('isEditorMode') isEditorMode: boolean = false;
   @Input('isPropSelected') isPropSelected: boolean = false;
   @Input('isClickable') isClickable: boolean = false;

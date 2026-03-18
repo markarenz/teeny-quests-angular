@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { GameAreaExit } from '@app/features/main/interfaces/types';
+import { QuestAreaExit } from '@app/features/main/interfaces/types';
 import { defaultExit } from '@app/features/game/lib/constants';
 import { defaultGridSize } from '@config/index';
 import {
@@ -27,7 +27,7 @@ import { AudioService } from '@app/features/main/services/audio/audio-service.se
 export class AreaExitComponent {
   constructor(private _audioService: AudioService) {}
 
-  @Input('exit') exit: GameAreaExit = defaultExit;
+  @Input('exit') exit: QuestAreaExit = defaultExit;
   @Input('isEditorSelected') isEditorSelected: boolean = false;
   @Input('lightLevel') lightLevel: number = 0;
   @Input('isClickable') isClickable: boolean = false;

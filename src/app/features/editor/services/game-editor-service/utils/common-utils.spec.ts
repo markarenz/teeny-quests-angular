@@ -1,17 +1,17 @@
 import { findAnOpenCell } from './common-utils';
-import gameMockData from '@app/features/editor/mocks/game.mock';
+import questMockData from '@app/features/editor/mocks/game.mock';
 import { getPositionKeysForGridSize } from '@main/utils';
 
 describe('findAnOpenCell', () => {
   it('return an open map cell position', () => {
     const result = findAnOpenCell({
-      game: { ...gameMockData },
+      game: { ...questMockData },
       selectedAreaId: 'start',
     });
     expect(result).toBe('1_1');
   });
   it('return an open map cell position: more items', async () => {
-    const gameMock = await JSON.parse(JSON.stringify(gameMockData));
+    const gameMock = await JSON.parse(JSON.stringify(questMockData));
     gameMock.content.areas['start'].items[0].x = 1;
     gameMock.content.areas['start'].items[0].y = 1;
     const result = findAnOpenCell({
@@ -22,8 +22,8 @@ describe('findAnOpenCell', () => {
   });
 
   it('return null when no open map cell exists', () => {
-    const gameMock = JSON.parse(JSON.stringify(gameMockData));
-    const mockItem = { ...gameMockData.content.areas['start'].items[0] };
+    const gameMock = JSON.parse(JSON.stringify(questMockData));
+    const mockItem = { ...questMockData.content.areas['start'].items[0] };
     const positionKeys = getPositionKeysForGridSize();
     positionKeys.forEach((key, idx) => {
       const [y, x] = key.split('_');

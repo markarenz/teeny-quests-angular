@@ -1,12 +1,12 @@
 import game from '@content/game';
 import { processTurnActions } from './turn-actions';
-import gameMockData, {
-  gameStateMockData,
+import questMockData, {
+  questStateMockData,
 } from '@app/features/editor/mocks/game.mock';
 import {
   ActionEffect,
-  GameROM,
-  GameState,
+  QuestROM,
+  QuestState,
 } from '@app/features/main/interfaces/types';
 import { EventAction } from '@app/features/main/interfaces/enums';
 
@@ -14,19 +14,19 @@ const mockAudioService: any = {
   playSound: () => {},
 };
 
-let gameMock: GameROM;
-let gameStateMock: GameState;
+let gameMock: QuestROM;
+let gameStateMock: QuestState;
 
 describe('processTurnActions', () => {
   beforeEach(async () => {
     gameMock = await JSON.parse(
       JSON.stringify({
-        ...gameMockData,
+        ...questMockData,
       })
     );
     gameStateMock = await JSON.parse(
       JSON.stringify({
-        ...gameStateMockData,
+        ...questStateMockData,
       })
     );
   });

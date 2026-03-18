@@ -1,7 +1,7 @@
 import { EventAction } from '@app/features/main/interfaces/enums';
-import { GameROM, GameState } from '@app/features/main/interfaces/types';
+import { QuestROM, QuestState } from '@app/features/main/interfaces/types';
 
-const gameMockData: GameROM = {
+const questMockData: QuestROM = {
   content: {
     areas: {
       start: {
@@ -918,19 +918,19 @@ const gameMockData: GameROM = {
   title: 'Game 3b2',
 };
 
-export default gameMockData;
+export default questMockData;
 
-export const gameStateMockData: GameState = {
+export const questStateMockData: QuestState = {
   gameId: 'test-game-id',
   player: {
-    ...gameMockData.content.player,
+    ...questMockData.content.player,
     facing: 'south',
     health: 10,
     statusActions: [],
   },
   numTurns: 1,
   flagValues: {},
-  areas: gameMockData.content.areas,
+  areas: questMockData.content.areas,
   firstSaveDate: new Date('2025-09-27').toISOString(),
   lastUpdateDate: new Date('2025-09-27').toISOString(),
 };

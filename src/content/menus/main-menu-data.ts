@@ -8,7 +8,7 @@ export const mainMenuData: MenuItem[] = [
   },
   // {
   //   id: 2,
-  //   label: 'Games',
+  //   label: 'Quests',
   //   href: '/game',
   // },
   {
@@ -18,7 +18,7 @@ export const mainMenuData: MenuItem[] = [
   },
   {
     id: 4,
-    label: 'Game Editor',
+    label: 'Quest Editor',
     href: '/editor',
     isLoggedInOnly: true,
   },

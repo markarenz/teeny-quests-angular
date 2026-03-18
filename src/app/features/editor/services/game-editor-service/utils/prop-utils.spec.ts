@@ -1,10 +1,10 @@
 import { utilCreateProp, utilUpdateProp, utilDeleteProp } from './prop-utils';
-import gameMockData from '@app/features/editor/mocks/game.mock';
-import { GameProp } from '@app/features/main/interfaces/types';
+import questMockData from '@app/features/editor/mocks/game.mock';
+import { QuestProp } from '@app/features/main/interfaces/types';
 
 describe('utilDeleteProp', () => {
   it('should delete an prop', () => {
-    const gameMock = JSON.parse(JSON.stringify(gameMockData));
+    const gameMock = JSON.parse(JSON.stringify(questMockData));
     const propId = 'item-1';
     gameMock.content.areas['start'].props = [
       {
@@ -31,7 +31,7 @@ describe('utilDeleteProp', () => {
 
 describe('utilCreateProp', () => {
   it('creates a new default prop in an open spot', () => {
-    const gameMock = JSON.parse(JSON.stringify(gameMockData));
+    const gameMock = JSON.parse(JSON.stringify(questMockData));
     const { nextGame, newProp } = utilCreateProp({
       game: gameMock,
       selectedAreaId: 'start',
@@ -44,10 +44,10 @@ describe('utilCreateProp', () => {
 
 describe('utilUpdateProp', () => {
   it('should update an prop', () => {
-    const gameMock = JSON.parse(JSON.stringify(gameMockData));
+    const gameMock = JSON.parse(JSON.stringify(questMockData));
     const selectedAreaId = 'start';
     const propId = 'prop1';
-    const mockUpdatedProp: GameProp = {
+    const mockUpdatedProp: QuestProp = {
       id: propId,
       propType: 'switch',
       areaId: 'start',

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
-import { GameROM, SelectIUIOption } from '@app/features/main/interfaces/types';
+import { QuestROM, SelectIUIOption } from '@app/features/main/interfaces/types';
 import { IconButtonComponent } from '@app/features/main/ui/components/icons/icon-button/icon-button.component';
 
 @Component({
@@ -23,7 +23,7 @@ export class EditorAreaSelectorComponent {
 
   ngOnInit() {
     this.subscriptions.push(
-      this._gameEditorService.gameObs.subscribe((data: GameROM | null) => {
+      this._gameEditorService.gameObs.subscribe((data: QuestROM | null) => {
         const game = data;
         this.areasList = game ? Object.keys(game.content.areas) : [];
         this.areasListOptions = this._gameEditorService.getAreasListOptions();

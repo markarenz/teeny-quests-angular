@@ -4,14 +4,14 @@ import {
   EventConditionType,
 } from '@app/features/main/interfaces/enums';
 import { inventoryDefinitions } from '@content/item-definitions';
-import { GameROM, GameState } from '@app/features/main/interfaces/types';
+import { QuestROM, QuestState } from '@app/features/main/interfaces/types';
 import { ExitType } from '@content/exit-definitions';
 
-export const getLevelGoals = (gameROM: GameROM): string => {
+export const getLevelGoals = (questROM: QuestROM): string => {
   const levelGoalsArr: string[] = [];
 
   // Find events that set the 'gameCompleted' flag
-  gameROM.content.events.forEach(event => {
+  questROM.content.events.forEach(event => {
     const gameEndEvents = event.actions.filter(
       action =>
         action.action === EventAction.SET_FLAG &&
@@ -30,8 +30,8 @@ export const getLevelGoals = (gameROM: GameROM): string => {
   });
 
   // Look for level exits
-  const hasExitDoor = Object.keys(gameROM.content.areas).some(areaKey => {
-    const area = gameROM.content.areas[areaKey];
+  const hasExitDoor = Object.keys(questROM.content.areas).some(areaKey => {
+    const area = questROM.content.areas[areaKey];
     return area.exits.some(exit => exit.exitType === ExitType.GAME_END);
   });
   if (hasExitDoor) {
@@ -42,7 +42,10 @@ export const getLevelGoals = (gameROM: GameROM): string => {
   return levelGoalsText[0].toUpperCase() + levelGoalsText.slice(1);
 };
 
-export const calcScore = (gameState: GameState, gameROM: GameROM): number => {
+export const calcScore = (
+  gameState: QuestState,
+  questROM: QuestROM
+): number => {
   let score = 0;
   Object.keys(gameState.player.inventory).forEach(inventoryKey => {
     const itemCount = gameState.player.inventory[inventoryKey];
@@ -51,7 +54,7 @@ export const calcScore = (gameState: GameState, gameROM: GameROM): number => {
       score += itemDef.scoreValue * itemCount;
     }
   });
-  gameROM.content.flags?.forEach(flagDef => {
+  questROM.content.flags?.forEach(flagDef => {
     if (flagDef.scoreValue && gameState.flagValues[flagDef.id]) {
       score += flagDef.scoreValue;
     }

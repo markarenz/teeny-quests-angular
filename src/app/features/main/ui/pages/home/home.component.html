@@ -11,13 +11,12 @@
     <div class="pb-8">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
         @if (games.length > 0) { @for (game of games; track game.id) {
-        <a routerLink="/game/{{ game.id }}" class="group rounded-md" (mousedown)="handleClickSound()">
+        <a routerLink="/quest/{{ game.id }}" class="group rounded-md" (mousedown)="handleClickSound()">
           <app-game-link-card [title]="game.title" [username]="game.username" [description]="game.description"
             [isSkeleton]="false" />
         </a>
         } } @else { @for (skeleton of skeletons; track $index) {
-        <div
-          class="flex flex-col gap-4 bg-gray-600 rounded-md group-hover:bg-gray-700 transition-colors border-2 border-gray-500 group-hover:border-gray-300">
+        <div class="flex flex-col gap-4">
           <app-game-link-card [isSkeleton]="true" />
         </div>
         } }

@@ -1,8 +1,8 @@
 import {
-  GameEvent,
-  GameEventActionCondition,
-  GameROM,
-  GameState,
+  QuestEvent,
+  QuestEventActionCondition,
+  QuestROM,
+  QuestState,
 } from '@app/features/main/interfaces/types';
 import { MessageService } from '../../message/message.service';
 import { AudioService } from '@app/features/main/services/audio/audio-service.service';
@@ -11,15 +11,15 @@ import { ConditionComparison } from '@app/features/main/interfaces/enums';
 import { processTurnActions } from './turn-actions';
 
 export const processEvents = (
-  nextGameState: GameState,
-  gameROM: GameROM,
+  nextGameState: QuestState,
+  questROM: QuestROM,
   audioService: AudioService,
   messageService: MessageService
 ) => {
-  if (!gameROM.content.events) {
+  if (!questROM.content.events) {
     return;
   }
-  const events = gameROM.content.events;
+  const events = questROM.content.events;
   for (const event of events) {
     if (
       event.isUnidirectional &&
@@ -47,8 +47,8 @@ export const processEvents = (
 };
 
 export const checkEventConditions = (
-  event: GameEvent,
-  nextGameState: GameState
+  event: QuestEvent,
+  nextGameState: QuestState
 ): boolean => {
   const conditions = event.conditions;
   if (!conditions) {
@@ -60,11 +60,12 @@ export const checkEventConditions = (
 };
 
 export const checkEventCondition = (
-  condition: GameEventActionCondition,
-  nextGameState: GameState
+  condition: QuestEventActionCondition,
+  nextGameState: QuestState
 ): boolean => {
   const conditionCheckMap = new Map<string, Function>([
     ['inventory', checkConditionInventory],
+    ['flag', checkConditionFlag],
     // Add more condition types here as needed...
   ]);
   const checkFunction = conditionCheckMap.get(condition.conditionType);
@@ -78,9 +79,18 @@ export const checkEventCondition = (
   return checkFunction(condition, nextGameState);
 };
 
+export const checkConditionFlag = (
+  condition: QuestEventActionCondition,
+  nextGameState: QuestState
+) => {
+  const flagValue =
+    nextGameState.flagValues[condition.identifier ?? ''] || false;
+  return flagValue === condition.value;
+};
+
 export const checkConditionInventory = (
-  condition: GameEventActionCondition,
-  nextGameState: GameState
+  condition: QuestEventActionCondition,
+  nextGameState: QuestState
 ) => {
   const inventory = nextGameState.player.inventory;
   const qty = inventory[condition.identifier ?? ''] || 0;

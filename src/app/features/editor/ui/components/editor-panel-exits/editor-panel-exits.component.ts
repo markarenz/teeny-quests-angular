@@ -3,9 +3,9 @@ import { Subscription } from 'rxjs';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import { FormsModule } from '@angular/forms';
 import {
-  GameArea,
-  GameAreaExit,
-  GameItem,
+  QuestArea,
+  QuestAreaExit,
+  QuestItem,
   SelectIUIOption,
 } from '@app/features/main/interfaces/types';
 import { AreaCellSelectorComponent } from '../area-cell-selector/area-cell-selector.component';
@@ -45,7 +45,7 @@ export class EditorPanelExitsComponent {
   public inputExitName: string = '';
   public isEnabledReciprocalExits: boolean = true;
   public selectedExitId: string = '';
-  public exits: GameAreaExit[] = [];
+  public exits: QuestAreaExit[] = [];
   public isSelectedPositionValid: boolean = false;
   public areasListOptions: SelectIUIOption[] = [];
   public exitsListOptions: SelectIUIOption[] = [];
@@ -55,7 +55,7 @@ export class EditorPanelExitsComponent {
     { value: 'gold', label: 'Gold' },
   ];
   public lockouts: string[] = [];
-  public area: GameArea | null = null;
+  public area: QuestArea | null = null;
 
   public refreshUIData() {
     this.areasListOptions = this._gameEditorService.getAreasListOptions();
@@ -83,7 +83,7 @@ export class EditorPanelExitsComponent {
   public updateExitPositionLockouts() {
     if (this.area) {
       const newLockouts: string[] = [];
-      this.area.items.forEach((item: GameItem) => {
+      this.area.items.forEach((item: QuestItem) => {
         newLockouts.push(`${item.y}_${item.x}`);
       });
       const selectedExit = this.exits.find(
@@ -101,7 +101,7 @@ export class EditorPanelExitsComponent {
           newLockouts.push(`${prop.y}_${prop.x}`);
         }
       });
-      this.area.exits.forEach((exit: GameAreaExit) => {
+      this.area.exits.forEach((exit: QuestAreaExit) => {
         if (exit.id !== this.selectedExitId) {
           newLockouts.push(`${exit.y}_${exit.x}`);
         }
@@ -192,7 +192,7 @@ export class EditorPanelExitsComponent {
   }
 
   public handleCreateClick() {
-    const exit: GameAreaExit | null = this._gameEditorService.createExit();
+    const exit: QuestAreaExit | null = this._gameEditorService.createExit();
     if (exit) {
       this.handleEditClick(exit.id);
     }
@@ -206,7 +206,7 @@ export class EditorPanelExitsComponent {
     );
     const [y, x] = this.inputExitPosition.split('_');
     if (selectedExit) {
-      const updatedExit: GameAreaExit = {
+      const updatedExit: QuestAreaExit = {
         ...selectedExit,
         id: this.selectedExitId,
         name: this.inputExitName,

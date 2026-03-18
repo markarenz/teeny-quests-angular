@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CommonModalComponent } from '@app/features/main/ui/components/common-modal/common-modal.component';
 import { GameService } from '@app/features/game/services/game-service/game-service.service';
-import { GameState, Inventory } from '@app/features/main/interfaces/types';
+import { QuestState, Inventory } from '@app/features/main/interfaces/types';
 import { itemDefinitions } from '@content/item-definitions';
 import { inventoryDefinitions } from '@content/item-definitions';
 import { InventoryItemCardComponent } from './inventory-item-card/inventory-item-card.component';
@@ -31,7 +31,7 @@ export class ModalInventoryComponent {
 
   ngOnInit(): void {
     this.subscriptions.push(
-      this._gameService.gameStateObs.subscribe((data: GameState | null) => {
+      this._gameService.gameStateObs.subscribe((data: QuestState | null) => {
         if (!data) {
           return;
         }

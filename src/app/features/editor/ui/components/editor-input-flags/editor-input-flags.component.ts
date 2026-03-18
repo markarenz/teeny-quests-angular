@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
-import { GameFlag } from '@app/features/main/interfaces/types';
+import { QuestFlag } from '@app/features/main/interfaces/types';
 import { logger } from '@app/features/main/utils/logger';
 import { CollapsibleCardComponent } from '@app/features/main/ui/components/collapsible-card/collapsible-card.component';
 import { IconButtonComponent } from '@app/features/main/ui/components/icons/icon-button/icon-button.component';
@@ -21,12 +21,12 @@ export class EditorInputFlagsComponent {
   public inputScoreValue: number = 0;
   public inputName: string = '';
   public selectedFlagId: string = '';
-  public selectedFlag: GameFlag | null = null;
-  public flags: GameFlag[] = [];
+  public selectedFlag: QuestFlag | null = null;
+  public flags: QuestFlag[] = [];
 
   ngOnInit() {
     this.subscriptions.push(
-      this._gameEditorService.flagsObs.subscribe((data: GameFlag[] | null) => {
+      this._gameEditorService.flagsObs.subscribe((data: QuestFlag[] | null) => {
         if (data) {
           this.flags = data;
         }
@@ -39,7 +39,7 @@ export class EditorInputFlagsComponent {
   }
 
   handleInputChange() {
-    const newFlag: GameFlag = {
+    const newFlag: QuestFlag = {
       id: this.selectedFlag?.id || '',
       name: this.inputName,
       scoreValue: this.inputScoreValue,

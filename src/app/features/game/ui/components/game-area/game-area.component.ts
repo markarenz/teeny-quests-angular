@@ -2,11 +2,11 @@ import { Component, Input } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { GameService } from '@app/features/game/services/game-service/game-service.service';
 import {
-  GameAreaExit,
-  GameAreaMap,
-  GameItem,
-  GameProp,
-  GameState,
+  QuestAreaExit,
+  QuestAreaMap,
+  QuestItem,
+  QuestProp,
+  QuestState,
   LightMap,
   MovementOptions,
 } from '@app/features/main/interfaces/types';
@@ -37,10 +37,10 @@ export class GameAreaComponent {
   constructor(private _gameService: GameService) {}
 
   areaId: string | null = null;
-  areaMap: GameAreaMap | null = null;
-  areaExits: GameAreaExit[] = [];
-  areaItems: GameItem[] = [];
-  areaProps: GameProp[] = [];
+  areaMap: QuestAreaMap | null = null;
+  areaExits: QuestAreaExit[] = [];
+  areaItems: QuestItem[] = [];
+  areaProps: QuestProp[] = [];
   movementOptions: { [key: string]: string[] } = {};
   movementOptionsKeys: string[] = [];
   areaDataPositionKeys: string[] = [];
@@ -81,7 +81,7 @@ export class GameAreaComponent {
       })
     );
     this.subscriptions.push(
-      this._gameService.gameStateObs.subscribe((data: GameState | null) => {
+      this._gameService.gameStateObs.subscribe((data: QuestState | null) => {
         if (data) {
           if (data.player.areaId !== this.areaId) {
             const areaId = data.player.areaId;
@@ -101,7 +101,7 @@ export class GameAreaComponent {
     );
   }
 
-  public getLightLevel(obj: GameProp | GameItem | GameAreaExit): number {
+  public getLightLevel(obj: QuestProp | QuestItem | QuestAreaExit): number {
     return Math.min(this.areaLightMap[`${obj.y}_${obj.x}`] + 0.25, 1);
   }
 

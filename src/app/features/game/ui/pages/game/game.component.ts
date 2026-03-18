@@ -4,8 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GameService } from '@app/features/game/services/game-service/game-service.service';
 import { MainLayoutComponent } from '@main/ui/components/main-layout/main-layout.component';
 import {
-  GameROM,
-  GameState,
+  QuestROM,
+  QuestState,
   Inventory,
   Paragraph,
 } from '@app/features/main/interfaces/types';
@@ -111,7 +111,7 @@ export class GameComponent {
       })
     );
     this.subscriptions.push(
-      this._gameService.gameROMObs.subscribe((data: GameROM | null) => {
+      this._gameService.gameROMObs.subscribe((data: QuestROM | null) => {
         if (data) {
           this.title = `Teeny Quest: ${data.title}`;
           this.gameStatus = data.itemStatus;
@@ -124,7 +124,7 @@ export class GameComponent {
       })
     );
     this.subscriptions.push(
-      this._gameService.gameStateObs.subscribe((data: GameState | null) => {
+      this._gameService.gameStateObs.subscribe((data: QuestState | null) => {
         if (
           data?.player.inventory &&
           JSON.stringify(data.player.inventory) !==
@@ -140,8 +140,7 @@ export class GameComponent {
         }
 
         if (data?.flagValues['gameEnded']) {
-          // FUTURE: handle game end vs level end
-          // -- For now, we just game end and go back to the homepage
+          this._gameService.setPageModalStatus('');
           this.gameStatus = 'ended';
           this._gameService.resetGameProgress();
         }
