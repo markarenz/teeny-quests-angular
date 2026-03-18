@@ -65,6 +65,7 @@ export const checkEventCondition = (
 ): boolean => {
   const conditionCheckMap = new Map<string, Function>([
     ['inventory', checkConditionInventory],
+    ['flag', checkConditionFlag],
     // Add more condition types here as needed...
   ]);
   const checkFunction = conditionCheckMap.get(condition.conditionType);
@@ -76,6 +77,15 @@ export const checkEventCondition = (
     return false;
   }
   return checkFunction(condition, nextGameState);
+};
+
+export const checkConditionFlag = (
+  condition: QuestEventActionCondition,
+  nextGameState: QuestState
+) => {
+  const flagValue =
+    nextGameState.flagValues[condition.identifier ?? ''] || false;
+  return flagValue === condition.value;
 };
 
 export const checkConditionInventory = (

@@ -72,7 +72,7 @@
     </div>
     }
 
-    @if(selectedPropDefinition?.isClickable && propStatusOptions.length > 0) {
+    @if(selectedPropDefinition?.hasStatusEffects && propStatusOptions.length > 0) {
     <div class="flex flex-col gap-4">
       @for(item of propStatusOptions; track item.value) {
       <app-editor-input-actions [actions]="selectedPropActions[item.value]"

@@ -140,8 +140,7 @@ export class GameComponent {
         }
 
         if (data?.flagValues['gameEnded']) {
-          // FUTURE: handle game end vs level end
-          // -- For now, we just game end and go back to the homepage
+          this._gameService.setPageModalStatus('');
           this.gameStatus = 'ended';
           this._gameService.resetGameProgress();
         }
