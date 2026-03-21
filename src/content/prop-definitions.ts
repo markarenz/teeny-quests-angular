@@ -18,7 +18,7 @@ export const propDecoDefinitions: { [key: string]: PropDefinition } = {
     canSetHeight: true,
     statuses: ['on', 'off'],
     isClickable: false,
-    ambientLight: 0.5,
+    ambientLight: 0.25,
     lightPattern: 'half-circle-3',
     statusMessages: {
       on: {
@@ -61,8 +61,7 @@ export const propDecoDefinitions: { [key: string]: PropDefinition } = {
     statuses: ['empty', 'filled'],
     canSetHeight: false,
     isClickable: false,
-    // TODO: CHANGE THIS
-    sound: 'bounce',
+    sound: 'chime',
   },
   gemFrameSapphire: {
     id: 'gemFrameSapphire',
@@ -71,8 +70,7 @@ export const propDecoDefinitions: { [key: string]: PropDefinition } = {
     statuses: ['empty', 'filled'],
     canSetHeight: false,
     isClickable: false,
-    // TODO: CHANGE THIS
-    sound: 'bounce',
+    sound: 'chime',
   },
   gemFrameRuby: {
     id: 'gemFrameRuby',
@@ -81,8 +79,7 @@ export const propDecoDefinitions: { [key: string]: PropDefinition } = {
     statuses: ['empty', 'filled'],
     canSetHeight: false,
     isClickable: false,
-    // TODO: CHANGE THIS
-    sound: 'bounce',
+    sound: 'chime',
   },
   gemFrameDiamond: {
     id: 'gemFrameDiamond',
@@ -91,8 +88,7 @@ export const propDecoDefinitions: { [key: string]: PropDefinition } = {
     statuses: ['empty', 'filled'],
     canSetHeight: false,
     isClickable: false,
-    // TODO: CHANGE THIS
-    sound: 'bounce',
+    sound: 'chime',
   },
 };
 

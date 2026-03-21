@@ -10,23 +10,15 @@ import { ExitType } from '@content/exit-definitions';
 export const getLevelGoals = (questROM: QuestROM): string => {
   const levelGoalsArr: string[] = [];
 
-  // Find events that set the 'gameCompleted' flag
   questROM.content.events.forEach(event => {
-    const gameEndEvents = event.actions.filter(
+    const hasGameEndAction = event.actions.some(
       action =>
         action.action === EventAction.SET_FLAG &&
-        action.actionObject.identifier === 'gameCompleted'
+        action.actionObject.identifier === 'gameEnded'
     );
-    event.conditions.forEach(condition => {
-      if (condition.conditionType === EventConditionType.INVENTORY) {
-        const inventoryDefinition = inventoryDefinitions[condition.identifier];
-        levelGoalsArr.push(
-          parseFloat(`${condition.value}`) > 1
-            ? `collect ${condition.value} ${inventoryDefinition.pluralName}`
-            : `find ${inventoryDefinition.article} ${inventoryDefinition.name}`
-        );
-      }
-    });
+    if (hasGameEndAction) {
+      levelGoalsArr.push(event.name);
+    }
   });
 
   // Look for level exits
