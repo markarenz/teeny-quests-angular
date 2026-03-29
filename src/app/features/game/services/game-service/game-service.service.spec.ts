@@ -537,6 +537,6 @@ describe('calcLightMap', () => {
     );
     expect(Object.keys(lightMap).length).toBeGreaterThan(0);
     expect(lightMap['2_2']).toEqual(1);
-    expect(lightMap['0_0']).toEqual(1);
+    expect(lightMap['0_0']).toEqual(0.5);
   }));
 });

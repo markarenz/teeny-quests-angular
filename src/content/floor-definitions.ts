@@ -46,6 +46,14 @@ export const floorDefinitions: { [key: string]: FloorDefinition } = {
     walkable: true,
     tileType: FloorTileType.DEFAULT,
   },
+  grass: {
+    id: 'grass',
+    name: 'Grass',
+    walkable: true,
+    tileType: FloorTileType.SINGLE,
+    flipOdds: true,
+  },
+
   'stone-dark': {
     id: 'stone-dark',
     name: 'Dark Stone',

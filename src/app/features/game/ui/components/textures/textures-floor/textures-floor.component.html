@@ -7,6 +7,8 @@
 }
 @if(floorType === 'dirt') {
 <app-floor-dirt [floorProps]="floorProps" (onClick)="handleClick()" />
+} @else if(floorType === 'grass') {
+<app-floor-grass [floorProps]="floorProps" (onClick)="handleClick()" />
 } @else if(floorType === 'water') {
 <app-floor-water [floorProps]="floorProps" (onClick)="handleClick()" />
 } @else if(floorType === 'stone-dark') {
