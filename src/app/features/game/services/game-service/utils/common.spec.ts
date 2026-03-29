@@ -14,13 +14,13 @@ describe('getLevelGoals', () => {
     mockGameROM.content.events = [
       {
         id: 'event1',
-        name: 'Event 1',
+        name: 'Collect 5 Gold Coins',
         isUnidirectional: true,
         actions: [
           {
             id: 'action1',
             action: EventAction.SET_FLAG,
-            actionObject: { identifier: 'gameCompleted' },
+            actionObject: { identifier: 'gameEnded' },
             actionValue: true,
           },
         ],
@@ -43,13 +43,13 @@ describe('getLevelGoals', () => {
     mockGameROM.content.events = [
       {
         id: 'event1',
-        name: 'Event 1',
+        name: 'Find a Silver Key',
         isUnidirectional: true,
         actions: [
           {
             id: 'action1',
             action: EventAction.SET_FLAG,
-            actionObject: { identifier: 'gameCompleted' },
+            actionObject: { identifier: 'gameEnded' },
             actionValue: true,
           },
         ],

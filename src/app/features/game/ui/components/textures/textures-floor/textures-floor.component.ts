@@ -18,6 +18,7 @@ import { FloorWallTopComponent } from './floor-wall-top/floor-wall-top.component
 import { FloorTileDarkComponent } from './floor-tile-dark/floor-tile-dark.component';
 import { FloorDefaultComponent } from './floor-default/floor-default.component';
 import { FloorRoofSimpleComponent } from './floor-roof-simple/floor-roof-simple.component';
+import { FloorGrassComponent } from './floor-grass/floor-grass.component';
 
 @Component({
   selector: 'app-textures-floor',
@@ -32,6 +33,7 @@ import { FloorRoofSimpleComponent } from './floor-roof-simple/floor-roof-simple.
     FloorTileDarkComponent,
     FloorDefaultComponent,
     FloorRoofSimpleComponent,
+    FloorGrassComponent,
   ],
   templateUrl: './textures-floor.component.html',
   styleUrl: './textures-floor.component.css',

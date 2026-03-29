@@ -1,0 +1,34 @@
+.bg {
+  fill: #2e8b2e;
+}
+.grass-1 {
+  fill: #3ab13a;
+}
+.grass-2 {
+  fill: #35a135;
+}
+.main-poly {
+  fill: #2e8b2e;
+  stroke: #1f6c1f;
+}
+
+.editor-mode {
+  cursor: pointer;
+  &.selected,
+  &:hover {
+    stroke: var(--color-primary);
+    stroke-width: 4px;
+    z-index: 100;
+  }
+}
+
+.grass-group {
+  position: relative;
+  &.flip {
+    transform-origin: center;
+    transform: scale(-1, 1);
+  }
+}
+polygon {
+  fill: #2e8b2e;
+}
