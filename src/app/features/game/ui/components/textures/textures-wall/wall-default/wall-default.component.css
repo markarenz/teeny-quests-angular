@@ -20,18 +20,18 @@
 .dark-stone {
   &.wall-position-l {
     .bgRect {
-      fill: #444;
+      fill: #666;
     }
     .brick {
-      stroke: #666;
+      stroke: #888;
     }
   }
   &.wall-position-r {
     .bgRect {
-      fill: #333;
+      fill: #555;
     }
     .brick {
-      stroke: #555;
+      stroke: #777;
     }
   }
 }

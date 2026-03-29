@@ -305,6 +305,16 @@ export class EditorPanelPropsComponent {
         wall = selectedProp?.wall === 'north' ? 'west' : 'north';
       }
 
+      // Changing the prop type can cause the prop status to be invalid, choose first item
+      if (
+        !propDecoDefinitions[this.inputPropType].statuses?.includes(
+          this.inputPropStatus
+        )
+      ) {
+        this.inputPropStatus =
+          propDecoDefinitions[this.inputPropType].statuses?.[0] || '';
+      }
+
       this.inputPropWall = wall;
       const updatedProp: QuestProp = {
         ...selectedProp,
