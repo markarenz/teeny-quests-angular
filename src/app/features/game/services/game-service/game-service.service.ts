@@ -89,6 +89,24 @@ export class GameService {
     this.aspectRatio = aspectRatio;
   };
 
+  setPropItemHeights(nextGameState: QuestState): void {
+    const area = nextGameState.areas[nextGameState.player.areaId];
+    const map = area.map;
+    area.items.forEach((item: any) => {
+      const positionKey = `${item.y}_${item.x}`;
+      item.h = map[positionKey].h;
+    });
+    area.props.forEach((prop: any) => {
+      const propDef = propDecoDefinitions[prop.propType];
+      if (!propDef.canSetHeight) {
+        const positionKey = `${prop.y}_${prop.x}`;
+        prop.h = map[positionKey].h;
+      }
+    });
+    nextGameState.areas[nextGameState.player.areaId].items = area.items;
+    nextGameState.areas[nextGameState.player.areaId].props = area.props;
+  }
+
   calculateMovementOptions(nextGameState: QuestState): void {
     const nextMovementOptions = getMoveOptions({
       positionKeyStart: `${nextGameState.player.y}_${nextGameState.player.x}`,
@@ -779,6 +797,7 @@ export class GameService {
       }
 
       nextGameState.numTurns += 1;
+      this.setPropItemHeights(nextGameState);
       this.score.next(calcScore(nextGameState, this.questROM.value));
       this.saveLocalGameState(nextGameState);
       this.gameState.next(nextGameState);
