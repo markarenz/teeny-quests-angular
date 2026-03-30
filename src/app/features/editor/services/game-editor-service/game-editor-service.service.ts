@@ -36,6 +36,7 @@ import { utilCreateEvent, utilDeleteEvent } from './utils/event-utils';
 import { getLabelFromSlug, getPositionKeysForGridSize } from '@main/utils';
 import { logger } from '@app/features/main/utils/logger';
 import { defaultFlagIdOptions } from '@content/flags';
+import { propDecoDefinitions } from '@content/prop-definitions';
 
 @Injectable({
   providedIn: 'root',
@@ -154,12 +155,30 @@ export class GameEditorService {
     if (this.game.value?.content.areas[this.selectedAreaId.value]) {
       const gameObj = { ...this.game.value } as QuestROM;
 
-      const exits = gameObj?.content.areas[this.selectedAreaId.value].exits.map(
-        exit =>
-          exit.x === cellData.x && exit.y === cellData.y
-            ? { ...exit, h: cellData.h }
-            : exit
+      const area = gameObj.content.areas[this.selectedAreaId.value];
+      const exits = area.exits.map(exit =>
+        exit.x === cellData.x && exit.y === cellData.y
+          ? { ...exit, h: cellData.h }
+          : exit
       );
+      this.areaExits.next(exits ?? []);
+
+      const props = area.props.map(prop =>
+        prop.x === cellData.x &&
+        prop.y === cellData.y &&
+        !propDecoDefinitions[prop.propType].canSetHeight
+          ? { ...prop, h: cellData.h }
+          : prop
+      );
+      this.areaProps.next(props ?? []);
+
+      const items = area.items.map(item =>
+        item.x === cellData.x && item.y === cellData.y
+          ? { ...item, h: cellData.h }
+          : item
+      );
+      this.areaItems.next(items ?? []);
+
       const changedCellsData: { [key: string]: QuestAreaMapCell } = {};
       this.selectedCellPositions.value.forEach(pos => {
         const originalCell =
@@ -176,9 +195,10 @@ export class GameEditorService {
         map: {
           ...gameObj?.content.areas[this.selectedAreaId.value].map,
           ...changedCellsData,
-          // [`${cellData.y}_${cellData.x}`]: cellData,
         },
         exits,
+        items,
+        props,
       };
 
       gameObj.content.areas[this.selectedAreaId.value] = nextArea;
