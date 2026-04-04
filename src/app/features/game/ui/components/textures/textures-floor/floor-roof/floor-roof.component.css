@@ -3,21 +3,25 @@
 }
 
 .roof-group {
-  pointer-events: none;
   .roof1 {
     fill: #921c1c;
+    pointer-events: none !important;
   }
   .roof2 {
     fill: #7a1c1c;
+    pointer-events: none !important;
   }
   .roof3 {
     fill: #cc4949;
+    pointer-events: none !important;
   }
   .roof4 {
     fill: #bc3535;
+    pointer-events: none !important;
   }
   .flag {
     fill: #5cc357;
+    pointer-events: none !important;
   }
   .flagpole {
     stroke: #313131;
@@ -25,6 +29,7 @@
     stroke-linecap: round;
     stroke-linejoin: round;
     stroke-dasharray: none;
+    pointer-events: none !important;
   }
 }
 

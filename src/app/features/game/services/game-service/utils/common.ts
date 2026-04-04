@@ -46,6 +46,9 @@ export const calcScore = (
       score += itemDef.scoreValue * itemCount;
     }
   });
+  if (gameState.flagValues['gameEnded']) {
+    score += 1000; // Bonus for completing the game
+  }
   questROM.content.flags?.forEach(flagDef => {
     if (flagDef.scoreValue && gameState.flagValues[flagDef.id]) {
       score += flagDef.scoreValue;
