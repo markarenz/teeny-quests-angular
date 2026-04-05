@@ -120,7 +120,10 @@ export class EditorGameComponent {
     this.isLoading = true;
     const response = await this._gameEditorService.saveGame(this.game!);
     // Register update event, which will also update play and completion counts
-    this._gameService.registerActivity(this.game!.id, ActivityType.UPDATE);
+    this._gameService.registerActivity(
+      this.game?.id ?? '',
+      ActivityType.UPDATE
+    );
 
     if (response !== 'success') {
       this.hasSaveError = true;

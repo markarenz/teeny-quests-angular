@@ -448,7 +448,7 @@ export class GameService {
             })
               .then(res => res.json())
               .then(versionData => {
-                if (typeof versionData.item.content === 'string') {
+                if (typeof versionData?.item?.content === 'string') {
                   nextGameROM.content = JSON.parse(versionData.item.content);
                 }
                 if (nextGameROM) {
@@ -459,7 +459,7 @@ export class GameService {
               });
           } else {
             this.v = null;
-            if (typeof data.item.content === 'string') {
+            if (typeof data.item?.content === 'string') {
               const contentStr: string = nextGameROM.content;
               nextGameROM.content = JSON.parse(contentStr);
             }
