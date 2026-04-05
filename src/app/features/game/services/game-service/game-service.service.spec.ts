@@ -6,7 +6,10 @@ import { gamesApiUrl } from '@config/index';
 import questMockData, {
   questStateMockData,
 } from '@app/features/editor/mocks/game.mock';
-import { MovementOptions } from '@app/features/main/interfaces/types';
+import {
+  MovementOptions,
+  QuestState,
+} from '@app/features/main/interfaces/types';
 import { firstValueFrom, skip, take } from 'rxjs';
 import { MessageService } from '../message/message.service';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -97,6 +100,27 @@ describe('loadGameROM', () => {
       i += 1;
     });
     service.loadGameROM('test');
+    fetchMock.unmockGlobal();
+  });
+  it('should load questROM by id and version', () => {
+    const url = `${gamesApiUrl}?id=test`;
+    fetchMock.mockGlobal().get(
+      url,
+      { item: gameMockFromDB },
+      {
+        delay: 0,
+      }
+    );
+    let i = 0;
+    service.gameROMObs.subscribe(game => {
+      if (i === 0) {
+        expect(game).toBeNull();
+      } else {
+        expect(game).not.toBeNull();
+      }
+      i += 1;
+    });
+    service.loadGameROM('test', '1234');
     fetchMock.unmockGlobal();
   });
 });
@@ -411,6 +435,36 @@ describe('turnActionExit', () => {
     });
     flush();
   }));
+});
+
+describe('turnActionExit', () => {
+  let service: GameService;
+  mockAudioService = jasmine.createSpyObj('AudioService', ['playSound']);
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [ToastrModule.forRoot()],
+      providers: [
+        ToastrService,
+        provideNoopAnimations(),
+        { provide: AudioService, useValue: mockAudioService },
+      ],
+      teardown: { destroyAfterEach: false },
+    });
+    messageService = TestBed.inject(MessageService);
+    service = TestBed.inject(GameService);
+    service.testInit(gameMock);
+    service.initGameState(gameMock);
+  });
+
+  it('should process turn prop status change', async () => {
+    const nextGameState: QuestState = structuredClone(questStateMockData);
+    const updatedGameState = await service.turnActionPropSetStatus(
+      nextGameState,
+      'prop1',
+      'on'
+    );
+    expect(updatedGameState.player?.inventory).toBeDefined();
+  });
 });
 
 describe('turnActionItemClick', () => {
