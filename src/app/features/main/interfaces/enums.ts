@@ -66,3 +66,9 @@ export enum ConditionValueType {
   NUMBER = 'number',
   BOOLEAN = 'boolean',
 }
+
+export enum ActivityType {
+  PLAY = 'PLAY',
+  COMPLETE = 'COMPLETE',
+  UPDATE = 'UPDATE',
+}

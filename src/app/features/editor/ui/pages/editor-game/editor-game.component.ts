@@ -22,9 +22,11 @@ import { EditorAreaSelectorComponent } from '../../components/editor-area-select
 import { ButtonComponent } from '@app/features/main/ui/components/button/button.component';
 import { BreadcrumbsComponent } from '@app/features/main/ui/components/breadcrumbs/breadcrumbs.component';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
+import { GameService } from '@app/features/game/services/game-service/game-service.service';
 import { AuthProviderService } from '@app/features/auth/services/auth-provider-service';
 import { ContentVersionsModalComponent } from '../../components/content-versions-modal/content-versions-modal.component';
 import { CommonModalComponent } from '@app/features/main/ui/components/common-modal/common-modal.component';
+import { ActivityType } from '@app/features/main/interfaces/enums';
 
 @Component({
   selector: 'app-editor-game',
@@ -60,7 +62,8 @@ export class EditorGameComponent {
     private _route: ActivatedRoute,
     private _gameEditorService: GameEditorService,
     private _authGoogleService: AuthProviderService,
-    private router: Router
+    private router: Router,
+    private _gameService: GameService
   ) {}
 
   public title = '';
@@ -116,6 +119,12 @@ export class EditorGameComponent {
   async handleSaveClick() {
     this.isLoading = true;
     const response = await this._gameEditorService.saveGame(this.game!);
+    // Register update event, which will also update play and completion counts
+    this._gameService.registerActivity(
+      this.game?.id ?? '',
+      ActivityType.UPDATE
+    );
+
     if (response !== 'success') {
       this.hasSaveError = true;
     }

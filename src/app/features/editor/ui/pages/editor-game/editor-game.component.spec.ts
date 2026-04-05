@@ -6,17 +6,24 @@ import { OAuthModule } from 'angular-oauth2-oidc';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
+import { GameService } from '@app/features/game/services/game-service/game-service.service';
 import fetchMock from 'fetch-mock';
+import { ToastrModule } from 'ngx-toastr';
 
 describe('EditorGameComponent', () => {
   let component: EditorGameComponent;
   let fixture: ComponentFixture<EditorGameComponent>;
   let service: GameEditorService;
+  let gameService: GameService;
   let router: Router;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EditorGameComponent, OAuthModule.forRoot()],
+      imports: [
+        EditorGameComponent,
+        OAuthModule.forRoot(),
+        ToastrModule.forRoot(),
+      ],
       providers: [
         provideRouter([]),
         provideHttpClient(),
@@ -27,6 +34,7 @@ describe('EditorGameComponent', () => {
 
     fixture = TestBed.createComponent(EditorGameComponent);
     service = TestBed.inject(GameEditorService);
+    gameService = TestBed.inject(GameService);
     router = TestBed.inject(Router);
     component = fixture.componentInstance;
     fixture.detectChanges();

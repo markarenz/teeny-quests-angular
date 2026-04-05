@@ -4,6 +4,7 @@
 
 - Install dependencies `npm i`
 - Create a file `src/config/configConstants.ts` to contain your apiGatewayId. This is imported by the app configuration.
+- Start: `npm run start`
 
 ## IaC
 

@@ -4,6 +4,11 @@ export const tableNames: Record<string, string> = {
   games: 'TQ_Games',
   users: 'TQ_Users',
   versions: 'TQ_ContentVersions',
+  activity: 'TQ_Activity',
+};
+
+export const fallbackOnCreate: Record<string, string> = {
+  activity_post: 'updateGameActivityStats',
 };
 
 export const indexNames: Record<string, string> = {
@@ -11,6 +16,7 @@ export const indexNames: Record<string, string> = {
   games_get_userId: 'gamesByUserIndex',
   users_get: 'itemStatusIndex',
   versions_get_gameId: 'versionsByGameIndex',
+  activity_get: 'activityByGameAndActivityIndex',
 };
 
 export const authorizationMatchers: AuthorizationMatchers = {
@@ -29,6 +35,11 @@ export const authorizationMatchers: AuthorizationMatchers = {
   versions_post: {
     profile: 'sub',
     bodyParam: 'userId',
+  },
+  activity_post: {
+    // Empty values = no need for authorization
+    profile: '',
+    bodyParam: '',
   },
 };
 
@@ -75,6 +86,16 @@ export const fieldNames: Record<string, FiledDefinition[]> = {
       detailOnly: false,
     },
     {
+      fieldName: 'playCount',
+      required: false,
+      detailOnly: false,
+    },
+    {
+      fieldName: 'completionCount',
+      required: false,
+      detailOnly: false,
+    },
+    {
       fieldName: 'content',
       required: true,
       detailOnly: true,
@@ -117,6 +138,43 @@ export const fieldNames: Record<string, FiledDefinition[]> = {
       fieldName: 'itemStatus',
       required: true,
       detailOnly: false,
+    },
+  ],
+  activity: [
+    {
+      fieldName: 'gameId',
+      required: true,
+      detailOnly: false,
+    },
+    {
+      fieldName: 'action',
+      required: true,
+      detailOnly: false,
+    },
+    {
+      fieldName: 'gameIdActivity',
+      required: true,
+      detailOnly: false,
+    },
+    {
+      fieldName: 'userId',
+      required: false,
+      detailOnly: false,
+    },
+    {
+      fieldName: 'userLabel',
+      required: false,
+      detailOnly: false,
+    },
+    {
+      fieldName: 'score',
+      required: false,
+      detailOnly: false,
+    },
+    {
+      fieldName: 'dateTime',
+      required: true,
+      detailOnly: true,
     },
   ],
 };

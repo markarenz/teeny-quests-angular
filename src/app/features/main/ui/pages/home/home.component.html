@@ -13,7 +13,7 @@
         @if (games.length > 0) { @for (game of games; track game.id) {
         <a routerLink="/quest/{{ game.id }}" class="group rounded-md" (mousedown)="handleClickSound()">
           <app-game-link-card [title]="game.title" [username]="game.username" [description]="game.description"
-            [isSkeleton]="false" />
+            [playCount]="game.playCount" [completionCount]="game.completionCount" [isSkeleton]="false" />
         </a>
         } } @else { @for (skeleton of skeletons; track $index) {
         <div class="flex flex-col gap-4">

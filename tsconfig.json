@@ -20,6 +20,7 @@
     "target": "ES2022",
     "module": "ES2022",
     "baseUrl": "./src",
+    "types": ["jasmine", "node"],
     "paths": {
       "@app/*": ["app/*"],
       "@config/*": ["config/*"],
@@ -29,6 +30,7 @@
       "@main/*": ["app/features/main/*"]
     }
   },
+  "include": ["src/**/*.spec.ts", "src/**/*.d.ts"],
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,

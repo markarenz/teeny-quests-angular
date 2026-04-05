@@ -13,4 +13,6 @@ export class GameLinkCardComponent {
   @Input('title') title: string = '';
   @Input('username') username: string = '';
   @Input('description') description: string = '';
+  @Input('playCount') playCount: number = 0;
+  @Input('completionCount') completionCount: number = 0;
 }

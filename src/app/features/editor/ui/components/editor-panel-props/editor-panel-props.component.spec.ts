@@ -81,16 +81,14 @@ describe('EditorPanelPropsComponent', () => {
   });
 
   it('should handle input update', () => {
-    const mockPanel: QuestProp = {
-      ...gameMock.content.areas['start'].props[0],
-      id: 'panel',
-    };
     spyOn(service, 'updateProp');
+    component.area = gameMock.content.areas['start'];
     component.props = gameMock.content.areas['start'].props;
+    component.selectedAreaId = 'start';
     component.selectedPropId = 'prop1';
+    component.updateUiAfterPropSelection('prop1');
     component.inputPropPosition = '2_2';
     component.handlePropInputChange();
-    component.area = gameMock.content.areas['start'];
     fixture.detectChanges();
     expect(service.updateProp).toHaveBeenCalled();
   });

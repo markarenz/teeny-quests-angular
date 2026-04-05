@@ -2,11 +2,14 @@ import { fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import fetchMock from 'fetch-mock';
 import { GameService } from './game-service.service';
-import { gamesApiUrl } from '@config/index';
+import { activityApiUrl, gamesApiUrl, versionsApiUrl } from '@config/index';
 import questMockData, {
   questStateMockData,
 } from '@app/features/editor/mocks/game.mock';
-import { MovementOptions } from '@app/features/main/interfaces/types';
+import {
+  MovementOptions,
+  QuestState,
+} from '@app/features/main/interfaces/types';
 import { firstValueFrom, skip, take } from 'rxjs';
 import { MessageService } from '../message/message.service';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -16,6 +19,7 @@ let gameMock = { ...questMockData };
 let gameMockFromDB = { ...questMockData };
 let messageService: MessageService;
 let mockAudioService: jasmine.SpyObj<AudioService>;
+let toastrService: ToastrService;
 
 beforeEach(async () => {
   gameMock = await JSON.parse(
@@ -51,7 +55,7 @@ describe('GameService', () => {
       ],
       teardown: { destroyAfterEach: false },
     });
-
+    toastrService = TestBed.inject(ToastrService);
     messageService = TestBed.inject(MessageService);
     service = TestBed.inject(GameService);
   });
@@ -75,18 +79,16 @@ describe('loadGameROM', () => {
       teardown: { destroyAfterEach: false },
     });
     messageService = TestBed.inject(MessageService);
+    toastrService = TestBed.inject(ToastrService);
     service = TestBed.inject(GameService);
   });
 
-  it('should load questROM by id', () => {
+  it('should load questROM by id', fakeAsync(() => {
     const url = `${gamesApiUrl}?id=test`;
-    fetchMock.mockGlobal().get(
-      url,
-      { item: gameMockFromDB },
-      {
-        delay: 0,
-      }
-    );
+    fetchMock
+      .mockGlobal()
+      .post(activityApiUrl, 200)
+      .get(url, { item: gameMockFromDB }, { delay: 0 });
     let i = 0;
     service.gameROMObs.subscribe(game => {
       if (i === 0) {
@@ -97,8 +99,34 @@ describe('loadGameROM', () => {
       i += 1;
     });
     service.loadGameROM('test');
+    tick();
     fetchMock.unmockGlobal();
-  });
+  }));
+  it('should load questROM by id and version', fakeAsync(() => {
+    const url = `${gamesApiUrl}?id=test`;
+    const versionUrl = `${versionsApiUrl}?id=1234`;
+    fetchMock
+      .mockGlobal()
+      .post(activityApiUrl, 200)
+      .get(url, { item: gameMockFromDB }, { delay: 0 })
+      .get(
+        versionUrl,
+        { item: { content: JSON.stringify(questMockData.content) } },
+        { delay: 0 }
+      );
+    let i = 0;
+    service.gameROMObs.subscribe(game => {
+      if (i === 0) {
+        expect(game).toBeNull();
+      } else {
+        expect(game).not.toBeNull();
+      }
+      i += 1;
+    });
+    service.loadGameROM('test', '1234');
+    tick();
+    fetchMock.unmockGlobal();
+  }));
 });
 
 describe('initGameState', () => {
@@ -115,6 +143,7 @@ describe('initGameState', () => {
       teardown: { destroyAfterEach: false },
     });
     messageService = TestBed.inject(MessageService);
+    toastrService = TestBed.inject(ToastrService);
     service = TestBed.inject(GameService);
   });
 
@@ -153,6 +182,7 @@ describe('processTurn', () => {
       teardown: { destroyAfterEach: false },
     });
     messageService = TestBed.inject(MessageService);
+    toastrService = TestBed.inject(ToastrService);
     service = TestBed.inject(GameService);
     service.testInit(gameMock);
     service.initGameState(gameMock);
@@ -232,6 +262,7 @@ describe('getArea', () => {
       teardown: { destroyAfterEach: false },
     });
     messageService = TestBed.inject(MessageService);
+    toastrService = TestBed.inject(ToastrService);
     service = TestBed.inject(GameService);
     service.testInit(gameMock);
     service.initGameState(gameMock);
@@ -261,6 +292,7 @@ describe('getGameStateArea', () => {
       teardown: { destroyAfterEach: false },
     });
     messageService = TestBed.inject(MessageService);
+    toastrService = TestBed.inject(ToastrService);
     service = TestBed.inject(GameService);
     service.testInit(gameMock);
     service.initGameState(gameMock);
@@ -290,6 +322,7 @@ describe('getCanUseItem', () => {
       teardown: { destroyAfterEach: false },
     });
     messageService = TestBed.inject(MessageService);
+    toastrService = TestBed.inject(ToastrService);
     service = TestBed.inject(GameService);
     const gameMock = JSON.parse(JSON.stringify({ ...questMockData }));
     service.testInit(gameMock);
@@ -319,6 +352,7 @@ describe('getOppositeDirection', () => {
       teardown: { destroyAfterEach: false },
     });
     messageService = TestBed.inject(MessageService);
+    toastrService = TestBed.inject(ToastrService);
     service = TestBed.inject(GameService);
   });
 
@@ -345,6 +379,7 @@ describe('turnActionExit', () => {
       teardown: { destroyAfterEach: false },
     });
     messageService = TestBed.inject(MessageService);
+    toastrService = TestBed.inject(ToastrService);
     service = TestBed.inject(GameService);
     service.testInit(gameMock);
     service.initGameState(gameMock);
@@ -383,6 +418,7 @@ describe('turnActionExit', () => {
       teardown: { destroyAfterEach: false },
     });
     messageService = TestBed.inject(MessageService);
+    toastrService = TestBed.inject(ToastrService);
     service = TestBed.inject(GameService);
     const gameMockLevelExit = JSON.parse(
       JSON.stringify({
@@ -413,6 +449,37 @@ describe('turnActionExit', () => {
   }));
 });
 
+describe('turnActionExit', () => {
+  let service: GameService;
+  mockAudioService = jasmine.createSpyObj('AudioService', ['playSound']);
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [ToastrModule.forRoot()],
+      providers: [
+        ToastrService,
+        provideNoopAnimations(),
+        { provide: AudioService, useValue: mockAudioService },
+      ],
+      teardown: { destroyAfterEach: false },
+    });
+    messageService = TestBed.inject(MessageService);
+    toastrService = TestBed.inject(ToastrService);
+    service = TestBed.inject(GameService);
+    service.testInit(gameMock);
+    service.initGameState(gameMock);
+  });
+
+  it('should process turn prop status change', async () => {
+    const nextGameState: QuestState = structuredClone(questStateMockData);
+    const updatedGameState = await service.turnActionPropSetStatus(
+      nextGameState,
+      'prop1',
+      'on'
+    );
+    expect(updatedGameState.player?.inventory).toBeDefined();
+  });
+});
+
 describe('turnActionItemClick', () => {
   let service: GameService;
   mockAudioService = jasmine.createSpyObj('AudioService', ['playSound']);
@@ -427,6 +494,7 @@ describe('turnActionItemClick', () => {
       teardown: { destroyAfterEach: false },
     });
     messageService = TestBed.inject(MessageService);
+    toastrService = TestBed.inject(ToastrService);
     service = TestBed.inject(GameService);
     service.testInit(gameMock);
     service.initGameState(gameMock);
@@ -503,6 +571,7 @@ describe('calcLightMap', () => {
       teardown: { destroyAfterEach: false },
     });
     messageService = TestBed.inject(MessageService);
+    toastrService = TestBed.inject(ToastrService);
     service = TestBed.inject(GameService);
     service.testInit(gameMock);
     service.initGameState(gameMock);

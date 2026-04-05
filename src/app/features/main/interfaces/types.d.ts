@@ -152,6 +152,8 @@ export type QuestROM = {
   username: string;
   rating?: string;
   content: QuestContent;
+  playCount?: number;
+  completionCount?: number;
 };
 
 export type StatusEffect = {
