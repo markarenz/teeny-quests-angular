@@ -33,13 +33,13 @@
         <app-skeleton-text [width]="100" />
       </div>
       } @else {
-      <div>Plays: 1k</div>
+      <div>Plays: {{playCount || '0'}}</div>
       } @if (isSkeleton) {
       <div class="skeleton-sm">
         <app-skeleton-text [width]="100" />
       </div>
       } @else {
-      <div>Rating: 3.5/5 (123)</div>
+      <div>Completions: {{ completionCount || '0'}}</div>
       }
     </div>
   </div>

@@ -70,4 +70,5 @@ export enum ConditionValueType {
 export enum ActivityType {
   PLAY = 'PLAY',
   COMPLETE = 'COMPLETE',
+  UPDATE = 'UPDATE',
 }

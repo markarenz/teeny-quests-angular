@@ -292,7 +292,6 @@ async function getCount(
   dynamoDb: DynamoDBDocumentClient,
   gameIdActivityKey: string
 ) {
-  console.log('GC 0', gameIdActivityKey);
   const command = new QueryCommand({
     TableName: tableNames['activity'],
     IndexName: indexNames['activity_get'],
@@ -302,10 +301,7 @@ async function getCount(
       ':value': { S: gameIdActivityKey },
     },
   });
-  console.log('GC 1');
   const resp = await dynamoDb.send(command);
-  console.log('GC 2');
-  console.log('GC 3', resp.Count);
   return resp.Count ?? 0;
 }
 
@@ -318,6 +314,8 @@ async function getCount(
  *
  * @param gameId The game identifier whose aggregate activity stats should be
  * updated.
+ * @param playCount The number of times the game has been played.
+ * @param completionCount The number of times the game has been completed.
  * @param dynamoDb The DynamoDB document client used for the count queries and
  * update operation.
  */
@@ -327,12 +325,9 @@ export const updateGameActivityStats = async (
   completionCount: number,
   dynamoDb: DynamoDBDocumentClient
 ) => {
-  console.log('>>>: playCount', playCount);
-  console.log('>>>: completionCount', completionCount);
-
   const command = new UpdateCommand({
     TableName: tableNames['games'],
-    Key: { id: { S: gameId } },
+    Key: { id: gameId },
     UpdateExpression: 'SET #pc = :playCount, #cc = :completionCount',
     ExpressionAttributeNames: {
       '#pc': 'playCount',
@@ -344,8 +339,7 @@ export const updateGameActivityStats = async (
     },
   });
   try {
-    console.log('UPDATE 0:', gameId);
-    dynamoDb.send(command);
+    await dynamoDb.send(command);
   } catch (err) {
     console.error(
       'Error updating game activity stats for gameId:',
@@ -367,7 +361,6 @@ export const updateGameActivityStats = async (
 
 export const getItems = async (params: Params): Promise<ReturnPayload> => {
   const { path, dynamoDb, requestKey } = params;
-  console.log('getItems for path:', path, 'and requestKey:', requestKey);
   const command = new QueryCommand({
     TableName: tableNames[path ?? ''],
     IndexName: indexNames[requestKey ?? ''],

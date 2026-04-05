@@ -86,6 +86,16 @@ export const fieldNames: Record<string, FiledDefinition[]> = {
       detailOnly: false,
     },
     {
+      fieldName: 'playCount',
+      required: false,
+      detailOnly: false,
+    },
+    {
+      fieldName: 'completionCount',
+      required: false,
+      detailOnly: false,
+    },
+    {
       fieldName: 'content',
       required: true,
       detailOnly: true,
