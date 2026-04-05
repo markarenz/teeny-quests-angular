@@ -1,5 +1,12 @@
 import { randomBytes } from 'crypto';
-import { PutCommand, GetCommand, DeleteCommand } from '@aws-sdk/lib-dynamodb';
+import {
+  PutCommand,
+  GetCommand,
+  DeleteCommand,
+  DynamoDBDocumentClient,
+  UpdateCommand,
+  QueryCommand as LibQueryCommand,
+} from '@aws-sdk/lib-dynamodb';
 import { unmarshall } from '@aws-sdk/util-dynamodb';
 import { QueryCommand } from '@aws-sdk/client-dynamodb';
 import { CognitoJwtVerifier } from 'aws-jwt-verify';
@@ -9,6 +16,7 @@ import {
   tableNames,
   indexNames,
   authorizationMatchers,
+  fallbackOnCreate,
 } from './constants';
 import {
   AuthorizationMatcher,
@@ -151,7 +159,6 @@ const getBodyData = ({
  * @param {Buffer} buffer - The buffer to encode.
  * @returns {string} The URL-safe base64 encoded string.
  */
-
 const toUrlString = (buffer: Buffer): string => {
   return buffer
     .toString('base64')
@@ -218,15 +225,20 @@ export const createItem = async (params: Params): Promise<ReturnPayload> => {
   let success = false;
   let id = null;
   let resp = null;
-  const isAuthorized = await getAuthorizationForRequest(
-    token ?? '',
-    params,
-    requestKey ?? ''
-  );
 
-  if (!isAuthorized) {
-    console.error('Unauthorized request for createItem');
-    return generateReturnPayload(403, { message: 'Unauthorized request' });
+  const skipAuthorization =
+    authorizationMatchers.hasOwnProperty(requestKey ?? '') &&
+    authorizationMatchers[requestKey ?? ''].profile === '';
+  if (!skipAuthorization) {
+    const isAuthorized = await getAuthorizationForRequest(
+      token ?? '',
+      params,
+      requestKey ?? ''
+    );
+
+    if (!isAuthorized) {
+      return generateReturnPayload(403, { message: 'Unauthorized request' });
+    }
   }
 
   const bodyData = getBodyData({ body: body ?? {}, path: path ?? '' });
@@ -247,12 +259,100 @@ export const createItem = async (params: Params): Promise<ReturnPayload> => {
     resp = await dynamoDb.send(command);
     success = resp['$metadata'].httpStatusCode === 200;
   }
+  if (
+    fallbackOnCreate[requestKey ?? ''] === 'updateGameActivityStats' &&
+    typeof body?.gameId === 'string'
+  ) {
+    const playCount = await getCount(dynamoDb, `${body?.gameId}__PLAY`);
+    const completionCount = await getCount(
+      dynamoDb,
+      `${body?.gameId}__COMPLETE`
+    );
+    // Running this async without await so it runs in the background
+    updateGameActivityStats(body.gameId, playCount, completionCount, dynamoDb);
+  }
 
   return generateReturnPayload(success ? 201 : 500, {
     message: success ? 'Item created successfully.' : 'Error creating item',
     id: id ?? null,
     resp: resp ? resp['$metadata']?.httpStatusCode : null,
   });
+};
+
+/**
+ * Counts activity records for a specific game-and-activity composite key using
+ * the activity lookup index.
+ *
+ * @param dynamoDb The DynamoDB document client used to execute the query.
+ * @param gameIdActivityKey The composite activity key, such as
+ * `gameId__PLAY` or `gameId__COMPLETE`.
+ * @returns The number of matching activity records.
+ */
+async function getCount(
+  dynamoDb: DynamoDBDocumentClient,
+  gameIdActivityKey: string
+) {
+  console.log('GC 0', gameIdActivityKey);
+  const command = new QueryCommand({
+    TableName: tableNames['activity'],
+    IndexName: indexNames['activity_get'],
+    Select: 'COUNT',
+    KeyConditionExpression: 'gameIdActivity = :value',
+    ExpressionAttributeValues: {
+      ':value': { S: gameIdActivityKey },
+    },
+  });
+  console.log('GC 1');
+  const resp = await dynamoDb.send(command);
+  console.log('GC 2');
+  console.log('GC 3', resp.Count);
+  return resp.Count ?? 0;
+}
+
+/**
+ * Recalculates and stores aggregate activity stats for a game based on PLAY and
+ * COMPLETE activity records.
+ *
+ * The function queries current counts for both activity types, then writes the
+ * derived totals back to the corresponding game record.
+ *
+ * @param gameId The game identifier whose aggregate activity stats should be
+ * updated.
+ * @param dynamoDb The DynamoDB document client used for the count queries and
+ * update operation.
+ */
+export const updateGameActivityStats = async (
+  gameId: string,
+  playCount: number,
+  completionCount: number,
+  dynamoDb: DynamoDBDocumentClient
+) => {
+  console.log('>>>: playCount', playCount);
+  console.log('>>>: completionCount', completionCount);
+
+  const command = new UpdateCommand({
+    TableName: tableNames['games'],
+    Key: { id: { S: gameId } },
+    UpdateExpression: 'SET #pc = :playCount, #cc = :completionCount',
+    ExpressionAttributeNames: {
+      '#pc': 'playCount',
+      '#cc': 'completionCount',
+    },
+    ExpressionAttributeValues: {
+      ':playCount': playCount,
+      ':completionCount': completionCount,
+    },
+  });
+  try {
+    console.log('UPDATE 0:', gameId);
+    dynamoDb.send(command);
+  } catch (err) {
+    console.error(
+      'Error updating game activity stats for gameId:',
+      gameId,
+      err
+    );
+  }
 };
 
 /**
@@ -267,6 +367,7 @@ export const createItem = async (params: Params): Promise<ReturnPayload> => {
 
 export const getItems = async (params: Params): Promise<ReturnPayload> => {
   const { path, dynamoDb, requestKey } = params;
+  console.log('getItems for path:', path, 'and requestKey:', requestKey);
   const command = new QueryCommand({
     TableName: tableNames[path ?? ''],
     IndexName: indexNames[requestKey ?? ''],

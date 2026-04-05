@@ -11,7 +11,13 @@ import {
   MovementOptions,
 } from '@app/features/main/interfaces/types';
 import { MessageService } from '@app/features/game/services/message/message.service';
-import { defaultGridSize, gamesApiUrl, versionsApiUrl } from '@config/index';
+import { AuthProviderService } from '@app/features/auth/services/auth-provider-service';
+import {
+  activityApiUrl,
+  defaultGridSize,
+  gamesApiUrl,
+  versionsApiUrl,
+} from '@config/index';
 import { getMoveOptions } from './utils/pathfinding';
 import { STANDARD_MOVE_DURATION } from '@config/index';
 import { itemDefinitions } from '@content/item-definitions';
@@ -24,6 +30,7 @@ import { getAreaElementPositionStyle } from '../../lib/utils';
 import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 import { processEvents } from './utils/event-actions';
 import { calcScore, getLevelGoals } from './utils/common';
+import { ActivityType } from '@app/features/main/interfaces/enums';
 
 @Injectable({
   providedIn: 'root',
@@ -31,7 +38,8 @@ import { calcScore, getLevelGoals } from './utils/common';
 export class GameService {
   constructor(
     private _messageService: MessageService,
-    private _audioService: AudioService
+    private _audioService: AudioService,
+    private authProviderService: AuthProviderService
   ) {}
 
   private aspectRatio: number = 1.0;
@@ -85,10 +93,26 @@ export class GameService {
     }
   }
 
+  /**
+   * Updates the current aspect ratio used by layout calculations in the game
+   * view.
+   *
+   * @param aspectRatio The latest viewport or render aspect ratio.
+   */
   public setAspectRatio = (aspectRatio: number) => {
     this.aspectRatio = aspectRatio;
   };
 
+  /**
+   * Synchronizes item and prop height values with the tile heights in the
+   * player's current area map.
+   *
+   * Item heights are always refreshed. Prop heights are only updated for prop
+   * definitions that do not manage their own height.
+   *
+   * @param nextGameState The game state whose current area entities should be
+   * aligned to map height data.
+   */
   setPropItemHeights(nextGameState: QuestState): void {
     const area = nextGameState.areas[nextGameState.player.areaId];
     const map = area.map;
@@ -107,6 +131,13 @@ export class GameService {
     nextGameState.areas[nextGameState.player.areaId].props = area.props;
   }
 
+  /**
+   * Recomputes the reachable movement destinations for the player's current
+   * position and publishes them to `movementOptions`.
+   *
+   * @param nextGameState The game state used to resolve the current area map,
+   * player position, and blocking items.
+   */
   calculateMovementOptions(nextGameState: QuestState): void {
     const nextMovementOptions = getMoveOptions({
       positionKeyStart: `${nextGameState.player.y}_${nextGameState.player.x}`,
@@ -116,9 +147,22 @@ export class GameService {
     this.movementOptions.next(nextMovementOptions);
   }
 
+  /**
+   * Builds the local-storage key for a game's persisted progress, including the
+   * active version suffix when a version is loaded.
+   *
+   * @param gameId The quest identifier.
+   * @returns The local-storage key used for saves for this quest/version pair.
+   */
   public getLocalSaveKey = (gameId: string) =>
     `save--${gameId}${this.v ? `--v${this.v}` : ''}`;
 
+  /**
+   * Persists the current game state to local storage and refreshes its
+   * `lastUpdateDate` timestamp at write time.
+   *
+   * @param nextGameState The game state snapshot to save locally.
+   */
   saveLocalGameState(nextGameState: QuestState): void {
     localStorage.setItem(
       this.getLocalSaveKey(nextGameState.gameId),
@@ -129,6 +173,20 @@ export class GameService {
     );
   }
 
+  /**
+   * Applies a predefined light pattern onto an existing light map at the given
+   * origin point.
+   *
+   * Each affected cell is increased by the pattern's configured light amount,
+   * scaled by `intensity`, and capped at a maximum brightness of `1.0`.
+   *
+   * @param y The origin row for the light pattern.
+   * @param x The origin column for the light pattern.
+   * @param shape The light pattern key from `Lights`.
+   * @param intensity A multiplier applied to each cell's light contribution.
+   * @param lightMap The mutable light map being updated.
+   * @returns The updated light map instance.
+   */
   public addLightToLightMap(
     y: number,
     x: number,
@@ -148,6 +206,17 @@ export class GameService {
     return lightMap;
   }
 
+  /**
+   * Rebuilds the active light map for the player's current area from ambient,
+   * player, and prop-based light sources.
+   *
+   * The calculation starts with the area's combined ambient light, applies the
+   * player's personal light radius, then layers in any enabled light-emitting
+   * props before publishing the finished map to `lightMap`.
+   *
+   * @param nextGameState The game state used to resolve the current area and
+   * light-emitting entities.
+   */
   public calcLightMap(nextGameState: QuestState): void {
     const positionKeys = getPositionKeysForGridSize();
     let lighting: LightMap = {};
@@ -197,6 +266,13 @@ export class GameService {
     this.lightMap.next(lighting);
   }
 
+  /**
+   * Recomputes the full-width viewport offset from the current live game state
+   * when an area map is available.
+   *
+   * This is a convenience wrapper around `setFullWidthOffsetY` that reads the
+   * player's current position and active area map from the service state.
+   */
   public setFullWidthYOffsetCurrent = () => {
     const gameState = this.gameState.value;
     if (gameState?.areas[gameState.player.areaId].map) {
@@ -207,6 +283,18 @@ export class GameService {
       );
     }
   };
+
+  /**
+   * Calculates the vertical viewport offset for the current area so the player
+   * remains framed within the full-width game layout.
+   *
+   * The computed value is clamped to a safe range and published as a CSS-ready
+   * viewport width string through `fullWidthOffsetY`.
+   *
+   * @param y The player's grid row.
+   * @param x The player's grid column.
+   * @param map The area map used to resolve tile height at the position.
+   */
   public setFullWidthOffsetY = (y: number, x: number, map: QuestAreaMap) => {
     if (map) {
       const positionStyles = getAreaElementPositionStyle(
@@ -225,6 +313,16 @@ export class GameService {
     }
   };
 
+  /**
+   * Builds the initial in-memory game state for a quest and restores any local
+   * saved progress for the same quest/version when available.
+   *
+   * After resolving the source state, this method refreshes all derived state
+   * used by the UI and gameplay systems, including score, goals, movement
+   * options, local persistence, and the current light map.
+   *
+   * @param nextGameROM The loaded quest definition used to seed the game state.
+   */
   initGameState(nextGameROM: QuestROM): void {
     const nowStr = new Date().toISOString();
     const areas: any = {};
@@ -281,11 +379,58 @@ export class GameService {
     this.calcLightMap(nextGameState);
   }
 
-  loadGameROM(gameId: string | null, v?: string | null): void {
+  /**
+   * Sends a fire-and-forget activity event for analytics and progress tracking.
+   *
+   * Used when a quest starts or resets with the PLAY action and when a run is
+   * completed with the COMPLETE action. The request is intentionally not awaited
+   * so gameplay does not block on the API response.
+   *
+   * @param gameId The quest identifier associated with the activity.
+   * @param action The activity type being recorded.
+   */
+  registerActivity(gameId: string, action: string): void {
+    // Called on quest ROM load, progress reset (PLAY)
+    // Called on game complete with initials (COMPLETE)
+    // Not async because we can let this run in the background
+    const userId = this.authProviderService.getUserId();
+    const username = this.authProviderService.getUsername();
+    console.log('Registering activity', { gameId, action, userId, username });
+    fetch(activityApiUrl, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+      },
+      body: JSON.stringify({
+        gameId,
+        action,
+        gameIdActivity: `${gameId}__${action}`,
+        userId: userId ?? '',
+        userLabel: username ?? '',
+        score: this.score.value ?? 0,
+        dateTime: new Date().toISOString(),
+      }),
+    });
+  }
+
+  /**
+   * Loads a quest ROM by id, optionally replacing its content with a specific
+   * saved version before initializing gameplay state.
+   *
+   * The method records a PLAY activity, clears any current ROM, locks input,
+   * fetches the base game data, optionally fetches versioned content, then
+   * seeds the service with the resolved ROM and initial state.
+   *
+   * @param gameId The quest identifier to load.
+   * @param v An optional version identifier whose content should override the
+   * base ROM content.
+   */
+  public loadGameROM(gameId: string | null, v?: string | null): void {
     if (this.questROM.value) {
       this.questROM.next(null);
     }
     if (gameId) {
+      this.registerActivity(gameId, ActivityType.PLAY);
       this.areaTransitionMode.next('cover');
       this.isLockedOut.next(true);
       fetch(`${gamesApiUrl}?id=${gameId}`, {
@@ -329,14 +474,28 @@ export class GameService {
     }
   }
 
-  getGameStateArea(areaId: string): QuestStateArea | null {
+  /**
+   * Returns the current mutable game-state area snapshot for the provided area
+   * id when it exists.
+   *
+   * @param areaId The area identifier to look up in the active game state.
+   * @returns The current stateful area data, or `null` if unavailable.
+   */
+  public getGameStateArea(areaId: string): QuestStateArea | null {
     if (this.gameState.value && this.gameState.value.areas[areaId]) {
       return this.gameState.value.areas[areaId];
     }
     return null;
   }
 
-  getArea(areaId: string): QuestArea | null {
+  /**
+   * Returns the source quest area definition from the loaded ROM when present.
+   *
+   * @param areaId The area identifier to resolve from quest content.
+   * @returns The static quest area definition, or `null` if no ROM or area is
+   * available.
+   */
+  public getArea(areaId: string): QuestArea | null {
     if (this.questROM.value && this.questROM.value.content.areas[areaId]) {
       return this.questROM.value.content.areas[areaId];
     }
@@ -344,17 +503,36 @@ export class GameService {
     return null;
   }
 
-  setPageModalStatus(status: string): void {
+  /**
+   * Updates the page modal state and synchronizes input lock and transition
+   * behavior with that modal visibility.
+   *
+   * @param status The modal status key, or an empty string to clear the modal.
+   */
+  public setPageModalStatus(status: string): void {
     this.isLockedOut.next(status !== '');
     this.areaTransitionMode.next('');
     this.gameModalStatus.next(status);
   }
 
-  delay(ms: number) {
+  /**
+   * Returns a promise that resolves after the requested delay.
+   *
+   * @param ms The number of milliseconds to wait.
+   * @returns A promise that resolves once the timeout completes.
+   */
+  public delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  getOppositeDirection(direction: string): string {
+  /**
+   * Converts a cardinal direction to its opposite direction.
+   *
+   * @param direction The source direction.
+   * @returns The opposite cardinal direction, or the original value if it is
+   * not recognized.
+   */
+  public getOppositeDirection(direction: string): string {
     const mappper: { [key: string]: string } = {
       north: 'south',
       south: 'north',
@@ -364,7 +542,18 @@ export class GameService {
     return mappper[direction] ?? direction;
   }
 
-  getCanUseItem = (itemId: string): boolean => {
+  /**
+   * Determines whether the given inventory item is currently usable at the
+   * player's position.
+   *
+   * Keys are usable when the player is standing on a matching locked exit.
+   * Gem items are usable when the player is standing on a matching gem frame.
+   *
+   * @param itemId The inventory item identifier to evaluate.
+   * @returns `true` when the item has a valid use at the player's current
+   * location; otherwise `false`.
+   */
+  public getCanUseItem = (itemId: string): boolean => {
     if (itemId.startsWith('key-')) {
       const color = itemId.split('key-')[1];
       const area =
@@ -395,7 +584,15 @@ export class GameService {
     }
     return false;
   };
-  turnActionExit = async (exitId: string): Promise<QuestState> => {
+
+  /**
+   * Executes an exit transition, including animation, fade timing, area swap,
+   * and game-end detection.
+   *
+   * @param exitId The exit identifier the player is using.
+   * @returns The resulting game state after the transition completes.
+   */
+  public turnActionExit = async (exitId: string): Promise<QuestState> => {
     this._audioService.playSound('exit');
     let nextGameState = JSON.parse(JSON.stringify(this.gameState.value));
     const areaId = nextGameState.player.areaId;
@@ -465,7 +662,16 @@ export class GameService {
     return nextGameState;
   };
 
-  turnActionMovePlayer = async (destination: string): Promise<QuestState> => {
+  /**
+   * Moves the player along a precomputed path to the requested destination,
+   * updating facing, animation, lighting, and viewport offset along the way.
+   *
+   * @param destination The destination position key in `y_x` format.
+   * @returns The resulting game state after movement completes.
+   */
+  public turnActionMovePlayer = async (
+    destination: string
+  ): Promise<QuestState> => {
     const path = this.movementOptions.value[destination];
     let nextGameState = JSON.parse(JSON.stringify(this.gameState.value));
     if (!path || path.length < 2) {
@@ -508,7 +714,14 @@ export class GameService {
     return this.gameState.value as QuestState;
   };
 
-  turnActionDropItem = async (itemType: string): Promise<QuestState> => {
+  /**
+   * Removes one unit of an inventory item and places a corresponding world item
+   * at the player's current location.
+   *
+   * @param itemType The inventory item type being dropped.
+   * @returns The updated game state with the dropped item added to the area.
+   */
+  public turnActionDropItem = async (itemType: string): Promise<QuestState> => {
     let nextGameState = JSON.parse(JSON.stringify(this.gameState.value));
     nextGameState.player.inventory[itemType] -= 1;
     const itemDef = itemDefinitions[itemType];
@@ -533,7 +746,16 @@ export class GameService {
     return nextGameState;
   };
 
-  turnActionUnlockExit = (
+  /**
+   * Unlocks the exit at the player's position when the provided use string and
+   * key item correspond to the exit's lock color.
+   *
+   * @param nextGameState The game state being mutated for the turn.
+   * @param use The item-use descriptor containing the unlock target color.
+   * @param itemId The item being used.
+   * @returns The updated game state.
+   */
+  public turnActionUnlockExit = (
     nextGameState: QuestState,
     use: string,
     itemId: string
@@ -555,7 +777,14 @@ export class GameService {
     return nextGameState;
   };
 
-  turnActionItemUse = async (itemId: string): Promise<QuestState> => {
+  /**
+   * Consumes an inventory item and applies its gameplay effect when the item is
+   * usable in the current context.
+   *
+   * @param itemId The inventory item identifier being used.
+   * @returns The resulting game state after the item effect is applied.
+   */
+  public turnActionItemUse = async (itemId: string): Promise<QuestState> => {
     let nextGameState = structuredClone(this.gameState.value)!;
     nextGameState.player.inventory[itemId] = Math.max(
       nextGameState.player.inventory[itemId] - 1,
@@ -593,7 +822,16 @@ export class GameService {
     return nextGameState;
   };
 
-  turnActionPropSetStatus = async (
+  /**
+   * Sets a prop to a specific status, applies any resulting turn actions, and
+   * refreshes lighting for the updated state.
+   *
+   * @param nextGameState The game state being mutated for the turn.
+   * @param propId The prop identifier to update.
+   * @param status The new status value to assign.
+   * @returns The resulting game state after all prop status actions complete.
+   */
+  public turnActionPropSetStatus = async (
     nextGameState: QuestState,
     propId: string,
     status: string
@@ -620,7 +858,15 @@ export class GameService {
     return nextGameState;
   };
 
-  turnActionPropClick = async (
+  /**
+   * Cycles or forces a prop's status, runs any linked turn actions, and updates
+   * lighting for the changed area state.
+   *
+   * @param propId The prop identifier being interacted with.
+   * @param forceStatus An optional explicit status override.
+   * @returns The resulting game state after prop interaction processing.
+   */
+  public turnActionPropClick = async (
     propId: string,
     forceStatus?: string
   ): Promise<QuestState> => {
@@ -678,14 +924,26 @@ export class GameService {
     return nextGameState;
   };
 
+  /**
+   * Clears the local save for the current quest and records a fresh PLAY
+   * activity so the next load starts from the base game state.
+   */
   public resetGameProgress = (): void => {
     const gameId = this.questROM.value?.id;
     if (gameId) {
+      this.registerActivity(gameId, ActivityType.PLAY);
       localStorage.removeItem(this.getLocalSaveKey(gameId));
     }
   };
 
-  turnActionItemClick = async (itemId: string): Promise<QuestState> => {
+  /**
+   * Handles interaction with a world item, typically picking it up into the
+   * player's inventory and removing it from the area.
+   *
+   * @param itemId The world item identifier being clicked.
+   * @returns The resulting game state after the item interaction.
+   */
+  public turnActionItemClick = async (itemId: string): Promise<QuestState> => {
     let nextGameState = structuredClone(this.gameState.value)!;
 
     const area = this.gameState.value?.areas[nextGameState.player.areaId];
@@ -736,7 +994,14 @@ export class GameService {
     return nextGameState;
   };
 
-  async processTurn({
+  /**
+   * Runs a full player turn by dispatching the requested action, processing any
+   * follow-up events, and publishing all derived state updates.
+   *
+   * @param params The turn request containing the verb, target noun, and an
+   * optional amount.
+   */
+  public async processTurn({
     verb,
     noun,
     amount,

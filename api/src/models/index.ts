@@ -1,3 +1,5 @@
+import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb/dist-types/DynamoDBDocumentClient';
+
 export type AuthorizationMatcher = {
   profile: string;
   bodyParam: string;
@@ -15,7 +17,7 @@ export type FiledDefinition = {
 
 export type Params = {
   path?: string;
-  dynamoDb?: any;
+  dynamoDb: DynamoDBDocumentClient;
   searchParams?: { [key: string]: string };
   requestKey?: string;
   body?: RequestBody;

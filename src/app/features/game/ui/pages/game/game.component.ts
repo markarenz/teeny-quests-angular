@@ -19,6 +19,7 @@ import { LoaderAnimationComponent } from '@app/features/main/ui/components/loade
 import { TooltipComponent } from '@app/features/main/ui/components/tooltip/tooltip.component';
 import { AuthProviderService } from '@app/features/auth/services/auth-provider-service';
 import { logger } from '@app/features/main/utils/logger';
+import { ActivityType } from '@app/features/main/interfaces/enums';
 
 @Component({
   selector: 'app-game',
@@ -51,6 +52,7 @@ export class GameComponent {
   public previousInventory: Inventory | null = null;
   public levelGoals: string = '';
   public score: number = 0;
+  public gameId: string = '';
   private userId: string | null = null;
   public numTurns: number = 0;
 
@@ -88,6 +90,7 @@ export class GameComponent {
   ngOnInit(): void {
     const v = this._route.snapshot.queryParamMap.get('v');
     const id = this._route.snapshot.paramMap.get('id');
+    this.gameId = id ?? '';
     this._gameService.setPageModalStatus('loading');
     this._gameService.loadGameROM(id, v);
     this.isLoading = true;
@@ -142,6 +145,10 @@ export class GameComponent {
         if (data?.flagValues['gameEnded']) {
           this._gameService.setPageModalStatus('');
           this.gameStatus = 'ended';
+          this._gameService.registerActivity(
+            this.gameId,
+            ActivityType.COMPLETE
+          );
           this._gameService.resetGameProgress();
         }
       })

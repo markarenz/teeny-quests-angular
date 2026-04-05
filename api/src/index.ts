@@ -61,8 +61,11 @@ export const handler = async (
       versions_get_id: getItemById,
       versions_post: createItem,
       versions_delete_id: deleteItemById,
+      activity_options: returnOptionsResponse,
+      activity_post: createItem,
     };
     if (functionMap[requestKey]) {
+      console.info(`Calling function for: ${requestKey}`);
       return functionMap[requestKey](params);
     }
     console.error(`Invalid request: ${requestKey} not found in functionMap`);
