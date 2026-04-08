@@ -6,16 +6,16 @@ export enum ExitType {
 
 export const exitDefinitions = [
   {
-    label: 'Door',
+    label: 'Default Exit',
     value: ExitType.DEFAULT,
-  },
-  {
-    label: 'Level Exit',
-    value: ExitType.GAME_END,
   },
   {
     label: 'Cave Exit',
     value: ExitType.CAVE,
+  },
+  {
+    label: 'Level Exit',
+    value: ExitType.GAME_END,
   },
 ];
 
