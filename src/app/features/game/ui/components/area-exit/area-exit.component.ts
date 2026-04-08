@@ -10,6 +10,10 @@ import { SvgExitDefaultWComponent } from './exits/svg-exit-default-w/svg-exit-de
 import { SvgExitDefaultNComponent } from './exits/svg-exit-default-n/svg-exit-default-n.component';
 import { SvgExitDefaultSComponent } from './exits/svg-exit-default-s/svg-exit-default-s.component';
 import { SvgExitDefaultEComponent } from './exits/svg-exit-default-e/svg-exit-default-e.component';
+import { SvgExitCaveNComponent } from './exits/svg-exit-cave-n/svg-exit-cave-n.component';
+import { SvgExitCaveSComponent } from './exits/svg-exit-cave-s/svg-exit-cave-s.component';
+import { SvgExitCaveEComponent } from './exits/svg-exit-cave-e/svg-exit-cave-e.component';
+import { SvgExitCaveWComponent } from './exits/svg-exit-cave-w/svg-exit-cave-w.component';
 import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 
 @Component({
@@ -19,6 +23,10 @@ import { AudioService } from '@app/features/main/services/audio/audio-service.se
     SvgExitDefaultNComponent,
     SvgExitDefaultSComponent,
     SvgExitDefaultEComponent,
+    SvgExitCaveNComponent,
+    SvgExitCaveSComponent,
+    SvgExitCaveEComponent,
+    SvgExitCaveWComponent,
   ],
   templateUrl: './area-exit.component.html',
   styleUrl: './area-exit.component.css',
