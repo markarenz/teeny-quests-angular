@@ -11,4 +11,5 @@ export class TooltipComponent {
   @Input('content') content: string = '';
   @Input('align') align: string = 'center';
   @Input('position') position: string = 'top';
+  @Input('fullWidth') fullWidth: boolean = false;
 }

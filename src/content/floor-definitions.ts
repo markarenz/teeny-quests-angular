@@ -27,13 +27,6 @@ export const floorDefinitions: { [key: string]: FloorDefinition } = {
     walkable: true,
     tileType: FloorTileType.DEFAULT,
   },
-  'wall-top': {
-    id: 'wall-top',
-    name: 'Wall Top',
-    walkable: false,
-    tileType: FloorTileType.DEFAULT,
-    isTall: true,
-  },
   water: {
     id: 'water',
     name: 'Water',
@@ -53,7 +46,6 @@ export const floorDefinitions: { [key: string]: FloorDefinition } = {
     tileType: FloorTileType.SINGLE,
     flipOdds: true,
   },
-
   'stone-dark': {
     id: 'stone-dark',
     name: 'Dark Stone',
@@ -67,21 +59,29 @@ export const floorDefinitions: { [key: string]: FloorDefinition } = {
     tileType: FloorTileType.SINGLE,
     flipOdds: true,
   },
+
+  'wall-top': {
+    id: 'wall-top',
+    name: 'Top (No Access)',
+    walkable: false,
+    tileType: FloorTileType.DEFAULT,
+    isTall: true,
+  },
   roof: {
     id: 'roof',
-    name: 'Wall Top',
+    name: 'Red Roof (No Access)',
     walkable: false,
     tileType: FloorTileType.SINGLE,
   },
   spikes: {
     id: 'spikes',
-    name: 'Spikes',
+    name: 'Spikes (No Access)',
     walkable: false,
     tileType: FloorTileType.SINGLE,
   },
   'roof-simple': {
     id: 'roof-simple',
-    name: 'Simple Wall Top',
+    name: 'Roof (No Access)',
     walkable: false,
     tileType: FloorTileType.SINGLE,
   },
