@@ -72,3 +72,13 @@ export enum ActivityType {
   COMPLETE = 'COMPLETE',
   UPDATE = 'UPDATE',
 }
+
+export enum ActorType {
+  SLIME_GREEN = 'slime_green',
+  SLIME_PURPLE = 'slime_purple',
+}
+
+export enum ActorStatus {
+  IDLE = 'IDLE',
+  SEEKING = 'SEEKING',
+}

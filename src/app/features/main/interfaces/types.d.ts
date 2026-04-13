@@ -5,6 +5,7 @@ import {
   ActionObjectType,
   ActionValueType,
   ConditionComparison,
+  ActorStatus,
 } from './enums';
 
 export type SelectIUIOption = {
@@ -94,6 +95,18 @@ export type QuestAreaExit = {
   lock?: string; // e.g., 'gold', 'silver', 'bronze', 'rocks'
 };
 
+export type QuestActor = {
+  id: string;
+  name?: string;
+  actorType: ActorType;
+  actorStatus: ActorStatus;
+  health: number;
+  areaId: string;
+  x: number;
+  y: number;
+  h: number;
+};
+
 export type QuestAreaMap = {
   [key: string]: QuestAreaMapCell;
 };
@@ -105,6 +118,7 @@ export type QuestArea = {
   exits: QuestAreaExit[];
   items: QuestItem[];
   props: QuestProp[];
+  actors: QuestActor[];
 };
 
 export type QuestEvent = {
@@ -177,6 +191,10 @@ export type QuestState = {
     inventory: Inventory;
     facing: string;
     health: number;
+    maxHealth?: number;
+    defense?: number;
+    accuracy?: number;
+    damage?: number;
     statusActions: StatusEffect[];
   };
   numTurns: number;

@@ -25,7 +25,7 @@ import { propDecoDefinitions } from '@content/prop-definitions';
 import { logger } from '@app/features/main/utils/logger';
 import { processTurnActions } from './utils/turn-actions';
 import { getPositionKeysForGridSize } from '@app/features/main/utils';
-import { Lights } from '@content/constants';
+import { Lights, playerCombatDefaults } from '@content/constants';
 import { getAreaElementPositionStyle } from '../../lib/utils';
 import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 import { processEvents } from './utils/event-actions';
@@ -139,12 +139,14 @@ export class GameService {
    * player position, and blocking items.
    */
   calculateMovementOptions(nextGameState: QuestState): void {
-    const nextMovementOptions = getMoveOptions({
-      positionKeyStart: `${nextGameState.player.y}_${nextGameState.player.x}`,
-      areaMap: nextGameState.areas[nextGameState.player.areaId].map,
-      areaItems: nextGameState.areas[nextGameState.player.areaId].items,
-    });
-    this.movementOptions.next(nextMovementOptions);
+    if (nextGameState.areas[nextGameState.player.areaId]) {
+      const nextMovementOptions = getMoveOptions({
+        positionKeyStart: `${nextGameState.player.y}_${nextGameState.player.x}`,
+        areaMap: nextGameState.areas[nextGameState.player.areaId].map,
+        areaItems: nextGameState.areas[nextGameState.player.areaId].items,
+      });
+      this.movementOptions.next(nextMovementOptions);
+    }
   }
 
   /**
@@ -220,6 +222,9 @@ export class GameService {
   public calcLightMap(nextGameState: QuestState): void {
     const positionKeys = getPositionKeysForGridSize();
     let lighting: LightMap = {};
+    if (!nextGameState.areas[nextGameState.player.areaId]) {
+      return;
+    }
     const lightEmittingProps = nextGameState.areas[
       nextGameState.player.areaId
     ].props.filter(p => {
@@ -327,11 +332,12 @@ export class GameService {
     const nowStr = new Date().toISOString();
     const areas: any = {};
     let nextGameState: QuestState;
-    Object.keys(nextGameROM.content.areas).forEach((areaId: string) => {
+    Object.keys(nextGameROM.content.areas ?? {}).forEach((areaId: string) => {
       areas[areaId] = {
         exits: nextGameROM.content.areas[areaId].exits,
         items: nextGameROM.content.areas[areaId].items,
         props: nextGameROM.content.areas[areaId].props,
+        actors: nextGameROM.content.areas[areaId].actors ?? [],
         map: nextGameROM.content.areas[areaId].map,
       };
     });
@@ -340,8 +346,8 @@ export class GameService {
       player: {
         ...nextGameROM.content.player,
         facing: 'east',
-        health: 100,
         statusActions: [],
+        ...playerCombatDefaults,
       },
       numTurns: 0,
       flagValues: {},
