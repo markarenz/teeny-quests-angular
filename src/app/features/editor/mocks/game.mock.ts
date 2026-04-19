@@ -480,6 +480,7 @@ const questMockData: QuestROM = {
             x: 1,
             y: 1,
             h: 1,
+            actions: [],
           },
         ],
       },

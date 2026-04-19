@@ -18,6 +18,7 @@ const mockActor: QuestActor = {
   h: 1,
   areaId: 'start',
   health: 5,
+  actions: [],
 };
 
 describe('EditorPanelActorsComponent', () => {

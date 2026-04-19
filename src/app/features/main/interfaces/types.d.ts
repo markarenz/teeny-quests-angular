@@ -105,6 +105,7 @@ export type QuestActor = {
   x: number;
   y: number;
   h: number;
+  actions: ActionEffect[];
 };
 
 export type QuestAreaMap = {

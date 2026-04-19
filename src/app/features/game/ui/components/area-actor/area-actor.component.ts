@@ -83,11 +83,5 @@ export class AreaActorComponent {
   }
   public handleMouseDown(): void {
     console.log('Mouse down on actor', this.actor);
-    if (!this.isEditorMode) {
-      // const sound = actorDefinitions[this.actor.actorType]?.sound;
-      // if (sound) {
-      //   this._audioService.playSound(sound);
-      // }
-    }
   }
 }

@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import { CollapsibleCardComponent } from '@app/features/main/ui/components/collapsible-card/collapsible-card.component';
 import {
+  ActionEffect,
   QuestActor,
   QuestArea,
   SelectIUIOption,
@@ -14,6 +15,7 @@ import { floorDefinitions } from '@content/floor-definitions';
 import { AreaCellSelectorComponent } from '../area-cell-selector/area-cell-selector.component';
 import { ActorType } from '@app/features/main/interfaces/enums';
 import { actorTypeOptions } from '@content/actor-definitions';
+import { EditorInputActionsComponent } from '../editor-input-actions/editor-input-actions.component';
 
 @Component({
   selector: 'app-editor-panel-actors',
@@ -22,6 +24,7 @@ import { actorTypeOptions } from '@content/actor-definitions';
     CollapsibleCardComponent,
     IconButtonComponent,
     AreaCellSelectorComponent,
+    EditorInputActionsComponent,
   ],
   templateUrl: './editor-panel-actors.component.html',
   styleUrl: './editor-panel-actors.component.css',
@@ -39,6 +42,7 @@ export class EditorPanelActorsComponent {
   public inputActorName: string = '';
   public inputActorPosition: string = '';
   public inputActorType: ActorType = ActorType.SLIME_GREEN;
+  public inputActions: ActionEffect[] = [];
 
   ngOnInit() {
     this.handleAreaChange(this._gameEditorService.getSelectedAreaId());
@@ -72,6 +76,7 @@ export class EditorPanelActorsComponent {
       : '';
     this.inputActorType = selectedActor ? selectedActor.actorType : '';
     this.inputActorName = selectedActor ? selectedActor.name || '' : '';
+    this.inputActions = selectedActor ? selectedActor.actions || [] : [];
     this.updateActorPositionLockouts();
     this.refreshUIData();
   }
@@ -146,10 +151,12 @@ export class EditorPanelActorsComponent {
     this._gameEditorService.selectActor(id);
   }
 
+  private getSelectedActor(): QuestActor | null {
+    return this.actors.find(actor => actor.id === this.selectedActorId) || null;
+  }
+
   public handleActorInputChange() {
-    const selectedActor = this.actors.find(
-      actor => actor.id === this.selectedActorId
-    );
+    const selectedActor = this.getSelectedActor();
     const [y, x] = this.inputActorPosition.split('_');
     if (selectedActor) {
       const updatedActor: QuestActor = {
@@ -161,11 +168,16 @@ export class EditorPanelActorsComponent {
         x: +x,
         y: +y,
         // health
+        actions: this.inputActions,
       };
 
       this._gameEditorService.updateActor(updatedActor);
       this.refreshUIData();
     }
+  }
+  public handleActorActionInputChange(actions: ActionEffect[]) {
+    this.inputActions = actions;
+    this.handleActorInputChange();
   }
 
   public handlePositionSelect(position: string) {

@@ -69,6 +69,7 @@ export const utilCreateActor = ({
         x: +x,
         y: +y,
         h,
+        actions: [],
       };
 
       const nextGame = { ...game } as QuestROM;

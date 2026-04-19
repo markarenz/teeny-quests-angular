@@ -48,4 +48,5 @@ export const defaultActor: QuestActor = {
   actorStatus: ActorStatus.IDLE,
   areaId: '',
   health: 99,
+  actions: [],
 };

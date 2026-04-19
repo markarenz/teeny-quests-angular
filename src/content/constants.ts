@@ -76,5 +76,5 @@ export const playerCombatDefaults = {
 };
 
 export const tqConfig = {
-  testMode: true,
+  testMode: false,
 };
