@@ -45,4 +45,9 @@ export const actorDefinitions: { [key: string]: ActorDefinition } = {
   },
 };
 
-const actorOptions: SelectIUIOption[] = [];
+export const actorTypeOptions: SelectIUIOption[] = Object.values(
+  actorDefinitions
+).map(actor => ({
+  value: actor.id,
+  label: actor.name,
+}));

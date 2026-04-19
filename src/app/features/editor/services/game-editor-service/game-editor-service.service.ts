@@ -38,7 +38,11 @@ import { getLabelFromSlug, getPositionKeysForGridSize } from '@main/utils';
 import { logger } from '@app/features/main/utils/logger';
 import { defaultFlagIdOptions } from '@content/flags';
 import { propDecoDefinitions } from '@content/prop-definitions';
-import { utilCreateActor, utilDeleteActor } from './utils/actor-utils';
+import {
+  utilCreateActor,
+  utilDeleteActor,
+  utilUpdateActor,
+} from './utils/actor-utils';
 
 @Injectable({
   providedIn: 'root',
@@ -571,20 +575,20 @@ export class GameEditorService {
     return null;
   }
 
-  // updateItem(updatedItem: QuestItem) {
-  //   if (this.game.value) {
-  //     const nextGame = utilUpdateItem({
-  //       game: this.game.value,
-  //       selectedAreaId: this.selectedAreaId.value,
-  //       updatedItem,
-  //     });
-  //     if (nextGame) {
-  //       this.game.next(nextGame);
-  //       this.refreshAreaItems(nextGame);
-  //       this.saveToLocalStorage(nextGame);
-  //     }
-  //   }
-  // }
+  updateActor(updatedActor: QuestActor) {
+    if (this.game.value) {
+      const nextGame = utilUpdateActor({
+        game: this.game.value,
+        selectedAreaId: this.selectedAreaId.value,
+        updatedActor,
+      });
+      if (nextGame) {
+        this.game.next(nextGame);
+        this.refreshAreaActors(nextGame);
+        this.saveToLocalStorage(nextGame);
+      }
+    }
+  }
 
   selectActor(actorId: string) {
     this.selectedActorId.next(actorId);
@@ -867,6 +871,7 @@ export class GameEditorService {
           this.areaExits.next(nextSelectedArea.exits);
           this.areaItems.next(nextSelectedArea.items);
           this.areaProps.next(nextSelectedArea.props);
+          this.areaActors.next(nextSelectedArea.actors);
           this.events.next(nextGameData.content.events);
           this.selectedArea.next(nextSelectedArea);
           this.flags.next(nextGameData.content.flags ?? []);

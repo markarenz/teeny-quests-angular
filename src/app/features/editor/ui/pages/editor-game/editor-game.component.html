@@ -58,7 +58,8 @@
           <div id="editor-panel-content" class="flex-grow">
             <div id="editor-content-stage" class="pt-4 bg-gray-900">
               <app-editor-area (onSelectItem)="handleSelectItem($event)" (onSelectExit)="handleSelectExit($event)"
-                (onSelectProp)="handleSelectPanel($event)" (onSelectMapCell)="handleSelectMapCell($event)" />
+                (onSelectProp)="handleSelectPanel($event)" (onSelectMapCell)="handleSelectMapCell($event)"
+                (onSelectActor)="handleSelectActor($event)" />
             </div>
           </div>
         </div>

@@ -37,6 +37,12 @@
       [lightLevel]="1" />
     }
 
+    <!-- Area Actors -->
+    @for(actor of selectedAreaActors; track actor.id;) {
+    <app-area-actor [actor]="actor" [isActorSelected]="selectedActorId === actor.id" [isClickable]="true"
+      [isEditorMode]="true" (onClick)="handleActorClick(actor.id)" [isLockedOut]="false" [lightLevel]="1"
+      [playerPosition]="playerPositionForActors" />
+    }
     <!-- Area Exits -->
     @for(exit of selectedAreaExits; track exit.id;) {
     <app-area-exit [exit]="exit" [isEditorSelected]="selectedExitId === exit.id" [isClickable]="true"

@@ -9,11 +9,13 @@ import {
   QuestState,
   LightMap,
   MovementOptions,
+  QuestActor,
 } from '@app/features/main/interfaces/types';
 import { AreaCellComponent } from '@app/features/game/ui/components/area-cell/area-cell.component';
 import { AreaExitComponent } from '@app/features/game/ui/components/area-exit/area-exit.component';
 import { AreaItemComponent } from '@app/features/game/ui/components/area-item/area-item.component';
 import { AreaPropComponent } from '../area-prop/area-prop.component';
+import { AreaActorComponent } from '../area-actor/area-actor.component';
 import { GamePlayerComponent } from '../game-player/game-player.component';
 import { GameMovementOptionButtonComponent } from '../game-movement-option-button/game-movement-option-button.component';
 
@@ -24,6 +26,7 @@ import { GameMovementOptionButtonComponent } from '../game-movement-option-butto
     AreaExitComponent,
     AreaItemComponent,
     AreaPropComponent,
+    AreaActorComponent,
     GameMovementOptionButtonComponent,
     GamePlayerComponent,
   ],
@@ -41,6 +44,7 @@ export class GameAreaComponent {
   areaExits: QuestAreaExit[] = [];
   areaItems: QuestItem[] = [];
   areaProps: QuestProp[] = [];
+  areaActors: QuestActor[] = [];
   movementOptions: { [key: string]: string[] } = {};
   movementOptionsKeys: string[] = [];
   areaDataPositionKeys: string[] = [];
@@ -50,6 +54,7 @@ export class GameAreaComponent {
   areaTransitionMode: string = 'cover';
   areaLightMap: LightMap = {};
   fullWidthOffsetY: string = '0%';
+  public playerPositionForActors: string = '-1_-1';
 
   ngOnInit(): void {
     this.subscriptions.push(
@@ -90,12 +95,14 @@ export class GameAreaComponent {
             this.areaExits = gameStateArea?.exits || [];
             this.areaItems = gameStateArea?.items || [];
             this.areaProps = gameStateArea?.props || [];
+            this.areaActors = gameStateArea?.actors || [];
             this.areaDataPositionKeys = this.areaMap
               ? Object.keys(this.areaMap)
               : [];
           }
           this.playerPosition = `${data.player.y}_${data.player.x}`;
           this.playerFacing = data.player.facing;
+          this.playerPositionForActors = this.playerPosition;
         }
       })
     );

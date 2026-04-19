@@ -1,4 +1,6 @@
+import { ActorStatus, ActorType } from '@app/features/main/interfaces/enums';
 import {
+  QuestActor,
   QuestAreaExit,
   QuestItem,
   QuestProp,
@@ -35,4 +37,15 @@ export const defaultProp: QuestProp = {
   h: 1,
   statusActions: {},
   status: '',
+};
+
+export const defaultActor: QuestActor = {
+  id: '1',
+  x: 0,
+  y: 0,
+  h: 0,
+  actorType: ActorType.SLIME_GREEN,
+  actorStatus: ActorStatus.IDLE,
+  areaId: '',
+  health: 99,
 };

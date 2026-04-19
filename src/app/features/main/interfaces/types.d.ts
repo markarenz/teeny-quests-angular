@@ -180,6 +180,7 @@ export type QuestStateArea = {
   items: QuestItem[];
   exits: QuestAreaExit[];
   props: QuestProp[];
+  actors: QuestActor[];
 };
 
 export type QuestState = {

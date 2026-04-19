@@ -155,8 +155,10 @@ export class EditorGameComponent {
   }
 
   handleSelectItem(id: string) {
-    this._gameEditorService.selectExit('');
     this._gameEditorService.selectItem(id);
+    this._gameEditorService.selectExit('');
+    this._gameEditorService.selectProp('');
+    this._gameEditorService.selectActor('');
     this.subNavCurrent = 'items';
     this.setShowAreaSelector();
   }
@@ -165,6 +167,7 @@ export class EditorGameComponent {
     this._gameEditorService.selectItem('');
     this._gameEditorService.selectExit(id);
     this._gameEditorService.selectProp('');
+    this._gameEditorService.selectActor('');
     this.subNavCurrent = 'exits';
     this.setShowAreaSelector();
   }
@@ -173,16 +176,27 @@ export class EditorGameComponent {
     this._gameEditorService.selectExit('');
     this._gameEditorService.selectItem('');
     this._gameEditorService.selectProp(id);
+    this._gameEditorService.selectActor('');
     this.subNavCurrent = 'props';
   }
   handleSelectMapCell(id: string) {
     this._gameEditorService.selectExit('');
     this._gameEditorService.selectItem('');
     this._gameEditorService.selectProp('');
+    this._gameEditorService.selectActor('');
     this._gameEditorService.setSelectedCellPositions(id);
     this.subNavCurrent = 'map';
     this.setShowAreaSelector();
   }
+  handleSelectActor(id: string) {
+    this._gameEditorService.selectExit('');
+    this._gameEditorService.selectItem('');
+    this._gameEditorService.selectProp('');
+    this._gameEditorService.selectActor(id);
+    this.subNavCurrent = 'actors';
+    this.setShowAreaSelector();
+  }
+
   handlePlayClick() {
     this.router.navigate([`/quest/${this.game?.id ?? ''}`]);
   }

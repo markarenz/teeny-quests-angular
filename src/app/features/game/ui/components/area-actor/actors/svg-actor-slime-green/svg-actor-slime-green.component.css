@@ -1,0 +1,15 @@
+.eyes {
+  transition: transform 0.2s ease;
+}
+
+.eye-pos_1 {
+  transform: translateX(0);
+}
+
+.eye-pos_0 {
+  transform: translateX(-3%);
+}
+
+.eye-pos_-1 {
+  transform: translateX(-5%);
+}
