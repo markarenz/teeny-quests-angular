@@ -42,6 +42,7 @@ const game: QuestROM = {
         exits: [],
         items: [],
         props: [],
+        actors: [],
       },
     },
     events: [],

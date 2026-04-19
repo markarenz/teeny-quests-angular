@@ -1,0 +1,4 @@
+.area-actor {
+  position: absolute;
+  pointer-events: none;
+}

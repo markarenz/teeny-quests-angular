@@ -16,6 +16,7 @@ import {
   QuestProp,
   QuestEvent,
   QuestFlag,
+  QuestActor,
 } from '@app/features/main/interfaces/types';
 import {
   utilDeleteItem,
@@ -37,6 +38,11 @@ import { getLabelFromSlug, getPositionKeysForGridSize } from '@main/utils';
 import { logger } from '@app/features/main/utils/logger';
 import { defaultFlagIdOptions } from '@content/flags';
 import { propDecoDefinitions } from '@content/prop-definitions';
+import {
+  utilCreateActor,
+  utilDeleteActor,
+  utilUpdateActor,
+} from './utils/actor-utils';
 
 @Injectable({
   providedIn: 'root',
@@ -85,6 +91,9 @@ export class GameEditorService {
   private selectedItemId = new BehaviorSubject<string>('');
   selectedItemIdObs = this.selectedItemId.asObservable();
 
+  private selectedActorId = new BehaviorSubject<string>('');
+  selectedActorIdObs = this.selectedActorId.asObservable();
+
   private areaExits = new BehaviorSubject<QuestAreaExit[]>([]);
   areaExitsObs = this.areaExits.asObservable();
 
@@ -93,6 +102,9 @@ export class GameEditorService {
 
   private areaProps = new BehaviorSubject<QuestProp[]>([]);
   areaPropsObs = this.areaProps.asObservable();
+
+  private areaActors = new BehaviorSubject<QuestActor[]>([]);
+  areaActorsObs = this.areaActors.asObservable();
 
   private events = new BehaviorSubject<QuestEvent[]>([]);
   eventsObs = this.events.asObservable();
@@ -267,6 +279,11 @@ export class GameEditorService {
   getItemsForCurrentArea(): QuestItem[] {
     return (
       this.game.value?.content.areas[this.selectedAreaId.value]?.items ?? []
+    );
+  }
+  getActorsForCurrentArea(): QuestActor[] {
+    return (
+      this.game.value?.content.areas[this.selectedAreaId.value]?.actors ?? []
     );
   }
 
@@ -531,6 +548,64 @@ export class GameEditorService {
       }
     }
   }
+  // ACTORS -------------------------------------------------------------------
+  refreshAreaActors(nextGame: QuestROM) {
+    const nextActors = [
+      ...(nextGame.content.areas[this.selectedAreaId.value].actors ?? []),
+    ];
+
+    this.areaActors.next(nextActors);
+  }
+
+  createActor(lockouts: string[]): QuestActor | null {
+    if (this.game.value && this.selectedAreaId.value) {
+      const { nextGame, newActor } = utilCreateActor({
+        game: this.game.value,
+        selectedAreaId: this.selectedAreaId.value,
+        lockouts,
+      });
+      if (nextGame && newActor) {
+        this.game.next(nextGame);
+        this.refreshAreaActors(nextGame);
+        this.selectedActorId.next(newActor.id);
+        this.saveToLocalStorage(nextGame);
+        return newActor;
+      }
+    }
+    return null;
+  }
+
+  updateActor(updatedActor: QuestActor) {
+    if (this.game.value) {
+      const nextGame = utilUpdateActor({
+        game: this.game.value,
+        selectedAreaId: this.selectedAreaId.value,
+        updatedActor,
+      });
+      if (nextGame) {
+        this.game.next(nextGame);
+        this.refreshAreaActors(nextGame);
+        this.saveToLocalStorage(nextGame);
+      }
+    }
+  }
+
+  selectActor(actorId: string) {
+    this.selectedActorId.next(actorId);
+  }
+
+  deleteActor(actorId: string) {
+    if (this.game.value) {
+      const nextGame = utilDeleteActor({
+        game: this.game.value,
+        selectedAreaId: this.selectedAreaId.value,
+        actorId,
+      });
+      this.game.next(nextGame);
+      this.refreshAreaActors(nextGame);
+      this.saveToLocalStorage(nextGame);
+    }
+  }
 
   // EVENTS -------------------------------------------------------------------
   public createEvent() {
@@ -671,6 +746,7 @@ export class GameEditorService {
           exits: [],
           items: [],
           props: [],
+          actors: [],
         },
       },
       flags: [],
@@ -795,6 +871,7 @@ export class GameEditorService {
           this.areaExits.next(nextSelectedArea.exits);
           this.areaItems.next(nextSelectedArea.items);
           this.areaProps.next(nextSelectedArea.props);
+          this.areaActors.next(nextSelectedArea.actors);
           this.events.next(nextGameData.content.events);
           this.selectedArea.next(nextSelectedArea);
           this.flags.next(nextGameData.content.flags ?? []);
@@ -833,6 +910,7 @@ export class GameEditorService {
         exits: [],
         items: [],
         props: [],
+        actors: [],
       };
       const nextGameData = {
         ...this.game.value,

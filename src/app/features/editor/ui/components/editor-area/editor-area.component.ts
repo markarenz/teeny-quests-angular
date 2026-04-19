@@ -8,11 +8,13 @@ import {
   QuestAreaMapCell,
   QuestItem,
   QuestProp,
+  QuestActor,
 } from '@app/features/main/interfaces/types';
 import { AreaCellComponent } from '@app/features/game/ui/components/area-cell/area-cell.component';
 import { AreaExitComponent } from '@app/features/game/ui/components/area-exit/area-exit.component';
 import { AreaItemComponent } from '@app/features/game/ui/components/area-item/area-item.component';
 import { AreaPropComponent } from '@app/features/game/ui/components/area-prop/area-prop.component';
+import { AreaActorComponent } from '@app/features/game/ui/components/area-actor/area-actor.component';
 import { EditorPlayerPositionComponent } from '../editor-player-position/editor-player-position.component';
 
 @Component({
@@ -22,6 +24,7 @@ import { EditorPlayerPositionComponent } from '../editor-player-position/editor-
     AreaExitComponent,
     AreaItemComponent,
     AreaPropComponent,
+    AreaActorComponent,
     EditorPlayerPositionComponent,
   ],
   templateUrl: './editor-area.component.html',
@@ -35,6 +38,7 @@ export class EditorAreaComponent {
   @Output() onSelectProp = new EventEmitter<string>();
   @Output() onSelectExit = new EventEmitter<string>();
   @Output() onSelectMapCell = new EventEmitter<string>();
+  @Output() onSelectActor = new EventEmitter<string>();
 
   game: QuestROM | null = null;
   selectedAreaId: string = '';
@@ -43,16 +47,19 @@ export class EditorAreaComponent {
   selectedAreaExits: QuestArea['exits'] | null = null;
   selectedAreaItems: QuestArea['items'] | null = null;
   selectedAreaProps: QuestArea['props'] | null = null;
+  selectedAreaActors: QuestArea['actors'] | null = null;
   selectedAreaCellPositions: string[] = [];
   selectedItemId: string = '';
   selectedExitId: string = '';
   selectedPropId: string = '';
+  selectedActorId: string = '';
   selectedExitDestination: string = '';
   selectedCell: QuestAreaMapCell | null = null;
   secondarySelectedCellPosition: string = '';
   anyCellSelected: boolean = false;
   areaDataPositionKeys: string[] = [];
   playerPosition: string = '';
+  public playerPositionForActors = '-1_-1';
 
   updatePlayerPosition() {
     let nextPlayerPosition = '';
@@ -61,6 +68,10 @@ export class EditorAreaComponent {
       nextPlayerPosition = `${y}_${x}`;
     }
     this.playerPosition = nextPlayerPosition;
+    this.playerPositionForActors =
+      this.game?.content.player.areaId === this.selectedAreaId
+        ? this.playerPosition
+        : '-1_-1';
   }
 
   getAreaData() {
@@ -140,8 +151,8 @@ export class EditorAreaComponent {
       })
     );
     this.subscriptions.push(
-      this._gameEditorService.areaPropsObs.subscribe((data: QuestProp[]) => {
-        this.selectedAreaProps = data;
+      this._gameEditorService.areaActorsObs.subscribe((data: QuestActor[]) => {
+        this.selectedAreaActors = data;
       })
     );
     this.subscriptions.push(
@@ -186,5 +197,8 @@ export class EditorAreaComponent {
   }
   handleMapCellClick(id: string) {
     this.onSelectMapCell.emit(id);
+  }
+  handleActorClick(id: string) {
+    this.onSelectActor.emit(id);
   }
 }

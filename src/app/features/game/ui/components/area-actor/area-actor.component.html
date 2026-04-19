@@ -1,0 +1,22 @@
+<div [style.width]="width" [style.height]="width" [style.z-index]="position.z" class="area-actor"
+  [style.bottom]="position.bottom" [style.filter]="'brightness(' + (lightLevel * 100) + '%)'"
+  [style.left]="position.left" id="area-actor-{{ actor.id }}">
+  @if (actor.actorType === 'slime_green') {
+  <app-svg-actor-slime-green [isActorSelected]="isActorSelected" [isClickable]="!isLockedOut"
+    [status]="actor.actorStatus" [relativePlayerXPos]="relativePlayerXPos" />
+
+  } @if (isActorSelected) {
+  <div
+    class="absolute top-[15%] left-[10%] w-[40%] h-[40%] bg-transparent rounded-full z-index-[100] border-4 border-primary border-dashed ring-2 ring-offset-2 ring-offset-primaryDarker ring-primaryDark"
+    aria-hidden="true">
+    <!-- OK -->
+  </div>
+  }
+  @if (isEditorMode && !isLockedOut) {
+  <button role="button" type="button" [attr.aria-label]="ariaLabel" (click)="handleClick()"
+    (mousedown)="handleMouseDown()" [disabled]="!isClickable && !isEditorMode" class="absolute top-[45%] left-[25%] w-[50%] h-[40%] cursor-pointer pointer-events-auto rounded-full focus:outline-none {{isEditorMode
+    ? 'ring-0 group-hover:ring-4 focus:ring-4 focus:ring-offset-2 focus:ring-offset-primaryDarker ring-primaryDark '
+    : ''}}
+    transition-all"></button>
+  }
+</div>

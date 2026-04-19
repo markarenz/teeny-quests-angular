@@ -15,6 +15,8 @@ import { provideHttpClient } from '@angular/common/http';
 let gameMock = JSON.parse(JSON.stringify(questMockData));
 
 beforeEach(async () => {
+  fetchMock.hardReset();
+  fetchMock.unmockGlobal();
   gameMock = await JSON.parse(JSON.stringify(questMockData));
   TestBed.configureTestingModule({
     imports: [],
@@ -23,6 +25,8 @@ beforeEach(async () => {
   });
 });
 afterEach(() => {
+  fetchMock.hardReset();
+  fetchMock.unmockGlobal();
   TestBed.resetTestingModule();
 });
 

@@ -20,6 +20,13 @@
       [isNearPlayer]="getIsNearPlayer(prop.x, prop.y)" [isLockedOut]="isLockedOut" [lightLevel]="getLightLevel(prop)" />
     }
 
+    <!-- Area Actors -->
+    @for(actor of areaActors; track actor.id;) {
+    <app-area-actor [actor]="actor" [isClickable]="true" [isEditorMode]="true" [isLockedOut]="false" [lightLevel]="1"
+      [playerPosition]="playerPositionForActors" />
+    }
+
+
     <!-- Area Exits -->
     @for(exit of areaExits; track exit.id;) {
     <app-area-exit [exit]="exit" [isClickable]="

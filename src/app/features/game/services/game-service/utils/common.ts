@@ -10,7 +10,7 @@ import { ExitType } from '@content/exit-definitions';
 export const getLevelGoals = (questROM: QuestROM): string => {
   const levelGoalsArr: string[] = [];
 
-  questROM.content.events.forEach(event => {
+  questROM.content.events?.forEach(event => {
     const hasGameEndAction = event.actions.some(
       action =>
         action.action === EventAction.SET_FLAG &&
@@ -21,11 +21,12 @@ export const getLevelGoals = (questROM: QuestROM): string => {
     }
   });
 
-  // Look for level exits
-  const hasExitDoor = Object.keys(questROM.content.areas).some(areaKey => {
-    const area = questROM.content.areas[areaKey];
-    return area.exits.some(exit => exit.exitType === ExitType.GAME_END);
-  });
+  const hasExitDoor = Object.keys(questROM.content.areas ?? {}).some(
+    areaKey => {
+      const area = questROM.content.areas[areaKey];
+      return area.exits.some(exit => exit.exitType === ExitType.GAME_END);
+    }
+  );
   if (hasExitDoor) {
     levelGoalsArr.push('explore and find the exit');
   }
@@ -39,7 +40,7 @@ export const calcScore = (
   questROM: QuestROM
 ): number => {
   let score = 0;
-  Object.keys(gameState.player.inventory).forEach(inventoryKey => {
+  Object.keys(gameState.player.inventory ?? {}).forEach(inventoryKey => {
     const itemCount = gameState.player.inventory[inventoryKey];
     const itemDef = inventoryDefinitions[inventoryKey];
     if (itemDef && itemDef.scoreValue) {

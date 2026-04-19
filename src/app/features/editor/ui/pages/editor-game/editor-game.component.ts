@@ -16,6 +16,7 @@ import { EditorPanelPropsComponent } from '../../components/editor-panel-props/e
 import { EditorPanelExitsComponent } from '../../components/editor-panel-exits/editor-panel-exits.component';
 import { EditorPanelItemsComponent } from '../../components/editor-panel-items/editor-panel-items.component';
 import { EditorPanelEventsComponent } from '../../components/editor-panel-events/editor-panel-events.component';
+import { EditorPanelActorsComponent } from '../../components/editor-panel-actors/editor-panel-actors.component';
 import { LoaderAnimationComponent } from '@app/features/main/ui/components/loader-animation/loader-animation.component';
 import { EditorAreaComponent } from '../../components/editor-area/editor-area.component';
 import { EditorAreaSelectorComponent } from '../../components/editor-area-selector/editor-area-selector.component';
@@ -27,6 +28,7 @@ import { AuthProviderService } from '@app/features/auth/services/auth-provider-s
 import { ContentVersionsModalComponent } from '../../components/content-versions-modal/content-versions-modal.component';
 import { CommonModalComponent } from '@app/features/main/ui/components/common-modal/common-modal.component';
 import { ActivityType } from '@app/features/main/interfaces/enums';
+import { tqConfig } from '@content/constants';
 
 @Component({
   selector: 'app-editor-game',
@@ -46,6 +48,7 @@ import { ActivityType } from '@app/features/main/interfaces/enums';
     EditorPanelItemsComponent,
     EditorPanelPropsComponent,
     EditorPanelEventsComponent,
+    EditorPanelActorsComponent,
     ContentVersionsModalComponent,
   ],
   templateUrl: './editor-game.component.html',
@@ -84,6 +87,7 @@ export class EditorGameComponent {
     { label: 'Exits', slug: 'exits' },
     { label: 'Items', slug: 'items' },
     { label: 'Props', slug: 'props' },
+    { label: 'Actors', slug: 'actors' },
     { label: 'Events', slug: 'events' },
   ];
 
@@ -91,7 +95,7 @@ export class EditorGameComponent {
     this.subscriptions.push(
       this._gameEditorService.gameObs.subscribe((data: QuestROM | null) => {
         const userId = this._authGoogleService.getUserId();
-        if (data && data.userId !== userId) {
+        if (data && data.userId !== userId && !tqConfig.testMode) {
           this.router.navigate(['/']);
           return;
         }
@@ -135,9 +139,13 @@ export class EditorGameComponent {
   }
 
   private setShowAreaSelector() {
-    this.showAreaSelector = ['map', 'props', 'exits', 'items'].includes(
-      this.subNavCurrent
-    );
+    this.showAreaSelector = [
+      'map',
+      'props',
+      'exits',
+      'items',
+      'actors',
+    ].includes(this.subNavCurrent);
   }
   handleSubNavClick(slug: string) {
     this._gameEditorService.selectExit('');
@@ -147,8 +155,10 @@ export class EditorGameComponent {
   }
 
   handleSelectItem(id: string) {
-    this._gameEditorService.selectExit('');
     this._gameEditorService.selectItem(id);
+    this._gameEditorService.selectExit('');
+    this._gameEditorService.selectProp('');
+    this._gameEditorService.selectActor('');
     this.subNavCurrent = 'items';
     this.setShowAreaSelector();
   }
@@ -157,6 +167,7 @@ export class EditorGameComponent {
     this._gameEditorService.selectItem('');
     this._gameEditorService.selectExit(id);
     this._gameEditorService.selectProp('');
+    this._gameEditorService.selectActor('');
     this.subNavCurrent = 'exits';
     this.setShowAreaSelector();
   }
@@ -165,16 +176,27 @@ export class EditorGameComponent {
     this._gameEditorService.selectExit('');
     this._gameEditorService.selectItem('');
     this._gameEditorService.selectProp(id);
+    this._gameEditorService.selectActor('');
     this.subNavCurrent = 'props';
   }
   handleSelectMapCell(id: string) {
     this._gameEditorService.selectExit('');
     this._gameEditorService.selectItem('');
     this._gameEditorService.selectProp('');
+    this._gameEditorService.selectActor('');
     this._gameEditorService.setSelectedCellPositions(id);
     this.subNavCurrent = 'map';
     this.setShowAreaSelector();
   }
+  handleSelectActor(id: string) {
+    this._gameEditorService.selectExit('');
+    this._gameEditorService.selectItem('');
+    this._gameEditorService.selectProp('');
+    this._gameEditorService.selectActor(id);
+    this.subNavCurrent = 'actors';
+    this.setShowAreaSelector();
+  }
+
   handlePlayClick() {
     this.router.navigate([`/quest/${this.game?.id ?? ''}`]);
   }

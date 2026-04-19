@@ -1,57 +1,28 @@
 <div id="editor-areas-list" class="flex flex-col gap-1">
   <div class="flex flex-row gap-2 items-center">
     <label for="editor-areas-selector" class="flex-grow">Current Area</label>
-    <app-icon-button
-      label="New Area"
-      icon="new"
-      [isDisabled]="uiMode !== 'select'"
-      (onButtonClick)="handleNewAreaClick()"
-    />
+    <div class="w-8 h-8">
+      <app-icon-button label="New Area" icon="new" [isDisabled]="uiMode !== 'select'"
+        (onButtonClick)="handleNewAreaClick()" />
+    </div>
   </div>
 
   <div class="flex flex-row gap-2 items-center">
     @if(uiMode === 'select') {
-    <select
-      id="editor-areas-selector"
-      [(ngModel)]="selectedAreaLocal"
-      (change)="handleSelectedAreaChange()"
-      class="flex-grow"
-    >
+    <select id="editor-areas-selector" [(ngModel)]="selectedAreaLocal" (change)="handleSelectedAreaChange()"
+      class="flex-grow">
       <option value="" disabled>Select an Area</option>
       @for(option of areasListOptions; track option.value) {
       <option [value]="option.value">{{ option.label }}</option>
       }
     </select>
-    <app-icon-button
-      label="Edit Area Name"
-      icon="edit"
-      (onButtonClick)="handleRenameClick()"
-    />
-    <app-icon-button
-      label="Delete Area"
-      icon="delete"
-      theme="danger"
-      [isDisabled]="areasListOptions.length < 2"
-      (onButtonClick)="handleDeleteAreaClick()"
-    />
+    <app-icon-button label="Edit Area Name" icon="edit" (onButtonClick)="handleRenameClick()" />
+    <app-icon-button label="Delete Area" icon="delete" theme="danger" [isDisabled]="areasListOptions.length < 2"
+      (onButtonClick)="handleDeleteAreaClick()" />
     } @if(uiMode === 'rename') {
-    <input
-      id="editor-area-rename"
-      type="text"
-      [(ngModel)]="inputAreaRename"
-      class="flex-grow"
-    />
-    <app-icon-button
-      label="Cancel"
-      icon="close"
-      theme="secondary"
-      (onButtonClick)="handleRenameCancelClick()"
-    />
-    <app-icon-button
-      label="Apply Rename"
-      icon="check"
-      (onButtonClick)="handleRenameOkClick()"
-    />
+    <input id="editor-area-rename" type="text" [(ngModel)]="inputAreaRename" class="flex-grow" />
+    <app-icon-button label="Cancel" icon="close" theme="secondary" (onButtonClick)="handleRenameCancelClick()" />
+    <app-icon-button label="Apply Rename" icon="check" (onButtonClick)="handleRenameOkClick()" />
     }
   </div>
 </div>

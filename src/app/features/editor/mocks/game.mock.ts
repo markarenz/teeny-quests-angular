@@ -1,4 +1,4 @@
-import { EventAction } from '@app/features/main/interfaces/enums';
+import { ActorStatus, EventAction } from '@app/features/main/interfaces/enums';
 import { QuestROM, QuestState } from '@app/features/main/interfaces/types';
 
 const questMockData: QuestROM = {
@@ -470,6 +470,19 @@ const questMockData: QuestROM = {
             h: 1,
           },
         ],
+        actors: [
+          {
+            id: 'actor-1',
+            actorType: 'slime-green',
+            areaId: 'start',
+            actorStatus: ActorStatus.IDLE,
+            health: 10,
+            x: 1,
+            y: 1,
+            h: 1,
+            actions: [],
+          },
+        ],
       },
       area2: {
         id: 'area2',
@@ -892,6 +905,7 @@ const questMockData: QuestROM = {
             h: 1,
           },
         ],
+        actors: [],
       },
     },
     events: [],
