@@ -1,4 +1,5 @@
 .area-actor {
   position: absolute;
   pointer-events: none;
+  transition: 0.05s all ease-out;
 }

@@ -108,7 +108,9 @@ export class GameAreaComponent {
     );
   }
 
-  public getLightLevel(obj: QuestProp | QuestItem | QuestAreaExit): number {
+  public getLightLevel(
+    obj: QuestProp | QuestItem | QuestAreaExit | QuestActor
+  ): number {
     return Math.min(this.areaLightMap[`${obj.y}_${obj.x}`] + 0.25, 1);
   }
 

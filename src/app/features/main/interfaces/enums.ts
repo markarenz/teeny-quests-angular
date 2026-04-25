@@ -82,3 +82,9 @@ export enum ActorStatus {
   IDLE = 'IDLE',
   SEEKING = 'SEEKING',
 }
+export enum GameStateMode {
+  DEFAULT = 'DEFAULT',
+  COMBAT = 'COMBAT',
+  DIALOGUE = 'DIALOGUE',
+  SHOP = 'SHOP',
+}

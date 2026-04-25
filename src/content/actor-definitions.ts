@@ -10,6 +10,9 @@ export type ActorDefinition = {
   defense: number;
   accuracy: number;
   damage: number;
+  wakeRadius: number;
+  sleepRadius: number;
+  moveSteps: number;
 };
 /* 
   Defense: higher the value (0-1), herder for player to hit
@@ -33,6 +36,9 @@ export const actorDefinitions: { [key: string]: ActorDefinition } = {
     defense: 0.4,
     accuracy: 0.4,
     damage: 2,
+    wakeRadius: 3,
+    sleepRadius: 5,
+    moveSteps: 2,
   },
   slime_purple: {
     id: 'slime_purple',
@@ -42,6 +48,9 @@ export const actorDefinitions: { [key: string]: ActorDefinition } = {
     defense: 0.5,
     accuracy: 0.5,
     damage: 5,
+    wakeRadius: 4,
+    sleepRadius: 99,
+    moveSteps: 3,
   },
 };
 

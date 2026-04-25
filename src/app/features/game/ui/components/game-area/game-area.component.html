@@ -22,8 +22,8 @@
 
     <!-- Area Actors -->
     @for(actor of areaActors; track actor.id;) {
-    <app-area-actor [actor]="actor" [isClickable]="true" [isEditorMode]="true" [isLockedOut]="false" [lightLevel]="1"
-      [playerPosition]="playerPositionForActors" />
+    <app-area-actor [actor]="actor" [isClickable]="true" [isEditorMode]="true" [isLockedOut]="false"
+      [lightLevel]="getLightLevel(actor)" [playerPosition]="playerPositionForActors" />
     }
 
 
