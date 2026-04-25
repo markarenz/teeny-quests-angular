@@ -1,4 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { QuestActor } from '@app/features/main/interfaces/types';
 import { defaultGridSize } from '@config/index';
 import {
@@ -21,6 +27,11 @@ export class AreaActorComponent {
   constructor(private _audioService: AudioService) {}
 
   @Input('actor') actor: QuestActor = defaultActor;
+  // @Input('actor') set data(value: QuestActor) {
+  //   this.actor = value;
+  //   this.updateActorProps();
+  // }
+
   @Input('isEditorMode') isEditorMode: boolean = false;
   @Input('isActorSelected') isActorSelected: boolean = false;
   @Input('isClickable') isClickable: boolean = false;
@@ -30,6 +41,7 @@ export class AreaActorComponent {
   @Output() onClick = new EventEmitter<string>();
   gridSize: number = defaultGridSize;
 
+  // public actor: QuestActor = defaultActor;
   public left: string = '';
   public bottom: string = '';
   public height: string = '0%';
@@ -42,7 +54,6 @@ export class AreaActorComponent {
     return parseInt(position.replace('%', ''));
   }
   updateActorProps() {
-    console.log('Updating actor props for', this.actor);
     if (this.actor) {
       const { x, y, h } = this.actor;
       const cellW = 100 / this.gridSize;
@@ -69,7 +80,7 @@ export class AreaActorComponent {
       }
     }
   }
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
     this.updateActorProps();
   }
 

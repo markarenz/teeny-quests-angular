@@ -9,6 +9,7 @@ import {
   QuestStateArea,
   LightMap,
   MovementOptions,
+  QuestActor,
 } from '@app/features/main/interfaces/types';
 import { MessageService } from '@app/features/game/services/message/message.service';
 import { AuthProviderService } from '@app/features/auth/services/auth-provider-service';
@@ -18,7 +19,7 @@ import {
   gamesApiUrl,
   versionsApiUrl,
 } from '@config/index';
-import { getMoveOptions } from './utils/pathfinding';
+import { getMoveOptions, getPathBetweenPoints } from './utils/pathfinding';
 import { STANDARD_MOVE_DURATION } from '@config/index';
 import { itemDefinitions } from '@content/item-definitions';
 import { propDecoDefinitions } from '@content/prop-definitions';
@@ -30,7 +31,12 @@ import { getAreaElementPositionStyle } from '../../lib/utils';
 import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 import { processEvents } from './utils/event-actions';
 import { calcScore, getLevelGoals } from './utils/common';
-import { ActivityType } from '@app/features/main/interfaces/enums';
+import {
+  ActivityType,
+  ActorStatus,
+  GameStateMode,
+} from '@app/features/main/interfaces/enums';
+import { actorDefinitions } from '@content/actor-definitions';
 
 @Injectable({
   providedIn: 'root',
@@ -343,6 +349,7 @@ export class GameService {
     });
     nextGameState = {
       gameId: nextGameROM.id,
+      mode: GameStateMode.DEFAULT,
       player: {
         ...nextGameROM.content.player,
         facing: 'east',
@@ -401,7 +408,6 @@ export class GameService {
     // Not async because we can let this run in the background
     const userId = this.authProviderService.getUserId();
     const username = this.authProviderService.getUsername();
-    console.log('Registering activity', { gameId, action, userId, username });
     fetch(activityApiUrl, {
       method: 'POST',
       headers: {
@@ -539,13 +545,13 @@ export class GameService {
    * not recognized.
    */
   public getOppositeDirection(direction: string): string {
-    const mappper: { [key: string]: string } = {
+    const mapper: { [key: string]: string } = {
       north: 'south',
       south: 'north',
       east: 'west',
       west: 'east',
     };
-    return mappper[direction] ?? direction;
+    return mapper[direction] ?? direction;
   }
 
   /**
@@ -1000,6 +1006,88 @@ export class GameService {
     return nextGameState;
   };
 
+  public getDistance(y1: number, x1: number, y2: number, x2: number): number {
+    return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+  }
+
+  public async processActorTurn(
+    nextGameState: QuestState,
+    actor: QuestActor
+  ): Promise<void> {
+    if (nextGameState.mode === GameStateMode.DEFAULT) {
+      // 1. Check if hostile idle actor should wake and seek player
+      const player = nextGameState.player;
+      const actorDef = actorDefinitions[actor.actorType];
+      const distance = this.getDistance(actor.y, actor.x, player.y, player.x);
+      if (
+        actorDef &&
+        actorDef.isHostile &&
+        actor.actorStatus === ActorStatus.IDLE &&
+        distance <= (actorDef.wakeRadius ?? 0)
+      ) {
+        actor.actorStatus = ActorStatus.SEEKING;
+      } else if (
+        actorDef &&
+        actorDef.isHostile &&
+        actor.actorStatus === ActorStatus.SEEKING &&
+        distance >= (actorDef.sleepRadius ?? 0)
+      ) {
+        actor.actorStatus = ActorStatus.IDLE;
+      }
+      // 2. Move seeking actors along path toward player when possible
+      if (actor.actorStatus === ActorStatus.SEEKING) {
+        const path = getPathBetweenPoints({
+          start: `${actor.y}_${actor.x}`,
+          end: `${player.y}_${player.x}`,
+          areaMap: nextGameState.areas[nextGameState.player.areaId].map,
+          areaItems: nextGameState.areas[nextGameState.player.areaId].items,
+          positionKeys: getPositionKeysForGridSize(),
+        });
+        if (path && path.length) {
+          const steps = path.slice(
+            1,
+            actorDef.moveSteps ? 1 + actorDef.moveSteps : undefined
+          );
+          this.isLockedOut.next(true);
+          for (let i = 0; i < steps.length; i++) {
+            const position = steps[i];
+            // TODO use dy, dx to set facing for actor
+            const [y, x] = position.split('_').map(v => parseInt(v));
+            const h =
+              nextGameState.areas[nextGameState.player.areaId].map[position].h;
+
+            const movedActor = { ...actor, y, x, h };
+            nextGameState.areas[nextGameState.player.areaId].actors =
+              nextGameState.areas[nextGameState.player.areaId].actors.map(
+                (a: QuestActor) => (a.id === actor.id ? movedActor : a)
+              );
+            this.gameState.next(nextGameState);
+            await this.delay(STANDARD_MOVE_DURATION);
+          }
+          await this.delay(250);
+          this.isLockedOut.next(false);
+        }
+      }
+      // 3. Check if seeking actors are on the player square and should attack
+      //    NOTE: Combat mode is separate and uses different turn processing
+      if (
+        actor.actorStatus === ActorStatus.SEEKING &&
+        actor.y === player.y &&
+        actor.x === player.x
+      ) {
+        console.log('COMBAT!');
+        nextGameState.mode = GameStateMode.COMBAT;
+      }
+    }
+  }
+
+  public async processActorTurns(nextGameState: QuestState): Promise<void> {
+    const area = nextGameState.areas[nextGameState.player.areaId];
+    const actors = area.actors ?? [];
+    for (const actor of actors) {
+      await this.processActorTurn(nextGameState, actor);
+    }
+  }
   /**
    * Runs a full player turn by dispatching the requested action, processing any
    * follow-up events, and publishing all derived state updates.
@@ -1067,6 +1155,7 @@ export class GameService {
         this._audioService.playSound('game-end');
       }
 
+      await this.processActorTurns(nextGameState);
       nextGameState.numTurns += 1;
       this.setPropItemHeights(nextGameState);
       this.score.next(calcScore(nextGameState, this.questROM.value));

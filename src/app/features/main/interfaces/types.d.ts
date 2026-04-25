@@ -6,6 +6,7 @@ import {
   ActionValueType,
   ConditionComparison,
   ActorStatus,
+  GameStateMode,
 } from './enums';
 
 export type SelectIUIOption = {
@@ -186,6 +187,7 @@ export type QuestStateArea = {
 
 export type QuestState = {
   gameId: string;
+  mode: GameStateMode;
   player: {
     areaId: string;
     x: number;

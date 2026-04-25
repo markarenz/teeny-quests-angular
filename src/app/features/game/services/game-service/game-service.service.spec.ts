@@ -14,6 +14,7 @@ import { firstValueFrom, skip, take } from 'rxjs';
 import { MessageService } from '../message/message.service';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { AudioService } from '@app/features/main/services/audio/audio-service.service';
+import { ActorStatus, ActorType } from '@app/features/main/interfaces/enums';
 
 let gameMock = { ...questMockData };
 let gameMockFromDB = { ...questMockData };
@@ -608,4 +609,35 @@ describe('calcLightMap', () => {
     expect(lightMap['2_2']).toEqual(1);
     expect(lightMap['0_0']).toEqual(0.5);
   }));
+});
+
+describe('processActorTurns', () => {
+  let service: GameService;
+  mockAudioService = jasmine.createSpyObj('AudioService', ['playSound']);
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [ToastrModule.forRoot()],
+      providers: [
+        ToastrService,
+        provideNoopAnimations(),
+        { provide: AudioService, useValue: mockAudioService },
+      ],
+      teardown: { destroyAfterEach: false },
+    });
+    messageService = TestBed.inject(MessageService);
+    toastrService = TestBed.inject(ToastrService);
+    service = TestBed.inject(GameService);
+    service.testInit(gameMock);
+    service.initGameState(gameMock);
+  });
+  it('should process actor turns', async () => {
+    spyOn(service, 'delay').and.resolveTo();
+    const nextGameState: QuestState = structuredClone(questStateMockData);
+    await service.processActorTurns(nextGameState);
+    const updatedActor = nextGameState.areas['start'].actors.find(
+      actor => actor.id === 'actor-1'
+    );
+    expect(updatedActor).toBeDefined();
+    expect(updatedActor?.actorStatus).toEqual(ActorStatus.SEEKING);
+  });
 });

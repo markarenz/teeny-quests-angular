@@ -1,6 +1,8 @@
 <div [style.width]="width" [style.height]="width" [style.z-index]="position.z" class="area-actor"
   [style.bottom]="position.bottom" [style.filter]="'brightness(' + (lightLevel * 100) + '%)'"
   [style.left]="position.left" id="area-actor-{{ actor.id }}">
+  <div class="absolute top-0 left-0 w-full h-full pointer-events-none">
+  </div>
   @if (actor.actorType === 'slime_green') {
   <app-svg-actor-slime-green [isActorSelected]="isActorSelected" [isClickable]="!isLockedOut"
     [status]="actor.actorStatus" [relativePlayerXPos]="relativePlayerXPos" />
