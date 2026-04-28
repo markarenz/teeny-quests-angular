@@ -49,4 +49,5 @@ export const defaultActor: QuestActor = {
   areaId: '',
   health: 99,
   actions: [],
+  dropItem: '',
 };

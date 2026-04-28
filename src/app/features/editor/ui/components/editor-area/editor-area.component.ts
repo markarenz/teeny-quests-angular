@@ -105,6 +105,11 @@ export class EditorAreaComponent {
       })
     );
     this.subscriptions.push(
+      this._gameEditorService.selectedActorIdObs.subscribe((data: string) => {
+        this.selectedActorId = data;
+      })
+    );
+    this.subscriptions.push(
       this._gameEditorService.selectedCellObs.subscribe(
         (data: QuestAreaMapCell | null) => {
           this.anyCellSelected = data !== null;

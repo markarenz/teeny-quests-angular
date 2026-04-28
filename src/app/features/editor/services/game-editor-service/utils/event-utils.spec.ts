@@ -1,5 +1,5 @@
 import { utilCreateEvent, utilDeleteEvent } from './event-utils';
-import { QuestEvent, QuestROM } from '@app/features/main/interfaces/types';
+import { QuestROM } from '@app/features/main/interfaces/types';
 
 describe('Event Utils', () => {
   let mockGame: QuestROM;

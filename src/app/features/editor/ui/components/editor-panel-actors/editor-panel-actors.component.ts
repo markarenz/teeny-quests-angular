@@ -16,6 +16,7 @@ import { AreaCellSelectorComponent } from '../area-cell-selector/area-cell-selec
 import { ActorType } from '@app/features/main/interfaces/enums';
 import { actorTypeOptions } from '@content/actor-definitions';
 import { EditorInputActionsComponent } from '../editor-input-actions/editor-input-actions.component';
+import { itemOptions } from '@content/item-definitions';
 
 @Component({
   selector: 'app-editor-panel-actors',
@@ -43,6 +44,11 @@ export class EditorPanelActorsComponent {
   public inputActorPosition: string = '';
   public inputActorType: ActorType = ActorType.SLIME_GREEN;
   public inputActions: ActionEffect[] = [];
+  public actorDropItemOptions: SelectIUIOption[] = [
+    { label: 'None', value: '' },
+    ...itemOptions,
+  ];
+  public inputActorDropItem: string = '';
 
   ngOnInit() {
     this.handleAreaChange(this._gameEditorService.getSelectedAreaId());
@@ -77,6 +83,7 @@ export class EditorPanelActorsComponent {
     this.inputActorType = selectedActor ? selectedActor.actorType : '';
     this.inputActorName = selectedActor ? selectedActor.name || '' : '';
     this.inputActions = selectedActor ? selectedActor.actions || [] : [];
+    this.inputActorDropItem = selectedActor ? selectedActor.dropItem || '' : '';
     this.updateActorPositionLockouts();
     this.refreshUIData();
   }
@@ -169,6 +176,7 @@ export class EditorPanelActorsComponent {
         y: +y,
         // health
         actions: this.inputActions,
+        dropItem: this.inputActorDropItem,
       };
 
       this._gameEditorService.updateActor(updatedActor);
