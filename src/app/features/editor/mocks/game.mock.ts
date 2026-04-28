@@ -485,6 +485,7 @@ const questMockData: QuestROM = {
             y: 4,
             h: 1,
             actions: [],
+            dropItem: 'coins-25',
           },
         ],
       },

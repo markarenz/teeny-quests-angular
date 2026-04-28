@@ -70,6 +70,7 @@ export const utilCreateActor = ({
         y: +y,
         h,
         actions: [],
+        dropItem: '',
       };
 
       const nextGame = { ...game } as QuestROM;

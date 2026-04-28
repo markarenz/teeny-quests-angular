@@ -106,6 +106,7 @@ export type QuestActor = {
   x: number;
   y: number;
   h: number;
+  dropItem: string;
   actions: ActionEffect[];
 };
 

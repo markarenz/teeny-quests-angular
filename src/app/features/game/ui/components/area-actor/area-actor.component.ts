@@ -27,11 +27,6 @@ export class AreaActorComponent {
   constructor(private _audioService: AudioService) {}
 
   @Input('actor') actor: QuestActor = defaultActor;
-  // @Input('actor') set data(value: QuestActor) {
-  //   this.actor = value;
-  //   this.updateActorProps();
-  // }
-
   @Input('isEditorMode') isEditorMode: boolean = false;
   @Input('isActorSelected') isActorSelected: boolean = false;
   @Input('isClickable') isClickable: boolean = false;
