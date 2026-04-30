@@ -12,7 +12,7 @@
         @if(!isLockedOut) { @if(showCancel) {
         <app-button variant="outlined" label="Cancel" (onButtonClick)="handleCancelClick()" />
         }
-        <app-button variant="contained" label="OK" data-testid="common-modal-confirm"
+        <app-button variant="contained" [label]="confirmLabel" data-testid="common-modal-confirm"
           (onButtonClick)="handleConfirmClick()" />
         }
       </div>

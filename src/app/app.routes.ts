@@ -1,9 +1,5 @@
 import { Routes } from '@angular/router';
-import { GameComponent } from './features/game/ui/pages/game/game.component';
-import { EditorHomeComponent } from './features/editor/ui/pages/editor-home/editor-home.component';
 import { hasAuthGuard } from './features/auth/guards/has-auth/has-auth.guard';
-import { EditorGameComponent } from './features/editor/ui/pages/editor-game/editor-game.component';
-import { AboutPageComponent } from './features/main/ui/pages/about-page/about-page.component';
 
 export const routes: Routes = [
   {

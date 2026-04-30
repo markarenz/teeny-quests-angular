@@ -7,19 +7,20 @@ import {
   QuestROM,
   QuestState,
   Inventory,
-  Paragraph,
 } from '@app/features/main/interfaces/types';
 import { GameAreaComponent } from '../../components/game-area/game-area.component';
 import { pageModalTitles } from '@content/constants';
 import { IconButtonComponent } from '@app/features/main/ui/components/icons/icon-button/icon-button.component';
 import { ModalPageComponent } from '@app/features/game/ui/components/modal-page/modal-page.component';
 import { GameEndMessageComponent } from '../../components/game-end-message/game-end-message.component';
+import { GameLostMessageComponent } from '../../components/game-lost-message/game-lost-message.component';
 import { ModalInventoryComponent } from '../../components/modal-inventory/modal-inventory.component';
 import { LoaderAnimationComponent } from '@app/features/main/ui/components/loader-animation/loader-animation.component';
 import { TooltipComponent } from '@app/features/main/ui/components/tooltip/tooltip.component';
 import { AuthProviderService } from '@app/features/auth/services/auth-provider-service';
 import { logger } from '@app/features/main/utils/logger';
 import { ActivityType } from '@app/features/main/interfaces/enums';
+import { HealthHudComponent } from '../../components/health-hud/health-hud.component';
 
 @Component({
   selector: 'app-game',
@@ -30,8 +31,10 @@ import { ActivityType } from '@app/features/main/interfaces/enums';
     ModalPageComponent,
     ModalInventoryComponent,
     GameEndMessageComponent,
+    GameLostMessageComponent,
     LoaderAnimationComponent,
     TooltipComponent,
+    HealthHudComponent,
   ],
   templateUrl: './game.component.html',
   styleUrl: './game.component.css',
@@ -53,8 +56,9 @@ export class GameComponent {
   public levelGoals: string = '';
   public score: number = 0;
   public gameId: string = '';
-  private userId: string | null = null;
   public numTurns: number = 0;
+  public playerHealth: number = 0;
+  private userId: string | null = null;
 
   constructor(
     private _route: ActivatedRoute,
@@ -142,6 +146,14 @@ export class GameComponent {
           this.numTurns = data.numTurns;
         }
 
+        if (data?.player?.health !== undefined) {
+          this.playerHealth = data.player.health;
+        }
+        if (data?.flagValues['gameLost']) {
+          console.log('Yo. I died, yo.');
+          this._gameService.setPageModalStatus('');
+          this.gameStatus = 'lost';
+        }
         if (data?.flagValues['gameEnded']) {
           this._gameService.setPageModalStatus('');
           this.gameStatus = 'ended';
@@ -199,6 +211,7 @@ export class GameComponent {
     this._gameService.setPageModalStatus('');
   };
   handleGameEndClick = () => {
+    console.log('Game End Confirm Clicked');
     this.router.navigate(['/']);
   };
   handleToggleFullWidth = () => {
@@ -207,6 +220,7 @@ export class GameComponent {
   };
   handleResetProgress = () => {
     this._gameService.resetGameProgress();
+    this.gameStatus = 'active';
     window.location.reload();
   };
 }

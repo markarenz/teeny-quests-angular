@@ -34,15 +34,17 @@
           <div class="text-sm">
             SCORE
           </div>
-          <div class="text-3xl lg:text-6xl gradient-text font-bold font-headline leading-none">
+          <div class="text-3xl md:text-6xl gradient-text font-bold font-headline leading-none">
             {{score.toLocaleString()}}
           </div>
         </div>
-        <div class="absolute z-[110] top-0 {{isFullWidthMode ? 'right-4' : 'right-0'}} flex flex-col gap-0 items-start">
+        <div
+          class="absolute z-[110] top-0 {{isFullWidthMode ? 'right-4' : 'right-0'}} flex flex-col gap-1 items-start justify-end">
           <div class="text-sm w-full text-right">
-            TURNS
+            <app-health-hud [health]="playerHealth" />
           </div>
-          <div class="text-3xl lg:text-6xl gradient-text font-bold font-headline leading-none w-full text-right">
+          <div class="text-sm w-full text-right">
+            TURNS:
             {{numTurns.toLocaleString()}}
           </div>
         </div>
@@ -63,4 +65,9 @@
   @if(gameStatus === 'ended') {
   <app-game-end-message (handleGameEndConfirmClick)="handleGameEndClick()" />
   }
+  @if(gameStatus === 'lost') {
+  <app-game-lost-message (handleGameEndConfirmClick)="handleGameEndClick()"
+    (handleTryAgainClick)="handleResetProgress()" />
+  }
+
 </app-main-layout>

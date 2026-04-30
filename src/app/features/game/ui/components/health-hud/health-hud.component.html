@@ -1,0 +1,5 @@
+<div class="flex flex-row gap-1 w-full justify-end">
+  @for (heartValue of hearts; track $index) {
+  <app-heart [value]="heartValue"></app-heart>
+  }
+</div>

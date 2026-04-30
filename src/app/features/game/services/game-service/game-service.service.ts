@@ -936,6 +936,9 @@ export class GameService {
     return nextGameState;
   };
 
+  public eraseLocalGameState(gameId: string): void {
+    localStorage.removeItem(this.getLocalSaveKey(gameId));
+  }
   /**
    * Clears the local save for the current quest and records a fresh PLAY
    * activity so the next load starts from the base game state.
@@ -944,7 +947,7 @@ export class GameService {
     const gameId = this.questROM.value?.id;
     if (gameId) {
       this.registerActivity(gameId, ActivityType.PLAY);
-      localStorage.removeItem(this.getLocalSaveKey(gameId));
+      this.eraseLocalGameState(gameId);
     }
   };
 
@@ -1153,6 +1156,18 @@ export class GameService {
 
       if (nextGameState.flagValues['gameEnded']) {
         this._audioService.playSound('game-end');
+        this.eraseLocalGameState(nextGameState.gameId);
+      }
+
+      // FOR TESTING PURPOSES
+      nextGameState.player.health = nextGameState.player.health - 0.2;
+
+      if (nextGameState.player.health <= 0) {
+        nextGameState.flagValues['gameLost'] = true;
+        // this._audioService.playSound('game-lost');
+        this.eraseLocalGameState(nextGameState.gameId);
+
+        console.log('Player Died');
       }
 
       await this.processActorTurns(nextGameState);

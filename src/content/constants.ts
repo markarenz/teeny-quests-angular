@@ -68,13 +68,13 @@ export const Lights: { [key: string]: LightCell[] } = {
 };
 
 export const playerCombatDefaults = {
-  health: 20,
-  maxHealth: 20,
+  health: 4,
+  maxHealth: 4,
   defense: 0.3,
   accuracy: 0.3,
   damage: 3,
 };
 
 export const tqConfig = {
-  testMode: true,
+  testMode: false,
 };
