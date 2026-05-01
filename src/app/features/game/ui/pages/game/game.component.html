@@ -41,7 +41,7 @@
         <div
           class="absolute z-[110] top-0 {{isFullWidthMode ? 'right-4' : 'right-0'}} flex flex-col gap-1 items-start justify-end">
           <div class="text-sm w-full text-right">
-            <app-health-hud [health]="playerHealth" />
+            <app-health-hud [health]="playerHealth" [maxHealth]="playerMaxHealth" />
           </div>
           <div class="text-sm w-full text-right">
             TURNS:

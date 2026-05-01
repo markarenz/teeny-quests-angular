@@ -19,4 +19,15 @@ describe('GameLostMessageComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should handle restart click', () => {
+    spyOn(component.handleTryAgainClick, 'emit');
+    component.handleConfirmClick();
+    expect(component.handleTryAgainClick.emit).toHaveBeenCalled();
+  });
+  it('should handle cancel click', () => {
+    spyOn(component.handleGameEndConfirmClick, 'emit');
+    component.handleCancelClick();
+    expect(component.handleGameEndConfirmClick.emit).toHaveBeenCalled();
+  });
 });

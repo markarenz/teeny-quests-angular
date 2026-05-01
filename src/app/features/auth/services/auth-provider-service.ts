@@ -45,7 +45,6 @@ export class AuthProviderService implements OnDestroy {
 
   getUsername() {
     const currentUser = this.user.getValue();
-    console.log('Getting username for current user', currentUser);
     return currentUser?.username ?? '';
   }
 

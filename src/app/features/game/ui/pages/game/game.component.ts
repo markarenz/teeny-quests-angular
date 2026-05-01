@@ -58,6 +58,7 @@ export class GameComponent {
   public gameId: string = '';
   public numTurns: number = 0;
   public playerHealth: number = 0;
+  public playerMaxHealth: number = 0;
   private userId: string | null = null;
 
   constructor(
@@ -148,9 +149,10 @@ export class GameComponent {
 
         if (data?.player?.health !== undefined) {
           this.playerHealth = data.player.health;
+          this.playerMaxHealth = data.player.maxHealth ?? 4;
         }
         if (data?.flagValues['gameLost']) {
-          console.log('Yo. I died, yo.');
+          this._gameService.eraseLocalGameState(this.gameId);
           this._gameService.setPageModalStatus('');
           this.gameStatus = 'lost';
         }
@@ -211,7 +213,7 @@ export class GameComponent {
     this._gameService.setPageModalStatus('');
   };
   handleGameEndClick = () => {
-    console.log('Game End Confirm Clicked');
+    this.gameStatus = 'active';
     this.router.navigate(['/']);
   };
   handleToggleFullWidth = () => {
@@ -221,6 +223,6 @@ export class GameComponent {
   handleResetProgress = () => {
     this._gameService.resetGameProgress();
     this.gameStatus = 'active';
-    window.location.reload();
+    // window.location.reload();
   };
 }

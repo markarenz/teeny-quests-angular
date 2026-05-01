@@ -1160,14 +1160,15 @@ export class GameService {
       }
 
       // FOR TESTING PURPOSES
-      nextGameState.player.health = nextGameState.player.health - 0.2;
+      nextGameState.player.health = Math.max(
+        Math.floor((nextGameState.player.health - 0.2) * 100) / 100,
+        0
+      );
 
       if (nextGameState.player.health <= 0) {
         nextGameState.flagValues['gameLost'] = true;
         // this._audioService.playSound('game-lost');
         this.eraseLocalGameState(nextGameState.gameId);
-
-        console.log('Player Died');
       }
 
       await this.processActorTurns(nextGameState);

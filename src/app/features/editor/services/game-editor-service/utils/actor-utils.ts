@@ -15,7 +15,6 @@ export const utilDeleteActor = ({
   actorId: string;
 }): QuestROM => {
   const nextGame = { ...game } as QuestROM;
-  console.log('>>', selectedAreaId);
   const actors = game.content.areas[selectedAreaId].actors;
   if (actors) {
     const newActors = actors.filter(actor => actor.id !== actorId);
@@ -43,7 +42,6 @@ export const utilCreateActor = ({
       actors: [],
     };
     const openCellPosition = findAnOpenCell({ game, selectedAreaId, lockouts });
-    console.log('openCellPosition', openCellPosition);
     if (openCellPosition) {
       const [y, x] = openCellPosition.split('_');
       let direction = 'north';

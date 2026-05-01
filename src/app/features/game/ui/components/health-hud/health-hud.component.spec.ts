@@ -19,4 +19,10 @@ describe('HealthHudComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  it('should create', () => {
+    component.health = 3.5;
+    component.maxHealth = 5;
+    fixture.detectChanges();
+    expect(component).toBeTruthy();
+  });
 });
