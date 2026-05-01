@@ -113,4 +113,9 @@ describe('GameComponent', () => {
     component.onResize(mockEvent as unknown as Event);
     expect(service.setAspectRatio).toHaveBeenCalled();
   }));
+  it('should handle reset progress', fakeAsync(async () => {
+    spyOn(service, 'resetGameProgress');
+    component.handleResetProgress();
+    expect(service.resetGameProgress).toHaveBeenCalled();
+  }));
 });

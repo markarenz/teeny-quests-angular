@@ -21,9 +21,10 @@ export class CommonModalComponent {
   @Input('content') content: string = '';
   @Input('showCancel') showCancel: boolean = false;
   @Input('isLockedOut') isLockedOut: boolean = false;
+  @Input('confirmLabel') confirmLabel: string = 'OK';
   @Output() onClose = new EventEmitter();
   @Output() onConfirm = new EventEmitter();
-  @Output() onCancel? = new EventEmitter();
+  @Output() onCancel = new EventEmitter();
   @ViewChild('elementRefHeader') elementRefHeader!: ElementRef;
   @ViewChild('elementRefFooter') elementRefFooter!: ElementRef;
   @ViewChild('elementRefContent') elementRefContent!: ElementRef;
@@ -35,9 +36,7 @@ export class CommonModalComponent {
     this.onClose.emit();
   }
   handleCancelClick() {
-    if (this.onCancel) {
-      this.onCancel.emit();
-    }
+    this.onCancel.emit();
   }
   ngAfterViewInit() {
     const h1 = this.elementRefHeader.nativeElement.offsetHeight;
