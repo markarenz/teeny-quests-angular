@@ -1,4 +1,8 @@
-import { processEvents, parseConditionComparisonNumber } from './event-actions';
+import {
+  processEvents,
+  parseConditionComparisonNumber,
+  checkConditionFlag,
+} from './event-actions';
 import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 import { MessageService } from '../../message/message.service';
 import {
@@ -7,6 +11,7 @@ import {
 } from '@app/features/main/interfaces/enums';
 import {
   QuestEvent,
+  QuestEventActionCondition,
   QuestROM,
   QuestState,
 } from '@app/features/main/interfaces/types';
@@ -163,5 +168,16 @@ describe('Event Actions', () => {
         )
       ).toBeTrue();
     });
+  });
+
+  it('should check condition flag', () => {
+    const nextGameState = {} as any;
+    nextGameState.flagValues = { testFlag: true };
+    const condition = {
+      conditionType: 'flag',
+      identifier: 'testFlag',
+      value: true,
+    } as QuestEventActionCondition;
+    expect(checkConditionFlag(condition, nextGameState)).toBeTrue();
   });
 });

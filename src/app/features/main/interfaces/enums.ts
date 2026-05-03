@@ -88,3 +88,9 @@ export enum GameStateMode {
   DIALOGUE = 'DIALOGUE',
   SHOP = 'SHOP',
 }
+
+export enum ActorInteractionType {
+  HOSTILE = 'HOSTILE',
+  TRADE = 'TRADE',
+  DIALOG = 'DIALOG',
+}

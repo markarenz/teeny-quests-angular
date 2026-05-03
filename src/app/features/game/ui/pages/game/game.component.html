@@ -1,5 +1,5 @@
 <app-main-layout [title]="title">
-  <div class="my-8 min-h-[50vh] flex flex-col gap-8">
+  <div class="my-8 min-h-[50vh] flex flex-col gap-8 {{showPlayerHurt ? 'shake-screen' : ''}}">
     <div class="game-wrap {{isFullWidthMode ? 'full-width' : ''}} {{gameStatus === 'ended' ? 'game-ended' : ''}}">
       @if(!isLoading) {
       <div>
@@ -70,4 +70,7 @@
     (handleTryAgainClick)="handleResetProgress()" />
   }
 
+  <div
+    class="absolute left-0 top-0 w-full h-full pointer-events-none bg-red-700 {{ showPlayerHurt ? 'opacity-50' : 'opacity-0' }} transition-opacity duration-200 z-[150]">
+  </div>
 </app-main-layout>

@@ -12,6 +12,14 @@ export type ItemDefinition = {
   inventoryActions: string[]; // actions available in inventory
 };
 
+export type ItemWeaponDefinition = ItemDefinition & {
+  weaponConsumable: boolean;
+  accuracy: number;
+  minDamage: number;
+  maxDamage: number;
+  weaponSoundId: string;
+};
+
 export const itemDefinitions: { [key: string]: ItemDefinition } = {
   'key-silver': {
     id: 'key-silver',
@@ -94,6 +102,40 @@ export const itemDefinitions: { [key: string]: ItemDefinition } = {
     amount: 1,
     use: 'fill-gem-frame',
     inventoryActions: ['use', 'drop'],
+  },
+  pointyStick: {
+    id: 'pointyStick',
+    name: 'Pointy Stick',
+    action: 'take',
+    inventoryKey: 'pointyStick',
+    amount: 1,
+    use: '',
+    inventoryActions: ['use', 'drop'],
+  },
+};
+
+export const itemWeaponDefinitions: { [key: string]: ItemWeaponDefinition } = {
+  bareHands: {
+    id: 'bareHands',
+    name: 'Bare Hands',
+    action: 'take',
+    inventoryKey: 'bareHands',
+    amount: 1,
+    use: '',
+    inventoryActions: [],
+    weaponConsumable: false,
+    accuracy: 0.2,
+    minDamage: 0.25,
+    maxDamage: 0.5,
+    weaponSoundId: 'pointy-stick-attack',
+  },
+  pointyStick: {
+    ...itemDefinitions['pointyStick'],
+    weaponConsumable: false,
+    accuracy: 0.4,
+    minDamage: 0.5,
+    maxDamage: 1,
+    weaponSoundId: 'pointy-stick-attack',
   },
 };
 

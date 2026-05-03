@@ -3,6 +3,7 @@ import {
   QuestItem,
   MovementOptions,
   PathfindingGridCell,
+  QuestActor,
 } from '@main/interfaces/types';
 import { floorDefinitions } from '@content/floor-definitions';
 import { getPositionKeysForGridSize } from '@main/utils';
@@ -182,10 +183,12 @@ export const getMoveOptions = ({
   positionKeyStart,
   areaMap,
   areaItems,
+  areaActors,
 }: {
   positionKeyStart: string;
   areaMap: QuestAreaMap;
   areaItems: QuestItem[];
+  areaActors: QuestActor[];
 }): MovementOptions => {
   const movementOptions: MovementOptions = {};
   if (
@@ -200,14 +203,14 @@ export const getMoveOptions = ({
   const positionKeys = getPositionKeysForGridSize();
   for (const positionKey of positionKeys) {
     if (
-      // Forbit player from moving to an invalid position
+      // Forbid player from moving to an invalid position
       validateMovePositionKey({
         areaMap,
         positionKey,
       }) &&
-      // Forbit player from moving to a cell with an item
-      !areaItems.some(item => {
-        `${item.y}_${item.x}` === positionKey;
+      // Forbid player from moving to a cell with an actor
+      !areaActors.some(actor => {
+        return `${actor.y}_${actor.x}` === positionKey;
       }) &&
       // Ignore start position
       positionKey !== positionKeyStart

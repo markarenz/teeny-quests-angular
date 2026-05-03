@@ -72,6 +72,7 @@ describe('getMoveOptions', () => {
       positionKeyStart,
       areaMap,
       areaItems,
+      areaActors: questMockData.content.areas['start'].actors,
     });
     expect(Object.keys(movementOptions).length).toBeGreaterThan(0);
   });
@@ -81,6 +82,7 @@ describe('getMoveOptions', () => {
       positionKeyStart,
       areaMap,
       areaItems,
+      areaActors: questMockData.content.areas['start'].actors,
     });
     expect(Object.keys(movementOptions).length).toBeGreaterThan(0);
   });

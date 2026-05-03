@@ -18,6 +18,9 @@ import { AreaPropComponent } from '../area-prop/area-prop.component';
 import { AreaActorComponent } from '../area-actor/area-actor.component';
 import { GamePlayerComponent } from '../game-player/game-player.component';
 import { GameMovementOptionButtonComponent } from '../game-movement-option-button/game-movement-option-button.component';
+import { getIsNearPosition } from '@app/features/game/services/game-service/utils/common';
+import { actorDefinitions } from '@content/actor-definitions';
+import { ActorInteractionType } from '@app/features/main/interfaces/enums';
 
 @Component({
   selector: 'app-game-area',
@@ -129,8 +132,23 @@ export class GameAreaComponent {
     this._gameService.processTurn({ verb: 'item-click', noun: itemId });
   }
 
-  getIsNearPlayer(x: number, y: number): boolean {
-    return this.playerPosition === `${y}_${x}`;
+  getIsNearPlayer(x: number, y: number, exact: boolean): boolean {
+    return getIsNearPosition(x, y, exact, this.playerPosition);
+  }
+
+  handleActorClick(actor: QuestActor) {
+    const actorDef = actorDefinitions[actor.actorType];
+    if (!actorDef) {
+      console.error(
+        'No actor definition found for actor type',
+        actor.actorType
+      );
+      return;
+    }
+    if (actorDef.interactionType === ActorInteractionType.HOSTILE) {
+      this._gameService.processTurn({ verb: 'attack', noun: actor.id });
+    }
+    // FUTURE: DIALOG, SHOP
   }
 
   ngOnDestroy() {

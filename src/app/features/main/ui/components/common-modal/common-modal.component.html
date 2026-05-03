@@ -10,7 +10,7 @@
       </div>
       <div #elementRefFooter class="modal-actions px-8 py-8 flex justify-end gap-4">
         @if(!isLockedOut) { @if(showCancel) {
-        <app-button variant="outlined" label="Cancel" (onButtonClick)="handleCancelClick()" />
+        <app-button variant="outlined" [label]="cancelLabel" (onButtonClick)="handleCancelClick()" />
         }
         <app-button variant="contained" [label]="confirmLabel" data-testid="common-modal-confirm"
           (onButtonClick)="handleConfirmClick()" />

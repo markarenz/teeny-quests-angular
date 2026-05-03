@@ -1,6 +1,7 @@
 export type AudioDefinition = {
   filename: string;
   volume: number;
+  credit: string;
 };
 
 export const audioIdMap: Map<string, AudioDefinition> = new Map([
@@ -9,6 +10,7 @@ export const audioIdMap: Map<string, AudioDefinition> = new Map([
     {
       filename: '370962__cabled_mess__click-01_minimal-ui-sounds.wav',
       volume: 0.5,
+      credit: 'Cabled Mess',
     },
   ],
   [
@@ -16,6 +18,7 @@ export const audioIdMap: Map<string, AudioDefinition> = new Map([
     {
       filename: '90125__pierrecartoons1979__click_tiny.wav',
       volume: 0.5,
+      credit: 'Pierre Cartoons',
     },
   ],
   [
@@ -23,6 +26,7 @@ export const audioIdMap: Map<string, AudioDefinition> = new Map([
     {
       filename: '697182__znukem__single-footstep.wav',
       volume: 0.7,
+      credit: 'Znukem',
     },
   ],
   [
@@ -30,6 +34,7 @@ export const audioIdMap: Map<string, AudioDefinition> = new Map([
     {
       filename: '697182__znukem__single-footstep2.wav',
       volume: 0.7,
+      credit: 'Znukem',
     },
   ],
   [
@@ -37,6 +42,7 @@ export const audioIdMap: Map<string, AudioDefinition> = new Map([
     {
       filename: '144248__dwoboyle__door-garage_door-handle-02.wav',
       volume: 0.2,
+      credit: 'Dwoboyle',
     },
   ],
   [
@@ -44,6 +50,7 @@ export const audioIdMap: Map<string, AudioDefinition> = new Map([
     {
       filename: '422495__nightflame__swinging-staff-whoosh-low-03.wav',
       volume: 0.5,
+      credit: 'Nightflame',
     },
   ],
   [
@@ -51,6 +58,7 @@ export const audioIdMap: Map<string, AudioDefinition> = new Map([
     {
       filename: '458400__breviceps__lock-the-door.wav',
       volume: 0.4,
+      credit: 'Breviceps',
     },
   ],
   [
@@ -58,6 +66,7 @@ export const audioIdMap: Map<string, AudioDefinition> = new Map([
     {
       filename: '654251__strechy__item-pickup-sound.wav',
       volume: 0.4,
+      credit: 'Strechy',
     },
   ],
   [
@@ -65,6 +74,7 @@ export const audioIdMap: Map<string, AudioDefinition> = new Map([
     {
       filename: '751699__el_boss__game-jump-sound-boing-2-of-2.wav',
       volume: 0.5,
+      credit: 'El Boss',
     },
   ],
   [
@@ -73,6 +83,7 @@ export const audioIdMap: Map<string, AudioDefinition> = new Map([
       filename:
         '460180__johanwestling__stone_tile_dragging_friction_scrape_m10.wav',
       volume: 0.2,
+      credit: 'Johan Westling',
     },
   ],
   [
@@ -80,6 +91,7 @@ export const audioIdMap: Map<string, AudioDefinition> = new Map([
     {
       filename: '479338__danielvega__torch-on.mp3',
       volume: 0.2,
+      credit: 'Daniel Vega',
     },
   ],
   [
@@ -87,6 +99,7 @@ export const audioIdMap: Map<string, AudioDefinition> = new Map([
     {
       filename: '479338__danielvega__torch-off.mp3',
       volume: 0.2,
+      credit: 'Daniel Vega',
     },
   ],
   [
@@ -95,6 +108,7 @@ export const audioIdMap: Map<string, AudioDefinition> = new Map([
       filename:
         '337049__shinephoenixstormcrow__320655__rhodesmas__level-up-01.mp3',
       volume: 0.4,
+      credit: 'Shine Phoenix Stormcrow',
     },
   ],
   [
@@ -102,6 +116,75 @@ export const audioIdMap: Map<string, AudioDefinition> = new Map([
     {
       filename: '383979__chrisreierson__frozen-wind-chime-ding.mp3',
       volume: 0.5,
+      credit: 'Chris Reierson',
     },
   ],
+  [
+    'player-death',
+    {
+      filename: '43697__notchfilter__game-over02.mp3',
+      volume: 0.7,
+      credit: 'Notchfilter',
+    },
+  ],
+  [
+    'player-hurt',
+    {
+      filename: '649543__ajanhallinta__ouch.mp3',
+      volume: 0.5,
+      credit: 'Ajanhallinta',
+    },
+  ],
+  [
+    'attack-slash',
+    {
+      filename: '362349__beerbelly38__knife-slash-2.mp3',
+      volume: 0.5,
+      credit: 'Beerbelly38',
+    },
+  ],
+
+  // FIND NEW SOUNDS FOR THESE
+  [
+    'attack',
+    {
+      filename: '362349__beerbelly38__knife-slash-2.mp3',
+      volume: 0.5,
+      credit: 'Beerbelly38',
+    },
+  ],
+  [
+    'slime-move',
+    {
+      filename: '573583__breviceps__cartoon-slurp.mp3',
+      volume: 0.2,
+      credit: 'Breviceps',
+    },
+  ],
+  [
+    'actor-miss',
+    {
+      filename: '831936__1bob__woosh.mp3',
+      volume: 0.5,
+      credit: '1bob',
+    },
+  ],
+  [
+    'actor-hurt',
+    {
+      filename: '806593__edimar_ramide__hurt2.mp3',
+      volume: 0.5,
+      credit: 'Edimar Ramide',
+    },
+  ],
+  [
+    'actor-death',
+    {
+      filename: '35416__altemark__percussivebleep2.mp3',
+      volume: 0.5,
+      credit: 'Altemark',
+    },
+  ],
+
+  //
 ]);
