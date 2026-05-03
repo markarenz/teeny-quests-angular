@@ -21,6 +21,7 @@ export class CommonModalComponent {
   @Input('content') content: string = '';
   @Input('showCancel') showCancel: boolean = false;
   @Input('isLockedOut') isLockedOut: boolean = false;
+  @Input('cancelLabel') cancelLabel: string = 'CANCEL';
   @Input('confirmLabel') confirmLabel: string = 'OK';
   @Output() onClose = new EventEmitter();
   @Output() onConfirm = new EventEmitter();

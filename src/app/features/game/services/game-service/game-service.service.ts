@@ -21,7 +21,10 @@ import {
 } from '@config/index';
 import { getMoveOptions, getPathBetweenPoints } from './utils/pathfinding';
 import { STANDARD_MOVE_DURATION } from '@config/index';
-import { itemDefinitions } from '@content/item-definitions';
+import {
+  itemDefinitions,
+  itemWeaponDefinitions,
+} from '@content/item-definitions';
 import { propDecoDefinitions } from '@content/prop-definitions';
 import { logger } from '@app/features/main/utils/logger';
 import { processTurnActions } from './utils/turn-actions';
@@ -30,13 +33,19 @@ import { Lights, playerCombatDefaults } from '@content/constants';
 import { getAreaElementPositionStyle } from '../../lib/utils';
 import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 import { processEvents } from './utils/event-actions';
-import { calcScore, getLevelGoals } from './utils/common';
+import { calcScore, getIsNearPosition, getLevelGoals } from './utils/common';
 import {
   ActivityType,
+  ActorInteractionType,
   ActorStatus,
   GameStateMode,
 } from '@app/features/main/interfaces/enums';
 import { actorDefinitions } from '@content/actor-definitions';
+import {
+  getIsPlayerNearActorCell,
+  processActorCombatTurn,
+  processPlayerCombatTurn,
+} from './utils/combat-utils';
 
 @Injectable({
   providedIn: 'root',
@@ -85,6 +94,9 @@ export class GameService {
 
   private levelGoals = new BehaviorSubject<string>('');
   levelGoalsObs = this.levelGoals.asObservable();
+
+  private isPlayerNearActorCell = new BehaviorSubject<boolean>(false);
+  isPlayerNearActorCellObs = this.isPlayerNearActorCell.asObservable();
 
   testInit(nextGameROM: QuestROM): void {
     this.questROM.next(nextGameROM);
@@ -150,6 +162,7 @@ export class GameService {
         positionKeyStart: `${nextGameState.player.y}_${nextGameState.player.x}`,
         areaMap: nextGameState.areas[nextGameState.player.areaId].map,
         areaItems: nextGameState.areas[nextGameState.player.areaId].items,
+        areaActors: nextGameState.areas[nextGameState.player.areaId].actors,
       });
       this.movementOptions.next(nextMovementOptions);
     }
@@ -790,6 +803,46 @@ export class GameService {
   };
 
   /**
+   * Run player combat turn
+   *
+   * @param weaponId The weapon (inventory) item being used to attack
+   * @returns The resulting game state after the item effect is applied.
+   */
+  public turnActionItemAttack = async (
+    actorId: string
+  ): Promise<QuestState> => {
+    // FUTURE: add item equip system;
+    const weaponId = 'bareHands';
+    let nextGameState = structuredClone(this.gameState.value)!;
+    const weaponDef = itemWeaponDefinitions[weaponId];
+    const actor = nextGameState.areas[nextGameState.player.areaId].actors.find(
+      a => a.id === actorId
+    );
+    const actorDef = actor ? actorDefinitions[actor.actorType] : null;
+    if (!weaponDef || !actor || !actorDef) {
+      logger({
+        message: `Invalid attack action: weaponId=${weaponId}, actor=${actor?.id}, actorType=${actor?.actorType}`,
+        type: 'error',
+      });
+      return nextGameState;
+    }
+    nextGameState = processPlayerCombatTurn(
+      nextGameState,
+      actor,
+      weaponDef,
+      this._audioService,
+      this._messageService
+    );
+    // Consumable weapons
+    // let nextGameState = structuredClone(this.gameState.value)!;
+    // nextGameState.player.inventory[itemId] = Math.max(
+    //   nextGameState.player.inventory[itemId] - 1,
+    //   0
+    // );
+    return nextGameState;
+  };
+
+  /**
    * Consumes an inventory item and applies its gameplay effect when the item is
    * usable in the current context.
    *
@@ -1024,14 +1077,14 @@ export class GameService {
       const distance = this.getDistance(actor.y, actor.x, player.y, player.x);
       if (
         actorDef &&
-        actorDef.isHostile &&
+        actorDef.interactionType === ActorInteractionType.HOSTILE &&
         actor.actorStatus === ActorStatus.IDLE &&
         distance <= (actorDef.wakeRadius ?? 0)
       ) {
         actor.actorStatus = ActorStatus.SEEKING;
       } else if (
         actorDef &&
-        actorDef.isHostile &&
+        actorDef.interactionType === ActorInteractionType.HOSTILE &&
         actor.actorStatus === ActorStatus.SEEKING &&
         distance >= (actorDef.sleepRadius ?? 0)
       ) {
@@ -1039,13 +1092,17 @@ export class GameService {
       }
       // 2. Move seeking actors along path toward player when possible
       if (actor.actorStatus === ActorStatus.SEEKING) {
-        const path = getPathBetweenPoints({
+        const pathRaw = getPathBetweenPoints({
           start: `${actor.y}_${actor.x}`,
           end: `${player.y}_${player.x}`,
           areaMap: nextGameState.areas[nextGameState.player.areaId].map,
           areaItems: nextGameState.areas[nextGameState.player.areaId].items,
           positionKeys: getPositionKeysForGridSize(),
         });
+
+        // Prevent actor from moving onto player's square.
+        const path = pathRaw.length > 0 ? pathRaw.slice(0, -1) : null;
+
         if (path && path.length) {
           const steps = path.slice(
             1,
@@ -1065,7 +1122,10 @@ export class GameService {
                 (a: QuestActor) => (a.id === actor.id ? movedActor : a)
               );
             this.gameState.next(nextGameState);
+            this._audioService.playSound(actorDef.soundMove);
             await this.delay(STANDARD_MOVE_DURATION);
+            actor.x = x;
+            actor.y = y;
           }
           await this.delay(250);
           this.isLockedOut.next(false);
@@ -1075,11 +1135,15 @@ export class GameService {
       //    NOTE: Combat mode is separate and uses different turn processing
       if (
         actor.actorStatus === ActorStatus.SEEKING &&
-        actor.y === player.y &&
-        actor.x === player.x
+        getIsNearPosition(actor.y, actor.x, false, `${player.y}_${player.x}`)
       ) {
-        console.log('COMBAT!');
-        nextGameState.mode = GameStateMode.COMBAT;
+        processActorCombatTurn(
+          nextGameState,
+          actor.id,
+          this._audioService,
+          this._messageService
+        );
+        // nextGameState.mode = GameStateMode.COMBAT;
       }
     }
   }
@@ -1107,6 +1171,7 @@ export class GameService {
     noun: string;
     amount?: number;
   }): Promise<void> {
+    // this.isPlayerNearActorCell.next(false);
     if (this.questROM.value && this.gameState.value) {
       let nextGameState = JSON.parse(JSON.stringify(this.gameState.value));
       switch (verb) {
@@ -1126,6 +1191,9 @@ export class GameService {
           break;
         case 'item-use':
           nextGameState = await this.turnActionItemUse(noun);
+          break;
+        case 'attack':
+          nextGameState = await this.turnActionItemAttack(noun);
           break;
         case 'item-drop':
         default:
@@ -1159,24 +1227,24 @@ export class GameService {
         this.eraseLocalGameState(nextGameState.gameId);
       }
 
-      // FOR TESTING PURPOSES
-      nextGameState.player.health = Math.max(
-        Math.floor((nextGameState.player.health - 0.2) * 100) / 100,
-        0
-      );
+      let newIsPlayerNearActorCell = getIsPlayerNearActorCell(nextGameState);
+
+      await this.processActorTurns(nextGameState);
 
       if (nextGameState.player.health <= 0) {
+        await this.delay(200);
         nextGameState.flagValues['gameLost'] = true;
-        // this._audioService.playSound('game-lost');
+        this._audioService.playSound('player-death');
         this.eraseLocalGameState(nextGameState.gameId);
       }
 
-      await this.processActorTurns(nextGameState);
       nextGameState.numTurns += 1;
       this.setPropItemHeights(nextGameState);
       this.score.next(calcScore(nextGameState, this.questROM.value));
       this.saveLocalGameState(nextGameState);
       this.gameState.next(nextGameState);
+      newIsPlayerNearActorCell = getIsPlayerNearActorCell(nextGameState);
+      this.isPlayerNearActorCell.next(newIsPlayerNearActorCell);
       this.calculateMovementOptions(nextGameState);
     }
   }

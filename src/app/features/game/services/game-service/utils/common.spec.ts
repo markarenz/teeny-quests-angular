@@ -1,5 +1,5 @@
 import { ExitType } from '@content/exit-definitions';
-import { calcScore, getLevelGoals } from './common';
+import { calcScore, getIsNearPosition, getLevelGoals } from './common';
 import { questStateMockData } from '@app/features/editor/mocks/game.mock';
 import questMockData from '@app/features/editor/mocks/game.mock';
 import {
@@ -7,6 +7,7 @@ import {
   EventAction,
   EventConditionType,
 } from '@app/features/main/interfaces/enums';
+
 describe('getLevelGoals', () => {
   it('should return correct level goals string', () => {
     const mockGameROM = structuredClone(questMockData);
@@ -90,5 +91,55 @@ describe('calcScore', () => {
     // Assuming gold has a score value of 1 and key-silver has a score value of 10
     // gold (10 * 5 ) + key-silver (1) + flag1 (20) - numTurns (5) = 66
     expect(score).toBe(66);
+  });
+});
+
+describe('getIsNearPosition', () => {
+  type Scenario = {
+    label: string;
+    x: number;
+    y: number;
+    exact: boolean;
+    position: string;
+    expected: boolean;
+  };
+  const scenarios: Scenario[] = [
+    {
+      label: 'Inexact positive case',
+      x: 2,
+      y: 3,
+      exact: false,
+      position: '2_2',
+      expected: true,
+    },
+    {
+      label: 'Exact positive case',
+      x: 2,
+      y: 2,
+      exact: true,
+      position: '2_2',
+      expected: true,
+    },
+    {
+      label: 'Inexact negative case',
+      x: 3,
+      y: 3,
+      exact: false,
+      position: '5_5',
+      expected: false,
+    },
+    {
+      label: 'Exact negative case',
+      x: 3,
+      y: 3,
+      exact: true,
+      position: '5_5',
+      expected: false,
+    },
+  ];
+  scenarios.forEach(({ label, x, y, exact, position, expected }) => {
+    it(`should return whether y/x near position - ${label}`, () => {
+      expect(getIsNearPosition(x, y, exact, position)).toBe(expected);
+    });
   });
 });

@@ -79,4 +79,46 @@ describe('processTurnActions', () => {
     expect(updatedPropStatus).toBe('on');
     expect(messages.length).toBe(3);
   });
+
+  it('processActionSetFlag should set a flag', () => {
+    const mockActions: ActionEffect[] = [
+      {
+        id: 'abcd1234',
+        action: EventAction.SET_FLAG,
+        actionObject: {
+          areaId: 'start',
+          identifier: 'flag1',
+        },
+        actionValue: 'true',
+      },
+    ];
+    const { nextGameState } = processTurnActions(
+      gameStateMock,
+      mockActions,
+      mockAudioService
+    );
+    const flagValue = nextGameState.flagValues['flag1'];
+    expect(flagValue).toBeTrue();
+  });
+
+  it('processActionSetFlag should not set a flag if the flag is invalid', () => {
+    const mockActions: ActionEffect[] = [
+      {
+        id: 'abcd1234',
+        action: EventAction.SET_FLAG,
+        actionObject: {
+          areaId: 'start',
+          identifier: undefined,
+        },
+        actionValue: 'true',
+      },
+    ];
+    const { nextGameState } = processTurnActions(
+      gameStateMock,
+      mockActions,
+      mockAudioService
+    );
+    const flagValue = nextGameState.flagValues['invalid'];
+    expect(flagValue).toBeUndefined();
+  });
 });

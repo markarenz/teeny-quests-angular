@@ -7,6 +7,7 @@ import {
   QuestROM,
   QuestState,
   Inventory,
+  SelectIUIOption,
 } from '@app/features/main/interfaces/types';
 import { GameAreaComponent } from '../../components/game-area/game-area.component';
 import { pageModalTitles } from '@content/constants';
@@ -21,6 +22,7 @@ import { AuthProviderService } from '@app/features/auth/services/auth-provider-s
 import { logger } from '@app/features/main/utils/logger';
 import { ActivityType } from '@app/features/main/interfaces/enums';
 import { HealthHudComponent } from '../../components/health-hud/health-hud.component';
+import { getWeaponOptions } from '@app/features/game/services/game-service/utils/combat-utils';
 
 @Component({
   selector: 'app-game',
@@ -46,6 +48,7 @@ export class GameComponent {
 
   public isFullWidthMode: boolean = false;
   public isLoading: boolean = false;
+  public gameROMStatus: string = '';
   public gameStatus: string = '';
   public gameAuthorId: string = '';
   public gameModalStatus: string = 'loading';
@@ -59,6 +62,9 @@ export class GameComponent {
   public numTurns: number = 0;
   public playerHealth: number = 0;
   public playerMaxHealth: number = 0;
+  public showGame: boolean = false;
+  public showPlayerHurt: boolean = false;
+  public weaponOptions: SelectIUIOption[] = [];
   private userId: string | null = null;
 
   constructor(
@@ -80,7 +86,7 @@ export class GameComponent {
     if (this.title !== '' && this.userId !== null) {
       const v = this._route.snapshot.queryParamMap.get('v');
       if (
-        (this.gameStatus !== 'active' || !!v) &&
+        (this.gameROMStatus !== 'active' || !!v) &&
         this.gameAuthorId !== this.userId
       ) {
         logger({
@@ -122,7 +128,7 @@ export class GameComponent {
       this._gameService.gameROMObs.subscribe((data: QuestROM | null) => {
         if (data) {
           this.title = `Teeny Quest: ${data.title}`;
-          this.gameStatus = data.itemStatus;
+          this.gameROMStatus = data.itemStatus;
           this.gameAuthorId = data.userId;
           this.isLoading = false;
           const nextPageModalStatus = 'intro';
@@ -146,8 +152,15 @@ export class GameComponent {
         if (data) {
           this.numTurns = data.numTurns;
         }
+        this.weaponOptions = getWeaponOptions(data?.player.inventory);
 
         if (data?.player?.health !== undefined) {
+          if (data.player.health < this.playerHealth) {
+            this.showPlayerHurt = true;
+            setTimeout(() => {
+              this.showPlayerHurt = false;
+            }, 200);
+          }
           this.playerHealth = data.player.health;
           this.playerMaxHealth = data.player.maxHealth ?? 4;
         }
@@ -213,7 +226,7 @@ export class GameComponent {
     this._gameService.setPageModalStatus('');
   };
   handleGameEndClick = () => {
-    this.gameStatus = 'active';
+    this.gameStatus = '';
     this.router.navigate(['/']);
   };
   handleToggleFullWidth = () => {
@@ -222,7 +235,8 @@ export class GameComponent {
   };
   handleResetProgress = () => {
     this._gameService.resetGameProgress();
-    this.gameStatus = 'active';
-    // window.location.reload();
+    this.gameStatus = '';
+    this.showGame = false;
+    this.ngOnInit();
   };
 }

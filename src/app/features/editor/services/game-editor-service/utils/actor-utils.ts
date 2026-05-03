@@ -101,6 +101,10 @@ export const utilUpdateActor = ({
   const gameObj = { ...game } as QuestROM;
   const area = gameObj?.content.areas[selectedAreaId];
 
+  const actorDef = actorDefinitions[updatedActor.actorType];
+  if (updatedActor.health > actorDef.maxHealth) {
+    updatedActor.health = actorDef.maxHealth;
+  }
   if (area) {
     const newActors = area.actors.map(actor =>
       actor.id === id

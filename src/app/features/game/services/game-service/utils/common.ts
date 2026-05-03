@@ -1,8 +1,4 @@
-import {
-  ConditionValueType,
-  EventAction,
-  EventConditionType,
-} from '@app/features/main/interfaces/enums';
+import { EventAction } from '@app/features/main/interfaces/enums';
 import { inventoryDefinitions } from '@content/item-definitions';
 import { QuestROM, QuestState } from '@app/features/main/interfaces/types';
 import { ExitType } from '@content/exit-definitions';
@@ -57,4 +53,17 @@ export const calcScore = (
   });
   score -= gameState.numTurns;
   return Math.max(0, score);
+};
+
+export const getIsNearPosition = (
+  x: number,
+  y: number,
+  exact: boolean,
+  targetPosition: string
+): boolean => {
+  if (exact) {
+    return targetPosition === `${y}_${x}`;
+  }
+  const [targetY, targetX] = targetPosition.split('_').map(Number);
+  return Math.abs(targetX - x) <= 1 && Math.abs(targetY - y) <= 1;
 };

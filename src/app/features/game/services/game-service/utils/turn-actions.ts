@@ -176,11 +176,9 @@ export const processActionSetFlag = (
     return { nextGameState: actionGameState, message };
   }
 
-  if (flagId) {
-    actionGameState.flagValues = {
-      ...actionGameState.flagValues,
-      [flagId]: flagValue,
-    };
-  }
+  actionGameState.flagValues = {
+    ...actionGameState.flagValues,
+    [flagId]: flagValue,
+  };
   return { nextGameState: actionGameState, message };
 };

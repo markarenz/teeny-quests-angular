@@ -1,10 +1,14 @@
-<div [style.width]="width" [style.height]="width" [style.z-index]="position.z" class="area-actor"
-  [style.bottom]="position.bottom" [style.filter]="'brightness(' + (lightLevel * 100) + '%)'"
-  [style.left]="position.left" id="area-actor-{{ actor.id }}">
+<div [style.width]="width" [style.height]="width" [style.z-index]="position.z"
+  class="area-actor group {{isHurt ? 'hurt' : ''}}" [style.bottom]="position.bottom"
+  [style.filter]="'brightness(' + (lightLevel * 100) + '%)'" [style.left]="position.left"
+  id="area-actor-{{ actor.id }}">
+  <div class="absolute top-0 left-0 w-full h-full pointer-events-none flex items-start justify-center">
+    {{healthPercent}}%
+  </div>
   <div class="absolute top-0 left-0 w-full h-full pointer-events-none">
   </div>
   @if (actor.actorType === 'slime_green') {
-  <app-svg-actor-slime-green [isActorSelected]="isActorSelected" [isClickable]="!isLockedOut"
+  <app-svg-actor-slime-green [isActorSelected]="isActorSelected" [isClickable]="isClickable && !isLockedOut"
     [status]="actor.actorStatus" [relativePlayerXPos]="relativePlayerXPos" />
 
   } @if (isActorSelected) {
@@ -13,11 +17,9 @@
     aria-hidden="true">
   </div>
   }
-  @if (isEditorMode && !isLockedOut) {
+  @if (isClickable && !isLockedOut) {
   <button role="button" type="button" [attr.aria-label]="ariaLabel" (click)="handleClick()"
-    (mousedown)="handleMouseDown()" [disabled]="!isClickable && !isEditorMode" class="absolute top-[45%] left-[25%] w-[50%] h-[40%] cursor-pointer pointer-events-auto rounded-full focus:outline-none {{isEditorMode
-    ? 'ring-0 group-hover:ring-4 focus:ring-4 focus:ring-offset-2 focus:ring-offset-primaryDarker ring-primaryDark '
-    : ''}}
-    transition-all"></button>
+    [disabled]="!isClickable && !isEditorMode"
+    class="absolute top-[45%] left-[25%] w-[50%] h-[40%] cursor-pointer pointer-events-auto rounded-full outline-none ring-0 ring-primaryDark focus:ring-4 focus:ring-primaryDarker group-hover:ring-4 transition-all"></button>
   }
 </div>

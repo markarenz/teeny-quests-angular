@@ -42,6 +42,8 @@ describe('AreaActorComponent', () => {
       const mockActor = { ...defaultActor, x: 7, y: 7, h: 1, areaId: 'start' };
       component.actor = mockActor;
 
+      component.ngOnChanges({});
+
       component.playerPosition = '0_0';
       component.updateActorProps();
       expect(component.relativePlayerXPos).toBe(0);

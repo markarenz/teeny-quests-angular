@@ -43,18 +43,33 @@ export class AreaActorComponent {
   public width: string = '0%';
   public position: AreaPosition = { left: '0', bottom: '0', z: 0 };
   public ariaLabel: string = '';
+  public currentHealth: number = 0;
+  public maxHealth: number = 0;
+  public healthPercent: number = 100;
   public relativePlayerXPos: number = 0; // -1 to left, 1 to right
+  public isHurt: boolean = false;
 
   getNumFromPositionString(position: string): number {
     return parseInt(position.replace('%', ''));
   }
   updateActorProps() {
     if (this.actor) {
-      const { x, y, h } = this.actor;
+      const { x, y, h, actorType } = this.actor;
+      const actorDef = actorDefinitions[actorType];
       const cellW = 100 / this.gridSize;
       this.position = getAreaElementPositionStyle(this.gridSize, y, x, h);
       this.width = `${cellW}%`;
       this.ariaLabel = `Select Actor ${this.actor.y}_${this.actor.x}`;
+      this.maxHealth = actorDef ? actorDef.maxHealth : 0;
+      if (this.actor.health < this.currentHealth) {
+        this.isHurt = true;
+        setTimeout(() => {
+          this.isHurt = false;
+        }, 500);
+      }
+      this.currentHealth = this.actor.health;
+      this.healthPercent =
+        this.maxHealth > 0 ? (this.actor.health / this.maxHealth) * 100 : 0;
       if (this.playerPosition !== '-1_-1') {
         const [playerY, playerX] = this.playerPosition.split('_').map(Number);
         const playerPosition = getAreaElementPositionStyle(
@@ -83,11 +98,6 @@ export class AreaActorComponent {
     this.updateActorProps();
   }
   handleClick() {
-    if (this.isEditorMode) {
-      this.onClick.emit(this.actor.id);
-    }
-  }
-  public handleMouseDown(): void {
-    console.log('Mouse down on actor', this.actor);
+    this.onClick.emit(this.actor.id);
   }
 }

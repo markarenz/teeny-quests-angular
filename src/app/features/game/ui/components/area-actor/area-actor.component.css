@@ -3,3 +3,36 @@
   pointer-events: none;
   transition: 0.05s all ease-out;
 }
+
+.hurt {
+  animation:
+    hurtFlash 0.4s ease-out,
+    shakeX 0.4s linear;
+}
+@keyframes shakeX {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-2%);
+  }
+  50% {
+    transform: translateX(2%);
+  }
+  75% {
+    transform: translateX(-2%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes hurtFlash {
+  0% {
+    filter: brightness(400%);
+  }
+  100% {
+    transform: translateX(-10%);
+    filter: brightness(100%);
+  }
+}
