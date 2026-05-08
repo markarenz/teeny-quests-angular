@@ -1,7 +1,8 @@
 import {
-  ActorStatus,
+  AnimStatus,
   EventAction,
   GameStateMode,
+  Direction,
 } from '@app/features/main/interfaces/enums';
 import { QuestROM, QuestState } from '@app/features/main/interfaces/types';
 
@@ -479,7 +480,8 @@ const questMockData: QuestROM = {
             id: 'actor-1',
             actorType: 'slime_green',
             areaId: 'start',
-            actorStatus: ActorStatus.IDLE,
+            animStatus: AnimStatus.IDLE,
+            facing: Direction.SOUTH,
             health: 10,
             x: 4,
             y: 4,
@@ -944,7 +946,7 @@ export const questStateMockData: QuestState = {
   mode: GameStateMode.DEFAULT,
   player: {
     ...questMockData.content.player,
-    facing: 'south',
+    facing: Direction.SOUTH,
     health: 10,
     statusActions: [],
   },

@@ -37,7 +37,8 @@ import { calcScore, getIsNearPosition, getLevelGoals } from './utils/common';
 import {
   ActivityType,
   ActorInteractionType,
-  ActorStatus,
+  AnimStatus,
+  Direction,
   GameStateMode,
 } from '@app/features/main/interfaces/enums';
 import { actorDefinitions } from '@content/actor-definitions';
@@ -365,7 +366,7 @@ export class GameService {
       mode: GameStateMode.DEFAULT,
       player: {
         ...nextGameROM.content.player,
-        facing: 'east',
+        facing: Direction.EAST,
         statusActions: [],
         ...playerCombatDefaults,
       },
@@ -1078,25 +1079,25 @@ export class GameService {
       if (
         actorDef &&
         actorDef.interactionType === ActorInteractionType.HOSTILE &&
-        actor.actorStatus === ActorStatus.IDLE &&
+        actor.animStatus === AnimStatus.IDLE &&
         distance <= (actorDef.wakeRadius ?? 0)
       ) {
-        actor.actorStatus = ActorStatus.SEEKING;
+        actor.animStatus = AnimStatus.SEEKING;
       } else if (
         actorDef &&
         actorDef.interactionType === ActorInteractionType.HOSTILE &&
-        actor.actorStatus === ActorStatus.SEEKING &&
+        actor.animStatus === AnimStatus.SEEKING &&
         distance >= (actorDef.sleepRadius ?? 0)
       ) {
-        actor.actorStatus = ActorStatus.IDLE;
+        actor.animStatus = AnimStatus.IDLE;
       }
       // 2. Move seeking actors along path toward player when possible
-      if (actor.actorStatus === ActorStatus.SEEKING) {
+      if (actor.animStatus === AnimStatus.SEEKING) {
         const pathRaw = getPathBetweenPoints({
           start: `${actor.y}_${actor.x}`,
           end: `${player.y}_${player.x}`,
           areaMap: nextGameState.areas[nextGameState.player.areaId].map,
-          areaItems: nextGameState.areas[nextGameState.player.areaId].items,
+          areaActors: nextGameState.areas[nextGameState.player.areaId].actors,
           positionKeys: getPositionKeysForGridSize(),
         });
 
@@ -1134,7 +1135,7 @@ export class GameService {
       // 3. Check if seeking actors are on the player square and should attack
       //    NOTE: Combat mode is separate and uses different turn processing
       if (
-        actor.actorStatus === ActorStatus.SEEKING &&
+        actor.animStatus === AnimStatus.SEEKING &&
         getIsNearPosition(actor.y, actor.x, false, `${player.y}_${player.x}`)
       ) {
         processActorCombatTurn(

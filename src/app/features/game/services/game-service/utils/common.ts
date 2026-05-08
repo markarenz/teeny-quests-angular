@@ -65,5 +65,8 @@ export const getIsNearPosition = (
     return targetPosition === `${y}_${x}`;
   }
   const [targetY, targetX] = targetPosition.split('_').map(Number);
-  return Math.abs(targetX - x) <= 1 && Math.abs(targetY - y) <= 1;
+  return (
+    (y === targetY && (x === targetX - 1 || x === targetX + 1)) ||
+    (x === targetX && (y === targetY - 1 || y === targetY + 1))
+  );
 };

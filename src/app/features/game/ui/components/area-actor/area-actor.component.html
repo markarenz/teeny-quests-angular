@@ -9,7 +9,7 @@
   </div>
   @if (actor.actorType === 'slime_green') {
   <app-svg-actor-slime-green [isActorSelected]="isActorSelected" [isClickable]="isClickable && !isLockedOut"
-    [status]="actor.actorStatus" [relativePlayerXPos]="relativePlayerXPos" />
+    [status]="actor.animStatus" [relativePlayerXPos]="relativePlayerXPos" />
 
   } @if (isActorSelected) {
   <div

@@ -78,9 +78,10 @@ export enum ActorType {
   SLIME_PURPLE = 'slime_purple',
 }
 
-export enum ActorStatus {
+export enum AnimStatus {
   IDLE = 'IDLE',
   SEEKING = 'SEEKING',
+  ATTACKING = 'ATTACKING',
 }
 export enum GameStateMode {
   DEFAULT = 'DEFAULT',
@@ -93,4 +94,11 @@ export enum ActorInteractionType {
   HOSTILE = 'HOSTILE',
   TRADE = 'TRADE',
   DIALOG = 'DIALOG',
+}
+
+export enum Direction {
+  NORTH = 'north',
+  SOUTH = 'south',
+  EAST = 'east',
+  WEST = 'west',
 }

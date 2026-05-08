@@ -6,11 +6,7 @@ import questMockData from '@app/features/editor/mocks/game.mock';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { MessageService } from '@app/features/game/services/message/message.service';
 import { mockActor } from '@app/features/editor/mocks/actor.mock';
-import {
-  ActorInteractionType,
-  ActorStatus,
-  ActorType,
-} from '@app/features/main/interfaces/enums';
+import { ActorInteractionType } from '@app/features/main/interfaces/enums';
 
 describe('GameAreaComponent', () => {
   let component: GameAreaComponent;

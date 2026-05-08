@@ -14,7 +14,7 @@ import {
 import { SvgActorSlimeGreenComponent } from './actors/svg-actor-slime-green/svg-actor-slime-green.component';
 import { actorDefinitions } from '@content/actor-definitions';
 import { AudioService } from '@app/features/main/services/audio/audio-service.service';
-import { ActorStatus, ActorType } from '@app/features/main/interfaces/enums';
+// import { AnimStatus, ActorType } from '@app/features/main/interfaces/enums';
 import { defaultActor } from '@app/features/game/lib/constants';
 
 @Component({

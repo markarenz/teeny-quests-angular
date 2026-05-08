@@ -14,7 +14,7 @@ import { firstValueFrom, skip, take } from 'rxjs';
 import { MessageService } from '../message/message.service';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { AudioService } from '@app/features/main/services/audio/audio-service.service';
-import { ActorStatus, ActorType } from '@app/features/main/interfaces/enums';
+import { AnimStatus, Direction } from '@app/features/main/interfaces/enums';
 
 let gameMock = { ...questMockData };
 let gameMockFromDB = { ...questMockData };
@@ -241,7 +241,7 @@ describe('processTurn', () => {
       if (j === 1) {
         expect(gameState?.player?.x).toEqual(3);
         expect(gameState?.player?.y).toEqual(6);
-        expect(gameState?.player?.facing).toEqual('north');
+        expect(gameState?.player?.facing).toEqual(Direction.NORTH);
         flush();
       }
       j += 1;
@@ -638,6 +638,6 @@ describe('processActorTurns', () => {
       actor => actor.id === 'actor-1'
     );
     expect(updatedActor).toBeDefined();
-    expect(updatedActor?.actorStatus).toEqual(ActorStatus.SEEKING);
+    expect(updatedActor?.animStatus).toEqual(AnimStatus.SEEKING);
   });
 });
