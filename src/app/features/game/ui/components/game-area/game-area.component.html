@@ -10,21 +10,21 @@
 
     <!-- Area Items -->
     @for(item of areaItems; track item.id;) {
-    <app-area-item [item]="item" [isNearPlayer]="getIsNearPlayer(item.x, item.y, true)" [isLockedOut]="isLockedOut"
+    <app-area-item [item]="item" [isNearPlayer]="getIsNearPlayer(item.y, item.x, true)" [isLockedOut]="isLockedOut"
       (onClick)="handleItemClick(item.id)" [lightLevel]="getLightLevel(item)" />
     }
 
     <!-- Area PanelDeco -->
     @for(prop of areaProps; track prop.id;) {
     <app-area-prop [prop]="prop" [isClickable]="false" (onClick)="handlePropClick(prop.id)"
-      [isNearPlayer]="getIsNearPlayer(prop.x, prop.y, true)" [isLockedOut]="isLockedOut"
+      [isNearPlayer]="getIsNearPlayer(prop.y, prop.x, true)" [isLockedOut]="isLockedOut"
       [lightLevel]="getLightLevel(prop)" />
     }
 
     <!-- Area Actors -->
     @for(actor of areaActors; track actor.id;) {
-    <app-area-actor [actor]="actor" [isClickable]="getIsNearPlayer(actor.x, actor.y, false)" [isEditorMode]="false"
-      [isLockedOut]="false" [lightLevel]="getLightLevel(actor)" [playerPosition]="playerPositionForActors"
+    <app-area-actor [actor]="actor" [isClickable]="getIsNearPlayer(actor.y, actor.x, false)" [isEditorMode]="false"
+      [isLockedOut]="isLockedOut" [lightLevel]="getLightLevel(actor)" [playerPosition]="playerPositionForActors"
       (onClick)="handleActorClick(actor)" />
     }
 
@@ -32,8 +32,8 @@
     <!-- Area Exits -->
     @for(exit of areaExits; track exit.id;) {
     <app-area-exit [exit]="exit" [isClickable]="
-        getIsNearPlayer(exit.x, exit.y, true) && (exit.lock === '' || !exit.lock)
-      " [isNearPlayer]="getIsNearPlayer(exit.x, exit.y, true)" (onClick)="handleExitClick(exit.id)"
+        getIsNearPlayer(exit.y, exit.x, true) && (exit.lock === '' || !exit.lock)
+      " [isNearPlayer]="getIsNearPlayer(exit.y, exit.x, true)" (onClick)="handleExitClick(exit.id)"
       [isLockedOut]="isLockedOut" [lightLevel]="getLightLevel(exit)" />
     }
 

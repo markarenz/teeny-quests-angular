@@ -13,129 +13,83 @@ import {
   itemWeaponDefinitions,
 } from '@content/item-definitions';
 import { getIsNearPosition } from './common';
+import { AnimStatus, Direction } from '@app/features/main/interfaces/enums';
 
-export const playerHealthChange = (
-  nextGameState: QuestState,
-  delta: number,
-  audioService: AudioService
-) => {
-  if (delta < 0) {
-    audioService.playSound('player-hurt');
-  }
-  nextGameState.player.health = Math.max(
-    Math.floor((nextGameState.player.health + delta) * 100) / 100,
-    0
-  );
-};
+// export const processPlayerCombatTurn = async (
+//   gameState: QuestState,
+//   combatActor: QuestActor,
+//   weaponDef: ItemWeaponDefinition,
+//   audioService: AudioService,
+//   messageService: MessageService
+// ): Promise<QuestState> => {
+//   const nextGameState = structuredClone(gameState);
+//   const currentArea = nextGameState.areas[nextGameState.player.areaId];
+//   const actorDef = actorDefinitions[combatActor?.actorType ?? ''];
+//   if (!currentArea || !combatActor || !actorDef) {
+//     logger({
+//       message:
+//         'Current area, combat actor, or actor definition not found for combat turn',
+//       type: 'error',
+//     });
+//     return nextGameState;
+//   }
 
-export const processActorCombatTurn = (
-  nextGameState: QuestState,
-  combatActorId: string,
-  audioService: AudioService,
-  messageService: MessageService
-) => {
-  const player = nextGameState.player;
-  const currentArea = nextGameState.areas[nextGameState.player.areaId];
-  const combatActor = currentArea.actors?.find(
-    actor => actor.id === combatActorId
-  );
-  const actorDef = actorDefinitions[combatActor?.actorType ?? ''];
-  if (!currentArea || !combatActor || !actorDef) {
-    logger({
-      message:
-        'Current area, combat actor, or actor definition not found for combat turn',
-      type: 'error',
-    });
-    return;
-  }
+//   const playerFacing = getFacingForPosition(
+//     nextGameState.player.y,
+//     nextGameState.player.x,
+//     combatActor.y,
+//     combatActor.x
+//   );
+//   const actorFacing = getOppositeDirection(playerFacing);
 
-  const diceRoll = Math.random();
-  const isHit = diceRoll + actorDef.accuracy > 0.5 + (player.defense ?? 0);
+//   combatActor.facing = actorFacing;
+//   nextGameState.player.facing = playerFacing;
 
-  // Min damage is 50% of the actorDef.damage value and the max is 100%, quantize to 0.25 increments
-  const damage =
-    Math.ceil(
-      (actorDef.damage * 0.25 * 100 +
-        actorDef.damage * 0.75 * 100 * Math.random()) /
-        25
-    ) * 0.25;
+//   const diceRoll = Math.random();
 
-  const message = `${actorDef.name} attacks with ${actorDef.attackDescription}... and ${isHit ? `HITS for ${damage} damage` : 'MISSES'}!`;
-  messageService.showMessage({
-    title: 'Violence!',
-    message,
-    messageType: isHit ? 'warning' : 'info',
-  });
-  if (isHit) {
-    playerHealthChange(nextGameState, -1 * damage, audioService);
-  } else {
-    audioService.playSound('actor-miss');
-  }
-};
+//   const isHit = diceRoll + weaponDef.accuracy >= 0.25 + (actorDef.defense ?? 0);
 
-export const processPlayerCombatTurn = (
-  gameState: QuestState,
-  combatActor: QuestActor,
-  weaponDef: ItemWeaponDefinition,
-  audioService: AudioService,
-  messageService: MessageService
-): QuestState => {
-  const nextGameState = structuredClone(gameState);
-  const currentArea = nextGameState.areas[nextGameState.player.areaId];
-  const actorDef = actorDefinitions[combatActor?.actorType ?? ''];
-  if (!currentArea || !combatActor || !actorDef) {
-    logger({
-      message:
-        'Current area, combat actor, or actor definition not found for combat turn',
-      type: 'error',
-    });
-    return nextGameState;
-  }
+//   const damage =
+//     Math.ceil(
+//       (weaponDef.minDamage * 100 +
+//         (weaponDef.maxDamage - weaponDef.minDamage) * 100 * Math.random()) /
+//         25
+//     ) * 0.25;
+//   const newActorHealth = Math.max(
+//     Math.floor((combatActor.health - damage) * 100) / 100,
+//     0
+//   );
 
-  const diceRoll = Math.random();
+//   const message = `You attack with ${weaponDef.name}... and ${isHit ? `HIT for ${damage} damage; ${newActorHealth > 0 ? `${newActorHealth} health remain` : `The ${actorDef.name} is dead`}` : 'MISS'}!`;
+//   messageService.showMessage({
+//     title: 'Violence!',
+//     message,
+//     messageType: isHit ? 'success' : 'info',
+//   });
+//   if (isHit) {
+//     audioService.playSound(actorDef.soundHurt);
+//     nextGameState.areas[nextGameState.player.areaId].actors =
+//       nextGameState.areas[nextGameState.player.areaId].actors.map(actor =>
+//         actor.id === combatActor.id
+//           ? {
+//               ...actor,
+//               health: newActorHealth,
+//               animStatus:
+//                 newActorHealth > 0 ? AnimStatus.SEEKING : AnimStatus.DYING,
+//             }
+//           : actor
+//       );
 
-  const isHit = diceRoll + weaponDef.accuracy >= 0.25 + (actorDef.defense ?? 0);
-
-  const damage =
-    Math.ceil(
-      (weaponDef.minDamage * 100 +
-        (weaponDef.maxDamage - weaponDef.minDamage) * 100 * Math.random()) /
-        25
-    ) * 0.25;
-  const newActorHealth = Math.max(
-    Math.floor((combatActor.health - damage) * 100) / 100,
-    0
-  );
-
-  const message = `You attack with ${weaponDef.name}... and ${isHit ? `HIT for ${damage} damage; ${newActorHealth > 0 ? `${newActorHealth} health remain` : `The ${actorDef.name} is dead`}` : 'MISS'}!`;
-  messageService.showMessage({
-    title: 'Violence!',
-    message,
-    messageType: isHit ? 'success' : 'info',
-  });
-  if (isHit) {
-    audioService.playSound(actorDef.soundHurt);
-    nextGameState.areas[nextGameState.player.areaId].actors =
-      nextGameState.areas[nextGameState.player.areaId].actors.map(actor =>
-        actor.id === combatActor.id
-          ? { ...actor, health: newActorHealth }
-          : actor
-      );
-
-    if (newActorHealth <= 0) {
-      // Actor is dead, remove from area
-      nextGameState.areas[nextGameState.player.areaId].actors =
-        currentArea.actors?.filter(a => a.id !== combatActor.id);
-      audioService.playSound('actor-death');
-
-      // TODO: drop item
-      // TODO: run actions
-    }
-  } else {
-    audioService.playSound('actor-miss');
-  }
-  return nextGameState;
-};
+//     if (newActorHealth <= 0) {
+//       audioService.playSound('actor-death');
+//       // TODO: drop item
+//       // TODO: run actions
+//     }
+//   } else {
+//     audioService.playSound('actor-miss');
+//   }
+//   return nextGameState;
+// };
 
 export const getIsPlayerNearActorCell = (
   nextGameState: QuestState
@@ -143,8 +97,8 @@ export const getIsPlayerNearActorCell = (
   return nextGameState.areas[nextGameState.player.areaId].actors?.some(
     (a: QuestActor) =>
       getIsNearPosition(
-        a.x,
         a.y,
+        a.x,
         false,
         `${nextGameState.player.y}_${nextGameState.player.x}`
       )
@@ -167,4 +121,74 @@ export const getWeaponOptions = (
       label: def.name,
     }));
   return itemWeaponOptions;
+};
+
+export const updateActorGameState = (
+  gameState: QuestState,
+  actor: QuestActor
+): QuestState => {
+  console.log('updating actor game state', actor.animStatus);
+  const nextGameState: QuestState = {
+    ...gameState,
+    areas: {
+      ...gameState.areas,
+      [actor.areaId]: {
+        ...gameState.areas[actor.areaId],
+        actors: gameState.areas[actor.areaId].actors?.map(a =>
+          a.id === actor.id ? actor : a
+        ),
+      },
+    },
+  };
+  return nextGameState;
+};
+
+export const getFacingForPosition = (
+  y1: number,
+  x1: number,
+  y2: number,
+  x2: number
+): Direction => {
+  if (x1 < x2) {
+    return Direction.EAST;
+  } else if (x1 > x2) {
+    return Direction.WEST;
+  } else if (y1 < y2) {
+    return Direction.SOUTH;
+  } else if (y1 > y2) {
+    return Direction.NORTH;
+  }
+  return Direction.NORTH;
+};
+
+export const getOppositeDirection = (direction: Direction): Direction => {
+  switch (direction) {
+    case Direction.NORTH:
+      return Direction.SOUTH;
+    case Direction.SOUTH:
+      return Direction.NORTH;
+    case Direction.EAST:
+      return Direction.WEST;
+    case Direction.WEST:
+      return Direction.EAST;
+  }
+};
+
+export const deleteActorGameState = (
+  gameState: QuestState,
+  actor: QuestActor
+) => {
+  const nextGameState: QuestState = {
+    ...gameState,
+    areas: {
+      ...gameState.areas,
+      [actor.areaId]: {
+        ...gameState.areas[actor.areaId],
+        actors: gameState.areas[actor.areaId].actors?.filter(
+          a => a.id !== actor.id
+        ),
+      },
+    },
+  };
+  return nextGameState;
 };

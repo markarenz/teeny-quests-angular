@@ -88,7 +88,7 @@ export type QuestAreaExit = {
   name?: string;
   exitType: string;
   areaId: string;
-  direction: string;
+  direction: Direction;
   x: number;
   y: number;
   h: number;

@@ -82,6 +82,8 @@ export enum AnimStatus {
   IDLE = 'IDLE',
   SEEKING = 'SEEKING',
   ATTACKING = 'ATTACKING',
+  HURT = 'HURT',
+  DYING = 'DYING',
 }
 export enum GameStateMode {
   DEFAULT = 'DEFAULT',

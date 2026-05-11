@@ -14,7 +14,7 @@ export const defaultExit: QuestAreaExit = {
   id: 'test',
   exitType: 'default',
   areaId: '',
-  direction: 'north',
+  direction: Direction.NORTH,
   x: 2,
   y: 0,
   h: 1,

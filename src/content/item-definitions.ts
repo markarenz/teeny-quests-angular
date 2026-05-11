@@ -127,7 +127,7 @@ export const itemWeaponDefinitions: { [key: string]: ItemWeaponDefinition } = {
     accuracy: 0.2,
     minDamage: 0.25,
     maxDamage: 0.5,
-    weaponSoundId: 'pointy-stick-attack',
+    weaponSoundId: 'attack-slash',
   },
   pointyStick: {
     ...itemDefinitions['pointyStick'],
@@ -135,7 +135,7 @@ export const itemWeaponDefinitions: { [key: string]: ItemWeaponDefinition } = {
     accuracy: 0.4,
     minDamage: 0.5,
     maxDamage: 1,
-    weaponSoundId: 'pointy-stick-attack',
+    weaponSoundId: 'attack-slash',
   },
 };
 

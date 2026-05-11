@@ -4,6 +4,21 @@
 
   transform: translate(0, 0);
   transition: 0.05s all linear;
+
+  &.anim-status-attacking {
+    &.facing-north {
+      transform: translate(10%, -10%);
+    }
+    &.facing-south {
+      transform: translate(-10%, 10%);
+    }
+    &.facing-east {
+      transform: translate(10%, 10%);
+    }
+    &.facing-west {
+      transform: translate(-10%, -10%);
+    }
+  }
 }
 
 :host-context(.game-ended) .player-position {

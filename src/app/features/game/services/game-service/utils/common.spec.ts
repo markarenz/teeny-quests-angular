@@ -139,7 +139,7 @@ describe('getIsNearPosition', () => {
   ];
   scenarios.forEach(({ label, x, y, exact, position, expected }) => {
     it(`should return whether y/x near position - ${label}`, () => {
-      expect(getIsNearPosition(x, y, exact, position)).toBe(expected);
+      expect(getIsNearPosition(y, x, exact, position)).toBe(expected);
     });
   });
 });

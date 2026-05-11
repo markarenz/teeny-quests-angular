@@ -270,7 +270,7 @@ select {
   }
 }
 
-.animStatus-attacking {
+.anim-status-attacking {
   &.facing-north {
     transform: translate(10%, -10%);
   }
