@@ -865,21 +865,17 @@ export class GameService {
       this.gameState.next(nextGameState);
 
       this._audioService.playSound(actorDef.soundHurt);
-      console.log('Actor hurt', actor);
       await this.delay(250);
       actor.animStatus = AnimStatus.SEEKING;
       nextGameState = updateActorGameState(nextGameState, actor);
-      console.log('Actor after hurt', actor);
       this.gameState.next(nextGameState);
     }
-    console.log('Actor ...', actor);
 
     if (newActorHealth <= 0) {
       this._audioService.playSound('actor-death');
       actor.animStatus = AnimStatus.DYING;
       nextGameState = updateActorGameState(nextGameState, actor);
       this.gameState.next(nextGameState);
-      console.log('Actor defeated:', actor);
       await this.delay(1000);
       // 1: REMOVE ACTOR
       nextGameState = deleteActorGameState(nextGameState, actor);
@@ -888,47 +884,8 @@ export class GameService {
       // TODO: run actions
     }
 
-    // nextGameState = await processPlayerCombatTurn(
-    //   nextGameState,
-    //   actor,
-    //   weaponDef,
-    //   this._audioService,
-    //   this._messageService
-    // );
-    // const combatActor = nextGameState.areas[
-    //   nextGameState.player.areaId
-    // ].actors.find(a => a.id === actorId);
-    // const combatActorHealth = combatActor?.health ?? 4;
-    // console.log('CombatActor health', combatActor?.health, combatActorHealth);
-    // // await this.delay(combatActorHealth > 0 ? 250 : 1500);
-
-    // TODO: MOVE playerCombatTurn into this function
-
-    // if (combatActorHealth <= 0) {
-    //   console.log('REMOVE ACTOR');
-    //   nextGameState = {
-    //     ...nextGameState,
-    //     areas: {
-    //       ...nextGameState.areas,
-    //       [nextGameState.player.areaId]: {
-    //         ...nextGameState.areas[nextGameState.player.areaId],
-    //         actors: nextGameState.areas[
-    //           nextGameState.player.areaId
-    //         ].actors.filter(a => a.id !== combatActor?.id),
-    //       },
-    //     },
-    //   };
-    //   // Handle drop
-    //   // Handle actions
-    // }
-
     this.playerAnim.next(AnimStatus.IDLE);
-    // Consumable weapons
-    // let nextGameState = structuredClone(this.gameState.value)!;
-    // nextGameState.player.inventory[itemId] = Math.max(
-    //   nextGameState.player.inventory[itemId] - 1,
-    //   0
-    // );
+    // TODO: Consumable weapons
     return nextGameState;
   };
 
@@ -1239,11 +1196,7 @@ export class GameService {
           facing: actorFacing,
         });
         nextGameState.player.facing = getOppositeDirection(actorFacing);
-        console.log(
-          'Actor faces player, vice versa',
-          actorFacing,
-          nextGameState.player.facing
-        );
+
         this.gameState.next(nextGameState);
 
         const diceRoll = Math.random();

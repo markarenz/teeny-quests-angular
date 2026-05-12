@@ -44,7 +44,6 @@ export const updateActorGameState = (
   gameState: QuestState,
   actor: QuestActor
 ): QuestState => {
-  console.log('updating actor game state', actor.animStatus);
   const nextGameState: QuestState = {
     ...gameState,
     areas: {

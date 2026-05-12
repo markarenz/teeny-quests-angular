@@ -80,12 +80,6 @@ export class AreaActorComponent {
       this.currentHealth = this.actor.health;
       this.healthPercent =
         this.maxHealth > 0 ? (this.actor.health / this.maxHealth) * 100 : 0;
-      console.log(
-        'healthPrecent',
-        this.healthPercent,
-        this.actor.health,
-        this.maxHealth
-      );
       if (this.playerPosition !== '-1_-1') {
         const [playerY, playerX] = this.playerPosition.split('_').map(Number);
         const playerPosition = getAreaElementPositionStyle(
@@ -107,7 +101,6 @@ export class AreaActorComponent {
     }
   }
   ngOnChanges(changes: SimpleChanges) {
-    console.log('actor changes', changes);
     this.updateActorProps();
   }
 
