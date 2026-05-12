@@ -12,6 +12,7 @@ import {
 import { firstValueFrom, skip, take } from 'rxjs';
 import { provideOAuthClient } from 'angular-oauth2-oidc'; // Assuming a similar provider function exists
 import { provideHttpClient } from '@angular/common/http';
+import { Direction } from '@app/features/main/interfaces/enums';
 let gameMock = JSON.parse(JSON.stringify(questMockData));
 
 beforeEach(async () => {
@@ -525,7 +526,7 @@ describe('updateExit', () => {
       destinationAreaId: '1735602762347',
       destinationExitId: '123',
       exitType: 'default',
-      direction: 'north',
+      direction: Direction.NORTH,
       areaId: 'start',
       x: 1,
       y: 1,
@@ -551,7 +552,7 @@ describe('updateExit', () => {
       destinationAreaId: 'area2',
       destinationExitId: '17356027612345',
       exitType: 'default',
-      direction: 'north',
+      direction: Direction.NORTH,
       areaId: 'start',
       x: 1,
       y: 1,

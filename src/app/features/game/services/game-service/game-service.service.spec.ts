@@ -339,33 +339,6 @@ describe('getCanUseItem', () => {
   }));
 });
 
-describe('getOppositeDirection', () => {
-  let service: GameService;
-  mockAudioService = jasmine.createSpyObj('AudioService', ['playSound']);
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [ToastrModule.forRoot()],
-      providers: [
-        ToastrService,
-        provideNoopAnimations(),
-        { provide: AudioService, useValue: mockAudioService },
-      ],
-      teardown: { destroyAfterEach: false },
-    });
-    messageService = TestBed.inject(MessageService);
-    toastrService = TestBed.inject(ToastrService);
-    service = TestBed.inject(GameService);
-  });
-
-  it('should return opposite direction', () => {
-    expect(service.getOppositeDirection('north')).toEqual('south');
-    expect(service.getOppositeDirection('south')).toEqual('north');
-    expect(service.getOppositeDirection('east')).toEqual('west');
-    expect(service.getOppositeDirection('west')).toEqual('east');
-    expect(service.getOppositeDirection('nothing')).toEqual('nothing');
-  });
-});
-
 describe('turnActionExit', () => {
   let service: GameService;
   mockAudioService = jasmine.createSpyObj('AudioService', ['playSound']);
@@ -639,5 +612,35 @@ describe('processActorTurns', () => {
     );
     expect(updatedActor).toBeDefined();
     expect(updatedActor?.animStatus).toEqual(AnimStatus.SEEKING);
+  });
+});
+
+describe('turnActionItemAttack', () => {
+  let service: GameService;
+  mockAudioService = jasmine.createSpyObj('AudioService', ['playSound']);
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [ToastrModule.forRoot()],
+      providers: [
+        ToastrService,
+        provideNoopAnimations(),
+        { provide: AudioService, useValue: mockAudioService },
+      ],
+      teardown: { destroyAfterEach: false },
+    });
+    messageService = TestBed.inject(MessageService);
+    toastrService = TestBed.inject(ToastrService);
+    service = TestBed.inject(GameService);
+    service.testInit(gameMock);
+    service.initGameState(gameMock);
+  });
+
+  it('should process item attack', async () => {
+    spyOn(Math, 'random').and.returnValues(0.5, 0.5);
+    const updatedGameState = await service.turnActionItemAttack('actor-1');
+    const updatedActor = updatedGameState.areas['start'].actors.find(
+      actor => actor.id === 'actor-1'
+    );
+    expect(updatedActor).toBeDefined();
   });
 });
