@@ -2,7 +2,11 @@ import { QuestROM, QuestActor } from '@app/features/main/interfaces/types';
 import { findAnOpenCell } from './common-utils';
 import { defaultGridSize } from '@config/index';
 import { v4 as uuidv4 } from 'uuid';
-import { ActorStatus, ActorType } from '@app/features/main/interfaces/enums';
+import {
+  AnimStatus,
+  ActorType,
+  Direction,
+} from '@app/features/main/interfaces/enums';
 import { actorDefinitions } from '@content/actor-definitions';
 
 export const utilDeleteActor = ({
@@ -62,7 +66,8 @@ export const utilCreateActor = ({
         id: uuidv4(),
         actorType: defaultActorType,
         areaId: selectedAreaId,
-        actorStatus: ActorStatus.IDLE,
+        animStatus: AnimStatus.IDLE,
+        facing: Direction.SOUTH,
         health: defaultActor.maxHealth,
         x: +x,
         y: +y,

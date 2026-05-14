@@ -56,13 +56,13 @@ export const getPathBetweenPoints = ({
   start,
   end,
   areaMap,
-  areaItems,
+  areaActors,
   positionKeys,
 }: {
   start: string;
   end: string;
   areaMap: QuestAreaMap;
-  areaItems: QuestItem[];
+  areaActors: QuestActor[];
   positionKeys: string[];
 }): string[] => {
   // Initialize open and closed sets
@@ -146,6 +146,9 @@ export const getPathBetweenPoints = ({
       const isValidCell =
         neighbor &&
         deltaHeight < 2 &&
+        !areaActors.some(
+          actor => actor.y + '_' + actor.x === neighbor.positionKey
+        ) &&
         validateMovePositionKey({
           areaMap,
           positionKey: neighbor.positionKey,
@@ -219,7 +222,7 @@ export const getMoveOptions = ({
         start: positionKeyStart,
         end: positionKey,
         areaMap,
-        areaItems,
+        areaActors,
         positionKeys,
       });
       if (path.length > 0) {

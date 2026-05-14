@@ -7,11 +7,7 @@ import {
   QuestActor,
   QuestArea,
 } from '@app/features/main/interfaces/types';
-import {
-  ActorStatus,
-  ActorType,
-  EventAction,
-} from '@app/features/main/interfaces/enums';
+import { EventAction } from '@app/features/main/interfaces/enums';
 import { mockActor } from '@app/features/editor/mocks/actor.mock';
 
 let gameMock = structuredClone(questMockData);

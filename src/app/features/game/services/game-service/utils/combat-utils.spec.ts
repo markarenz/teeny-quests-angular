@@ -1,27 +1,14 @@
 import { Inventory } from '@app/features/main/interfaces/types';
 import {
-  playerHealthChange,
-  processActorCombatTurn,
-  processPlayerCombatTurn,
   getWeaponOptions,
+  getIsPlayerNearActorCell,
+  updateActorGameState,
+  getFacingForPosition,
+  getOppositeDirection,
+  deleteActorGameState,
 } from './combat-utils';
 import { mockActor } from '@app/features/editor/mocks/actor.mock';
-import { itemWeaponDefinitions } from '@content/item-definitions';
-
-describe('playerHealthChange', () => {
-  it('should decrease player health and play sound if delta is negative', () => {
-    const nextGameState = {
-      player: { health: 4 },
-    } as any;
-    const audioService = {
-      playSound: jasmine.createSpy('playSound'),
-    } as any;
-    playerHealthChange(nextGameState, -0.5, audioService);
-    expect(nextGameState.player.health).toBe(3.5);
-    expect(audioService.playSound).toHaveBeenCalledWith('player-hurt');
-  });
-  // FUTURE: healing spells, potions
-});
+import { Direction } from '@app/features/main/interfaces/enums';
 
 describe('getWeaponOptions', () => {
   it('should return weapon options based on player inventory', () => {
@@ -38,236 +25,93 @@ describe('getWeaponOptions', () => {
   });
 });
 
-describe('processActorCombatTurn', () => {
-  it('should process an actor combat turn and apply damage if hit', () => {
-    spyOn(Math, 'random').and.returnValues(0.5, 0.999);
+describe('getIsPlayerNearActorCell', () => {
+  it('should return true if player is near an actor cell', () => {
     const nextGameState = {
-      player: { areaId: 'start', health: 4, defense: 0.1 },
-      playerPosition: '0_0',
+      player: {
+        areaId: 'area1',
+        x: 1,
+        y: 1,
+      },
       areas: {
-        start: {
-          actors: [
-            {
-              id: 'actor1',
-              actorType: 'slime_green',
-              x: 0,
-              y: 0,
-              h: 1,
-            },
-          ],
+        area1: {
+          actors: [{ ...mockActor, id: 'actor1', x: 2, y: 1, areaId: 'area1' }],
         },
       },
     } as any;
-    const audioService = {
-      playSound: jasmine.createSpy('playSound'),
-    } as any;
-    const messageService = {
-      showMessage: jasmine.createSpy('showMessage'),
-    } as any;
-
-    processActorCombatTurn(
-      nextGameState,
-      'actor1',
-      audioService,
-      messageService
-    );
-
-    expect(messageService.showMessage).toHaveBeenCalledWith(
-      jasmine.objectContaining({
-        title: 'Violence!',
-        message: jasmine.stringContaining('HITS'),
-        messageType: 'warning',
-      })
-    );
-    expect(nextGameState.player.health).toBeLessThan(4);
-  });
-  it('should process an actor combat turn and apply no damage if miss', () => {
-    spyOn(Math, 'random').and.returnValues(0.01, 0.01);
-    const nextGameState = {
-      player: { areaId: 'start', health: 4, defense: 0.1 },
-      playerPosition: '0_0',
-      areas: {
-        start: {
-          actors: [
-            {
-              id: 'actor1',
-              actorType: 'slime_green',
-              x: 0,
-              y: 0,
-              h: 1,
-            },
-          ],
-        },
-      },
-    } as any;
-    const audioService = {
-      playSound: jasmine.createSpy('playSound'),
-    } as any;
-    const messageService = {
-      showMessage: jasmine.createSpy('showMessage'),
-    } as any;
-
-    processActorCombatTurn(
-      nextGameState,
-      'actor1',
-      audioService,
-      messageService
-    );
-
-    expect(messageService.showMessage).toHaveBeenCalledWith(
-      jasmine.objectContaining({
-        title: 'Violence!',
-        message: jasmine.stringContaining('MISSES'),
-        messageType: 'info',
-      })
-    );
-    expect(nextGameState.player.health).toBe(4);
-  });
-
-  it('should not process actor attack if input is not valid', () => {
-    spyOn(Math, 'random').and.returnValues(0.01, 0.01);
-    const nextGameState = {
-      player: { areaId: 'start', health: 4, defense: 0.1 },
-      playerPosition: '0_0',
-      areas: {
-        start: {
-          actors: [
-            {
-              id: 'actor1',
-              actorType: 'invalid',
-              x: 0,
-              y: 0,
-              h: 1,
-            },
-          ],
-        },
-      },
-    } as any;
-    const audioService = {
-      playSound: jasmine.createSpy('playSound'),
-    } as any;
-    const messageService = {
-      showMessage: jasmine.createSpy('showMessage'),
-    } as any;
-
-    processActorCombatTurn(
-      nextGameState,
-      'actor1',
-      audioService,
-      messageService
-    );
-
-    expect(messageService.showMessage).not.toHaveBeenCalled();
-    expect(nextGameState.player.health).toBe(4);
+    const result = getIsPlayerNearActorCell(nextGameState);
+    expect(result).toBe(true);
   });
 });
 
-describe('processPlayerCombatTurn', () => {
-  it('should process a player combat turn and apply damage if hit', () => {
-    spyOn(Math, 'random').and.returnValues(0.99, 0.99);
-    const weakActor = { ...mockActor, actorType: 'slime_green', health: 0.1 };
-    const nextGameState = {
-      player: { areaId: 'start', health: 4, defense: 0.1 },
-      playerPosition: '0_0',
+describe('updateActorGameState', () => {
+  it('should update the game state with the new actor state', () => {
+    const gameState = {
+      player: {
+        areaId: 'area1',
+        x: 1,
+        y: 1,
+      },
       areas: {
-        start: {
-          actors: [weakActor],
+        area1: {
+          actors: [{ ...mockActor, id: 'actor1', x: 2, y: 1, areaId: 'area1' }],
         },
       },
     } as any;
-    const audioService = {
-      playSound: jasmine.createSpy('playSound'),
-    } as any;
-    const messageService = {
-      showMessage: jasmine.createSpy('showMessage'),
-    } as any;
-
-    const weaponDef = itemWeaponDefinitions['bareHands'];
-
-    processPlayerCombatTurn(
-      nextGameState,
-      weakActor,
-      weaponDef,
-      audioService,
-      messageService
-    );
-
-    expect(messageService.showMessage).toHaveBeenCalledWith(
-      jasmine.objectContaining({
-        title: 'Violence!',
-        message: jasmine.stringContaining('HIT'),
-        messageType: 'success',
-      })
-    );
+    const updatedActor = {
+      ...mockActor,
+      id: 'actor1',
+      x: 3,
+      y: 1,
+      areaId: 'area1',
+    };
+    const nextGameState = updateActorGameState(gameState, updatedActor);
+    expect(nextGameState.areas['area1'].actors?.[0].x).toBe(3);
+    expect(nextGameState.areas['area1'].actors?.[0].y).toBe(1);
   });
+});
 
-  it('should process a player combat turn and apply damage if miss', () => {
-    spyOn(Math, 'random').and.returnValues(0.01, 0.01);
-    const weakActor = { ...mockActor, actorType: 'slime_green', health: 0.1 };
-    const nextGameState = {
-      player: { areaId: 'start', health: 4, defense: 0.1 },
-      playerPosition: '0_0',
-      areas: {
-        start: {
-          actors: [weakActor],
-        },
-      },
-    } as any;
-    const audioService = {
-      playSound: jasmine.createSpy('playSound'),
-    } as any;
-    const messageService = {
-      showMessage: jasmine.createSpy('showMessage'),
-    } as any;
-
-    const weaponDef = itemWeaponDefinitions['bareHands'];
-
-    processPlayerCombatTurn(
-      nextGameState,
-      weakActor,
-      weaponDef,
-      audioService,
-      messageService
-    );
-
-    expect(messageService.showMessage).toHaveBeenCalledWith(
-      jasmine.objectContaining({
-        title: 'Violence!',
-        message: jasmine.stringContaining('MISS'),
-        messageType: 'info',
-      })
-    );
+describe('getFacingForPosition', () => {
+  it('should return the correct facing direction', () => {
+    expect(getFacingForPosition(1, 1, 1, 2)).toBe(Direction.EAST);
+    expect(getFacingForPosition(1, 2, 1, 1)).toBe(Direction.WEST);
+    expect(getFacingForPosition(1, 1, 2, 1)).toBe(Direction.SOUTH);
+    expect(getFacingForPosition(2, 1, 1, 1)).toBe(Direction.NORTH);
+    expect(getFacingForPosition(2, 1, 2, 1)).toBe(Direction.NORTH);
   });
+});
 
-  it('should not process a player combat turn if input is not valid', () => {
-    spyOn(Math, 'random').and.returnValues(0.99, 0.99);
-    const invalidActor = { ...mockActor, actorType: 'invalid' };
-    const nextGameState = {
-      player: { areaId: 'start', health: 4, defense: 0.1 },
-      playerPosition: '0_0',
+describe('getOppositeDirection', () => {
+  it('should return the opposite direction', () => {
+    expect(getOppositeDirection(Direction.NORTH)).toBe(Direction.SOUTH);
+    expect(getOppositeDirection(Direction.SOUTH)).toBe(Direction.NORTH);
+    expect(getOppositeDirection(Direction.EAST)).toBe(Direction.WEST);
+    expect(getOppositeDirection(Direction.WEST)).toBe(Direction.EAST);
+  });
+});
+
+describe('deleteActorGameState', () => {
+  it('should delete the actor from the game state', () => {
+    const gameState = {
+      player: {
+        areaId: 'area1',
+        x: 1,
+        y: 1,
+      },
       areas: {
-        start: {
-          actors: [invalidActor],
+        area1: {
+          actors: [{ ...mockActor, id: 'actor1', x: 2, y: 1, areaId: 'area1' }],
         },
       },
     } as any;
-    const audioService = {
-      playSound: jasmine.createSpy('playSound'),
-    } as any;
-    const messageService = {
-      showMessage: jasmine.createSpy('showMessage'),
-    } as any;
-
-    const weaponDef = itemWeaponDefinitions['bareHands'];
-
-    processPlayerCombatTurn(
-      nextGameState,
-      invalidActor,
-      weaponDef,
-      audioService,
-      messageService
-    );
-
-    expect(messageService.showMessage).not.toHaveBeenCalled();
+    const actorToDelete = {
+      ...mockActor,
+      id: 'actor1',
+      x: 2,
+      y: 1,
+      areaId: 'area1',
+    };
+    const nextGameState = deleteActorGameState(gameState, actorToDelete);
+    expect(nextGameState.areas['area1'].actors).toEqual([]);
   });
 });

@@ -1,4 +1,4 @@
-import { EventAction } from '@app/features/main/interfaces/enums';
+import { Direction, EventAction } from '@app/features/main/interfaces/enums';
 import { inventoryDefinitions } from '@content/item-definitions';
 import { QuestROM, QuestState } from '@app/features/main/interfaces/types';
 import { ExitType } from '@content/exit-definitions';
@@ -56,8 +56,8 @@ export const calcScore = (
 };
 
 export const getIsNearPosition = (
-  x: number,
   y: number,
+  x: number,
   exact: boolean,
   targetPosition: string
 ): boolean => {
@@ -65,5 +65,29 @@ export const getIsNearPosition = (
     return targetPosition === `${y}_${x}`;
   }
   const [targetY, targetX] = targetPosition.split('_').map(Number);
-  return Math.abs(targetX - x) <= 1 && Math.abs(targetY - y) <= 1;
+  return (
+    (y === targetY && (x === targetX - 1 || x === targetX + 1)) ||
+    (x === targetX && (y === targetY - 1 || y === targetY + 1))
+  );
+};
+
+export const changeValueClamped = (val: number, delta: number): number => {
+  return Math.max(Math.floor((val + delta) * 100) / 100, 0);
+};
+
+/**
+ * Converts a cardinal direction to its opposite direction.
+ *
+ * @param direction The source direction.
+ * @returns The opposite cardinal direction, or the original value if it is
+ * not recognized.
+ */
+export const getOppositeDirection = (direction: Direction): Direction => {
+  const mapper: { [key in Direction]: Direction } = {
+    [Direction.NORTH]: Direction.SOUTH,
+    [Direction.SOUTH]: Direction.NORTH,
+    [Direction.EAST]: Direction.WEST,
+    [Direction.WEST]: Direction.EAST,
+  };
+  return mapper[direction] ?? direction;
 };

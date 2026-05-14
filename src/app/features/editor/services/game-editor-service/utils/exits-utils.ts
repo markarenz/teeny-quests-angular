@@ -2,6 +2,7 @@ import { QuestROM, QuestAreaExit } from '@app/features/main/interfaces/types';
 import { v4 as uuidv4 } from 'uuid';
 import { defaultGridSize } from '@config/index';
 import { findAnOpenCell } from './common-utils';
+import { Direction } from '@app/features/main/interfaces/enums';
 
 export const utilCreateExit = ({
   game,
@@ -33,15 +34,15 @@ export const utilCreateExit = ({
     [ys, xs] = openCellPosition.split('_');
     const x = +xs;
     const y = +ys;
-    let direction = 'north';
+    let direction = Direction.NORTH;
     if (y < 2) {
-      direction = 'north';
+      direction = Direction.NORTH;
     } else if (y > defaultGridSize - 3) {
-      direction = 'south';
+      direction = Direction.SOUTH;
     } else if (x < 2) {
-      direction = 'east';
+      direction = Direction.EAST;
     } else if (x > defaultGridSize - 3) {
-      direction = 'west';
+      direction = Direction.WEST;
     }
 
     let h = area ? area.map[`${y}_${x}`].h : 1;

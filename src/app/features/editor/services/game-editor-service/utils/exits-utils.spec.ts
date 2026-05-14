@@ -1,6 +1,7 @@
 import { utilCreateExit, utilDeleteExit, utilUpdateExit } from './exits-utils';
 import { getPositionKeysForGridSize } from '@main/utils';
 import questMockData from '@app/features/editor/mocks/game.mock';
+import { Direction } from '@app/features/main/interfaces/enums';
 
 describe('utilCreateExit', () => {
   it('creates a new exit in an open spot- facing north', () => {
@@ -71,7 +72,7 @@ describe('utilUpdateExit', () => {
       destinationAreaId: '1735602762347',
       destinationExitId: '123',
       exitType: 'default',
-      direction: 'north',
+      direction: Direction.NORTH,
       areaId: 'start',
       x: 1,
       y: 1,
@@ -93,7 +94,7 @@ describe('utilUpdateExit', () => {
       destinationAreaId: '1735602762347',
       destinationExitId: '123',
       exitType: 'default',
-      direction: 'north',
+      direction: Direction.NORTH,
       areaId: 'start',
       x: 1,
       y: 1,

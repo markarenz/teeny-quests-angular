@@ -269,3 +269,18 @@ select {
     transform: rotate(360deg); /* Rotate to 360 degrees */
   }
 }
+
+.anim-status-attacking {
+  &.facing-north {
+    transform: translate(10%, -10%);
+  }
+  &.facing-south {
+    transform: translate(-10%, 10%);
+  }
+  &.facing-east {
+    transform: translate(10%, 10%);
+  }
+  &.facing-west {
+    transform: translate(-10%, -10%);
+  }
+}

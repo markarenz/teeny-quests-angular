@@ -33,18 +33,26 @@ import { Lights, playerCombatDefaults } from '@content/constants';
 import { getAreaElementPositionStyle } from '../../lib/utils';
 import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 import { processEvents } from './utils/event-actions';
-import { calcScore, getIsNearPosition, getLevelGoals } from './utils/common';
+import {
+  calcScore,
+  changeValueClamped,
+  getIsNearPosition,
+  getLevelGoals,
+  getOppositeDirection,
+} from './utils/common';
 import {
   ActivityType,
   ActorInteractionType,
-  ActorStatus,
+  AnimStatus,
+  Direction,
   GameStateMode,
 } from '@app/features/main/interfaces/enums';
 import { actorDefinitions } from '@content/actor-definitions';
 import {
+  deleteActorGameState,
+  getFacingForPosition,
   getIsPlayerNearActorCell,
-  processActorCombatTurn,
-  processPlayerCombatTurn,
+  updateActorGameState,
 } from './utils/combat-utils';
 
 @Injectable({
@@ -365,7 +373,7 @@ export class GameService {
       mode: GameStateMode.DEFAULT,
       player: {
         ...nextGameROM.content.player,
-        facing: 'east',
+        facing: Direction.EAST,
         statusActions: [],
         ...playerCombatDefaults,
       },
@@ -551,23 +559,6 @@ export class GameService {
   }
 
   /**
-   * Converts a cardinal direction to its opposite direction.
-   *
-   * @param direction The source direction.
-   * @returns The opposite cardinal direction, or the original value if it is
-   * not recognized.
-   */
-  public getOppositeDirection(direction: string): string {
-    const mapper: { [key: string]: string } = {
-      north: 'south',
-      south: 'north',
-      east: 'west',
-      west: 'east',
-    };
-    return mapper[direction] ?? direction;
-  }
-
-  /**
    * Determines whether the given inventory item is currently usable at the
    * player's position.
    *
@@ -639,9 +630,7 @@ export class GameService {
       return nextGameState;
     }
 
-    const destinationFacing = this.getOppositeDirection(
-      destinationExit.direction
-    );
+    const destinationFacing = getOppositeDirection(destinationExit.direction);
 
     this.isLockedOut.next(true);
 
@@ -826,19 +815,77 @@ export class GameService {
       });
       return nextGameState;
     }
-    nextGameState = processPlayerCombatTurn(
-      nextGameState,
-      actor,
-      weaponDef,
-      this._audioService,
-      this._messageService
+
+    this.playerAnim.next(AnimStatus.ATTACKING);
+    this._audioService.playSound(weaponDef.weaponSoundId);
+
+    const playerFacing = getFacingForPosition(
+      nextGameState.player.y,
+      nextGameState.player.x,
+      actor.y,
+      actor.x
     );
-    // Consumable weapons
-    // let nextGameState = structuredClone(this.gameState.value)!;
-    // nextGameState.player.inventory[itemId] = Math.max(
-    //   nextGameState.player.inventory[itemId] - 1,
-    //   0
-    // );
+    const actorFacing = getOppositeDirection(playerFacing);
+    actor.facing = actorFacing;
+    nextGameState.player.facing = playerFacing;
+    this.gameState.next(nextGameState);
+
+    const diceRoll = Math.random();
+    const isHit =
+      diceRoll + weaponDef.accuracy >= 0.25 + (actorDef.defense ?? 0);
+
+    const damage =
+      Math.ceil(
+        (weaponDef.minDamage * 100 +
+          (weaponDef.maxDamage - weaponDef.minDamage) * 100 * Math.random()) /
+          25
+      ) * 0.25;
+    const newActorHealth = Math.max(
+      Math.floor((actor.health - damage) * 100) / 100,
+      0
+    );
+
+    const message = `You attack with ${weaponDef.name}... and ${isHit ? `HIT for ${damage} damage; ${newActorHealth > 0 ? `${newActorHealth} health remain` : `The ${actorDef.name} is dead`}` : 'MISS'}!`;
+    this._messageService.showMessage({
+      title: 'Violence!',
+      message,
+      messageType: isHit ? 'success' : 'info',
+    });
+
+    if (isHit) {
+      actor.health = newActorHealth;
+      nextGameState = updateActorGameState(nextGameState, actor);
+      this.gameState.next(nextGameState);
+    }
+    await this.delay(250);
+
+    if (isHit) {
+      actor.animStatus = AnimStatus.HURT;
+      nextGameState = updateActorGameState(nextGameState, actor);
+      this.gameState.next(nextGameState);
+
+      this._audioService.playSound(actorDef.soundHurt);
+      await this.delay(250);
+      actor.animStatus = AnimStatus.SEEKING;
+      nextGameState = updateActorGameState(nextGameState, actor);
+      this.gameState.next(nextGameState);
+    }
+
+    if (newActorHealth <= 0) {
+      this._audioService.playSound('actor-death');
+      actor.animStatus = AnimStatus.DYING;
+      nextGameState = updateActorGameState(nextGameState, actor);
+      this.gameState.next(nextGameState);
+      await this.delay(1000);
+      // 1: REMOVE ACTOR
+      nextGameState = deleteActorGameState(nextGameState, actor);
+      this.gameState.next(nextGameState);
+      // TODO: drop item
+      // TODO: run actions
+    }
+
+    this.playerAnim.next(AnimStatus.IDLE);
+    // TODO: Consumable weapons
     return nextGameState;
   };
 
@@ -1078,25 +1125,25 @@ export class GameService {
       if (
         actorDef &&
         actorDef.interactionType === ActorInteractionType.HOSTILE &&
-        actor.actorStatus === ActorStatus.IDLE &&
+        actor.animStatus === AnimStatus.IDLE &&
         distance <= (actorDef.wakeRadius ?? 0)
       ) {
-        actor.actorStatus = ActorStatus.SEEKING;
+        actor.animStatus = AnimStatus.SEEKING;
       } else if (
         actorDef &&
         actorDef.interactionType === ActorInteractionType.HOSTILE &&
-        actor.actorStatus === ActorStatus.SEEKING &&
+        actor.animStatus === AnimStatus.SEEKING &&
         distance >= (actorDef.sleepRadius ?? 0)
       ) {
-        actor.actorStatus = ActorStatus.IDLE;
+        actor.animStatus = AnimStatus.IDLE;
       }
       // 2. Move seeking actors along path toward player when possible
-      if (actor.actorStatus === ActorStatus.SEEKING) {
+      if (actor.animStatus === AnimStatus.SEEKING) {
         const pathRaw = getPathBetweenPoints({
           start: `${actor.y}_${actor.x}`,
           end: `${player.y}_${player.x}`,
           areaMap: nextGameState.areas[nextGameState.player.areaId].map,
-          areaItems: nextGameState.areas[nextGameState.player.areaId].items,
+          areaActors: nextGameState.areas[nextGameState.player.areaId].actors,
           positionKeys: getPositionKeysForGridSize(),
         });
 
@@ -1128,23 +1175,66 @@ export class GameService {
             actor.y = y;
           }
           await this.delay(250);
-          this.isLockedOut.next(false);
         }
       }
       // 3. Check if seeking actors are on the player square and should attack
       //    NOTE: Combat mode is separate and uses different turn processing
       if (
-        actor.actorStatus === ActorStatus.SEEKING &&
+        actor.animStatus === AnimStatus.SEEKING &&
         getIsNearPosition(actor.y, actor.x, false, `${player.y}_${player.x}`)
       ) {
-        processActorCombatTurn(
-          nextGameState,
-          actor.id,
-          this._audioService,
-          this._messageService
+        // player, actor face each other
+        const actorFacing = getFacingForPosition(
+          actor.y,
+          actor.x,
+          player.y,
+          player.x
         );
-        // nextGameState.mode = GameStateMode.COMBAT;
+        nextGameState = updateActorGameState(nextGameState, {
+          ...actor,
+          animStatus: AnimStatus.ATTACKING,
+          facing: actorFacing,
+        });
+        nextGameState.player.facing = getOppositeDirection(actorFacing);
+
+        this.gameState.next(nextGameState);
+
+        const diceRoll = Math.random();
+        const isHit =
+          diceRoll + actorDef.accuracy > 0.5 + (player.defense ?? 0);
+
+        // Min damage is 50% of the actorDef.damage value and the max is 100%, quantize to 0.25 increments
+        const damage =
+          Math.ceil(
+            (actorDef.damage * 0.25 * 100 +
+              actorDef.damage * 0.75 * 100 * Math.random()) /
+              25
+          ) * 0.25;
+
+        this._audioService.playSound(isHit ? 'player-hurt' : 'actor-miss');
+
+        const message = `${actorDef.name} attacks with ${actorDef.attackDescription}... and ${isHit ? `HITS for ${damage} damage` : 'MISSES'}!`;
+        this._messageService.showMessage({
+          title: 'Violence!',
+          message,
+          messageType: isHit ? 'warning' : 'info',
+        });
+        if (isHit) {
+          nextGameState.player.health = changeValueClamped(
+            nextGameState.player.health,
+            -1 * damage
+          );
+        }
+        this.gameState.next(nextGameState);
+        await this.delay(200);
+        this.gameState.next(
+          updateActorGameState(nextGameState, {
+            ...actor,
+            animStatus: AnimStatus.SEEKING,
+          })
+        );
       }
+      this.isLockedOut.next(false);
     }
   }
 

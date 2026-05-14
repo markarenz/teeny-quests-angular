@@ -37,7 +37,7 @@ describe('validateMovePositionKey', () => {
 
 describe('getPathBetweenPoints', () => {
   const areaMap = questMockData.content.areas['start'].map;
-  const areaItems = questMockData.content.areas['start'].items;
+  const areaActors = questMockData.content.areas['start'].actors;
   const positionKeys = getPositionKeysForGridSize();
 
   it('should return a path', () => {
@@ -47,7 +47,7 @@ describe('getPathBetweenPoints', () => {
       start,
       end,
       areaMap,
-      areaItems,
+      areaActors,
       positionKeys,
     });
     expect(path).toEqual(['1_1', '1_2']);
@@ -57,7 +57,7 @@ describe('getPathBetweenPoints', () => {
     const start = '1_1';
     const end = '0_0';
     expect(
-      getPathBetweenPoints({ start, end, areaMap, areaItems, positionKeys })
+      getPathBetweenPoints({ start, end, areaMap, areaActors, positionKeys })
     ).toEqual([]);
   });
 });
@@ -65,6 +65,7 @@ describe('getPathBetweenPoints', () => {
 describe('getMoveOptions', () => {
   const areaMap = questMockData.content.areas['start'].map;
   const areaItems = questMockData.content.areas['start'].items;
+  const areaActors = questMockData.content.areas['start'].actors;
   const positionKeyStart = '1_1';
 
   it('should return an object with movement options', () => {
@@ -72,7 +73,7 @@ describe('getMoveOptions', () => {
       positionKeyStart,
       areaMap,
       areaItems,
-      areaActors: questMockData.content.areas['start'].actors,
+      areaActors,
     });
     expect(Object.keys(movementOptions).length).toBeGreaterThan(0);
   });

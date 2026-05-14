@@ -15,6 +15,7 @@ import { TooltipComponent } from '@app/features/main/ui/components/tooltip/toolt
 import { IconButtonComponent } from '@app/features/main/ui/components/icons/icon-button/icon-button.component';
 import { getPositionKeysForGridSize } from '@main/utils';
 import { floorDefinitions } from '@content/floor-definitions';
+import { getDirectionFromString } from '@app/features/editor/services/game-editor-service/utils/common-utils';
 
 @Component({
   selector: 'app-editor-panel-exits',
@@ -212,7 +213,7 @@ export class EditorPanelExitsComponent {
         name: this.inputExitName,
         exitType: this.inputExitType,
         areaId: this.selectedAreaId,
-        direction: this.inputExitDirection,
+        direction: getDirectionFromString(this.inputExitDirection),
         destinationAreaId: this.inputExitDestination,
         destinationExitId: this.inputExitDestinationExit,
         x: +x,

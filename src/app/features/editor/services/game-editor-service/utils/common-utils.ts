@@ -1,3 +1,4 @@
+import { Direction } from '@app/features/main/interfaces/enums';
 import { QuestArea, QuestROM } from '@app/features/main/interfaces/types';
 import { floorDefinitions } from '@content/floor-definitions';
 import { getPositionKeysForGridSize } from '@main/utils';
@@ -33,4 +34,19 @@ export const findAnOpenCell = ({
     return openCell ?? null;
   }
   return null;
+};
+
+export const getDirectionFromString = (directionStr: string): Direction => {
+  switch (directionStr.toLowerCase()) {
+    case 'north':
+      return Direction.NORTH;
+    case 'south':
+      return Direction.SOUTH;
+    case 'east':
+      return Direction.EAST;
+    case 'west':
+      return Direction.WEST;
+    default:
+      throw new Error(`Invalid direction string: ${directionStr}`);
+  }
 };

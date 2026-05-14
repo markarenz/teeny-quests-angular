@@ -5,8 +5,9 @@ import {
   ActionObjectType,
   ActionValueType,
   ConditionComparison,
-  ActorStatus,
+  AnimStatus,
   GameStateMode,
+  Direction,
 } from './enums';
 
 export type SelectIUIOption = {
@@ -87,7 +88,7 @@ export type QuestAreaExit = {
   name?: string;
   exitType: string;
   areaId: string;
-  direction: string;
+  direction: Direction;
   x: number;
   y: number;
   h: number;
@@ -100,7 +101,8 @@ export type QuestActor = {
   id: string;
   name?: string;
   actorType: ActorType;
-  actorStatus: ActorStatus;
+  animStatus: AnimStatus;
+  facing: Direction;
   health: number;
   areaId: string;
   x: number;
@@ -194,7 +196,7 @@ export type QuestState = {
     x: number;
     y: number;
     inventory: Inventory;
-    facing: string;
+    facing: Direction;
     health: number;
     maxHealth?: number;
     defense?: number;

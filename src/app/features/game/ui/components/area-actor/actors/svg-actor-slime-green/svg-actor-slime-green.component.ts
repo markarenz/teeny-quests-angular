@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ActorStatus } from '@app/features/main/interfaces/enums';
+import { AnimStatus } from '@app/features/main/interfaces/enums';
 
 @Component({
   selector: 'app-svg-actor-slime-green',
@@ -10,7 +10,7 @@ import { ActorStatus } from '@app/features/main/interfaces/enums';
 export class SvgActorSlimeGreenComponent {
   @Input('isActorSelected') isActorSelected: boolean = false;
   @Input('isClickable') isClickable: boolean = false;
-  @Input('status') status: ActorStatus = ActorStatus.IDLE;
+  @Input('status') status: AnimStatus = AnimStatus.IDLE;
   @Input('relativePlayerXPos') relativePlayerXPos: number = 0;
 
   public eyesDirection = 0;

@@ -14,8 +14,9 @@ import {
 import { SvgActorSlimeGreenComponent } from './actors/svg-actor-slime-green/svg-actor-slime-green.component';
 import { actorDefinitions } from '@content/actor-definitions';
 import { AudioService } from '@app/features/main/services/audio/audio-service.service';
-import { ActorStatus, ActorType } from '@app/features/main/interfaces/enums';
+// import { AnimStatus, ActorType } from '@app/features/main/interfaces/enums';
 import { defaultActor } from '@app/features/game/lib/constants';
+import { AnimStatus, Direction } from '@app/features/main/interfaces/enums';
 
 @Component({
   selector: 'app-area-actor',
@@ -47,10 +48,21 @@ export class AreaActorComponent {
   public maxHealth: number = 0;
   public healthPercent: number = 100;
   public relativePlayerXPos: number = 0; // -1 to left, 1 to right
-  public isHurt: boolean = false;
+  public zOffset: number = 0;
 
   getNumFromPositionString(position: string): number {
     return parseInt(position.replace('%', ''));
+  }
+  getZOffset(): number {
+    if (this.actor.animStatus === AnimStatus.ATTACKING) {
+      if (this.actor.facing === Direction.SOUTH) {
+        return 1;
+      }
+      if (this.actor.facing === Direction.EAST) {
+        return 7;
+      }
+    }
+    return 0;
   }
   updateActorProps() {
     if (this.actor) {
@@ -61,12 +73,10 @@ export class AreaActorComponent {
       this.width = `${cellW}%`;
       this.ariaLabel = `Select Actor ${this.actor.y}_${this.actor.x}`;
       this.maxHealth = actorDef ? actorDef.maxHealth : 0;
-      if (this.actor.health < this.currentHealth) {
-        this.isHurt = true;
-        setTimeout(() => {
-          this.isHurt = false;
-        }, 500);
+      if (!actorDef) {
+        console.warn('Actor definition not found for actor type:', actorType);
       }
+      this.zOffset = this.getZOffset();
       this.currentHealth = this.actor.health;
       this.healthPercent =
         this.maxHealth > 0 ? (this.actor.health / this.maxHealth) * 100 : 0;

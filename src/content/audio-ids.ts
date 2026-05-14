@@ -181,7 +181,7 @@ export const audioIdMap: Map<string, AudioDefinition> = new Map([
     'actor-death',
     {
       filename: '35416__altemark__percussivebleep2.mp3',
-      volume: 0.5,
+      volume: 0.3,
       credit: 'Altemark',
     },
   ],

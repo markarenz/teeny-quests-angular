@@ -1,4 +1,8 @@
-import { ActorStatus, ActorType } from '@app/features/main/interfaces/enums';
+import {
+  AnimStatus,
+  ActorType,
+  Direction,
+} from '@app/features/main/interfaces/enums';
 import {
   QuestActor,
   QuestAreaExit,
@@ -10,7 +14,7 @@ export const defaultExit: QuestAreaExit = {
   id: 'test',
   exitType: 'default',
   areaId: '',
-  direction: 'north',
+  direction: Direction.NORTH,
   x: 2,
   y: 0,
   h: 1,
@@ -45,7 +49,8 @@ export const defaultActor: QuestActor = {
   y: 0,
   h: 0,
   actorType: ActorType.SLIME_GREEN,
-  actorStatus: ActorStatus.IDLE,
+  animStatus: AnimStatus.IDLE,
+  facing: Direction.SOUTH,
   areaId: '',
   health: 99,
   actions: [],

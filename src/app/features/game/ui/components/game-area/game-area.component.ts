@@ -132,8 +132,8 @@ export class GameAreaComponent {
     this._gameService.processTurn({ verb: 'item-click', noun: itemId });
   }
 
-  getIsNearPlayer(x: number, y: number, exact: boolean): boolean {
-    return getIsNearPosition(x, y, exact, this.playerPosition);
+  getIsNearPlayer(y: number, x: number, exact: boolean): boolean {
+    return getIsNearPosition(y, x, exact, this.playerPosition);
   }
 
   handleActorClick(actor: QuestActor) {
