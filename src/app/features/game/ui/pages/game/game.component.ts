@@ -228,7 +228,9 @@ export class GameComponent {
   handleGameEndClick = () => {
     this.gameStatus = '';
     this.router.navigate(['/']);
+    this.handleResetProgress();
   };
+
   handleToggleFullWidth = () => {
     this.isFullWidthMode = !this.isFullWidthMode;
     this._gameService.setFullWidthYOffsetCurrent();

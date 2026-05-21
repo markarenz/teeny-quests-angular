@@ -73,6 +73,12 @@ export class EditorInputActionsComponent {
       this.inputActionType = this.selectedAction.action;
       this.inputActionAreaId =
         this.selectedAction.actionObject.areaId || this.selectedAreaId;
+      console.log(
+        'refreshUIData - inputActionAreaId:',
+        this.inputActionAreaId,
+        this.selectedAction.actionObject.areaId,
+        this.selectedAreaId
+      );
       const def = actionDefinitions[this.selectedAction.action];
       if (!def) {
         logger({

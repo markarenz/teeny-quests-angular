@@ -189,20 +189,17 @@ describe('processTurn', () => {
     service.initGameState(gameMock);
   });
 
-  it('should process turn', fakeAsync(async () => {
-    let i = 0;
+  it('should process turn', async () => {
+    spyOn(service, 'delay').and.resolveTo();
     service.testSetValue('movementOptions', mockMovementOptions);
-    tick(10);
-    service.processTurn({
+    await service.processTurn({
       verb: 'move',
       noun: '2_5',
     });
-    tick(1000);
-    service.processTurn({
+    await service.processTurn({
       verb: 'move',
       noun: '2_3',
     });
-    tick(1000);
 
     const isLockedOut = await firstValueFrom(
       service.isLockedOutObs.pipe(skip(0), take(1))
@@ -214,7 +211,7 @@ describe('processTurn', () => {
     );
     expect(gameState?.player?.y).toEqual(2);
     expect(gameState?.player?.x).toEqual(3);
-  }));
+  });
 
   it('should fail if no path is available', fakeAsync(() => {
     let i = 0;

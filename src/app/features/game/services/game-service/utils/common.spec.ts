@@ -1,5 +1,10 @@
 import { ExitType } from '@content/exit-definitions';
-import { calcScore, getIsNearPosition, getLevelGoals } from './common';
+import {
+  calcScore,
+  getIsNearPosition,
+  getLevelGoals,
+  dropNewItem,
+} from './common';
 import { questStateMockData } from '@app/features/editor/mocks/game.mock';
 import questMockData from '@app/features/editor/mocks/game.mock';
 import {
@@ -7,6 +12,7 @@ import {
   EventAction,
   EventConditionType,
 } from '@app/features/main/interfaces/enums';
+import { QuestAreaMap } from '@app/features/main/interfaces/types';
 
 describe('getLevelGoals', () => {
   it('should return correct level goals string', () => {
@@ -129,6 +135,14 @@ describe('getIsNearPosition', () => {
       expected: false,
     },
     {
+      label: 'Inexact negative case - height',
+      x: 0,
+      y: 2,
+      exact: false,
+      position: '2_1',
+      expected: false,
+    },
+    {
       label: 'Exact negative case',
       x: 3,
       y: 3,
@@ -138,8 +152,37 @@ describe('getIsNearPosition', () => {
     },
   ];
   scenarios.forEach(({ label, x, y, exact, position, expected }) => {
+    const mockGameROM = structuredClone(questMockData);
+    const mockMap: QuestAreaMap = mockGameROM.content.areas['start'].map;
+
     it(`should return whether y/x near position - ${label}`, () => {
-      expect(getIsNearPosition(y, x, exact, position)).toBe(expected);
+      expect(getIsNearPosition(y, x, exact, position, mockMap)).toBe(expected);
     });
+  });
+});
+
+describe('dropNewItem', () => {
+  it('should add a new item to the game state at the player position', () => {
+    const nextGameState = {
+      player: {
+        areaId: 'area1',
+        x: 1,
+        y: 1,
+      },
+      areas: {
+        area1: {
+          map: {
+            '1_1': { h: 0 },
+          },
+          items: [],
+        },
+      },
+    } as any;
+    const updatedGameState = dropNewItem(nextGameState, 'gold', 1, 1);
+    expect(updatedGameState.areas['area1'].items?.length).toBe(1);
+    expect(updatedGameState.areas['area1'].items?.[0].itemType).toBe('gold');
+    expect(updatedGameState.areas['area1'].items?.[0].x).toBe(1);
+    expect(updatedGameState.areas['area1'].items?.[0].y).toBe(1);
+    expect(updatedGameState.areas['area1'].items?.[0].h).toBe(0);
   });
 });
