@@ -1,6 +1,10 @@
 import { Direction, EventAction } from '@app/features/main/interfaces/enums';
 import { inventoryDefinitions } from '@content/item-definitions';
-import { QuestROM, QuestState } from '@app/features/main/interfaces/types';
+import {
+  QuestItem,
+  QuestROM,
+  QuestState,
+} from '@app/features/main/interfaces/types';
 import { ExitType } from '@content/exit-definitions';
 
 export const getLevelGoals = (questROM: QuestROM): string => {
@@ -90,4 +94,42 @@ export const getOppositeDirection = (direction: Direction): Direction => {
     [Direction.WEST]: Direction.EAST,
   };
   return mapper[direction] ?? direction;
+};
+
+/**
+ * Updates the game state with a new item dropped at the player's current position.
+ *
+ * @param nextGameState The current game state.
+ * @param dropItem The item to be dropped.
+ * @returns The updated game state with the new item added.
+ */
+
+export const dropNewItem = (
+  nextGameState: QuestState,
+  dropItem: string,
+  y: number,
+  x: number
+): QuestState => {
+  const droppedItem: QuestItem = {
+    id: `${dropItem}_${Date.now()}`,
+    itemType: dropItem,
+    x: x,
+    y: y,
+    h: nextGameState.areas[nextGameState.player.areaId].map[`${y}_${x}`].h,
+    areaId: nextGameState.player.areaId,
+  };
+
+  return {
+    ...nextGameState,
+    areas: {
+      ...nextGameState.areas,
+      [nextGameState.player.areaId]: {
+        ...nextGameState.areas[nextGameState.player.areaId],
+        items: [
+          ...(nextGameState.areas[nextGameState.player.areaId].items ?? []),
+          droppedItem,
+        ],
+      },
+    },
+  };
 };

@@ -1,5 +1,10 @@
 import { ExitType } from '@content/exit-definitions';
-import { calcScore, getIsNearPosition, getLevelGoals } from './common';
+import {
+  calcScore,
+  getIsNearPosition,
+  getLevelGoals,
+  dropNewItem,
+} from './common';
 import { questStateMockData } from '@app/features/editor/mocks/game.mock';
 import questMockData from '@app/features/editor/mocks/game.mock';
 import {
@@ -141,5 +146,31 @@ describe('getIsNearPosition', () => {
     it(`should return whether y/x near position - ${label}`, () => {
       expect(getIsNearPosition(y, x, exact, position)).toBe(expected);
     });
+  });
+});
+
+describe('dropNewItem', () => {
+  it('should add a new item to the game state at the player position', () => {
+    const nextGameState = {
+      player: {
+        areaId: 'area1',
+        x: 1,
+        y: 1,
+      },
+      areas: {
+        area1: {
+          map: {
+            '1_1': { h: 0 },
+          },
+          items: [],
+        },
+      },
+    } as any;
+    const updatedGameState = dropNewItem(nextGameState, 'gold', 1, 1);
+    expect(updatedGameState.areas['area1'].items?.length).toBe(1);
+    expect(updatedGameState.areas['area1'].items?.[0].itemType).toBe('gold');
+    expect(updatedGameState.areas['area1'].items?.[0].x).toBe(1);
+    expect(updatedGameState.areas['area1'].items?.[0].y).toBe(1);
+    expect(updatedGameState.areas['area1'].items?.[0].h).toBe(0);
   });
 });

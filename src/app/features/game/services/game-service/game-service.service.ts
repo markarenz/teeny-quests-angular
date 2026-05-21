@@ -36,6 +36,7 @@ import { processEvents } from './utils/event-actions';
 import {
   calcScore,
   changeValueClamped,
+  dropNewItem,
   getIsNearPosition,
   getLevelGoals,
   getOppositeDirection,
@@ -877,11 +878,28 @@ export class GameService {
       nextGameState = updateActorGameState(nextGameState, actor);
       this.gameState.next(nextGameState);
       await this.delay(1000);
-      // 1: REMOVE ACTOR
+
       nextGameState = deleteActorGameState(nextGameState, actor);
+
+      if (actor.dropItem) {
+        nextGameState = dropNewItem(
+          nextGameState,
+          actor.dropItem,
+          actor.y,
+          actor.x
+        );
+      }
+      const turnActionResult = processTurnActions(
+        nextGameState,
+        actor.actions,
+        this._audioService
+      );
+      nextGameState = turnActionResult.nextGameState;
+      turnActionResult.messages.forEach(msg => {
+        this._messageService.showMessage(msg);
+      });
+
       this.gameState.next(nextGameState);
-      // TODO: drop item
-      // TODO: run actions
     }
 
     this.playerAnim.next(AnimStatus.IDLE);
