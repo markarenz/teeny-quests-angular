@@ -133,7 +133,13 @@ export class GameAreaComponent {
   }
 
   getIsNearPlayer(y: number, x: number, exact: boolean): boolean {
-    return getIsNearPosition(y, x, exact, this.playerPosition);
+    return getIsNearPosition(
+      y,
+      x,
+      exact,
+      this.playerPosition,
+      this.areaMap || undefined
+    );
   }
 
   handleActorClick(actor: QuestActor) {

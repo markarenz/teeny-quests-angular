@@ -210,7 +210,7 @@ describe('processTurn', () => {
       service.gameStateObs.pipe(skip(0), take(1))
     );
     expect(gameState?.player?.y).toEqual(2);
-    expect(gameState?.player?.x).toEqual(5);
+    expect(gameState?.player?.x).toEqual(3);
   });
 
   it('should fail if no path is available', fakeAsync(() => {

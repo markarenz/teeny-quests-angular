@@ -1,6 +1,8 @@
 import { Direction, EventAction } from '@app/features/main/interfaces/enums';
 import { inventoryDefinitions } from '@content/item-definitions';
 import {
+  QuestAreaMap,
+  QuestAreaMapCell,
   QuestItem,
   QuestROM,
   QuestState,
@@ -63,15 +65,22 @@ export const getIsNearPosition = (
   y: number,
   x: number,
   exact: boolean,
-  targetPosition: string
+  targetPosition: string,
+  areaMap?: QuestAreaMap
 ): boolean => {
   if (exact) {
     return targetPosition === `${y}_${x}`;
   }
   const [targetY, targetX] = targetPosition.split('_').map(Number);
+
+  const h = areaMap?.[`${y}_${x}`]?.h ?? 0;
+  const ht = areaMap?.[`${targetY}_${targetX}`]?.h ?? 0;
+
+  const dh = Math.abs(h - ht);
   return (
-    (y === targetY && (x === targetX - 1 || x === targetX + 1)) ||
-    (x === targetX && (y === targetY - 1 || y === targetY + 1))
+    ((y === targetY && (x === targetX - 1 || x === targetX + 1)) ||
+      (x === targetX && (y === targetY - 1 || y === targetY + 1))) &&
+    dh <= 1
   );
 };
 

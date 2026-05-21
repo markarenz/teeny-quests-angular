@@ -1199,7 +1199,13 @@ export class GameService {
       //    NOTE: Combat mode is separate and uses different turn processing
       if (
         actor.animStatus === AnimStatus.SEEKING &&
-        getIsNearPosition(actor.y, actor.x, false, `${player.y}_${player.x}`)
+        getIsNearPosition(
+          actor.y,
+          actor.x,
+          false,
+          `${player.y}_${player.x}`,
+          this.gameState.value?.areas[nextGameState.player.areaId].map
+        )
       ) {
         // player, actor face each other
         const actorFacing = getFacingForPosition(

@@ -17,7 +17,8 @@ export const getIsPlayerNearActorCell = (
         a.y,
         a.x,
         false,
-        `${nextGameState.player.y}_${nextGameState.player.x}`
+        `${nextGameState.player.y}_${nextGameState.player.x}`,
+        nextGameState.areas[nextGameState.player.areaId].map
       )
   );
 };
