@@ -1,5 +1,6 @@
-import { findAnOpenCell } from './common-utils';
+import { findAnOpenCell, getDirectionFromString } from './common-utils';
 import questMockData from '@app/features/editor/mocks/game.mock';
+import { Direction } from '@app/features/main/interfaces/enums';
 import { getPositionKeysForGridSize } from '@main/utils';
 
 describe('findAnOpenCell', () => {
@@ -38,5 +39,23 @@ describe('findAnOpenCell', () => {
       selectedAreaId: 'start',
     });
     expect(result).toBe(null);
+  });
+});
+
+describe('getDirectionFromString', () => {
+  it('returns correct direction for valid input', () => {
+    expect(getDirectionFromString('NORTH')).toBe(Direction.NORTH);
+    expect(getDirectionFromString('EAST')).toBe(Direction.EAST);
+    expect(getDirectionFromString('SOUTH')).toBe(Direction.SOUTH);
+    expect(getDirectionFromString('WEST')).toBe(Direction.WEST);
+  });
+
+  it('returns default for invalid input', () => {
+    expect(getDirectionFromString('UP')).toBe(Direction.NORTH);
+    expect(getDirectionFromString('DOWN')).toBe(Direction.NORTH);
+    expect(getDirectionFromString('LEFT')).toBe(Direction.NORTH);
+    expect(getDirectionFromString('RIGHT')).toBe(Direction.NORTH);
+    expect(getDirectionFromString('')).toBe(Direction.NORTH);
+    expect(getDirectionFromString('NORTHEAST')).toBe(Direction.NORTH);
   });
 });

@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { SkeletonTextComponent } from '../skeleton-text/skeleton-text.component';
+import { QuestThumbnailComponent } from '../quest-thumbnail/quest-thumbnail.component';
 
 @Component({
   selector: 'app-game-link-card',
-  imports: [SkeletonTextComponent],
+  imports: [SkeletonTextComponent, QuestThumbnailComponent],
   templateUrl: './game-link-card.component.html',
   styleUrl: './game-link-card.component.css',
   standalone: true,
@@ -15,4 +16,5 @@ export class GameLinkCardComponent {
   @Input('description') description: string = '';
   @Input('playCount') playCount: number = 0;
   @Input('completionCount') completionCount: number = 0;
+  @Input('cover') cover: string = '';
 }

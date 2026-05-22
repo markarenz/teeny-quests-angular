@@ -166,6 +166,7 @@ export type QuestROM = {
   title: string;
   description: string;
   introduction?: string;
+  cover?: string;
   itemStatus: string;
   userId: string;
   username: string;

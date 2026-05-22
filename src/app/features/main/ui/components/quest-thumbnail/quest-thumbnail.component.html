@@ -1,0 +1,38 @@
+<div class="quest-thumbnail">
+  <div>
+    @if(area) {
+    @for(positionKey of positionKeys; track positionKey;) {
+
+    <!-- MAP -->
+    @if(!area.map[positionKey].isHidden) {
+    <app-area-cell [positionKey]="positionKey" [cellData]="area.map[positionKey]" [lightLevel]="1" />
+    }
+    }
+    <!-- ITEMS -->
+    @for(item of area.items; track item.id;) {
+    <app-area-item [item]="item" [isNearPlayer]="false" [isLockedOut]="true" [lightLevel]="1" />
+    }
+    <!-- PROPS -->
+    @for(prop of area.props; track prop.id;) {
+    <app-area-prop [prop]="prop" [isClickable]="false" [isNearPlayer]="false" [isLockedOut]="true" [lightLevel]="1" />
+    }
+
+    <!-- ACTORS -->
+    @for(actor of area.actors; track actor.id;) {
+    <app-area-actor [actor]="actor" [isClickable]="false" [isEditorMode]="false" [isLockedOut]="true"
+      [showHealthBar]="false" [lightLevel]="1" />
+    }
+
+    @for(exit of area.exits; track exit.id;) {
+    <app-area-exit [exit]="exit" [isClickable]="false" [isNearPlayer]="false" [isLockedOut]="true" [lightLevel]="1" />
+    }
+
+    }
+
+
+
+
+
+
+  </div>
+</div>
