@@ -56,12 +56,6 @@ export class EditorPanelItemsComponent {
           newLockouts.push(`${item.y}_${item.x}`);
         }
       });
-      this.area.exits.forEach((exit: QuestAreaExit) => {
-        newLockouts.push(`${exit.y}_${exit.x}`);
-      });
-      this.area.props.forEach((prop: QuestProp) => {
-        newLockouts.push(`${prop.y}_${prop.x}`);
-      });
       const positionKeys = getPositionKeysForGridSize();
       const map = this.area.map;
       positionKeys.forEach((position: string) => {
@@ -75,7 +69,6 @@ export class EditorPanelItemsComponent {
           newLockouts.push(position);
         }
       });
-
       this.lockouts = newLockouts;
     }
   }

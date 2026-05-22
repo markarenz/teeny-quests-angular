@@ -6,6 +6,7 @@ export const authConfig: AuthConfig = {
   clientId: googleConfigConstants.clientId,
   redirectUri: window.location.origin,
   scope: 'openid email',
+  useSilentRefresh: true, // Uses refresh token in the background
   responseType: 'code',
   disablePKCE: false,
   showDebugInformation: true,

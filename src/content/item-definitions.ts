@@ -126,7 +126,7 @@ export const itemWeaponDefinitions: { [key: string]: ItemWeaponDefinition } = {
     weaponConsumable: false,
     accuracy: 0.2,
     minDamage: 0.25,
-    maxDamage: 0.5,
+    maxDamage: 0.25,
     weaponSoundId: 'attack-slash',
   },
   pointyStick: {
@@ -204,6 +204,15 @@ export const inventoryDefinitions: { [key: string]: InventoryDefinition } = {
     article: 'a',
     description: 'A precious blue gemstone.',
     scoreValue: 100,
+  },
+  pointyStick: {
+    id: 'pointyStick',
+    name: 'Pointy Stick',
+    pluralName: 'Pointy Sticks',
+    article: 'a',
+    description:
+      'A stick that is pointy on one end. It can be used as a weapon.',
+    scoreValue: 10,
   },
 };
 

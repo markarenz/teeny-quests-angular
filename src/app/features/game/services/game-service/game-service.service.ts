@@ -51,6 +51,7 @@ import {
 import { actorDefinitions } from '@content/actor-definitions';
 import {
   deleteActorGameState,
+  getBestPlayerWeapon,
   getFacingForPosition,
   getIsPlayerNearActorCell,
   updateActorGameState,
@@ -801,8 +802,9 @@ export class GameService {
   public turnActionItemAttack = async (
     actorId: string
   ): Promise<QuestState> => {
-    // FUTURE: add item equip system;
-    const weaponId = 'bareHands';
+    const weaponId = getBestPlayerWeapon(
+      this.gameState.value?.player.inventory
+    );
     let nextGameState = structuredClone(this.gameState.value)!;
     const weaponDef = itemWeaponDefinitions[weaponId];
     const actor = nextGameState.areas[nextGameState.player.areaId].actors.find(

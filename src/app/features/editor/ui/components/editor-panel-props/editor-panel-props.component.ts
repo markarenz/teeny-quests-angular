@@ -164,9 +164,6 @@ export class EditorPanelPropsComponent {
       const newLockouts: string[] = [];
       const positionKeys = getPositionKeysForGridSize();
       const map = this.area.map;
-      this.area.items.forEach(item => {
-        newLockouts.push(`${item.y}_${item.x}`);
-      });
       this.area.props.forEach(prop => {
         if (prop.id !== this.selectedPropId) {
           newLockouts.push(`${prop.y}_${prop.x}`);

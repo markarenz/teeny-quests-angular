@@ -13,6 +13,7 @@ import { SvgItemDiamondComponent } from './items/svg-item-diamond/svg-item-diamo
 import { SvgItemEmeraldComponent } from './items/svg-item-emerald/svg-item-emerald.component';
 import { SvgItemRubyComponent } from './items/svg-item-ruby/svg-item-ruby.component';
 import { SvgItemSapphireComponent } from './items/svg-item-sapphire/svg-item-sapphire.component';
+import { SvgItemPointyStickComponent } from './items/svg-item-pointy-stick/svg-item-pointy-stick.component';
 import { itemDefinitions } from '@content/item-definitions';
 
 @Component({
@@ -25,6 +26,7 @@ import { itemDefinitions } from '@content/item-definitions';
     SvgItemEmeraldComponent,
     SvgItemRubyComponent,
     SvgItemSapphireComponent,
+    SvgItemPointyStickComponent,
   ],
   templateUrl: './area-item.component.html',
   styleUrl: './area-item.component.css',

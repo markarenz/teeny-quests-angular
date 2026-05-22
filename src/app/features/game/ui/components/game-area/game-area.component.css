@@ -9,7 +9,7 @@
     position: absolute;
     width: 100vw;
     bottom: 0;
-    transition: bottom 1.5s ease-in-out;
+    transition: bottom 0.5s ease-in-out;
   }
 
   .stage-base {

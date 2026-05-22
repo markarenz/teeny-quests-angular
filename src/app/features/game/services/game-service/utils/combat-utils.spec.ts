@@ -6,6 +6,7 @@ import {
   getFacingForPosition,
   getOppositeDirection,
   deleteActorGameState,
+  getBestPlayerWeapon,
 } from './combat-utils';
 import { mockActor } from '@app/features/editor/mocks/actor.mock';
 import { Direction } from '@app/features/main/interfaces/enums';
@@ -113,5 +114,17 @@ describe('deleteActorGameState', () => {
     };
     const nextGameState = deleteActorGameState(gameState, actorToDelete);
     expect(nextGameState.areas['area1'].actors).toEqual([]);
+  });
+});
+
+describe('getBestPlayerWeapon', () => {
+  it('should return the best weapon available in the player inventory', () => {
+    const inventory: Inventory = {
+      gold: 10,
+      bareHands: 1,
+      pointyStick: 1,
+    };
+    const bestWeapon = getBestPlayerWeapon(inventory);
+    expect(bestWeapon).toEqual('pointyStick');
   });
 });
