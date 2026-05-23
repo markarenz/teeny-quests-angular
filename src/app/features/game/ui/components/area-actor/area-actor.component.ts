@@ -34,6 +34,7 @@ export class AreaActorComponent {
   @Input('isLockedOut') isLockedOut: boolean = false;
   @Input('lightLevel') lightLevel: number = 0;
   @Input('playerPosition') playerPosition: string = '-1_-1';
+  @Input('showHealthBar') showHealthBar: boolean = true;
   @Output() onClick = new EventEmitter<string>();
   gridSize: number = defaultGridSize;
 

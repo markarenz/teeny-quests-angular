@@ -96,6 +96,11 @@ export const fieldNames: Record<string, FiledDefinition[]> = {
       detailOnly: false,
     },
     {
+      fieldName: 'cover',
+      required: false,
+      detailOnly: false,
+    },
+    {
       fieldName: 'content',
       required: true,
       detailOnly: true,

@@ -43,6 +43,7 @@ import {
   utilDeleteActor,
   utilUpdateActor,
 } from './utils/actor-utils';
+import { getCoverFromGameContent } from './utils/common-utils';
 
 @Injectable({
   providedIn: 'root',
@@ -808,6 +809,7 @@ export class GameEditorService {
 
   async saveGame(game: QuestROM): Promise<string> {
     const token = this.authProviderService.getToken();
+    const cover = getCoverFromGameContent(game.content);
     if (this.game?.value?.content) {
       const response = await fetch(gamesApiUrl, {
         method: 'PUT',
@@ -817,6 +819,7 @@ export class GameEditorService {
         },
         body: JSON.stringify({
           ...game,
+          cover,
           content: JSON.stringify(this.game.value.content),
         }),
       });

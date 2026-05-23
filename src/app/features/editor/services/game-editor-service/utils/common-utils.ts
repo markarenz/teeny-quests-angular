@@ -1,5 +1,6 @@
 import { Direction } from '@app/features/main/interfaces/enums';
 import { QuestArea, QuestROM } from '@app/features/main/interfaces/types';
+import { logger } from '@app/features/main/utils/logger';
 import { floorDefinitions } from '@content/floor-definitions';
 import { getPositionKeysForGridSize } from '@main/utils';
 
@@ -47,6 +48,22 @@ export const getDirectionFromString = (directionStr: string): Direction => {
     case 'west':
       return Direction.WEST;
     default:
-      throw new Error(`Invalid direction string: ${directionStr}`);
+      logger({
+        type: 'error',
+        message: `Invalid direction string: ${directionStr}`,
+      });
+
+      return Direction.NORTH;
   }
+};
+
+export const getCoverFromGameContent = (
+  content: QuestROM['content']
+): string | undefined => {
+  const areaId = content.player.areaId;
+  const area = content.areas[areaId];
+  if (!area) {
+    return undefined;
+  }
+  return JSON.stringify(area);
 };

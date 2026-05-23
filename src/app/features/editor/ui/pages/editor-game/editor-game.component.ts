@@ -92,6 +92,7 @@ export class EditorGameComponent {
   ];
 
   ngOnInit() {
+    document.body.classList.add('editor');
     this.subscriptions.push(
       this._gameEditorService.gameObs.subscribe((data: QuestROM | null) => {
         const userId = this._authGoogleService.getUserId();
@@ -111,6 +112,7 @@ export class EditorGameComponent {
   }
 
   ngOnDestroy() {
+    document.body.classList.remove('editor');
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 

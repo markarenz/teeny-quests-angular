@@ -47,7 +47,7 @@ export class TexturesWallComponent {
 
   updateProps() {
     this.textureYOffset = this.h % 2 === 0 ? 0.055 : 0;
-    this.textureId = `texture_${this.positionKey}_${this.wallPosition}_${this.isFlat ? 'flat' : 'wall'}`;
+    this.textureId = `texture_${this.positionKey}_${this.wallPosition}_${this.wallType}_${this.isFlat ? 'flat' : 'wall'}`;
     this.wallTexture = `url(#${this.textureId})`;
     this.wallProps = this.getWallTextureProps();
   }

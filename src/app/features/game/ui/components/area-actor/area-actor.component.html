@@ -2,7 +2,7 @@
   class="area-actor group facing-{{actor.facing}} anim-status-{{actor.animStatus.toLocaleLowerCase()}}"
   [style.bottom]="position.bottom" [style.filter]="'brightness(' + (lightLevel * 100) + '%)'"
   [style.left]="position.left" id="area-actor-{{ actor.id }}">
-  @if(healthPercent > 0) {
+  @if(showHealthBar && healthPercent > 0) {
   <div
     class="absolute top-[30%] left-[20%] w-[60%] h-1 pointer-events-none flex bg-gray-800/50 ring-2 ring-gray-800/50">
     <div class="absolute top-0 left-0 h-1 bg-red-500" [attr.style]="`width: ${healthPercent}%`"></div>
