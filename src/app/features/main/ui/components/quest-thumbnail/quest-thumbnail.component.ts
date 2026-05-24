@@ -24,7 +24,7 @@ export class QuestThumbnailComponent {
   public area?: QuestArea;
   public positionKeys = getPositionKeysForGridSize();
 
-  ngOnChanges() {
+  ngOnInit() {
     if (this.cover) {
       this.area = JSON.parse(this.cover) as QuestArea;
     }

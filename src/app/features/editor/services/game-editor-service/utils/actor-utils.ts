@@ -48,15 +48,15 @@ export const utilCreateActor = ({
     const openCellPosition = findAnOpenCell({ game, selectedAreaId, lockouts });
     if (openCellPosition) {
       const [y, x] = openCellPosition.split('_');
-      let direction = 'north';
+      let direction = Direction.NORTH;
       if (+y < 2) {
-        direction = 'north';
+        direction = Direction.SOUTH;
       } else if (+y > defaultGridSize - 3) {
-        direction = 'south';
+        direction = Direction.NORTH;
       } else if (+x < 2) {
-        direction = 'east';
+        direction = Direction.EAST;
       } else if (+x > defaultGridSize - 3) {
-        direction = 'west';
+        direction = Direction.WEST;
       }
 
       let h = area ? area.map[openCellPosition].h : 1;
@@ -67,7 +67,7 @@ export const utilCreateActor = ({
         actorType: defaultActorType,
         areaId: selectedAreaId,
         animStatus: AnimStatus.IDLE,
-        facing: Direction.SOUTH,
+        facing: direction,
         health: defaultActor.maxHealth,
         x: +x,
         y: +y,

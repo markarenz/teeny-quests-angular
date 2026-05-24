@@ -14,6 +14,9 @@ import { SvgItemEmeraldComponent } from './items/svg-item-emerald/svg-item-emera
 import { SvgItemRubyComponent } from './items/svg-item-ruby/svg-item-ruby.component';
 import { SvgItemSapphireComponent } from './items/svg-item-sapphire/svg-item-sapphire.component';
 import { SvgItemPointyStickComponent } from './items/svg-item-pointy-stick/svg-item-pointy-stick.component';
+import { SvgItemHealthContainerComponent } from './items/svg-item-health-container/svg-item-health-container.component';
+import { SvgItemHealthCookieComponent } from './items/svg-item-health-cookie/svg-item-health-cookie.component';
+import { SvgItemHealthPotionComponent } from './items/svg-item-health-potion/svg-item-health-potion.component';
 import { itemDefinitions } from '@content/item-definitions';
 
 @Component({
@@ -27,6 +30,9 @@ import { itemDefinitions } from '@content/item-definitions';
     SvgItemRubyComponent,
     SvgItemSapphireComponent,
     SvgItemPointyStickComponent,
+    SvgItemHealthContainerComponent,
+    SvgItemHealthCookieComponent,
+    SvgItemHealthPotionComponent,
   ],
   templateUrl: './area-item.component.html',
   styleUrl: './area-item.component.css',

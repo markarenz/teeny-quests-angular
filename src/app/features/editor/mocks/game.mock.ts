@@ -4,7 +4,12 @@ import {
   GameStateMode,
   Direction,
 } from '@app/features/main/interfaces/enums';
-import { QuestROM, QuestState } from '@app/features/main/interfaces/types';
+import {
+  QuestAreaMap,
+  QuestROM,
+  QuestState,
+} from '@app/features/main/interfaces/types';
+import { getPositionKeysForGridSize } from '@app/features/main/utils';
 
 const questMockData: QuestROM = {
   content: {
@@ -940,6 +945,32 @@ const questMockData: QuestROM = {
 };
 
 export default questMockData;
+
+const flatAreaMapObj = questMockData.content.areas['start'].map;
+
+const flatAreaMap: QuestAreaMap = {};
+Object.keys(flatAreaMapObj).forEach(key => {
+  flatAreaMap[key] = {
+    ...flatAreaMapObj[key],
+    floor: 'default',
+    wallEast: 'default',
+    wallSouth: 'default',
+  };
+});
+
+export const questMockDataFlatStart: QuestROM = {
+  ...questMockData,
+  content: {
+    ...questMockData.content,
+    areas: {
+      ...questMockData.content.areas,
+      start: {
+        ...questMockData.content.areas['start'],
+        map: flatAreaMap,
+      },
+    },
+  },
+};
 
 export const questStateMockData: QuestState = {
   gameId: 'test-game-id',

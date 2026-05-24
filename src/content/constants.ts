@@ -70,6 +70,7 @@ export const Lights: { [key: string]: LightCell[] } = {
 export const playerCombatDefaults = {
   health: 4,
   maxHealth: 4,
+  maxMaxHealth: 8,
   defense: 0.3,
   accuracy: 0.3,
   damage: 3,

@@ -136,6 +136,22 @@ export const audioIdMap: Map<string, AudioDefinition> = new Map([
     },
   ],
   [
+    'player-heal',
+    {
+      filename: '346116__lulyc__retro-game-heal-sound.mp3',
+      volume: 0.3,
+      credit: 'Lulyc',
+    },
+  ],
+  [
+    'player-heart',
+    {
+      filename: '253172__suntemple__retro-bonus-pickup-sfx.mp3',
+      volume: 0.6,
+      credit: 'Suntemple',
+    },
+  ],
+  [
     'attack-slash',
     {
       filename: '362349__beerbelly38__knife-slash-2.mp3',

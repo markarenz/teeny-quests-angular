@@ -600,6 +600,9 @@ export class GameService {
           p.propType.toLowerCase().includes(itemId)
       );
     }
+    if (['healthCookie', 'healthPotion', 'healthContainer'].includes(itemId)) {
+      return true;
+    }
     return false;
   };
 
@@ -758,6 +761,48 @@ export class GameService {
       title: 'Inventory Updated',
       message: `Dropped ${itemDef.name}.`,
       messageType: 'info',
+    });
+    return nextGameState;
+  };
+
+  public turnActionHealthPowerUp = async (
+    nextGameState: QuestState,
+    use: string,
+    useDescription?: string
+  ): Promise<QuestState> => {
+    let newPlayerHealth = nextGameState.player.health;
+    if (use.includes('-lg')) {
+      newPlayerHealth += 4;
+    } else {
+      newPlayerHealth += 1;
+    }
+    newPlayerHealth = Math.min(
+      newPlayerHealth,
+      nextGameState.player.maxHealth ?? 4
+    );
+    nextGameState.player.health = newPlayerHealth;
+    this._audioService.playSound('player-heal');
+    this._messageService.showMessage({
+      title: 'Health Restored',
+      message: useDescription ? useDescription : 'Your health has improved.',
+      messageType: 'success',
+    });
+    return nextGameState;
+  };
+
+  public turnActionHeartPowerUp = async (
+    nextGameState: QuestState
+  ): Promise<QuestState> => {
+    nextGameState.player.maxHealth = Math.min(
+      (nextGameState.player.maxHealth ?? 4) + 1,
+      playerCombatDefaults.maxMaxHealth
+    );
+    nextGameState.player.health = nextGameState.player.maxHealth;
+    this._audioService.playSound('player-heart');
+    this._messageService.showMessage({
+      title: 'Max Health Increased',
+      message: 'Heart consumed! Your maximum health has increased.',
+      messageType: 'success',
     });
     return nextGameState;
   };
@@ -922,9 +967,15 @@ export class GameService {
       nextGameState.player.inventory[itemId] - 1,
       0
     );
-    const use = itemDefinitions[itemId]?.use;
+    const { use, useDescription } = itemDefinitions[itemId] ?? {};
     if (!use) {
       return nextGameState;
+    }
+    if (use?.includes('health-')) {
+      return this.turnActionHealthPowerUp(nextGameState, use, useDescription);
+    }
+    if (use === 'heart') {
+      return this.turnActionHeartPowerUp(nextGameState);
     }
     if (use?.includes('unlock-exit')) {
       return this.turnActionUnlockExit(nextGameState, use, itemId);
