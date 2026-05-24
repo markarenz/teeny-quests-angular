@@ -8,6 +8,7 @@ export type ItemDefinition = {
   variant?: string;
   action?: string; // on click in area
   use?: string; // action from Inventory
+  useDescription?: string; // description of use action for UI
   amount?: number;
   inventoryActions: string[]; // actions available in inventory
 };
@@ -112,6 +113,36 @@ export const itemDefinitions: { [key: string]: ItemDefinition } = {
     use: '',
     inventoryActions: ['use', 'drop'],
   },
+  healthCookie: {
+    id: 'healthCookie',
+    name: 'Cookie',
+    action: 'take',
+    inventoryKey: 'healthCookie',
+    amount: 1,
+    use: 'health-sm',
+    useDescription: 'The cookie is delicious. You feel healthier.',
+    inventoryActions: ['use', 'drop'],
+  },
+  healthPotion: {
+    id: 'healthPotion',
+    name: 'Health Potion',
+    action: 'take',
+    inventoryKey: 'healthPotion',
+    amount: 1,
+    use: 'health-lg',
+    useDescription:
+      "The potion in the pestle holds the brew that's true. You feel much healthier.",
+    inventoryActions: ['use', 'drop'],
+  },
+  healthContainer: {
+    id: 'healthContainer',
+    name: 'Heart',
+    action: 'take',
+    inventoryKey: 'healthContainer',
+    amount: 1,
+    use: 'heart',
+    inventoryActions: ['use', 'drop'],
+  },
 };
 
 export const itemWeaponDefinitions: { [key: string]: ItemWeaponDefinition } = {
@@ -213,6 +244,31 @@ export const inventoryDefinitions: { [key: string]: InventoryDefinition } = {
     description:
       'A stick that is pointy on one end. It can be used as a weapon.',
     scoreValue: 10,
+  },
+  healthCookie: {
+    id: 'healthCookie',
+    name: 'Cookie',
+    pluralName: 'Cookies',
+    article: 'a',
+    description: 'A cookie that restores a small amount of health when used.',
+    scoreValue: 25,
+  },
+  healthPotion: {
+    id: 'healthPotion',
+    name: 'Health Potion',
+    pluralName: 'Health Potions',
+    article: 'a',
+    description: 'A potion that restores a large amount of health when used.',
+    scoreValue: 75,
+  },
+  healthContainer: {
+    id: 'healthContainer',
+    name: 'Heart',
+    pluralName: 'Hearts',
+    article: 'a',
+    description:
+      'A heart container that increases your maximum health when used, limited to 8.',
+    scoreValue: 150,
   },
 };
 

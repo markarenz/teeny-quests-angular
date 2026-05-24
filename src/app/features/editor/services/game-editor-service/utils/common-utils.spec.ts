@@ -1,4 +1,8 @@
-import { findAnOpenCell, getDirectionFromString } from './common-utils';
+import {
+  findAnOpenCell,
+  getCoverFromGameContent,
+  getDirectionFromString,
+} from './common-utils';
 import questMockData from '@app/features/editor/mocks/game.mock';
 import { Direction } from '@app/features/main/interfaces/enums';
 import { getPositionKeysForGridSize } from '@main/utils';
@@ -40,6 +44,15 @@ describe('findAnOpenCell', () => {
     });
     expect(result).toBe(null);
   });
+
+  it('return null when no area exists', () => {
+    const gameMock = JSON.parse(JSON.stringify(questMockData));
+    const result = findAnOpenCell({
+      game: gameMock,
+      selectedAreaId: 'invalid-area',
+    });
+    expect(result).toBe(null);
+  });
 });
 
 describe('getDirectionFromString', () => {
@@ -58,4 +71,24 @@ describe('getDirectionFromString', () => {
     expect(getDirectionFromString('')).toBe(Direction.NORTH);
     expect(getDirectionFromString('NORTHEAST')).toBe(Direction.NORTH);
   });
+});
+
+describe('getCoverFromGameContent', () => {
+  it('returns serialized area content for the player area', () => {
+    const gameMock = JSON.parse(JSON.stringify(questMockData));
+
+    const result = getCoverFromGameContent(gameMock.content);
+
+    expect(result).toEqual(JSON.stringify(gameMock.content.areas['start']));
+  });
+
+  it('returns undefined when player area does not exist', () => {
+    const gameMock = JSON.parse(JSON.stringify(questMockData));
+    gameMock.content.player.areaId = 'missing-area';
+
+    const result = getCoverFromGameContent(gameMock.content);
+
+    expect(result).toBeUndefined();
+  });
+
 });
