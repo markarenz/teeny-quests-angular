@@ -113,6 +113,24 @@ export const itemDefinitions: { [key: string]: ItemDefinition } = {
     use: '',
     inventoryActions: ['use', 'drop'],
   },
+  adequateBlade: {
+    id: 'adequateBlade',
+    name: 'Adequate Blade',
+    action: 'take',
+    inventoryKey: 'adequateBlade',
+    amount: 1,
+    use: '',
+    inventoryActions: ['use', 'drop'],
+  },
+  awesomeSword: {
+    id: 'awesomeSword',
+    name: 'Sword of Awesomeness',
+    action: 'take',
+    inventoryKey: 'awesomeSword',
+    amount: 1,
+    use: '',
+    inventoryActions: ['use', 'drop'],
+  },
   healthCookie: {
     id: 'healthCookie',
     name: 'Cookie',
@@ -163,9 +181,25 @@ export const itemWeaponDefinitions: { [key: string]: ItemWeaponDefinition } = {
   pointyStick: {
     ...itemDefinitions['pointyStick'],
     weaponConsumable: false,
-    accuracy: 0.4,
+    accuracy: 0.3,
     minDamage: 0.5,
     maxDamage: 1,
+    weaponSoundId: 'attack-slash',
+  },
+  adequateBlade: {
+    ...itemDefinitions['adequateBlade'],
+    weaponConsumable: false,
+    accuracy: 0.4,
+    minDamage: 1,
+    maxDamage: 2,
+    weaponSoundId: 'attack-slash',
+  },
+  awesomeSword: {
+    ...itemDefinitions['awesomeSword'],
+    weaponConsumable: false,
+    accuracy: 0.5,
+    minDamage: 2,
+    maxDamage: 4,
     weaponSoundId: 'attack-slash',
   },
 };
@@ -242,8 +276,25 @@ export const inventoryDefinitions: { [key: string]: InventoryDefinition } = {
     pluralName: 'Pointy Sticks',
     article: 'a',
     description:
-      'A stick that is pointy on one end. It can be used as a weapon.',
+      'A stick that is pointy on one end. It can do minor damage in combat.',
     scoreValue: 10,
+  },
+  adequateBlade: {
+    id: 'adequateBlade',
+    name: 'Adequate Blade',
+    pluralName: 'Adequate Blades',
+    article: 'an',
+    description: "An OK blade that does medium damage. It's fine, really.",
+    scoreValue: 20,
+  },
+  awesomeSword: {
+    id: 'awesomeSword',
+    name: 'Awesome Sword',
+    pluralName: 'Awesome Swords',
+    article: 'an',
+    description:
+      "An awesome sword that does high damage. Ooh, it's so pretty and impressive!",
+    scoreValue: 20,
   },
   healthCookie: {
     id: 'healthCookie',

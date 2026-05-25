@@ -17,6 +17,8 @@ import { SvgItemPointyStickComponent } from './items/svg-item-pointy-stick/svg-i
 import { SvgItemHealthContainerComponent } from './items/svg-item-health-container/svg-item-health-container.component';
 import { SvgItemHealthCookieComponent } from './items/svg-item-health-cookie/svg-item-health-cookie.component';
 import { SvgItemHealthPotionComponent } from './items/svg-item-health-potion/svg-item-health-potion.component';
+import { SvgItemAdequateBladeComponent } from './items/svg-item-adequate-blade/svg-item-adequate-blade.component';
+import { SvgItemAwesomeSwordComponent } from './items/svg-item-awesome-sword/svg-item-awesome-sword.component';
 import { itemDefinitions } from '@content/item-definitions';
 
 @Component({
@@ -33,6 +35,8 @@ import { itemDefinitions } from '@content/item-definitions';
     SvgItemHealthContainerComponent,
     SvgItemHealthCookieComponent,
     SvgItemHealthPotionComponent,
+    SvgItemAdequateBladeComponent,
+    SvgItemAwesomeSwordComponent,
   ],
   templateUrl: './area-item.component.html',
   styleUrl: './area-item.component.css',
