@@ -10,6 +10,7 @@ export type ItemDefinition = {
   use?: string; // action from Inventory
   useDescription?: string; // description of use action for UI
   amount?: number;
+  defenseBuff?: number; // for use with armor items
   inventoryActions: string[]; // actions available in inventory
 };
 
@@ -67,7 +68,6 @@ export const itemDefinitions: { [key: string]: ItemDefinition } = {
     amount: 100,
     inventoryActions: ['use'],
   },
-
   ruby: {
     id: 'ruby',
     name: 'Ruby',
@@ -111,7 +111,7 @@ export const itemDefinitions: { [key: string]: ItemDefinition } = {
     inventoryKey: 'pointyStick',
     amount: 1,
     use: '',
-    inventoryActions: ['use', 'drop'],
+    inventoryActions: ['drop'],
   },
   adequateBlade: {
     id: 'adequateBlade',
@@ -120,7 +120,7 @@ export const itemDefinitions: { [key: string]: ItemDefinition } = {
     inventoryKey: 'adequateBlade',
     amount: 1,
     use: '',
-    inventoryActions: ['use', 'drop'],
+    inventoryActions: ['drop'],
   },
   awesomeSword: {
     id: 'awesomeSword',
@@ -129,7 +129,17 @@ export const itemDefinitions: { [key: string]: ItemDefinition } = {
     inventoryKey: 'awesomeSword',
     amount: 1,
     use: '',
-    inventoryActions: ['use', 'drop'],
+    inventoryActions: ['drop'],
+  },
+  ringProtection: {
+    id: 'ringProtection',
+    name: 'Ring of Protection',
+    action: 'take',
+    inventoryKey: 'ringProtection',
+    amount: 1,
+    use: '',
+    inventoryActions: ['drop'],
+    defenseBuff: 0.2,
   },
   healthCookie: {
     id: 'healthCookie',
@@ -295,6 +305,15 @@ export const inventoryDefinitions: { [key: string]: InventoryDefinition } = {
     description:
       "An awesome sword that does high damage. Ooh, it's so pretty and impressive!",
     scoreValue: 20,
+  },
+  ringProtection: {
+    id: 'ringProtection',
+    name: 'Ring of Protection',
+    pluralName: 'Rings of Protection',
+    article: 'a',
+    description:
+      'A fashionable ring of protection. Just having it in your inventory makes you feel harder to hit.',
+    scoreValue: 500,
   },
   healthCookie: {
     id: 'healthCookie',
