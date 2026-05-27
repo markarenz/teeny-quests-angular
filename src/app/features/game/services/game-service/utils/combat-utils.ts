@@ -4,7 +4,10 @@ import {
   QuestState,
   SelectIUIOption,
 } from '@app/features/main/interfaces/types';
-import { itemWeaponDefinitions } from '@content/item-definitions';
+import {
+  itemDefinitions,
+  itemWeaponDefinitions,
+} from '@content/item-definitions';
 import { getIsNearPosition } from './common';
 import { Direction } from '@app/features/main/interfaces/enums';
 
@@ -177,4 +180,17 @@ export const getBestPlayerWeapon = (
     current.maxDamage > best.maxDamage ? current : best
   );
   return bestWeapon.id;
+};
+
+export const calcPlayerDefense = (player: QuestState['player']): number => {
+  let defense = player.defense ?? 0;
+  if (player.inventory) {
+    Object.keys(player.inventory).forEach(key => {
+      const itemDef = itemDefinitions[key];
+      if (itemDef?.defenseBuff) {
+        defense = Math.floor((defense + itemDef.defenseBuff) * 100) / 100; // Round to 2 decimal places
+      }
+    });
+  }
+  return defense;
 };

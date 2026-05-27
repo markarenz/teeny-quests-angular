@@ -50,6 +50,7 @@ import {
 } from '@app/features/main/interfaces/enums';
 import { actorDefinitions } from '@content/actor-definitions';
 import {
+  calcPlayerDefense,
   deleteActorGameState,
   getBestPlayerWeapon,
   getFacingForPosition,
@@ -1277,8 +1278,8 @@ export class GameService {
         this.gameState.next(nextGameState);
 
         const diceRoll = Math.random();
-        const isHit =
-          diceRoll + actorDef.accuracy > 0.5 + (player.defense ?? 0);
+        const playerDefense = calcPlayerDefense(nextGameState.player);
+        const isHit = diceRoll + actorDef.accuracy > 0.5 + (playerDefense ?? 0);
 
         // Min damage is 50% of the actorDef.damage value and the max is 100%, quantize to 0.25 increments
         const damage =

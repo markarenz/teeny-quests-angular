@@ -19,6 +19,7 @@ import { SvgItemHealthCookieComponent } from './items/svg-item-health-cookie/svg
 import { SvgItemHealthPotionComponent } from './items/svg-item-health-potion/svg-item-health-potion.component';
 import { SvgItemAdequateBladeComponent } from './items/svg-item-adequate-blade/svg-item-adequate-blade.component';
 import { SvgItemAwesomeSwordComponent } from './items/svg-item-awesome-sword/svg-item-awesome-sword.component';
+import { SvgItemRingProtectionComponent } from './items/svg-item-ring-protection/svg-item-ring-protection.component';
 import { itemDefinitions } from '@content/item-definitions';
 
 @Component({
@@ -37,6 +38,7 @@ import { itemDefinitions } from '@content/item-definitions';
     SvgItemHealthPotionComponent,
     SvgItemAdequateBladeComponent,
     SvgItemAwesomeSwordComponent,
+    SvgItemRingProtectionComponent,
   ],
   templateUrl: './area-item.component.html',
   styleUrl: './area-item.component.css',

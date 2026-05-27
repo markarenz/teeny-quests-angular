@@ -7,6 +7,7 @@ import {
   getOppositeDirection,
   deleteActorGameState,
   getBestPlayerWeapon,
+  calcPlayerDefense,
 } from './combat-utils';
 import { mockActor } from '@app/features/editor/mocks/actor.mock';
 import { Direction } from '@app/features/main/interfaces/enums';
@@ -126,5 +127,20 @@ describe('getBestPlayerWeapon', () => {
     };
     const bestWeapon = getBestPlayerWeapon(inventory);
     expect(bestWeapon).toEqual('pointyStick');
+  });
+});
+
+describe('calcPlayerDefense', () => {
+  it('should calculate the player defense correctly', () => {
+    const player = {
+      defense: 0.1,
+      inventory: {
+        bareHands: 1,
+        pointyStick: 1,
+        ringProtection: 1,
+      },
+    } as any;
+    const defense = calcPlayerDefense(player);
+    expect(defense).toBe(0.3);
   });
 });
