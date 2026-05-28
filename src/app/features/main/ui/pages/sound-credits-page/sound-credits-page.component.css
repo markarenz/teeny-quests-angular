@@ -1,0 +1,22 @@
+a {
+  text-decoration: none;
+  color: var(--color-primary);
+  font-weight: bold;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+h2 {
+  margin-bottom: 1rem;
+}
+
+.credits-list {
+  margin-top: 1rem;
+  li {
+    list-style-type: disc;
+    margin-left: 1.5rem;
+    margin-top: 1rem;
+    line-height: 1.5;
+  }
+}

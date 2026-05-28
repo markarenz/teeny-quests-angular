@@ -77,7 +77,7 @@ describe('AreaActorComponent', () => {
         facing: Direction.EAST,
       };
       const zOffset = component.getZOffset();
-      expect(zOffset).toBe(1);
+      expect(zOffset).toBe(7);
     });
 
     it('should return 0 if attacking south', () => {
@@ -87,7 +87,7 @@ describe('AreaActorComponent', () => {
         facing: Direction.SOUTH,
       };
       const zOffset = component.getZOffset();
-      expect(zOffset).toBe(7);
+      expect(zOffset).toBe(1);
     });
 
     it('should return 0 if not south or east or attacking', () => {

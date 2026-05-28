@@ -17,6 +17,11 @@ export const mainMenuData: MenuItem[] = [
     href: '/about',
   },
   {
+    id: 2,
+    label: 'Sound Credits',
+    href: '/sound-credits',
+  },
+  {
     id: 4,
     label: 'Quest Editor',
     href: '/editor',
