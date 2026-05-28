@@ -1,0 +1,98 @@
+.eyes {
+  transition: transform 0.2s ease;
+}
+
+.eye-pos_1 {
+  transform: translateX(0);
+}
+
+.eye-pos_0 {
+  transform: translateX(-3%);
+}
+
+.eye-pos_-1 {
+  transform: translateX(-5%);
+}
+
+.status-seeking {
+  animation: ooze 1s infinite;
+  transform-origin: center 80%;
+}
+.status-idle {
+  .head {
+    animation: bob 1.5s infinite;
+    transform-origin: center 80%;
+  }
+  .arms {
+    animation: sway 1s infinite;
+    animation-delay: 0.25s;
+    transform-origin: center 80%;
+  }
+}
+.status-attacking {
+  .arms {
+    animation: poke 0.5s infinite;
+    transform-origin: center;
+  }
+}
+.status-dying {
+  animation: ascend 0.5s 0.5s forwards;
+}
+
+@keyframes poke {
+  0% {
+    transform: translateY(0) scaleX(100%);
+  }
+  50% {
+    transform: translateY(5%) scaleX(70%);
+  }
+  100% {
+    transform: translateY(0) scaleX(100%);
+  }
+}
+
+@keyframes bob {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-1%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+@keyframes sway {
+  0% {
+    transform: rotate(0);
+  }
+  50% {
+    transform: rotate(-5deg);
+  }
+  100% {
+    transform: rotate(0);
+  }
+}
+
+@keyframes ooze {
+  0% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(1.1);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes ascend {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-20%);
+    opacity: 0;
+  }
+}

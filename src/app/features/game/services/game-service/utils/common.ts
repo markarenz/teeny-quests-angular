@@ -80,7 +80,8 @@ export const calcScore = (
     }
   });
   if (gameState.flagValues['gameEnded']) {
-    score += 1000; // Bonus for completing the game
+    const healthBonus = gameState.player.health * 200;
+    score += 1000 + healthBonus; // Bonus for completing the game
   }
   questROM.content.flags?.forEach(flagDef => {
     if (flagDef.scoreValue && gameState.flagValues[flagDef.id]) {

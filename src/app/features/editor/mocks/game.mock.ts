@@ -483,7 +483,7 @@ const questMockData: QuestROM = {
         actors: [
           {
             id: 'actor-1',
-            actorType: 'slime_green',
+            actorType: 'slimeGreen',
             areaId: 'start',
             animStatus: AnimStatus.IDLE,
             facing: Direction.SOUTH,
