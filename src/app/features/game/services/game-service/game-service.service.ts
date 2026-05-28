@@ -1230,7 +1230,6 @@ export class GameService {
           this.isLockedOut.next(true);
           for (let i = 0; i < steps.length; i++) {
             const position = steps[i];
-            // TODO use dy, dx to set facing for actor
             const [y, x] = position.split('_').map(v => parseInt(v));
             const h =
               nextGameState.areas[nextGameState.player.areaId].map[position].h;
@@ -1274,6 +1273,7 @@ export class GameService {
           facing: actorFacing,
         });
         nextGameState.player.facing = getOppositeDirection(actorFacing);
+        this._audioService.playSound(actorDef.soundAttack);
 
         this.gameState.next(nextGameState);
 

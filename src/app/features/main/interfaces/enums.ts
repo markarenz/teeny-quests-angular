@@ -74,7 +74,7 @@ export enum ActivityType {
 }
 
 export enum ActorType {
-  SLIME_GREEN = 'slime_green',
+  SLIME_GREEN = 'slimeGreen',
   SLIME_PURPLE = 'slime_purple',
 }
 

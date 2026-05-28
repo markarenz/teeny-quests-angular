@@ -12,15 +12,15 @@ import {
   getAreaElementPositionStyle,
 } from '@app/features/game/lib/utils/index';
 import { SvgActorSlimeGreenComponent } from './actors/svg-actor-slime-green/svg-actor-slime-green.component';
+import { SvgActorSkelloComponent } from './actors/svg-actor-skello/svg-actor-skello.component';
 import { actorDefinitions } from '@content/actor-definitions';
 import { AudioService } from '@app/features/main/services/audio/audio-service.service';
-// import { AnimStatus, ActorType } from '@app/features/main/interfaces/enums';
 import { defaultActor } from '@app/features/game/lib/constants';
 import { AnimStatus, Direction } from '@app/features/main/interfaces/enums';
 
 @Component({
   selector: 'app-area-actor',
-  imports: [SvgActorSlimeGreenComponent],
+  imports: [SvgActorSlimeGreenComponent, SvgActorSkelloComponent],
   templateUrl: './area-actor.component.html',
   styleUrl: './area-actor.component.css',
 })
@@ -48,6 +48,7 @@ export class AreaActorComponent {
   public currentHealth: number = 0;
   public maxHealth: number = 0;
   public healthPercent: number = 100;
+  public size: 'sm' | 'md' | 'lg' = 'md';
   public relativePlayerXPos: number = 0; // -1 to left, 1 to right
   public zOffset: number = 0;
 
@@ -70,6 +71,7 @@ export class AreaActorComponent {
       const { x, y, h, actorType } = this.actor;
       const actorDef = actorDefinitions[actorType];
       const cellW = 100 / this.gridSize;
+      this.size = actorDef ? actorDef.size : 'md';
       this.position = getAreaElementPositionStyle(this.gridSize, y, x, h);
       this.width = `${cellW}%`;
       this.ariaLabel = `Select Actor ${this.actor.y}_${this.actor.x}`;

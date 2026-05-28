@@ -160,7 +160,6 @@ export const audioIdMap: Map<string, AudioDefinition> = new Map([
     },
   ],
 
-  // FIND NEW SOUNDS FOR THESE
   [
     'attack',
     {
@@ -178,11 +177,27 @@ export const audioIdMap: Map<string, AudioDefinition> = new Map([
     },
   ],
   [
+    'skello-move',
+    {
+      filename: '506913__schoman3__bottle_clink.mp3',
+      volume: 0.3,
+      credit: 'Schoman3',
+    },
+  ],
+  [
     'actor-miss',
     {
       filename: '831936__1bob__woosh.mp3',
       volume: 0.5,
       credit: '1bob',
+    },
+  ],
+  [
+    'actor-bite',
+    {
+      filename: '195139__misato__crank.mp3',
+      volume: 0.3,
+      credit: 'Misato',
     },
   ],
   [

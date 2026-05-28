@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AreaActorComponent } from './area-actor.component';
 import { defaultActor } from '@app/features/game/lib/constants';
+import { AnimStatus, Direction } from '@app/features/main/interfaces/enums';
 
 describe('AreaActorComponent', () => {
   let component: AreaActorComponent;
@@ -55,6 +56,48 @@ describe('AreaActorComponent', () => {
       component.playerPosition = '5_7';
       component.updateActorProps();
       expect(component.relativePlayerXPos).toBe(1);
+    });
+    it('handles actor with no definition', () => {
+      component.gridSize = 10;
+      const mockActor = {
+        ...defaultActor,
+        actorType: 'unknown',
+      };
+      component.actor = mockActor;
+      component.ngOnChanges({});
+      component.updateActorProps();
+      expect(component.maxHealth).toBe(0);
+    });
+  });
+  describe('getZOffset', () => {
+    it('should return 0 if attacking east', () => {
+      component.actor = {
+        ...defaultActor,
+        animStatus: AnimStatus.ATTACKING,
+        facing: Direction.EAST,
+      };
+      const zOffset = component.getZOffset();
+      expect(zOffset).toBe(1);
+    });
+
+    it('should return 0 if attacking south', () => {
+      component.actor = {
+        ...defaultActor,
+        animStatus: AnimStatus.ATTACKING,
+        facing: Direction.SOUTH,
+      };
+      const zOffset = component.getZOffset();
+      expect(zOffset).toBe(7);
+    });
+
+    it('should return 0 if not south or east or attacking', () => {
+      component.actor = {
+        ...defaultActor,
+        animStatus: AnimStatus.IDLE,
+        facing: Direction.WEST,
+      };
+      const zOffset = component.getZOffset();
+      expect(zOffset).toBe(0);
     });
   });
 });

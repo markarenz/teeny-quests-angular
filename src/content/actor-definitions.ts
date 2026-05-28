@@ -17,6 +17,7 @@ export type ActorDefinition = {
   soundHurt: string;
   soundDeath: string;
   attackDescription: string;
+  size: 'sm' | 'md' | 'lg';
 };
 /* 
   Defense: higher the value (0-1), herder for player to hit
@@ -32,8 +33,8 @@ export type ActorDefinition = {
     Do we need an equipping system now?
 */
 export const actorDefinitions: { [key: string]: ActorDefinition } = {
-  slime_green: {
-    id: 'slime_green',
+  slimeGreen: {
+    id: 'slimeGreen',
     name: 'Green Slime',
     interactionType: ActorInteractionType.HOSTILE,
     maxHealth: 2,
@@ -48,23 +49,25 @@ export const actorDefinitions: { [key: string]: ActorDefinition } = {
     soundHurt: 'actor-hurt',
     soundDeath: 'slime-death',
     attackDescription: 'slimy jab',
+    size: 'sm',
   },
-  slime_purple: {
-    id: 'slime_purple',
-    name: 'Purple Slime',
+  skello: {
+    id: 'skello',
+    name: 'Skello',
     interactionType: ActorInteractionType.HOSTILE,
-    maxHealth: 3,
-    defense: 0.3,
+    maxHealth: 5,
+    defense: 0.2,
     accuracy: 0.4,
     damage: 1,
     wakeRadius: 4,
     sleepRadius: 99,
-    moveSteps: 3,
-    soundAttack: 'attack',
-    soundMove: 'slime-move',
+    moveSteps: 4,
+    soundAttack: 'actor-bite',
+    soundMove: 'skello-move',
     soundHurt: 'actor-hurt',
     soundDeath: 'slime-death',
-    attackDescription: 'ooze blast',
+    attackDescription: 'boney punch',
+    size: 'md',
   },
 };
 
