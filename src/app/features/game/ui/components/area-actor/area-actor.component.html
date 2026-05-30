@@ -5,6 +5,9 @@
   @if (actor.actorType === 'slimeGreen') {
   <app-svg-actor-slime-green [isActorSelected]="isActorSelected" [isClickable]="isClickable && !isLockedOut"
     [status]="actor.animStatus" [relativePlayerXPos]="relativePlayerXPos" />
+  } @else if (actor.actorType === 'behtt') {
+  <app-svg-actor-behtt [isActorSelected]="isActorSelected" [isClickable]="isClickable && !isLockedOut"
+    [status]="actor.animStatus" [relativePlayerXPos]="relativePlayerXPos" />
   } @else if (actor.actorType === 'skello') {
   <app-svg-actor-skello [isActorSelected]="isActorSelected" [isClickable]="isClickable && !isLockedOut"
     [status]="actor.animStatus" [relativePlayerXPos]="relativePlayerXPos" />

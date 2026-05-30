@@ -87,4 +87,9 @@ describe('EditorGameComponent', () => {
     component.handleContentVersionModalToggle(true);
     expect(service.getContentVersionsForGame).toHaveBeenCalled();
   });
+
+  it('should handle actor select', () => {
+    component.handleSelectActor('actor1');
+    expect(component.subNavCurrent).toBe('actors');
+  });
 });

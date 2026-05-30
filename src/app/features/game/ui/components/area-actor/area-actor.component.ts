@@ -13,6 +13,7 @@ import {
 } from '@app/features/game/lib/utils/index';
 import { SvgActorSlimeGreenComponent } from './actors/svg-actor-slime-green/svg-actor-slime-green.component';
 import { SvgActorSkelloComponent } from './actors/svg-actor-skello/svg-actor-skello.component';
+import { SvgActorBehttComponent } from './actors/svg-actor-behtt/svg-actor-behtt.component';
 import { actorDefinitions } from '@content/actor-definitions';
 import { AudioService } from '@app/features/main/services/audio/audio-service.service';
 import { defaultActor } from '@app/features/game/lib/constants';
@@ -20,7 +21,11 @@ import { AnimStatus, Direction } from '@app/features/main/interfaces/enums';
 
 @Component({
   selector: 'app-area-actor',
-  imports: [SvgActorSlimeGreenComponent, SvgActorSkelloComponent],
+  imports: [
+    SvgActorSlimeGreenComponent,
+    SvgActorSkelloComponent,
+    SvgActorBehttComponent,
+  ],
   templateUrl: './area-actor.component.html',
   styleUrl: './area-actor.component.css',
 })

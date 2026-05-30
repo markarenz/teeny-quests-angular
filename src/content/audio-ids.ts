@@ -185,6 +185,14 @@ export const audioIdMap: Map<string, AudioDefinition> = new Map([
     },
   ],
   [
+    'behtt-move',
+    {
+      filename: '389634__stubb__wing-flap-1.mp3',
+      volume: 0.4,
+      credit: 'Stubb',
+    },
+  ],
+  [
     'actor-miss',
     {
       filename: '831936__1bob__woosh.mp3',
