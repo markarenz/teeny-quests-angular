@@ -45,13 +45,14 @@ export class EditorPanelItemsComponent {
   public area: QuestArea | null = null;
 
   private refreshUIData() {
+    console.log('refreshing item panel ui data');
     this.items = this._gameEditorService.getItemsForCurrentArea();
     this.updateItemPositionLockouts();
   }
   updateItemPositionLockouts() {
     if (this.area) {
       const newLockouts: string[] = [];
-      this.area.items.forEach((item: QuestItem) => {
+      this.items.forEach((item: QuestItem) => {
         if (item.id !== this.selectedItemId) {
           newLockouts.push(`${item.y}_${item.x}`);
         }
@@ -101,6 +102,7 @@ export class EditorPanelItemsComponent {
 
   handleDeleteClick(id: string) {
     this._gameEditorService.deleteItem(id);
+    this.refreshUIData();
   }
 
   updateUiAfterItemSelection(id: string) {
@@ -110,7 +112,7 @@ export class EditorPanelItemsComponent {
       ? `${selectedItem.y}_${selectedItem.x}`
       : '';
     this.inputItemType = selectedItem ? selectedItem.itemType : '';
-    this.updateItemPositionLockouts();
+    this.refreshUIData();
   }
 
   handleEditClick(id: string) {
@@ -134,7 +136,7 @@ export class EditorPanelItemsComponent {
     );
     if (item) {
       this.handleEditClick(item.id);
-      this.updateItemPositionLockouts();
+      this.refreshUIData();
     }
   }
 
@@ -154,7 +156,7 @@ export class EditorPanelItemsComponent {
         y: +y,
       };
       this._gameEditorService.updateItem(updatedItem);
-      this.updateItemPositionLockouts();
+      this.refreshUIData();
     }
   }
 }

@@ -10,6 +10,7 @@ import {
   LightMap,
   MovementOptions,
   QuestActor,
+  QuestProp,
 } from '@app/features/main/interfaces/types';
 import { MessageService } from '@app/features/game/services/message/message.service';
 import { AuthProviderService } from '@app/features/auth/services/auth-provider-service';
@@ -142,19 +143,23 @@ export class GameService {
    * @param nextGameState The game state whose current area entities should be
    * aligned to map height data.
    */
-  setPropItemHeights(nextGameState: QuestState): void {
+  setPropItemActorHeights(nextGameState: QuestState): void {
     const area = nextGameState.areas[nextGameState.player.areaId];
     const map = area.map;
-    area.items.forEach((item: any) => {
+    area.items.forEach((item: QuestItem) => {
       const positionKey = `${item.y}_${item.x}`;
       item.h = map[positionKey].h;
     });
-    area.props.forEach((prop: any) => {
+    area.props.forEach((prop: QuestProp) => {
       const propDef = propDecoDefinitions[prop.propType];
       if (!propDef.canSetHeight) {
         const positionKey = `${prop.y}_${prop.x}`;
         prop.h = map[positionKey].h;
       }
+    });
+    area.actors.forEach((actor: QuestActor) => {
+      const positionKey = `${actor.y}_${actor.x}`;
+      actor.h = map[positionKey].h;
     });
     nextGameState.areas[nextGameState.player.areaId].items = area.items;
     nextGameState.areas[nextGameState.player.areaId].props = area.props;
@@ -1407,7 +1412,7 @@ export class GameService {
       }
 
       nextGameState.numTurns += 1;
-      this.setPropItemHeights(nextGameState);
+      this.setPropItemActorHeights(nextGameState);
       this.score.next(calcScore(nextGameState, this.questROM.value));
       this.saveLocalGameState(nextGameState);
       this.gameState.next(nextGameState);

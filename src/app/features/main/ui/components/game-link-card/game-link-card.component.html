@@ -39,13 +39,13 @@
         <app-skeleton-text [width]="100" />
       </div>
       } @else {
-      <div>Plays: {{playCount || '0'}}</div>
+      <div>Plays: {{playCount.toLocaleString('en-US') || '0'}}</div>
       } @if (isSkeleton) {
       <div class="skeleton-sm">
         <app-skeleton-text [width]="100" />
       </div>
       } @else {
-      <div>Completions: {{ completionCount || '0'}}</div>
+      <div>Completions: {{ completionCount.toLocaleString('en-US') || '0'}}</div>
       }
     </div>
   </div>

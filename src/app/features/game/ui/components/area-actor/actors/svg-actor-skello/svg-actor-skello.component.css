@@ -96,3 +96,45 @@
     opacity: 0;
   }
 }
+
+.bone-outline {
+  fill: #333333;
+}
+
+.bone-1 {
+  fill: #ececec;
+}
+
+.bone-shadow {
+  fill: #cccccc;
+}
+
+.highlight {
+  fill: #fff;
+}
+
+.eyes {
+  fill: #1a1a1a;
+}
+
+.king {
+  .bone-outline {
+    fill: #111111;
+  }
+
+  .bone-1 {
+    fill: #d50d0d;
+  }
+
+  .bone-shadow {
+    fill: #910c0c;
+  }
+
+  .highlight {
+    fill: #f04f4f;
+  }
+
+  .eyes {
+    fill: #111111;
+  }
+}
