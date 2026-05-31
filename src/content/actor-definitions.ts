@@ -18,6 +18,7 @@ export type ActorDefinition = {
   soundDeath: string;
   attackDescription: string;
   size: 'sm' | 'md' | 'lg';
+  buttonTop: string;
 };
 /* 
   Defense: higher the value (0-1), herder for player to hit
@@ -50,6 +51,7 @@ export const actorDefinitions: { [key: string]: ActorDefinition } = {
     soundDeath: 'slime-death',
     attackDescription: 'slimy jab',
     size: 'sm',
+    buttonTop: '45%',
   },
   behtt: {
     id: 'behtt',
@@ -68,6 +70,7 @@ export const actorDefinitions: { [key: string]: ActorDefinition } = {
     soundDeath: 'actor-death',
     attackDescription: 'toothy bite',
     size: 'sm',
+    buttonTop: '35%',
   },
   skello: {
     id: 'skello',
@@ -86,6 +89,26 @@ export const actorDefinitions: { [key: string]: ActorDefinition } = {
     soundDeath: 'slime-death',
     attackDescription: 'boney punch',
     size: 'md',
+    buttonTop: '10%',
+  },
+  skelloKing: {
+    id: 'skelloKing',
+    name: 'Skello King',
+    interactionType: ActorInteractionType.HOSTILE,
+    maxHealth: 10,
+    defense: 0.4,
+    accuracy: 0.4,
+    damage: 3,
+    wakeRadius: 4,
+    sleepRadius: 99,
+    moveSteps: 4,
+    soundAttack: 'actor-bite',
+    soundMove: 'skello-move',
+    soundHurt: 'actor-hurt',
+    soundDeath: 'actor-death',
+    attackDescription: 'bone crusher',
+    size: 'md',
+    buttonTop: '10%',
   },
 };
 

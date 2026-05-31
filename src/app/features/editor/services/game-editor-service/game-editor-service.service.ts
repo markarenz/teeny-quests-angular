@@ -267,6 +267,7 @@ export class GameEditorService {
       this.refreshAreaExits(this.game.value as QuestROM);
       this.refreshAreaItems(this.game.value as QuestROM);
       this.refreshAreaProps(this.game.value as QuestROM);
+      this.refreshAreaActors(this.game.value as QuestROM);
       this.refreshEvents(this.game.value as QuestROM);
     }, 100);
   }

@@ -54,6 +54,7 @@ export class AreaActorComponent {
   public maxHealth: number = 0;
   public healthPercent: number = 100;
   public size: 'sm' | 'md' | 'lg' = 'md';
+  public buttonTop: string = '0%';
   public relativePlayerXPos: number = 0; // -1 to left, 1 to right
   public zOffset: number = 0;
 
@@ -77,6 +78,7 @@ export class AreaActorComponent {
       const actorDef = actorDefinitions[actorType];
       const cellW = 100 / this.gridSize;
       this.size = actorDef ? actorDef.size : 'md';
+      this.buttonTop = actorDef ? actorDef.buttonTop : '0%';
       this.position = getAreaElementPositionStyle(this.gridSize, y, x, h);
       this.width = `${cellW}%`;
       this.ariaLabel = `Select Actor ${this.actor.y}_${this.actor.x}`;

@@ -12,6 +12,6 @@ export class SvgActorSkelloComponent {
   @Input('isClickable') isClickable: boolean = false;
   @Input('status') status: AnimStatus = AnimStatus.IDLE;
   @Input('relativePlayerXPos') relativePlayerXPos: number = 0;
-
+  @Input('isKing') isKing: boolean = false;
   public eyesDirection = 0;
 }
