@@ -1,7 +1,7 @@
 import { Component, Output, Input, EventEmitter } from '@angular/core';
 import { TexturesFloorComponent } from '@app/features/game/ui/components/textures/textures-floor/textures-floor.component';
 import { TexturesWallComponent } from '@app/features/game/ui/components/textures/textures-wall/textures-wall.component';
-import { SelectIUIOption } from '@app/features/main/interfaces/types';
+import { SelectUIOption } from '@app/features/main/interfaces/types';
 import { TooltipComponent } from '@app/features/main/ui/components/tooltip/tooltip.component';
 
 @Component({
@@ -14,7 +14,7 @@ import { TooltipComponent } from '@app/features/main/ui/components/tooltip/toolt
 export class EditorTextureSelectorComponent {
   @Input('surfaceType') surfaceType: string = 'floor';
   @Input('selectedId') selectedId: string = '';
-  @Input('options') options: SelectIUIOption[] = [
+  @Input('options') options: SelectUIOption[] = [
     {
       value: '',
       label: '',

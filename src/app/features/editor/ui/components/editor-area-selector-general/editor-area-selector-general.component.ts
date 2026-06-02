@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
-import { QuestROM, SelectIUIOption } from '@app/features/main/interfaces/types';
+import { QuestROM, SelectUIOption } from '@app/features/main/interfaces/types';
 import { IconButtonComponent } from '@app/features/main/ui/components/icons/icon-button/icon-button.component';
 
 @Component({
@@ -17,7 +17,7 @@ export class EditorAreaSelectorGeneralComponent {
   private subscriptions: Subscription[] = [];
   selectedArealocal: string = '';
   areasList: string[] = [];
-  areasListOptions: SelectIUIOption[] = [];
+  areasListOptions: SelectUIOption[] = [];
 
   @Input('areaId') areaId: string = 'start';
   @Output() onAreaSelected = new EventEmitter<string>();

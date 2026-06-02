@@ -1,0 +1,10 @@
+.root {
+  button {
+    background-color: var(--color-gray-800);
+    color: var(--color-gray-400);
+    &.selected {
+      background-color: var(--color-primary);
+      color: var(--color-gray-900);
+    }
+  }
+}

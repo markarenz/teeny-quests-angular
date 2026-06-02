@@ -1,0 +1,44 @@
+<div class="bg-gray-800 rounded-lg p-4 h-full">
+  <div class="flex flex-row gap-2 items-center">
+    <!-- <div class="w-20 h-20 relative rounded-full bg-gray-700">
+
+    </div> -->
+    <div class="w-24 h-full flex items-start justify-center py-2">
+      <div class="w-24 h-24 relative rounded-full bg-gray-700">
+        <div class="w-20 h-20 absolute left-2 top-2">
+          <app-area-item [inventoryItemType]="key" [isLockedOut]="true" [lightLevel]="1" />
+        </div>
+      </div>
+    </div>
+
+    <div class="flex-grow">
+      <div class="flex flex-col gap-2">
+        <div class="text-lg font-bold">
+          {{inventoryDefinitions[key].name}}
+        </div>
+        <div class="text-md italic">
+          {{inventoryDefinitions[key].description}}
+        </div>
+        <div class="flex flex-row justify-end">
+          @if(transactionMode === 'buy') {
+          <app-button variant="contained"
+            [label]="'Buy for ' + (inventoryDefinitions[key].shopValue ?? 0).toLocaleString('en-US') + ' gold'"
+            (onButtonClick)="handleTransaction(key, 'buy')"
+            [isDisabled]="(inventoryDefinitions[key].shopValue ?? 0) > playerFunds" />
+          } @else {
+          <app-button variant="contained"
+            [label]="'Sell for ' + (inventoryDefinitions[key].shopValue ?? 0).toLocaleString('en-US') + ' gold'"
+            (onButtonClick)="handleTransaction(key, 'sell')" [isDisabled]="false" />
+          }
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+
+
+
+  <!-- BUY or SELL button -->
+</div>

@@ -1,4 +1,4 @@
-import { SelectIUIOption } from '@app/features/main/interfaces/types';
+import { SelectUIOption } from '@app/features/main/interfaces/types';
 
 export enum FloorTileType {
   DEFAULT = 'default',
@@ -87,7 +87,7 @@ export const floorDefinitions: { [key: string]: FloorDefinition } = {
   },
 };
 
-export const floorOptionsData: SelectIUIOption[] = Object.values(
+export const floorOptionsData: SelectUIOption[] = Object.values(
   floorDefinitions
 ).map(floor => ({
   value: floor.id,

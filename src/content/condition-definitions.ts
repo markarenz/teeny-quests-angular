@@ -4,7 +4,7 @@ import {
   ConditionValueType,
   EventConditionType,
 } from '@app/features/main/interfaces/enums';
-import { SelectIUIOption } from '@app/features/main/interfaces/types';
+import { SelectUIOption } from '@app/features/main/interfaces/types';
 
 export type ConditionDefinition = {
   id: string;
@@ -42,14 +42,14 @@ export const conditionDefinitions: { [key: string]: ConditionDefinition } = {
   },
 };
 
-export const conditionOptions: SelectIUIOption[] = Object.values(
+export const conditionOptions: SelectUIOption[] = Object.values(
   conditionDefinitions
 ).map(def => ({
   value: def.id,
   label: def.name,
 }));
 
-export const booleanOptions: SelectIUIOption[] = [
+export const booleanOptions: SelectUIOption[] = [
   { value: 'true', label: 'True' },
   { value: 'false', label: 'False' },
 ];

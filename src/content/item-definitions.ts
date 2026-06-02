@@ -1,4 +1,4 @@
-import { SelectIUIOption } from '@app/features/main/interfaces/types';
+import { SelectUIOption } from '@app/features/main/interfaces/types';
 import { getLabelFromSlug } from '@app/features/main/utils';
 
 export type ItemDefinition = {
@@ -221,6 +221,7 @@ export type InventoryDefinition = {
   article: string;
   description: string;
   scoreValue: number;
+  shopValue?: number;
 };
 
 export const inventoryDefinitions: { [key: string]: InventoryDefinition } = {
@@ -239,6 +240,7 @@ export const inventoryDefinitions: { [key: string]: InventoryDefinition } = {
     article: 'a',
     description: 'A key made of silver. It can unlock certain doors.',
     scoreValue: 1,
+    shopValue: 50,
   },
   'key-gold': {
     id: 'key-gold',
@@ -247,6 +249,7 @@ export const inventoryDefinitions: { [key: string]: InventoryDefinition } = {
     article: 'a',
     description: 'A key made of gold. It can unlock certain doors.',
     scoreValue: 10,
+    shopValue: 100,
   },
   ruby: {
     id: 'ruby',
@@ -255,6 +258,7 @@ export const inventoryDefinitions: { [key: string]: InventoryDefinition } = {
     article: 'a',
     description: 'A precious red gemstone.',
     scoreValue: 1000,
+    shopValue: 2000,
   },
   diamond: {
     id: 'diamond',
@@ -263,6 +267,7 @@ export const inventoryDefinitions: { [key: string]: InventoryDefinition } = {
     article: 'a',
     description: 'A valuable clear gemstone.',
     scoreValue: 500,
+    shopValue: 1000,
   },
   emerald: {
     id: 'emerald',
@@ -271,6 +276,7 @@ export const inventoryDefinitions: { [key: string]: InventoryDefinition } = {
     article: 'an',
     description: 'A precious green gemstone.',
     scoreValue: 200,
+    shopValue: 400,
   },
   sapphire: {
     id: 'sapphire',
@@ -279,6 +285,7 @@ export const inventoryDefinitions: { [key: string]: InventoryDefinition } = {
     article: 'a',
     description: 'A precious blue gemstone.',
     scoreValue: 100,
+    shopValue: 200,
   },
   pointyStick: {
     id: 'pointyStick',
@@ -288,6 +295,7 @@ export const inventoryDefinitions: { [key: string]: InventoryDefinition } = {
     description:
       'A stick that is pointy on one end. It can do minor damage in combat.',
     scoreValue: 10,
+    shopValue: 1000,
   },
   adequateBlade: {
     id: 'adequateBlade',
@@ -296,6 +304,7 @@ export const inventoryDefinitions: { [key: string]: InventoryDefinition } = {
     article: 'an',
     description: "An OK blade that does medium damage. It's fine, really.",
     scoreValue: 20,
+    shopValue: 2500,
   },
   awesomeSword: {
     id: 'awesomeSword',
@@ -305,6 +314,7 @@ export const inventoryDefinitions: { [key: string]: InventoryDefinition } = {
     description:
       "An awesome sword that does high damage. Ooh, it's so pretty and impressive!",
     scoreValue: 20,
+    shopValue: 5000,
   },
   ringProtection: {
     id: 'ringProtection',
@@ -314,6 +324,7 @@ export const inventoryDefinitions: { [key: string]: InventoryDefinition } = {
     description:
       'A fashionable ring of protection. Just having it in your inventory makes you feel harder to hit.',
     scoreValue: 500,
+    shopValue: 2000,
   },
   healthCookie: {
     id: 'healthCookie',
@@ -322,6 +333,7 @@ export const inventoryDefinitions: { [key: string]: InventoryDefinition } = {
     article: 'a',
     description: 'A cookie that restores a small amount of health when used.',
     scoreValue: 25,
+    shopValue: 100,
   },
   healthPotion: {
     id: 'healthPotion',
@@ -330,6 +342,7 @@ export const inventoryDefinitions: { [key: string]: InventoryDefinition } = {
     article: 'a',
     description: 'A potion that restores a large amount of health when used.',
     scoreValue: 75,
+    shopValue: 300,
   },
   healthContainer: {
     id: 'healthContainer',
@@ -339,10 +352,11 @@ export const inventoryDefinitions: { [key: string]: InventoryDefinition } = {
     description:
       'A heart container that increases your maximum health when used, limited to 8.',
     scoreValue: 150,
+    shopValue: 4000,
   },
 };
 
-export const additionalItemOptions: SelectIUIOption[] = Object.values(
+export const additionalItemOptions: SelectUIOption[] = Object.values(
   inventoryDefinitions
 )
   .filter(def => !['gold', 'coins-25', 'coins-100'].includes(def.id))
@@ -351,7 +365,7 @@ export const additionalItemOptions: SelectIUIOption[] = Object.values(
     label: def.name,
   }));
 
-export const itemOptions: SelectIUIOption[] = [
+export const itemOptions: SelectUIOption[] = [
   { value: 'coins-25', label: 'Coins' },
   { value: 'coins-100', label: 'Bag of Coins' },
   ...additionalItemOptions,
@@ -365,7 +379,7 @@ Object.keys(itemDefinitions).forEach(key => {
   }
 });
 
-export const itemKeyOptions: SelectIUIOption[] = itemKeyOptionsRaw.map(key => {
+export const itemKeyOptions: SelectUIOption[] = itemKeyOptionsRaw.map(key => {
   return {
     value: key,
     label: getLabelFromSlug(key),

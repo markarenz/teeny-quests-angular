@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import {
   QuestArea,
   QuestProp,
-  SelectIUIOption,
+  SelectUIOption,
   QuestActionEffects,
   ActionEffect,
   PropDefinition,
@@ -41,7 +41,7 @@ export class EditorPanelPropsComponent {
   constructor(private _gameEditorService: GameEditorService) {}
   private subscriptions: Subscription[] = [];
   public selectedAreaId: string = '';
-  public propTypeOptions: SelectIUIOption[] = propDecoOptions;
+  public propTypeOptions: SelectUIOption[] = propDecoOptions;
 
   public selectedPropDefinition: PropDefinition | null = null;
   public selectedPropActions: QuestActionEffects = {};
@@ -61,8 +61,8 @@ export class EditorPanelPropsComponent {
   public lockouts: string[] = [];
   public area: QuestArea | null = null;
   public propWallOptions = propDecoWallOptions;
-  public propStatusOptions: SelectIUIOption[] = [];
-  public propHeightOptions: SelectIUIOption[] = [];
+  public propStatusOptions: SelectUIOption[] = [];
+  public propHeightOptions: SelectUIOption[] = [];
 
   public getNeighbors(position: string): { neighborN: any; neighborW: any } {
     if (!this.area) return { neighborN: null, neighborW: null };
@@ -84,7 +84,7 @@ export class EditorPanelPropsComponent {
     neighborN: QuestAreaMapCell | null = null,
     neighborW: QuestAreaMapCell | null = null,
     currentH: number = 0
-  ): SelectIUIOption[] => {
+  ): SelectUIOption[] => {
     const [y, x] = position.split('_').map(Number);
     const exitOnCell = this.getExitOnCell(y, x);
     const prop = this.props?.find(prop => prop.x === x && prop.y === y);

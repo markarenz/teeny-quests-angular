@@ -7,7 +7,7 @@ import {
   QuestAreaExit,
   QuestItem,
   QuestProp,
-  SelectIUIOption,
+  SelectUIOption,
 } from '@app/features/main/interfaces/types';
 import { AreaCellSelectorComponent } from '../area-cell-selector/area-cell-selector.component';
 import { CollapsibleCardComponent } from '@app/features/main/ui/components/collapsible-card/collapsible-card.component';
@@ -34,7 +34,7 @@ export class EditorPanelItemsComponent {
 
   public selectedAreaId: string = '';
   public panelMode: string = '';
-  public itemTypeOptions: SelectIUIOption[] = itemOptions;
+  public itemTypeOptions: SelectUIOption[] = itemOptions;
   public inputItemType: string = '';
   public inputItemPosition: string = '';
   public inputItemName: string = '';

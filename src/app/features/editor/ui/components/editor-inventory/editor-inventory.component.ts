@@ -5,7 +5,7 @@ import { GameEditorService } from '@app/features/editor/services/game-editor-ser
 import {
   QuestROM,
   Inventory,
-  SelectIUIOption,
+  SelectUIOption,
 } from '@app/features/main/interfaces/types';
 import {
   inventoryDefinitions,
@@ -28,7 +28,7 @@ export class EditorInventoryComponent {
   inventoryKeys: string[] = Object.keys(this.inventory);
   itemDefinitions = itemDefinitions;
   inventoryDefinitions = inventoryDefinitions;
-  itemOptions: SelectIUIOption[] = [];
+  itemOptions: SelectUIOption[] = [];
 
   updateInventoryKeys() {
     this.inventoryKeys = Object.keys(this.inventory);

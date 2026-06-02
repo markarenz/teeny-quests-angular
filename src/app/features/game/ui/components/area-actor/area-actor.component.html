@@ -11,16 +11,20 @@
   } @else if (actor.actorType.includes('skello')) {
   <app-svg-actor-skello [isActorSelected]="isActorSelected" [isClickable]="isClickable && !isLockedOut"
     [status]="actor.animStatus" [relativePlayerXPos]="relativePlayerXPos" [isKing]="actor.actorType === 'skelloKing'" />
+  } @else if (actor.actorType.includes('shop')) {
+  <app-svg-actor-shop [isActorSelected]="isActorSelected" [isClickable]="isClickable && !isLockedOut"
+    [relativePlayerXPos]="relativePlayerXPos" />
   } @if (isActorSelected) {
   <div [style.height]="size ==='sm' ? '40%' : '80%'" [style.top]="buttonTop"
-    class="absolute left-[25%] w-[50%] bg-transparent rounded-full z-index-[100] border-4 border-primary border-dashed ring-2 ring-offset-2 ring-offset-primaryDarker ring-primaryDark"
+    class="absolute {{actorSize === 'lg' ? 'left-[10%] w-[80%]' : 'left-[25%] w-[50%]'}} bg-transparent rounded-full z-index-[100] border-4 border-primary border-dashed ring-2 ring-offset-2 ring-offset-primaryDarker ring-primaryDark"
     aria-hidden="true">
   </div>
   }
-  @if (isClickable && !isLockedOut && healthPercent > 0) {
+  @if (isClickable && !isLockedOut && (!isHostile || (isHostile && healthPercent > 0))) {
   <button role="button" type="button" [attr.aria-label]="ariaLabel" (click)="handleClick()"
     [disabled]="!isClickable && !isEditorMode" [style.height]="size ==='sm' ? '40%' : '80%'" [style.top]="buttonTop"
-    class="absolute left-[25%] w-[50%] cursor-pointer pointer-events-auto rounded-full outline-none ring-0 ring-primaryDark focus:ring-4 focus:ring-primaryDarker group-hover:ring-4 transition-all"></button>
+    class="absolute 
+    {{actorSize === 'lg' ? 'left-[10%] w-[80%]' : 'left-[25%] w-[50%]'}} cursor-pointer pointer-events-auto rounded-full outline-none ring-0 ring-primaryDark focus:ring-4 focus:ring-primaryDarker group-hover:ring-4 transition-all"></button>
   }
   @if(showHealthBar && healthPercent > 0) {
   <div [style.top]="buttonTop"

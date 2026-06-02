@@ -11,6 +11,7 @@ import {
   MovementOptions,
   QuestActor,
   QuestProp,
+  ActorShopInventoryItem,
 } from '@app/features/main/interfaces/types';
 import { MessageService } from '@app/features/game/services/message/message.service';
 import { AuthProviderService } from '@app/features/auth/services/auth-provider-service';
@@ -109,6 +110,9 @@ export class GameService {
 
   private isPlayerNearActorCell = new BehaviorSubject<boolean>(false);
   isPlayerNearActorCellObs = this.isPlayerNearActorCell.asObservable();
+
+  private shopInventory = new BehaviorSubject<ActorShopInventoryItem[]>([]);
+  shopInventoryObs = this.shopInventory.asObservable();
 
   testInit(nextGameROM: QuestROM): void {
     this.questROM.next(nextGameROM);
@@ -610,6 +614,34 @@ export class GameService {
       return true;
     }
     return false;
+  };
+
+  public processShopAction = async (
+    itemId: string,
+    price: number,
+    actionType: 'buy' | 'sell' | 'end'
+  ) => {
+    let nextGameState = JSON.parse(JSON.stringify(this.gameState.value));
+    let newGold = nextGameState.player.inventory['gold'] ?? 0;
+    switch (actionType) {
+      case 'buy':
+        nextGameState.player.inventory['gold'] = newGold - price;
+        nextGameState.player.inventory[itemId] =
+          (nextGameState.player.inventory[itemId] ?? 0) + 1;
+        break;
+      case 'sell':
+        nextGameState.player.inventory['gold'] = newGold + price;
+        nextGameState.player.inventory[itemId] =
+          (nextGameState.player.inventory[itemId] ?? 0) - 1;
+        break;
+      case 'end':
+        nextGameState.mode = GameStateMode.DEFAULT;
+        break;
+      default:
+        break;
+    }
+
+    this.gameState.next(nextGameState);
   };
 
   /**
@@ -1321,6 +1353,11 @@ export class GameService {
     }
   }
 
+  /**
+   * Processes all actor turns in the current area.
+   *
+   * @param nextGameState The current game state.
+   */
   public async processActorTurns(nextGameState: QuestState): Promise<void> {
     const area = nextGameState.areas[nextGameState.player.areaId];
     const actors = area.actors ?? [];
@@ -1328,6 +1365,22 @@ export class GameService {
       await this.processActorTurn(nextGameState, actor);
     }
   }
+
+  /**
+   * Sets the shop inventory for a given actor.
+   *
+   * @param nextGameState The current game state.
+   * @param actorId The ID of the actor whose shop inventory to retrieve.
+   */
+  public setShopInventory(nextGameState: QuestState, actorId: string): void {
+    const actor = nextGameState.areas[nextGameState.player.areaId].actors.find(
+      (a: QuestActor) => a.id === actorId
+    );
+    if (actor && actor.shopInventory) {
+      this.shopInventory.next(actor.shopInventory);
+    }
+  }
+
   /**
    * Runs a full player turn by dispatching the requested action, processing any
    * follow-up events, and publishing all derived state updates.
@@ -1367,6 +1420,10 @@ export class GameService {
           break;
         case 'attack':
           nextGameState = await this.turnActionItemAttack(noun);
+          break;
+        case 'shop':
+          nextGameState.mode = GameStateMode.SHOP;
+          this.setShopInventory(nextGameState, noun);
           break;
         case 'item-drop':
         default:
@@ -1414,7 +1471,9 @@ export class GameService {
       nextGameState.numTurns += 1;
       this.setPropItemActorHeights(nextGameState);
       this.score.next(calcScore(nextGameState, this.questROM.value));
-      this.saveLocalGameState(nextGameState);
+      if (nextGameState.mode !== GameStateMode.SHOP) {
+        this.saveLocalGameState(nextGameState);
+      }
       this.gameState.next(nextGameState);
       newIsPlayerNearActorCell = getIsPlayerNearActorCell(nextGameState);
       this.isPlayerNearActorCell.next(newIsPlayerNearActorCell);

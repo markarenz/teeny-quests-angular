@@ -7,14 +7,21 @@ import {
   ActionEffect,
   QuestActor,
   QuestArea,
-  SelectIUIOption,
+  SelectUIOption,
 } from '@app/features/main/interfaces/types';
+import {
+  additionalItemOptions,
+  inventoryDefinitions,
+} from '@content/item-definitions';
 import { IconButtonComponent } from '@app/features/main/ui/components/icons/icon-button/icon-button.component';
 import { getPositionKeysForGridSize } from '@app/features/main/utils';
 import { floorDefinitions } from '@content/floor-definitions';
 import { AreaCellSelectorComponent } from '../area-cell-selector/area-cell-selector.component';
-import { ActorType } from '@app/features/main/interfaces/enums';
-import { actorTypeOptions } from '@content/actor-definitions';
+import {
+  ActorInteractionType,
+  ActorType,
+} from '@app/features/main/interfaces/enums';
+import { actorDefinitions, actorTypeOptions } from '@content/actor-definitions';
 import { EditorInputActionsComponent } from '../editor-input-actions/editor-input-actions.component';
 import { itemOptions } from '@content/item-definitions';
 
@@ -34,7 +41,7 @@ export class EditorPanelActorsComponent {
   constructor(private _gameEditorService: GameEditorService) {}
 
   private subscriptions: Subscription[] = [];
-  public actorTypeOptions: SelectIUIOption[] = actorTypeOptions;
+  public actorTypeOptions: SelectUIOption[] = actorTypeOptions;
   public lockouts: string[] = [];
   public area: QuestArea | null = null;
   public selectedAreaId: string = '';
@@ -43,12 +50,17 @@ export class EditorPanelActorsComponent {
   public inputActorName: string = '';
   public inputActorPosition: string = '';
   public inputActorType: ActorType = ActorType.SLIME_GREEN;
+  public selectedActorInteractionType: ActorInteractionType =
+    ActorInteractionType.HOSTILE;
   public inputActions: ActionEffect[] = [];
-  public actorDropItemOptions: SelectIUIOption[] = [
+  public actorDropItemOptions: SelectUIOption[] = [
     { label: 'None', value: '' },
     ...itemOptions,
   ];
   public inputActorDropItem: string = '';
+  public inventoryItemOptions: SelectUIOption[] = [];
+  public inputActorInventory: string[] = [];
+  public inventoryDefinitions = inventoryDefinitions;
 
   ngOnInit() {
     this.handleAreaChange(this._gameEditorService.getSelectedAreaId());
@@ -72,11 +84,24 @@ export class EditorPanelActorsComponent {
   }
 
   public refreshUIData() {
+    this.actors = this._gameEditorService.getActorsForCurrentArea();
+    this.inventoryItemOptions = additionalItemOptions.filter(
+      itemOption => !itemOption.value.includes('gold')
+    );
+    const actor = this.getSelectedActor();
+    const actorDef = actorDefinitions[actor?.actorType || ''];
+    if (actorDef) {
+      this.selectedActorInteractionType = actorDef.interactionType;
+    }
     this.updateActorPositionLockouts();
   }
 
   public updateUiAfterActorSelection(id: string) {
     const selectedActor = this.actors.find(actor => actor.id === id);
+    let shopInventory: string[] = [];
+    if (selectedActor?.shopInventory) {
+      shopInventory = selectedActor.shopInventory.map(i => i.inventoryItemId);
+    }
     this.inputActorPosition = selectedActor
       ? `${selectedActor.y}_${selectedActor.x}`
       : '';
@@ -84,7 +109,7 @@ export class EditorPanelActorsComponent {
     this.inputActorName = selectedActor ? selectedActor.name || '' : '';
     this.inputActions = selectedActor ? selectedActor.actions || [] : [];
     this.inputActorDropItem = selectedActor ? selectedActor.dropItem || '' : '';
-    this.updateActorPositionLockouts();
+    this.inputActorInventory = shopInventory;
     this.refreshUIData();
   }
 
@@ -177,6 +202,9 @@ export class EditorPanelActorsComponent {
         // health
         actions: this.inputActions,
         dropItem: this.inputActorDropItem,
+        shopInventory: this.inputActorInventory.map(item => ({
+          inventoryItemId: item,
+        })),
       };
 
       this._gameEditorService.updateActor(updatedActor);
@@ -185,6 +213,17 @@ export class EditorPanelActorsComponent {
   }
   public handleActorActionInputChange(actions: ActionEffect[]) {
     this.inputActions = actions;
+    this.handleActorInputChange();
+  }
+
+  public handleActorInventoryChange(item: string) {
+    if (this.inputActorInventory.includes(item)) {
+      this.inputActorInventory = this.inputActorInventory.filter(
+        i => i !== item
+      );
+    } else {
+      this.inputActorInventory = [...this.inputActorInventory, item];
+    }
     this.handleActorInputChange();
   }
 

@@ -44,6 +44,23 @@
         }
       </select>
     </div>
+
+    @if(selectedActorInteractionType === 'TRADE') {
+    <div>
+      <label for="actor-dropitem-selector">Items for Sale</label>
+      <div class="flex flex-col gap-2">
+        @for(item of inventoryItemOptions; track item.value) {
+        <div class="flex flex-row items-center gap-2">
+          <input type="checkbox" [id]="`actor-inventory-item-${item.value}`" [value]="item.value"
+            (change)="handleActorInventoryChange(item.value)" [checked]="inputActorInventory.includes(item.value)" />
+          <label class="font-normal" [for]="`actor-inventory-item-${item.value}`">{{ item.label }}
+            ({{inventoryDefinitions[item.value]?.shopValue ?? 'Unknown'}}g) </label>
+        </div>
+        }
+      </div>
+    </div>
+    }
+    @if(selectedActorInteractionType === 'HOSTILE') {
     <div>
       <label for="actor-dropitem-selector">Actor Drop Item</label>
       <select id="actor-dropitem-selector" [(ngModel)]="inputActorDropItem" (change)="handleActorInputChange()">
@@ -58,6 +75,7 @@
           title="Actions" [selectedAreaId]="selectedAreaId" />
       </div>
     </div>
+    }
 
   </div>
   }

@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ActionEffect,
-  SelectIUIOption,
+  SelectUIOption,
 } from '@app/features/main/interfaces/types';
 import {
   ActionObjectType,
@@ -51,11 +51,11 @@ export class EditorInputActionsComponent {
   public selectedActionId: string | null = null;
   public actionTypeOptions = actionOptions;
   public selectedActionTypeDefinition: ActionDefinition | null = null;
-  public areasListOptions: SelectIUIOption[] = [];
-  public objectIdentifierOptions: SelectIUIOption[] = [];
-  public valueOptions: SelectIUIOption[] = [];
-  public booleanOptions: SelectIUIOption[] = booleanOptions;
-  public flagIdOptions: SelectIUIOption[] = [];
+  public areasListOptions: SelectUIOption[] = [];
+  public objectIdentifierOptions: SelectUIOption[] = [];
+  public valueOptions: SelectUIOption[] = [];
+  public booleanOptions: SelectUIOption[] = booleanOptions;
+  public flagIdOptions: SelectUIOption[] = [];
   public objectIdentifierInputLabel: string = 'Object Identifier';
   public valueInputLabel: string = 'Value';
 

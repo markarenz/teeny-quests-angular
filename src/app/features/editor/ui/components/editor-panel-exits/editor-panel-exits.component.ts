@@ -6,7 +6,7 @@ import {
   QuestArea,
   QuestAreaExit,
   QuestItem,
-  SelectIUIOption,
+  SelectUIOption,
 } from '@app/features/main/interfaces/types';
 import { AreaCellSelectorComponent } from '../area-cell-selector/area-cell-selector.component';
 import { CollapsibleCardComponent } from '@app/features/main/ui/components/collapsible-card/collapsible-card.component';
@@ -35,8 +35,8 @@ export class EditorPanelExitsComponent {
   private subscriptions: Subscription[] = [];
   public selectedAreaId: string = '';
   public panelMode: string = '';
-  public exitTypeOptions: SelectIUIOption[] = exitDefinitions;
-  public exitDirectionOptions: SelectIUIOption[] = exitDirections;
+  public exitTypeOptions: SelectUIOption[] = exitDefinitions;
+  public exitDirectionOptions: SelectUIOption[] = exitDirections;
   public inputExitType: string = '';
   public inputExitDirection: string = '';
   public inputExitPosition: string = '';
@@ -48,9 +48,9 @@ export class EditorPanelExitsComponent {
   public selectedExitId: string = '';
   public exits: QuestAreaExit[] = [];
   public isSelectedPositionValid: boolean = false;
-  public areasListOptions: SelectIUIOption[] = [];
-  public exitsListOptions: SelectIUIOption[] = [];
-  public exitsLockOptions: SelectIUIOption[] = [
+  public areasListOptions: SelectUIOption[] = [];
+  public exitsListOptions: SelectUIOption[] = [];
+  public exitsLockOptions: SelectUIOption[] = [
     { value: '', label: 'None' },
     { value: 'silver', label: 'Silver' },
     { value: 'gold', label: 'Gold' },

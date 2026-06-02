@@ -54,7 +54,12 @@
       <!-- Modal: Conversation -->
       @if(gameModalStatus === 'inventory') {
       <app-modal-inventory />
-      } @if(['intro', 'help'].includes(gameModalStatus)) {
+      }
+      @if(gameStateMode === 'SHOP' && !gameModalStatus) {
+      <app-modal-shop [playerInventory]="playerInventory" />
+      }
+
+      @if(['intro', 'help'].includes(gameModalStatus)) {
       <app-modal-page [isLoading]="isLoading" [title]="title" [gameModalStatus]="gameModalStatus"
         [levelGoals]="levelGoals" (onConfirm)="handlePageModalConfirm()" (onClose)="handlePageModalConfirm()" />
       } @if(gameModalStatus === 'loading') {

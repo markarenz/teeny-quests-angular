@@ -154,7 +154,10 @@ export class GameAreaComponent {
     if (actorDef.interactionType === ActorInteractionType.HOSTILE) {
       this._gameService.processTurn({ verb: 'attack', noun: actor.id });
     }
-    // FUTURE: DIALOG, SHOP
+    if (actorDef.interactionType === ActorInteractionType.TRADE) {
+      this._gameService.processTurn({ verb: 'shop', noun: actor.id });
+    }
+    // FUTURE: DIALOG
   }
 
   ngOnDestroy() {

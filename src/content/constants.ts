@@ -1,7 +1,4 @@
-import {
-  LightCell,
-  SelectIUIOption,
-} from '@app/features/main/interfaces/types';
+import { LightCell, SelectUIOption } from '@app/features/main/interfaces/types';
 
 export const pageModalTitles: { [key: string]: string } = {
   loading: 'Loading',
@@ -9,7 +6,7 @@ export const pageModalTitles: { [key: string]: string } = {
   help: 'How to Play',
 };
 
-export const mapCellDecalOptions: SelectIUIOption[] = [
+export const mapCellDecalOptions: SelectUIOption[] = [
   { label: 'None', value: '' },
   { label: 'Overlapping Circles', value: 'overlapping-circles' },
   { label: 'Diamonds', value: 'diamonds' },
