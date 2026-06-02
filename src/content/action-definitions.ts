@@ -2,7 +2,7 @@ import {
   ActionObjectType,
   ActionValueType,
 } from '@app/features/main/interfaces/enums';
-import { SelectIUIOption } from '@app/features/main/interfaces/types';
+import { SelectUIOption } from '@app/features/main/interfaces/types';
 
 export type ActionDefinition = {
   id: string;
@@ -48,7 +48,7 @@ export const actionDefinitions: { [key: string]: ActionDefinition } = {
   },
 };
 
-export const actionOptions: SelectIUIOption[] = Object.values(
+export const actionOptions: SelectUIOption[] = Object.values(
   actionDefinitions
 ).map(def => ({
   value: def.id,

@@ -10,7 +10,7 @@ import {
   QuestItem,
   QuestAreaExit,
   QuestAreaMapCell,
-  SelectIUIOption,
+  SelectUIOption,
   QuestContent,
   ContentVersionListItem,
   QuestProp,
@@ -310,7 +310,7 @@ export class GameEditorService {
     }
   }
 
-  getFlagsListOptions(): SelectIUIOption[] {
+  getFlagsListOptions(): SelectUIOption[] {
     return [
       ...defaultFlagIdOptions,
       ...this.flags.value.map(flag => ({
@@ -829,8 +829,8 @@ export class GameEditorService {
     return 'error';
   }
 
-  getAreasListOptions(): SelectIUIOption[] {
-    let areasOptions: SelectIUIOption[] = [];
+  getAreasListOptions(): SelectUIOption[] {
+    let areasOptions: SelectUIOption[] = [];
     if (this.game.value) {
       const areas = this.game.value.content.areas;
       areasOptions = Object.keys(areas).map(areaId => ({
@@ -841,8 +841,8 @@ export class GameEditorService {
     return areasOptions;
   }
 
-  getDestinationExitsListOptions(areaId: string): SelectIUIOption[] {
-    let exitsOptions: SelectIUIOption[] = [];
+  getDestinationExitsListOptions(areaId: string): SelectUIOption[] {
+    let exitsOptions: SelectUIOption[] = [];
     if (this.game.value) {
       const exits = this.game.value.content.areas[areaId]?.exits;
       if (exits) {
@@ -1084,8 +1084,8 @@ export class GameEditorService {
     }
   };
 
-  public getPropsListOptions = (areaId: string): SelectIUIOption[] => {
-    let propsOptions: SelectIUIOption[] = [];
+  public getPropsListOptions = (areaId: string): SelectUIOption[] => {
+    let propsOptions: SelectUIOption[] = [];
     if (this.game.value) {
       const props = this.game.value.content.areas[areaId]?.props;
       if (props) {

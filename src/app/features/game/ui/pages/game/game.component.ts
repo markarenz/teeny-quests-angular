@@ -7,7 +7,7 @@ import {
   QuestROM,
   QuestState,
   Inventory,
-  SelectIUIOption,
+  SelectUIOption,
 } from '@app/features/main/interfaces/types';
 import { GameAreaComponent } from '../../components/game-area/game-area.component';
 import { pageModalTitles } from '@content/constants';
@@ -16,11 +16,15 @@ import { ModalPageComponent } from '@app/features/game/ui/components/modal-page/
 import { GameEndMessageComponent } from '../../components/game-end-message/game-end-message.component';
 import { GameLostMessageComponent } from '../../components/game-lost-message/game-lost-message.component';
 import { ModalInventoryComponent } from '../../components/modal-inventory/modal-inventory.component';
+import { ModalShopComponent } from '../../components/modal-shop/modal-shop.component';
 import { LoaderAnimationComponent } from '@app/features/main/ui/components/loader-animation/loader-animation.component';
 import { TooltipComponent } from '@app/features/main/ui/components/tooltip/tooltip.component';
 import { AuthProviderService } from '@app/features/auth/services/auth-provider-service';
 import { logger } from '@app/features/main/utils/logger';
-import { ActivityType } from '@app/features/main/interfaces/enums';
+import {
+  ActivityType,
+  GameStateMode,
+} from '@app/features/main/interfaces/enums';
 import { HealthHudComponent } from '../../components/health-hud/health-hud.component';
 import { getWeaponOptions } from '@app/features/game/services/game-service/utils/combat-utils';
 
@@ -32,6 +36,7 @@ import { getWeaponOptions } from '@app/features/game/services/game-service/utils
     IconButtonComponent,
     ModalPageComponent,
     ModalInventoryComponent,
+    ModalShopComponent,
     GameEndMessageComponent,
     GameLostMessageComponent,
     LoaderAnimationComponent,
@@ -64,7 +69,9 @@ export class GameComponent {
   public playerMaxHealth: number = 0;
   public showGame: boolean = false;
   public showPlayerHurt: boolean = false;
-  public weaponOptions: SelectIUIOption[] = [];
+  public weaponOptions: SelectUIOption[] = [];
+  public gameStateMode: GameStateMode = GameStateMode.DEFAULT;
+  public playerInventory: Inventory = {};
   private userId: string | null = null;
 
   constructor(
@@ -139,6 +146,9 @@ export class GameComponent {
     );
     this.subscriptions.push(
       this._gameService.gameStateObs.subscribe((data: QuestState | null) => {
+        this.gameStateMode = data?.mode ?? GameStateMode.DEFAULT;
+        this.playerInventory = data?.player.inventory ?? {};
+
         if (
           data?.player.inventory &&
           JSON.stringify(data.player.inventory) !==

@@ -1,0 +1,16 @@
+<div>
+  <div class="root inline-flex flex-row gap-0">
+    <button (click)="onOptionClick(optionA)"
+      class="rounded-l-full px-4 py-2 {{selected === optionA.toLowerCase() ? 'selected' : ''}}">
+      <b class="uppercase">
+        {{ optionA }}
+      </b>
+    </button>
+    <button (click)="onOptionClick(optionB)"
+      class="rounded-r-full px-4 py-2 {{selected === optionB.toLowerCase() ? 'selected' : ''}}">
+      <b class="uppercase">
+        {{ optionB }}
+      </b>
+    </button>
+  </div>
+</div>

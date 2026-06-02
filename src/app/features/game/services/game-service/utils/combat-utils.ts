@@ -2,7 +2,7 @@ import {
   Inventory,
   QuestActor,
   QuestState,
-  SelectIUIOption,
+  SelectUIOption,
 } from '@app/features/main/interfaces/types';
 import {
   itemDefinitions,
@@ -38,12 +38,12 @@ export const getIsPlayerNearActorCell = (
  */
 export const getWeaponOptions = (
   inventory: Inventory | undefined
-): SelectIUIOption[] => {
+): SelectUIOption[] => {
   if (!inventory) {
     return [];
   }
   const inventoryKeys = Object.keys(inventory);
-  const itemWeaponOptions: SelectIUIOption[] = Object.values(
+  const itemWeaponOptions: SelectUIOption[] = Object.values(
     itemWeaponDefinitions
   )
     .filter(def => inventoryKeys.includes(def.id) || def.id === 'bareHands')

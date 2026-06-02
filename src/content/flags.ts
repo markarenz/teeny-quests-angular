@@ -1,11 +1,11 @@
-import { SelectIUIOption } from '@app/features/main/interfaces/types';
+import { SelectUIOption } from '@app/features/main/interfaces/types';
 
-export const defaultFlagIdOptions: SelectIUIOption[] = [
+export const defaultFlagIdOptions: SelectUIOption[] = [
   { value: 'gameEnded', label: 'End Quest' },
   // gameLost - not selectable
 ];
 
-export const booleanOptions: SelectIUIOption[] = [
+export const booleanOptions: SelectUIOption[] = [
   { value: 'true', label: 'True' },
   { value: 'false', label: 'False' },
 ];

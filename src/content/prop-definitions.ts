@@ -1,4 +1,4 @@
-import { SelectIUIOption } from '@app/features/main/interfaces/types';
+import { SelectUIOption } from '@app/features/main/interfaces/types';
 import {
   ActionObjectType,
   ActionValueType,
@@ -92,14 +92,14 @@ export const propDecoDefinitions: { [key: string]: PropDefinition } = {
   },
 };
 
-export const propDecoOptions: SelectIUIOption[] = Object.values(
+export const propDecoOptions: SelectUIOption[] = Object.values(
   propDecoDefinitions
 ).map(def => ({
   value: def.id,
   label: def.name,
 }));
 
-export const propDecoWallOptions: SelectIUIOption[] = [
+export const propDecoWallOptions: SelectUIOption[] = [
   {
     value: 'north',
     label: 'Right Wall',

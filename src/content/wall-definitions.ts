@@ -1,4 +1,4 @@
-import { SelectIUIOption } from '@app/features/main/interfaces/types';
+import { SelectUIOption } from '@app/features/main/interfaces/types';
 
 export type WallDefinition = {
   id: string;
@@ -28,7 +28,7 @@ export const wallDefinitions: WallDefinition[] = [
   },
 ];
 
-export const wallOptionsData: SelectIUIOption[] = wallDefinitions.map(def => ({
+export const wallOptionsData: SelectUIOption[] = wallDefinitions.map(def => ({
   value: def.id,
   label: def.name,
 }));

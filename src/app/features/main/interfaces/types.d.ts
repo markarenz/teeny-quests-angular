@@ -10,7 +10,7 @@ import {
   Direction,
 } from './enums';
 
-export type SelectIUIOption = {
+export type SelectUIOption = {
   value: string;
   label: string;
 };
@@ -97,6 +97,12 @@ export type QuestAreaExit = {
   lock?: string; // e.g., 'gold', 'silver', 'bronze', 'rocks'
 };
 
+export type ActorShopInventoryItem = {
+  inventoryItemId: string;
+  // discounts may be added in the future
+  // prices will be found on the item definition
+};
+
 export type QuestActor = {
   id: string;
   name?: string;
@@ -109,6 +115,7 @@ export type QuestActor = {
   y: number;
   h: number;
   dropItem: string;
+  shopInventory?: ActorShopInventoryItem[];
   actions: ActionEffect[];
 };
 
@@ -319,4 +326,9 @@ export type WallTextureProps = {
   textureId: string;
   svgPolygonPoints: string[];
   h: number;
+};
+
+export type ShopTransaction = {
+  itemKey: string;
+  actionType: 'buy' | 'sell';
 };

@@ -1,6 +1,5 @@
 import { ActorInteractionType } from '@app/features/main/interfaces/enums';
-import { SelectIUIOption } from '@app/features/main/interfaces/types';
-
+import { SelectUIOption } from '@app/features/main/interfaces/types';
 export type ActorDefinition = {
   id: string;
   name: string;
@@ -110,9 +109,28 @@ export const actorDefinitions: { [key: string]: ActorDefinition } = {
     size: 'md',
     buttonTop: '10%',
   },
+  shop: {
+    id: 'shop',
+    name: 'Shop',
+    interactionType: ActorInteractionType.TRADE,
+    maxHealth: 0,
+    defense: 0,
+    accuracy: 0,
+    damage: 0,
+    wakeRadius: 0,
+    sleepRadius: 0,
+    moveSteps: 0,
+    soundAttack: '',
+    soundMove: '',
+    soundHurt: '',
+    soundDeath: '',
+    attackDescription: '',
+    size: 'lg',
+    buttonTop: '10%',
+  },
 };
 
-export const actorTypeOptions: SelectIUIOption[] = Object.values(
+export const actorTypeOptions: SelectUIOption[] = Object.values(
   actorDefinitions
 ).map(actor => ({
   value: actor.id,

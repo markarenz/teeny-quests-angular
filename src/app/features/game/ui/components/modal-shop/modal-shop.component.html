@@ -1,0 +1,39 @@
+<app-common-modal title="Ye Olde Shoppe" [isLockedOut]="false" [showCancel]="false" (onConfirm)="handleCloseShop()">
+  <div class="flex flex-col gap-4">
+
+    <div class="w-full flex flex-row items-center gap-2">
+      <div class="flex-grow text-2xl font-bold">
+        {{playerFunds.toLocaleString('en-US')}} Gold
+      </div>
+      <app-button-toggle [optionA]="'Buy'" [optionB]="'Sell'" [(selected)]="mode"></app-button-toggle>
+    </div>
+    <div class="flex flex-col gap-4">
+
+      @if(mode === 'buy') {
+
+      @for(item of shopInventory; track item.inventoryItemId) {
+      <app-shop-inventory-card [key]="item.inventoryItemId" [playerInventory]="playerInventory"
+        (onTransaction)="handleShopAction(item.inventoryItemId, inventoryDefinitions[item.inventoryItemId].shopValue ?? 0, mode)"
+        [playerFunds]="playerFunds" transactionMode="buy" />
+      }
+
+      }
+      @if(mode === 'sell') {
+      @if(playerInventoryKeys.length === 0) {
+      <div>
+        You have nothing to sell, friend.
+      </div>
+      } @else {
+      @for(item of playerInventoryKeys; track item) {
+      <app-shop-inventory-card [key]="item" [playerInventory]="playerInventory"
+        (onTransaction)="handleShopAction(item, inventoryDefinitions[item].shopValue ?? 0, mode)"
+        [playerFunds]="playerFunds" transactionMode="sell" />
+      }
+
+      }
+
+      }
+    </div>
+  </div>
+
+</app-common-modal>

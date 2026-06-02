@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   QuestEventActionCondition,
-  SelectIUIOption,
+  SelectUIOption,
 } from '@app/features/main/interfaces/types';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import { IconButtonComponent } from '@app/features/main/ui/components/icons/icon-button/icon-button.component';
@@ -43,12 +43,12 @@ export class EditorInputConditionsComponent {
   public selectedConditionId: string | null = null;
   public conditionTypeOptions = conditionOptions;
   public inventoryKeyOptions = itemKeyOptions;
-  public flagIdOptions: SelectIUIOption[] = [];
+  public flagIdOptions: SelectUIOption[] = [];
   public selectedConditionTypeDefinition: ConditionDefinition | null = null;
-  public valueOptions: SelectIUIOption[] = [];
+  public valueOptions: SelectUIOption[] = [];
   public objectIdentifierInputLabel: string = 'Object Identifier';
   public valueInputLabel: string = 'Value';
-  public objectIdentifierOptions: SelectIUIOption[] = [];
+  public objectIdentifierOptions: SelectUIOption[] = [];
 
   public inputConditionType: string = 'map-cell-height';
   public inputConditionObjectId: string = '';
