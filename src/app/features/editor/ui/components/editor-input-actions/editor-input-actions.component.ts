@@ -1,4 +1,10 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  SimpleChanges,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ActionEffect,
@@ -39,6 +45,7 @@ import { logger } from '@app/features/main/utils/logger';
 })
 export class EditorInputActionsComponent {
   @Input('title') title: string = 'Actions';
+  @Input('parentId') parentId: string = '';
   @Input('actions') actions: ActionEffect[] = [];
   @Input('selectedAreaId') selectedAreaId: string = 'start';
   @Output('onActionsChange') onActionsChange = new EventEmitter<
@@ -73,12 +80,6 @@ export class EditorInputActionsComponent {
       this.inputActionType = this.selectedAction.action;
       this.inputActionAreaId =
         this.selectedAction.actionObject.areaId || this.selectedAreaId;
-      console.log(
-        'refreshUIData - inputActionAreaId:',
-        this.inputActionAreaId,
-        this.selectedAction.actionObject.areaId,
-        this.selectedAreaId
-      );
       const def = actionDefinitions[this.selectedAction.action];
       if (!def) {
         logger({
@@ -239,10 +240,21 @@ export class EditorInputActionsComponent {
     if (this.shouldShowPositionSelector) {
       this._gameEditorService.setHighlightedCell(
         this.inputActionObjectId &&
+          this.selectedAction &&
+          this.selectedAction.action === EventAction.UPDATE_MAP_CELL_HEIGHT &&
           this.inputActionAreaId === this.selectedAreaId
           ? this.inputActionObjectId
           : ''
       );
+    }
+  }
+
+  // when parent ID changes, reset selectedActionId
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['parentId']) {
+      this.selectedAction = null;
+      this.selectedActionId = null;
+      this._gameEditorService.setHighlightedCell('');
     }
   }
 }

@@ -77,7 +77,7 @@
       @for(item of propStatusOptions; track item.value) {
       <app-editor-input-actions [actions]="selectedPropActions[item.value]"
         (onActionsChange)="handlePropActionInputChange($event, item.value)"
-        [title]="'Actions for Status: ' + item.label" [selectedAreaId]="selectedAreaId" />
+        [title]="'Actions for Status: ' + item.label" [selectedAreaId]="selectedAreaId" [parentId]="selectedPropId" />
       }
     </div>
     }

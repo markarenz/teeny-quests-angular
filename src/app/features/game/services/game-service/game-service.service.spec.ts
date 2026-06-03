@@ -196,6 +196,9 @@ describe('processTurn', () => {
       verb: 'move',
       noun: '2_5',
     });
+    // Re-apply mock movement options because processTurn calls calculateMovementOptions
+    // at the end of each turn, which overwrites the BehaviorSubject with real map data.
+    service.testSetValue('movementOptions', mockMovementOptions);
     await service.processTurn({
       verb: 'move',
       noun: '2_3',

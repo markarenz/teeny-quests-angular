@@ -1154,9 +1154,10 @@ export class GameService {
    */
   public resetGameProgress = (): void => {
     const gameId = this.questROM.value?.id;
-    if (gameId) {
+    if (gameId && this.questROM.value) {
       this.registerActivity(gameId, ActivityType.PLAY);
       this.eraseLocalGameState(gameId);
+      this.initGameState(this.questROM.value);
     }
   };
 

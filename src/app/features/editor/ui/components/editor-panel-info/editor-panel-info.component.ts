@@ -70,12 +70,6 @@ export class EditorPanelInfoComponent {
     area.items.forEach(item => {
       newLockouts.push(`${item.y}_${item.x}`);
     });
-    area.exits.forEach(exit => {
-      newLockouts.push(`${exit.y}_${exit.x}`);
-    });
-    area.props.forEach(prop => {
-      newLockouts.push(`${prop.y}_${prop.x}`);
-    });
     const positionKeys = getPositionKeysForGridSize();
     const map = area.map;
     positionKeys.forEach((position: string) => {

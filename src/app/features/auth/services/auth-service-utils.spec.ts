@@ -9,7 +9,12 @@ const userMock = {
 };
 
 beforeEach(() => {
-  fetchMock.unmockGlobal();
+  fetchMock.hardReset();
+  fetchMock.mockGlobal();
+});
+
+afterEach(() => {
+  fetchMock.hardReset();
 });
 
 describe('getUserByIdOrCreateUser', () => {
@@ -17,7 +22,7 @@ describe('getUserByIdOrCreateUser', () => {
     const id = '123';
     const urlGet = `${usersApiUrl}?id=${id}`;
 
-    fetchMock.mockGlobal().get(
+    fetchMock.get(
       urlGet,
       { item: userMock, success: true },
       {
@@ -34,7 +39,6 @@ describe('getUserByIdOrCreateUser', () => {
     const urlPost = usersApiUrl;
 
     fetchMock
-      .mockGlobal()
       .get(
         urlGet,
         { item: null, success: false },
@@ -44,7 +48,10 @@ describe('getUserByIdOrCreateUser', () => {
       )
       .post(
         urlPost,
-        { item: userMock },
+        {
+          status: 201,
+          body: { item: userMock },
+        },
         {
           delay: 0,
         }

@@ -50,6 +50,7 @@ describe('EditorGameComponent', () => {
   });
 
   it('should handle save', () => {
+    spyOn(service, 'saveGame').and.resolveTo('success');
     component.handleSaveClick();
     expect(component.isLoading).toBeTrue();
   });

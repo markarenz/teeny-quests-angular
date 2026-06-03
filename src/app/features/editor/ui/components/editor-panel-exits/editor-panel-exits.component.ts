@@ -84,9 +84,6 @@ export class EditorPanelExitsComponent {
   public updateExitPositionLockouts() {
     if (this.area) {
       const newLockouts: string[] = [];
-      this.area.items.forEach((item: QuestItem) => {
-        newLockouts.push(`${item.y}_${item.x}`);
-      });
       const selectedExit = this.exits.find(
         exit => exit.id === this.selectedExitId
       );

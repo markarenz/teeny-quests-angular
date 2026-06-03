@@ -120,10 +120,6 @@ export class EditorPanelPropsComponent {
         console.error('ERROR: Prop has no definition', this.inputPropType);
         return;
       }
-      this.canSetHeight = this.selectedPropDefinition.canSetHeight;
-      if (!this.canSetHeight) {
-        this.inputPropHeight = currentH.toString();
-      }
 
       this.propStatusOptions = this.selectedPropDefinition?.statuses
         ? this.selectedPropDefinition?.statuses.map(status => {
@@ -155,6 +151,11 @@ export class EditorPanelPropsComponent {
             label: stringValue,
           });
         }
+      }
+      this.canSetHeight = this.selectedPropDefinition.canSetHeight;
+      if (!this.canSetHeight) {
+        this.inputPropHeight =
+          currentH.toString() ?? this.propHeightOptions[0]?.value ?? '1';
       }
     }
   }

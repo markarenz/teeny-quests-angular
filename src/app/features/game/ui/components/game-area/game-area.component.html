@@ -8,6 +8,14 @@
     }
     }
 
+    <!-- Area Exits -->
+    @for(exit of areaExits; track exit.id;) {
+    <app-area-exit [exit]="exit" [isClickable]="
+                getIsNearPlayer(exit.y, exit.x, true) && (exit.lock === '' || !exit.lock)
+              " [isNearPlayer]="getIsNearPlayer(exit.y, exit.x, true)" (onClick)="handleExitClick(exit.id)"
+      [isLockedOut]="isLockedOut" [lightLevel]="getLightLevel(exit)" />
+    }
+
     <!-- Area Items -->
     @for(item of areaItems; track item.id;) {
     <app-area-item [item]="item" [isNearPlayer]="getIsNearPlayer(item.y, item.x, true)" [isLockedOut]="isLockedOut"
@@ -29,13 +37,6 @@
     }
 
 
-    <!-- Area Exits -->
-    @for(exit of areaExits; track exit.id;) {
-    <app-area-exit [exit]="exit" [isClickable]="
-        getIsNearPlayer(exit.y, exit.x, true) && (exit.lock === '' || !exit.lock)
-      " [isNearPlayer]="getIsNearPlayer(exit.y, exit.x, true)" (onClick)="handleExitClick(exit.id)"
-      [isLockedOut]="isLockedOut" [lightLevel]="getLightLevel(exit)" />
-    }
 
     <!-- Movement Option Buttons -->
     @for(moveOption of movementOptionsKeys; track moveOption; let idx = $index)

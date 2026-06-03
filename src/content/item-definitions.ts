@@ -240,7 +240,7 @@ export const inventoryDefinitions: { [key: string]: InventoryDefinition } = {
     article: 'a',
     description: 'A key made of silver. It can unlock certain doors.',
     scoreValue: 1,
-    shopValue: 50,
+    shopValue: 250,
   },
   'key-gold': {
     id: 'key-gold',
@@ -249,7 +249,7 @@ export const inventoryDefinitions: { [key: string]: InventoryDefinition } = {
     article: 'a',
     description: 'A key made of gold. It can unlock certain doors.',
     scoreValue: 10,
-    shopValue: 100,
+    shopValue: 500,
   },
   ruby: {
     id: 'ruby',
