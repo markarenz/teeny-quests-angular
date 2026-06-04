@@ -69,12 +69,16 @@
         }
       </select>
     </div>
+
+    @if(selectedActorInteractionType === 'HOSTILE') {
     <div>
       <div class="flex flex-col gap-4">
         <app-editor-input-actions [actions]="inputActions" (onActionsChange)="handleActorActionInputChange($event)"
-          title="Actions" [selectedAreaId]="selectedAreaId" />
+          title="Actions" [selectedAreaId]="selectedAreaId" [parentId]="selectedActorId" />
       </div>
     </div>
+    }
+
     }
 
   </div>

@@ -85,9 +85,7 @@ export class EditorPanelActorsComponent {
 
   public refreshUIData() {
     this.actors = this._gameEditorService.getActorsForCurrentArea();
-    this.inventoryItemOptions = additionalItemOptions.filter(
-      itemOption => !itemOption.value.includes('gold')
-    );
+    this.inventoryItemOptions = additionalItemOptions;
     const actor = this.getSelectedActor();
     const actorDef = actorDefinitions[actor?.actorType || ''];
     if (actorDef) {

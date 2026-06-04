@@ -42,7 +42,8 @@
     <div>
       <div class="flex flex-col gap-4">
         <app-editor-input-actions [actions]="selectedEvent.actions"
-          (onActionsChange)="handleEventActionInputChange($event)" title="Actions" [selectedAreaId]="selectedEventId" />
+          (onActionsChange)="handleEventActionInputChange($event)" title="Actions" [selectedAreaId]="selectedEventId"
+          [parentId]="selectedEventId" />
       </div>
     </div>
   </div>

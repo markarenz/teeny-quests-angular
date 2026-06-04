@@ -192,6 +192,13 @@ export class GameEditorService {
       );
       this.areaItems.next(items ?? []);
 
+      const actors = area.actors.map(actor =>
+        actor.x === cellData.x && actor.y === cellData.y
+          ? { ...actor, h: cellData.h }
+          : actor
+      );
+      this.areaActors.next(actors ?? []);
+
       const changedCellsData: { [key: string]: QuestAreaMapCell } = {};
       this.selectedCellPositions.value.forEach(pos => {
         const originalCell =
