@@ -1374,6 +1374,11 @@ export class GameService {
    * @param actorId The ID of the actor whose shop inventory to retrieve.
    */
   public setShopInventory(nextGameState: QuestState, actorId: string): void {
+    console.log(
+      'Setting shop inventory for actor:',
+      actorId,
+      nextGameState.areas[nextGameState.player.areaId].actors
+    );
     const actor = nextGameState.areas[nextGameState.player.areaId].actors.find(
       (a: QuestActor) => a.id === actorId
     );

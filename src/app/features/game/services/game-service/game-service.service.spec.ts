@@ -8,6 +8,7 @@ import questMockData, {
 } from '@app/features/editor/mocks/game.mock';
 import {
   MovementOptions,
+  QuestActor,
   QuestState,
 } from '@app/features/main/interfaces/types';
 import { firstValueFrom, skip, take } from 'rxjs';
@@ -34,8 +35,7 @@ beforeEach(async () => {
     })
   );
   // QuestROM `content` is stringified when saved to DB
-  // @ts-expect-error
-  gameMockFromDB.content = JSON.stringify(questMockData.content);
+  gameMockFromDB.content = structuredClone(questMockData.content);
 });
 
 afterEach(() => {
@@ -164,6 +164,54 @@ describe('initGameState', () => {
   });
 });
 
+describe('Shopping', () => {
+  let service: GameService;
+  let gameMockShop: typeof gameMock;
+  mockAudioService = jasmine.createSpyObj('AudioService', ['playSound']);
+  beforeEach(() => {
+    gameMockShop = structuredClone(gameMock);
+    const mockShop = gameMockShop.content.areas['start'].actors[0];
+    gameMockShop.id = 'test-shop';
+    mockShop.id = 'shop-1';
+    mockShop.actorType = 'shop';
+    mockShop.shopInventory = [
+      {
+        inventoryItemId: 'healthPotion',
+      },
+    ];
+    gameMockShop.content.areas['start'].actors = [mockShop];
+
+    localStorage.removeItem(`save--${gameMockShop.id}`);
+
+    TestBed.configureTestingModule({
+      imports: [ToastrModule.forRoot()],
+      providers: [
+        ToastrService,
+        provideNoopAnimations(),
+        { provide: AudioService, useValue: mockAudioService },
+      ],
+      teardown: { destroyAfterEach: false },
+    });
+    messageService = TestBed.inject(MessageService);
+    toastrService = TestBed.inject(ToastrService);
+    service = TestBed.inject(GameService);
+    service.testInit(gameMockShop);
+    service.initGameState(gameMockShop);
+  });
+  it('should go shopping', async () => {
+    spyOn(service, 'delay').and.resolveTo();
+
+    await service.processTurn({
+      verb: 'shop',
+      noun: 'shop-1',
+    });
+
+    const shopInventory = await firstValueFrom(
+      service.shopInventoryObs.pipe(take(1))
+    );
+    expect(shopInventory).toEqual([{ inventoryItemId: 'healthPotion' }]);
+  });
+});
 describe('processTurn', () => {
   let service: GameService;
   mockAudioService = jasmine.createSpyObj('AudioService', ['playSound']);
