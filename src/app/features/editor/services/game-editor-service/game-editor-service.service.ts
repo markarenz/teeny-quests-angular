@@ -192,6 +192,9 @@ export class GameEditorService {
       );
       this.areaItems.next(items ?? []);
 
+      if (!area.actors) {
+        area.actors = [];
+      }
       const actors = area.actors.map(actor =>
         actor.x === cellData.x && actor.y === cellData.y
           ? { ...actor, h: cellData.h }

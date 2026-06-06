@@ -224,6 +224,12 @@ export const audioIdMap: Map<string, AudioDefinition> = new Map([
       credit: 'Altemark',
     },
   ],
-
-  //
+  [
+    'cash',
+    {
+      filename: '402651__hgernhardt__ch-ching.mp3',
+      volume: 0.3,
+      credit: 'Hgernhardt',
+    },
+  ],
 ]);

@@ -45,7 +45,6 @@ export class EditorPanelItemsComponent {
   public area: QuestArea | null = null;
 
   private refreshUIData() {
-    console.log('refreshing item panel ui data');
     this.items = this._gameEditorService.getItemsForCurrentArea();
     this.updateItemPositionLockouts();
   }

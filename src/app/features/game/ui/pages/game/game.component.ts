@@ -186,7 +186,6 @@ export class GameComponent {
             this.gameId,
             ActivityType.COMPLETE
           );
-          this._gameService.resetGameProgress();
         }
       })
     );
@@ -235,9 +234,9 @@ export class GameComponent {
   handleInventoryClose = () => {
     this._gameService.setPageModalStatus('');
   };
-  handleGameEndClick = () => {
+  handleGameEndClick = async () => {
     this.gameStatus = '';
-    this.router.navigate(['/']);
+    await this.router.navigate(['/']);
     this.handleResetProgress();
   };
 
@@ -245,6 +244,7 @@ export class GameComponent {
     this.isFullWidthMode = !this.isFullWidthMode;
     this._gameService.setFullWidthYOffsetCurrent();
   };
+
   handleResetProgress = () => {
     this._gameService.resetGameProgress();
     this.gameStatus = '';

@@ -628,11 +628,13 @@ export class GameService {
         nextGameState.player.inventory['gold'] = newGold - price;
         nextGameState.player.inventory[itemId] =
           (nextGameState.player.inventory[itemId] ?? 0) + 1;
+        this._audioService.playSound('cash');
         break;
       case 'sell':
         nextGameState.player.inventory['gold'] = newGold + price;
         nextGameState.player.inventory[itemId] =
           (nextGameState.player.inventory[itemId] ?? 0) - 1;
+        this._audioService.playSound('cash');
         break;
       case 'end':
         nextGameState.mode = GameStateMode.DEFAULT;
@@ -1130,6 +1132,7 @@ export class GameService {
         prop.statusActions[prop.status ?? ''] ?? [],
         this._audioService
       );
+      this.setPropItemActorHeights(nextGameState);
       nextGameState = turnActionResult.nextGameState;
       turnActionResult.messages.forEach(msg => {
         this._messageService.showMessage(msg);
@@ -1359,12 +1362,15 @@ export class GameService {
    *
    * @param nextGameState The current game state.
    */
-  public async processActorTurns(nextGameState: QuestState): Promise<void> {
+  public async processActorTurns(
+    nextGameState: QuestState
+  ): Promise<QuestState> {
     const area = nextGameState.areas[nextGameState.player.areaId];
     const actors = area.actors ?? [];
     for (const actor of actors) {
       await this.processActorTurn(nextGameState, actor);
     }
+    return nextGameState;
   }
 
   /**
@@ -1374,11 +1380,6 @@ export class GameService {
    * @param actorId The ID of the actor whose shop inventory to retrieve.
    */
   public setShopInventory(nextGameState: QuestState, actorId: string): void {
-    console.log(
-      'Setting shop inventory for actor:',
-      actorId,
-      nextGameState.areas[nextGameState.player.areaId].actors
-    );
     const actor = nextGameState.areas[nextGameState.player.areaId].actors.find(
       (a: QuestActor) => a.id === actorId
     );
@@ -1437,20 +1438,6 @@ export class GameService {
           break;
       }
 
-      // Settle item heights
-      if (nextGameState.areas[nextGameState.player.areaId]) {
-        const map = nextGameState.areas[nextGameState.player.areaId];
-        nextGameState.areas[nextGameState.player.areaId].items =
-          nextGameState.areas[nextGameState.player.areaId].items.map(
-            (item: any) => {
-              const positionKey = `${item.y}_${item.x}`;
-              return {
-                ...item,
-                h: map.map[positionKey].h,
-              };
-            }
-          );
-      }
       nextGameState = processEvents(
         nextGameState,
         this.questROM.value,
@@ -1465,7 +1452,7 @@ export class GameService {
 
       let newIsPlayerNearActorCell = getIsPlayerNearActorCell(nextGameState);
 
-      await this.processActorTurns(nextGameState);
+      nextGameState = await this.processActorTurns(nextGameState);
 
       if (nextGameState.player.health <= 0) {
         await this.delay(200);
