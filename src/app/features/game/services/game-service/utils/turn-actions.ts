@@ -45,10 +45,6 @@ export const processTurnActions = (
  * @param action - The action effect to process
  * @param audioService - The audio service for playing sounds
  * @returns An object containing the updated game state and an optional toast message notification
- * @example
- * const result = processTurnAction(gameState, action, audioService);
- * console.log(result.actionGameState); // Updated game state
- * console.log(result.message); // Toast message or null
  */
 export const processTurnAction = (
   nextGameState: QuestState,

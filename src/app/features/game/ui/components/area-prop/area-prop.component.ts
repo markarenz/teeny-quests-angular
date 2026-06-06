@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  OnChanges,
+  DoCheck,
+  SimpleChanges,
+} from '@angular/core';
 import { QuestProp } from '@app/features/main/interfaces/types';
 import { defaultProp } from '@app/features/game/lib/constants';
 import { defaultGridSize } from '@config/index';
@@ -31,7 +39,7 @@ import { AudioService } from '@app/features/main/services/audio/audio-service.se
   styleUrl: './area-prop.component.css',
   standalone: true,
 })
-export class AreaPropComponent {
+export class AreaPropComponent implements OnChanges, DoCheck {
   constructor(private _audioService: AudioService) {}
 
   @Input('prop') prop: QuestProp = defaultProp;
@@ -51,8 +59,9 @@ export class AreaPropComponent {
   public width: string = '0%';
   public position: AreaPosition = { left: '0', bottom: '0', z: 0 };
   public ariaLabel: string = '';
+  private lastPropSnapshot: string = '';
 
-  updatePropProps() {
+  private refreshPropProps(): void {
     if (this.prop) {
       const { x, y, h } = this.prop;
       const cellW = 100 / this.gridSize;
@@ -64,12 +73,35 @@ export class AreaPropComponent {
     }
   }
 
-  ngOnChanges() {
-    this.updatePropProps();
+  private syncPropPropsIfNeeded(): void {
+    if (!this.prop) {
+      return;
+    }
+
+    const currentSnapshot = [
+      this.prop.id,
+      this.prop.propType,
+      this.prop.wall,
+      this.prop.x,
+      this.prop.y,
+      this.prop.h,
+      this.prop.status ?? '',
+    ].join('|');
+
+    if (currentSnapshot !== this.lastPropSnapshot) {
+      this.lastPropSnapshot = currentSnapshot;
+      this.refreshPropProps();
+    }
   }
 
-  ngOnInit() {
-    this.updatePropProps();
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['prop']) {
+      this.syncPropPropsIfNeeded();
+    }
+  }
+
+  ngDoCheck(): void {
+    this.syncPropPropsIfNeeded();
   }
   handleClick() {
     if (this.isClickable || this.isEditorMode) {

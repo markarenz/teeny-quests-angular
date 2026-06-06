@@ -35,7 +35,6 @@ export class ModalShopComponent {
     const shopInventoryKeys = this.shopInventory.map(
       item => item.inventoryItemId
     );
-    console.log('shopInventoryKeys', shopInventoryKeys);
     this.playerInventoryKeys = Object.keys(this.playerInventory).filter(
       key =>
         this.playerInventory[key] > 0 &&

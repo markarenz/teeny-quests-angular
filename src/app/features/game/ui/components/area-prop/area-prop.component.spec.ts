@@ -37,4 +37,21 @@ describe('AreaPropComponent', () => {
     component.handleClick();
     expect(mockEventEmitter.emit).toHaveBeenCalled();
   });
+
+  it('should refresh position when h changes in place', () => {
+    component.prop = {
+      ...component.prop,
+      x: 3,
+      y: 1,
+      h: 8,
+    };
+    fixture.detectChanges();
+
+    const initialBottom = component.position.bottom;
+    component.prop.h = 13;
+
+    fixture.detectChanges();
+
+    expect(component.position.bottom).not.toEqual(initialBottom);
+  });
 });

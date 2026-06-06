@@ -1,6 +1,7 @@
 import { Direction, EventAction } from '@app/features/main/interfaces/enums';
 import { inventoryDefinitions } from '@content/item-definitions';
 import {
+  Inventory,
   QuestAreaMap,
   QuestAreaMapCell,
   QuestItem,
@@ -72,13 +73,10 @@ export const calcScore = (
   questROM: QuestROM
 ): number => {
   let score = 0;
-  Object.keys(gameState.player.inventory ?? {}).forEach(inventoryKey => {
-    const itemCount = gameState.player.inventory[inventoryKey];
-    const itemDef = inventoryDefinitions[inventoryKey];
-    if (itemDef && itemDef.scoreValue) {
-      score += itemDef.scoreValue * itemCount;
-    }
-  });
+  let initialInventoryScore = getScoreForInventory(
+    questROM.content.player.inventory ?? {}
+  );
+  const inventoryScore = getScoreForInventory(gameState.player.inventory);
   if (gameState.flagValues['gameEnded']) {
     const healthBonus = gameState.player.health * 200;
     score += 1000 + healthBonus; // Bonus for completing the game
@@ -88,8 +86,31 @@ export const calcScore = (
       score += flagDef.scoreValue;
     }
   });
+  // If the player starts with X gold or inventory, subtract that from the initial score
+  score += inventoryScore - initialInventoryScore;
   score -= gameState.numTurns;
   return Math.max(0, score);
+};
+
+/**
+ * Calculates the total score value from a player's inventory.
+ *
+ * Iterates through all items in the inventory and multiplies each item's count
+ * by its individual score value from the item definitions.
+ *
+ * @param inventory - The player's inventory object mapping item keys to their quantities
+ * @returns The total score value from all items in the inventory
+ */
+const getScoreForInventory = (inventory: Inventory): number => {
+  let score = 0;
+  Object.keys(inventory ?? {}).forEach(inventoryKey => {
+    const itemCount = inventory[inventoryKey];
+    const itemDef = inventoryDefinitions[inventoryKey];
+    if (itemDef && itemDef.scoreValue) {
+      score += itemDef.scoreValue * itemCount;
+    }
+  });
+  return score;
 };
 
 /**
