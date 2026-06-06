@@ -369,6 +369,7 @@ export const getItems = async (params: Params): Promise<ReturnPayload> => {
       .map(item => item.fieldName)
       .join(', '),
     KeyConditionExpression: 'itemStatus = :value',
+    ScanIndexForward: false, // false = descending order
     ExpressionAttributeValues: {
       ':value': { S: 'active' },
     },
@@ -406,6 +407,7 @@ export const getItemsByUserId = async (
       IndexName: indexNames[requestKey ?? ''],
       ProjectionExpression: 'id, title, description, username, itemStatus',
       KeyConditionExpression: 'userId = :value',
+      ScanIndexForward: false, // false = descending order
       ExpressionAttributeValues: {
         ':value': { S: userId },
       },
@@ -442,6 +444,7 @@ export const getItemsByGameId = async (
       IndexName: indexNames[requestKey ?? ''],
       ProjectionExpression: 'id, gameId, userId, dateCreated, dateUpdated',
       KeyConditionExpression: 'gameId = :value',
+      ScanIndexForward: false, // false = descending order
       ExpressionAttributeValues: {
         ':value': { S: gameId },
       },
