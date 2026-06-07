@@ -95,6 +95,8 @@ Resources:
           AttributeType: S
         - AttributeName: itemStatus
           AttributeType: S
+        - AttributeName: dateUpdated
+          AttributeType: S
       KeySchema:
         - AttributeName: id
           KeyType: HASH
@@ -103,6 +105,8 @@ Resources:
           KeySchema:
             - AttributeName: userId
               KeyType: HASH
+            - AttributeName: dateUpdated
+              KeyType: RANGE
           Projection:
             ProjectionType: 'ALL'
           ProvisionedThroughput:
@@ -112,6 +116,8 @@ Resources:
           KeySchema:
             - AttributeName: itemStatus
               KeyType: HASH
+            - AttributeName: dateUpdated
+              KeyType: RANGE
           Projection:
             ProjectionType: 'ALL'
           ProvisionedThroughput:
