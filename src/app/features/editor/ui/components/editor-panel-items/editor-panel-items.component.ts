@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { GameEditorService } from '@app/features/editor/services/game-editor-service/game-editor-service.service';
 import { FormsModule } from '@angular/forms';
 import {
+  QuestActor,
   QuestArea,
   QuestAreaExit,
   QuestItem,
@@ -43,8 +44,10 @@ export class EditorPanelItemsComponent {
   public isSelectedPositionValid: boolean = false;
   public lockouts: string[] = [];
   public area: QuestArea | null = null;
+  public totalGold: number = 0;
 
   private refreshUIData() {
+    this.totalGold = this._gameEditorService.getItemReport();
     this.items = this._gameEditorService.getItemsForCurrentArea();
     this.updateItemPositionLockouts();
   }
@@ -55,6 +58,9 @@ export class EditorPanelItemsComponent {
         if (item.id !== this.selectedItemId) {
           newLockouts.push(`${item.y}_${item.x}`);
         }
+      });
+      this.area.actors.forEach((actor: QuestActor) => {
+        newLockouts.push(`${actor.y}_${actor.x}`);
       });
       const positionKeys = getPositionKeysForGridSize();
       const map = this.area.map;

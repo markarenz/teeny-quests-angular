@@ -25,6 +25,8 @@
 <app-floor-wall-top [floorProps]="floorProps" (onClick)="handleClick()" />
 } @else if(floorType === 'tile-dark') {
 <app-floor-tile-dark [floorProps]="floorProps" (onClick)="handleClick()" />
+} @else if(floorType === 'lava') {
+<app-floor-lava [floorProps]="floorProps" (onClick)="handleClick()" />
 } @else {
 <app-floor-default [floorProps]="floorProps" (onClick)="handleClick()" />
 }

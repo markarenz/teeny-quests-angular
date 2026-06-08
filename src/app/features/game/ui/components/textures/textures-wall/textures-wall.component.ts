@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { WallTextureProps } from '@app/features/main/interfaces/types';
 import { defaultWallProps } from './constants';
 import { BlueShineComponent } from './blue-shine/blue-shine.component';
+import { LavaComponent } from './lava/lava.component';
 import { CaveComponent } from './cave/cave.component';
 import { RedStoneComponent } from './red-stone/red-stone.component';
 import { WallDefaultComponent } from './wall-default/wall-default.component';
@@ -13,6 +14,7 @@ import { WallDefaultComponent } from './wall-default/wall-default.component';
     CaveComponent,
     RedStoneComponent,
     WallDefaultComponent,
+    LavaComponent,
   ],
   templateUrl: './textures-wall.component.html',
   styleUrl: './textures-wall.component.css',

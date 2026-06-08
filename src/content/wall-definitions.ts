@@ -23,6 +23,10 @@ export const wallDefinitions: WallDefinition[] = [
     name: 'Red Stone',
   },
   {
+    id: 'lava',
+    name: 'Lava',
+  },
+  {
     id: 'blue-shine',
     name: 'Blue Crystal',
   },

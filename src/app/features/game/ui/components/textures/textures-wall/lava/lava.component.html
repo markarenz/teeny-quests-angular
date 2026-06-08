@@ -1,0 +1,33 @@
+<svg [attr.viewBox]="wallProps.svgViewBox" version="1.1" xmlns="http://www.w3.org/2000/svg"
+  xmlns:svg="http://www.w3.org/2000/svg" style="position: absolute; bottom: 0; left: 0; width: 100%"
+  [attr.class]="wallProps.wallType + ' wall-position-' + wallProps.wallPosition">
+  <defs>
+    <pattern [id]="wallProps.textureId" x="0" y="100%" width="50" height="50" patternUnits="userSpaceOnUse"
+      [attr.patternTransform]="'scale(' + (wallProps.wallPosition === 'r' ? -1 : 1) + ', 1)'">
+      <g>
+        <g id="g55" style="display:inline" transform="matrix(3.7795276,0,0,3.7795276,-119,6)">
+          <path id="path33" style="display:inline;fill:#bd2202;fill-opacity:1;stroke-width:0;stroke-linejoin:bevel"
+            d="m 31.485416,-1.5874988 13.229168,-5e-7 V 11.641666 H 31.485416 Z" />
+          <path style="display:inline;fill:#d55302;fill-opacity:1;stroke-width:0;stroke-linejoin:bevel"
+            d="m 31.485416,10.254407 c 0,0 1.573603,-1.4807518 2.165501,-0.3812098 1.501923,2.7900598 2.760067,-2.215919 4.91831,-3.202779 1.000822,-0.500356 0.853691,5.6327058 3.499524,-0.02041 0.798148,-1.70533 -0.135831,2.856912 0.653854,2.856912 1.322916,0 1.991979,1.9919788 1.991979,1.9919788 V -1.5875 l -13.229168,5e-7 z"
+            id="path35" />
+          <path style="display:inline;fill:#dd9802;fill-opacity:1;stroke-width:0;stroke-linejoin:bevel"
+            d="m 31.485417,5.3600172 c 0,0 2.036373,-0.22576 2.1655,1.152972 0.480333,5.1286768 1.727087,2.549128 2.558035,1.024819 1.264997,-2.320539 3.762226,-3.1365871 3.875424,-2.800664 0.803371,2.384058 1.543323,-0.4514452 2.645833,-0.4514452 1.322917,0 1.984375,3.8529952 1.984375,3.8529952 v -9.7261935 l -13.229168,5e-7 z"
+            id="path51" />
+          <path style="display:inline;fill:#d55302;fill-opacity:1;stroke-width:0;stroke-linejoin:bevel"
+            d="m 31.485417,2.4305843 c 0,0 1.285403,-0.951776 1.569454,0.1972043 1.737837,7.0295026 3.174451,2.0165346 3.948517,1.3026847 0.774287,-0.7935745 2.510461,-2.2750912 3.136661,-2.3749427 0.605785,-0.00429 0.427192,1.9772086 1.267244,1.487178 0.840052,-0.49003 0.533232,-1.3229163 1.322916,-1.3229163 1.322917,2e-7 1.984375,2.2085746 1.984375,2.2085746 v -5.5158662 l -13.229168,5e-7 z"
+            id="path53" />
+          <path style="display:inline;fill:#bd2202;fill-opacity:1;stroke-width:0;stroke-linejoin:bevel"
+            d="m 31.485417,-0.26458248 c 0,0 1.705597,-0.404138 2.110391,0.7874754 2.264578,6.66634928 1.529682,0.3717651 2.303749,-0.3420851 0.732289,-0.6753223 1.01873,2.17133878 1.840884,1.34918638 3.501807,-3.5018071 2.321678,0.3840568 4.129478,-0.67049278 0.840051,-0.4900309 0.732064,-1.7855423 1.521748,-1.7855422 1.322917,1e-7 1.322917,0.6614583 1.322917,0.6614583 V -1.5874993 l -13.229168,5e-7 z"
+            id="path55" />
+        </g>
+      </g>
+
+    </pattern>
+  </defs>
+  @if(wallProps.wallPosition === 'l') {
+  <polygon [attr.points]="wallProps.svgPolygonPoints[0]" [attr.fill]="wallProps.wallTexture" />
+  } @if(wallProps.wallPosition === 'r') {
+  <polygon [attr.points]="wallProps.svgPolygonPoints[1]" [attr.fill]="wallProps.wallTexture" />
+  }
+</svg>

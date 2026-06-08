@@ -1173,8 +1173,29 @@ export class GameEditorService {
       );
     }
   }
+  resetGameProgress() {
+    localStorage.removeItem(`save--${this.game.value?.id}`);
+  }
 
   setHighlightedCell(cellPosition: string) {
     this.secondarySelectedCellPosition.next(cellPosition);
+  }
+
+  getItemReport(): number {
+    let totalGold = 0;
+    const areaKeys = Object.keys(this.game.value?.content.areas ?? {});
+    areaKeys.forEach(areaKey => {
+      const area = this.game.value?.content.areas[areaKey];
+      const items = area?.items ?? [];
+      items.forEach(item => {
+        if (item.itemType === 'coins-25') {
+          totalGold += 25;
+        }
+        if (item.itemType === 'coins-100') {
+          totalGold += 100;
+        }
+      });
+    });
+    return totalGold;
   }
 }

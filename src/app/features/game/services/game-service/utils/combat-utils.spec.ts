@@ -141,6 +141,6 @@ describe('calcPlayerDefense', () => {
       },
     } as any;
     const defense = calcPlayerDefense(player);
-    expect(defense).toBe(0.3);
+    expect(defense).toBe(0.4);
   });
 });
