@@ -1,6 +1,6 @@
 {
   "name": "teeny-quests-angular",
-  "version": "0.9.96",
+  "version": "0.9.97",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
