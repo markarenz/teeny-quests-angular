@@ -103,7 +103,7 @@ export class EditorInputConditionsComponent {
       id: `action-${Date.now()}`,
       conditionType: EventConditionType.INVENTORY,
       identifier: 'gold',
-      comparison: ConditionComparison.GREATER_THAN,
+      comparison: ConditionComparison.GREATER_THAN_OR_EQUALS,
       value: 100,
     };
     const newConditions = [...(this.conditions ?? []), defaultNewAction];

@@ -1,0 +1,64 @@
+<div class="w-8 h-8 relative bg-red-500">
+  <button aria-label="Shape Cell Select" (click)="handleToggleShapeSelect()" class="w-8 h-8 bg-red-500">
+    <svg viewBox="0 0 100 100" version="1.1" id="svg1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"
+      xmlns:svg="http://www.w3.org/2000/svg">
+      <g>
+        <rect fill="#cccccc" width="100" height="100" x="0" y="0" />
+        <path id="rect6" style="fill:#333333;stroke-width:0;stroke-linejoin:bevel"
+          d="M 0,0 V 14.279749 H 14.279749 V 0 Z M 28.560014,0 V 14.279749 H 42.839762 V 0 Z M 57.120028,0 V 14.279749 H 71.399776 V 0 Z M 85.720349,0 V 14.279749 H 100.0001 V 0 Z M 0,28.560014 V 42.839762 H 14.279749 V 28.560014 Z m 85.680042,0 V 42.839762 H 99.95979 V 28.560014 Z M 0,57.120028 V 71.399776 H 14.279749 V 57.120028 Z m 85.680042,0 V 71.399776 H 99.95979 V 57.120028 Z M 0,85.680042 V 99.95979 H 14.279749 V 85.680042 Z m 28.560014,0 V 99.95979 H 42.608252 V 85.680042 Z m 28.560014,0 V 99.95979 H 71.399776 V 85.680042 Z m 28.560014,0 V 99.95979 H 99.95979 V 85.680042 Z" />
+      </g>
+    </svg>
+  </button>
+  @if(isOpen) {
+  <div class="absolute top-8 left-0 flex flex-col gap-1 bg-gray-800 z-10">
+    @for(option of shapeOptions; track option) {
+    <button class="w-8 h-8 hover:ring-2 ring-offset-2 hover:ring-primary ring-offset-slate-900"
+      (click)="handleShapeOptionSelect(option)" aria-label="{{ option }}" title="{{ option }}">
+      <svg viewBox="0 0 100 100" version="1.1" id="svg1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"
+        xmlns:svg="http://www.w3.org/2000/svg" title="{{ option }}">
+        <g>
+          <rect fill="#cccccc" width="100" height="100" x="0" y="0" />
+          @if(option === 'Center-3') {
+          <rect fill="#333333" width="42.84" height="42.84" x="28.58" y="28.58" />
+          }
+          @if(option === 'Center-5') {
+          <rect fill="#333333" width="71.400002" height="71.400002" x="14.28" y="14.28" />
+          }
+          @if(option === 'Ring-5') {
+          <path fill="#333333"
+            d="M 14.279749,14.279749 V 85.680042 H 85.680042 V 14.279749 Z M 28.580168,28.580168 H 71.41993 V 71.41993 H 28.580168 Z" />
+          }
+          @if(option === 'Ring-7') {
+          <path fill="#333333"
+            d="M 0,0 V 14.279749 82.959277 99.95979 100.0001 H 100.0001 V 82.959277 H 99.95979 V 0 H 14.279749 Z M 14.279749,14.279749 H 85.680042 V 82.959277 H 14.279749 Z" />
+          }
+          @if(option === 'All') {
+          <rect fill="#333333" id="rect13" width="100" height="100" x="0" y="0" />
+          }
+        </g>
+      </svg>
+    </button>
+    }
+  </div>
+  }
+</div>
+
+
+<!-- <svg viewBox="0 0 100 100" version="1.1" id="svg1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"
+  xmlns:svg="http://www.w3.org/2000/svg">
+  <g id="layer11">
+    <rect style="fill:#cccccc;stroke-width:0;stroke-linejoin:bevel" id="rect14" width="100" height="100" x="0" y="0" />
+    <rect style="display:inline;fill:#333333;stroke-width:0;stroke-linejoin:bevel" id="rect8" width="42.84"
+      height="42.84" x="28.58" y="28.58" />
+    <rect style="display:inline;fill:#333333;stroke-width:0;stroke-linejoin:bevel" id="rect4" width="71.400002"
+      height="71.400002" x="14.28" y="14.28" />
+    <path id="path13" style="display:inline;fill:#333333;stroke-width:0;stroke-linejoin:bevel"
+      d="M 14.279749,14.279749 V 85.680042 H 85.680042 V 14.279749 Z M 28.580168,28.580168 H 71.41993 V 71.41993 H 28.580168 Z" />
+    <path id="rect5" style="display:inline;fill:#333333;stroke-width:0;stroke-linejoin:bevel"
+      d="M 0,0 V 14.279749 82.959277 99.95979 100.0001 H 100.0001 V 82.959277 H 99.95979 V 0 H 14.279749 Z M 14.279749,14.279749 H 85.680042 V 82.959277 H 14.279749 Z" />
+    <rect style="display:inline;fill:#333333;stroke-width:0;stroke-linejoin:bevel" id="rect13" width="100" height="100"
+      x="0" y="0" />
+    <path id="rect6" style="fill:#333333;stroke-width:0;stroke-linejoin:bevel"
+      d="M 0,0 V 14.279749 H 14.279749 V 0 Z M 28.560014,0 V 14.279749 H 42.839762 V 0 Z M 57.120028,0 V 14.279749 H 71.399776 V 0 Z M 85.720349,0 V 14.279749 H 100.0001 V 0 Z M 0,28.560014 V 42.839762 H 14.279749 V 28.560014 Z m 85.680042,0 V 42.839762 H 99.95979 V 28.560014 Z M 0,57.120028 V 71.399776 H 14.279749 V 57.120028 Z m 85.680042,0 V 71.399776 H 99.95979 V 57.120028 Z M 0,85.680042 V 99.95979 H 14.279749 V 85.680042 Z m 28.560014,0 V 99.95979 H 42.608252 V 85.680042 Z m 28.560014,0 V 99.95979 H 71.399776 V 85.680042 Z m 28.560014,0 V 99.95979 H 99.95979 V 85.680042 Z" />
+  </g>
+</svg> -->

@@ -139,7 +139,7 @@ export const itemDefinitions: { [key: string]: ItemDefinition } = {
     amount: 1,
     use: '',
     inventoryActions: ['drop'],
-    defenseBuff: 0.2,
+    defenseBuff: 0.3,
   },
   healthCookie: {
     id: 'healthCookie',

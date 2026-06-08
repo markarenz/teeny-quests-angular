@@ -1,5 +1,8 @@
 <app-collapsible-card title="Items" [isCollapsible]="false" [showNewButton]="true"
   (onNewButtonClick)="handleCreateClick()">
+  <div>
+    Total gold in game currently: {{ totalGold.toLocaleString() }}
+  </div>
   <div class="flex flex-col gap-8">
     <div class="flex flex-col gap-4">
       <div class="flex flex-col gap-4">

@@ -4,6 +4,8 @@
 <app-cave [wallProps]="wallProps" />
 } @else if (wallType === 'red-stone') {
 <app-red-stone [wallProps]="wallProps" />
+} @else if (wallType === 'lava') {
+<app-lava [wallProps]="wallProps" />
 } @else {
 <app-wall-default [wallProps]="wallProps" />
 }

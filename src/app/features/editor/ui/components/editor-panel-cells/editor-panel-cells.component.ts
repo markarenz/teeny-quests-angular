@@ -9,6 +9,7 @@ import { maxAreaCellHeight } from '@config/index';
 import { wallOptionsData } from '@content/wall-definitions';
 import { floorOptionsData } from '@content/floor-definitions';
 import { EditorTextureSelectorComponent } from '../editor-texture-selector/editor-texture-selector.component';
+import { ShapeCellSelectorComponent } from './shape-cell-selector/shape-cell-selector.component';
 import { IconButtonComponent } from '@app/features/main/ui/components/icons/icon-button/icon-button.component';
 import { IconToggleComponent } from '@app/features/main/ui/components/icon-toggle/icon-toggle.component';
 import { ButtonComponent } from '@app/features/main/ui/components/button/button.component';
@@ -28,6 +29,7 @@ import { commonText } from '@content/text';
     IconToggleComponent,
     ButtonComponent,
     TooltipComponent,
+    ShapeCellSelectorComponent,
   ],
   standalone: true,
   templateUrl: './editor-panel-cells.component.html',
@@ -100,6 +102,14 @@ export class EditorPanelCellsComponent {
       position,
       this.isMultiSelection
     );
+  }
+  handleShapeSelect(positions: string[]) {
+    positions.forEach(pos => {
+      this._gameEditorService.setSelectedCellPositions(
+        pos,
+        this.isMultiSelection
+      );
+    });
   }
 
   handleCellDeselect() {

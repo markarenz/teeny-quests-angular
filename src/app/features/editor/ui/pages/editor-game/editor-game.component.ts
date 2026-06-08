@@ -200,6 +200,7 @@ export class EditorGameComponent {
   }
 
   handlePlayClick() {
+    this._gameEditorService.resetGameProgress();
     this.router.navigate([`/quest/${this.game?.id ?? ''}`]);
   }
 

@@ -85,6 +85,13 @@ export const floorDefinitions: { [key: string]: FloorDefinition } = {
     walkable: false,
     tileType: FloorTileType.SINGLE,
   },
+  lava: {
+    id: 'lava',
+    name: 'Lava (No Access)',
+    walkable: false,
+    tileType: FloorTileType.SINGLE,
+    flipOdds: true,
+  },
 };
 
 export const floorOptionsData: SelectUIOption[] = Object.values(

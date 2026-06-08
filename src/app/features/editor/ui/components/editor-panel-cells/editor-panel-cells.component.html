@@ -13,9 +13,14 @@
         <div class="flex flex-row gap-2">
           <app-icon-toggle tooltipContent="Toggle Single or Multiple Cell Selection Mode"
             [toggleState]="isMultiSelection" (onToggleChange)="handleToggleSelectionMode($event)" />
+          @if (isMultiSelection) {
+          <app-shape-cell-selector (handleShapeSelect)="handleShapeSelect($event)" />
+          }
           <app-icon-button icon="close" theme="danger" label="Deselect Cell" (click)="handleCellDeselect()"
             [isDisabled]="!selectedCellPositions.length" />
         </div>
+
+
       </div>
       <app-area-cell-selector id="editor-cell-selector" [selectedCellPositions]="selectedCellPositions"
         (onPositionSelect)="handleCellSelect($event)" />
