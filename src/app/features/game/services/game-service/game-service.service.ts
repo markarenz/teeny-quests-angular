@@ -96,6 +96,9 @@ export class GameService {
   private exitingDirection = new BehaviorSubject<string>('');
   exitingDirectionObs = this.exitingDirection.asObservable();
 
+  private enteringDirection = new BehaviorSubject<string>('');
+  enteringDirectionObs = this.enteringDirection.asObservable();
+
   private playerAnim = new BehaviorSubject<string>('');
   playerAnimObs = this.playerAnim.asObservable();
 
@@ -660,6 +663,8 @@ export class GameService {
     const area = this.getArea(areaId);
     const exit = area?.exits.find(e => e.id === exitId);
     const destinationAreaId = exit?.destinationAreaId;
+    const hasAreaChanged = destinationAreaId !== areaId;
+
     if (!destinationAreaId) {
       return nextGameState;
     }
@@ -689,6 +694,7 @@ export class GameService {
       },
     });
     this.exitingDirection.next(exit.direction);
+
     await this.delay(250);
 
     if (exit?.exitType === 'game-end') {
@@ -696,28 +702,36 @@ export class GameService {
       return nextGameState;
     }
 
-    // fade out
-    this.areaTransitionMode.next('cover');
+    if (hasAreaChanged) {
+      // fade out
+      this.areaTransitionMode.next('cover');
+    }
     await this.delay(250);
 
     // move player to destination position, area, direction
     nextGameState.player.areaId = destinationAreaId;
     nextGameState.player.x = destinationExit?.x;
     nextGameState.player.y = destinationExit?.y;
-    this.exitingDirection.next('');
-
-    await this.delay(250);
-
-    this.calcLightMap(nextGameState);
-
-    this.isLockedOut.next(false);
-    this.areaTransitionMode.next('');
-
     this.setFullWidthOffsetY(
       nextGameState.player.y,
       nextGameState.player.x,
       destinationArea.map
     );
+    this.gameState.next(nextGameState);
+
+    await this.delay(250);
+    this.enteringDirection.next(destinationExit.direction);
+    this.exitingDirection.next('');
+
+    this.calcLightMap(nextGameState);
+
+    this.isLockedOut.next(false);
+    if (hasAreaChanged) {
+      this.areaTransitionMode.next('');
+    }
+
+    await this.delay(250);
+    this.enteringDirection.next('');
     return nextGameState;
   };
 

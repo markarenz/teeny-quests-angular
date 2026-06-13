@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { GameService } from '@app/features/game/services/game-service/game-service.service';
 import {
@@ -58,6 +58,7 @@ export class GameAreaComponent {
   areaLightMap: LightMap = {};
   fullWidthOffsetY: string = '0%';
   public playerPositionForActors: string = '-1_-1';
+  public inhibitFullScreenPanAnimation: boolean = false;
 
   ngOnInit(): void {
     this.subscriptions.push(
@@ -68,6 +69,13 @@ export class GameAreaComponent {
     this.subscriptions.push(
       this._gameService.fullWidthOffsetYObs.subscribe((data: string) => {
         this.fullWidthOffsetY = data;
+        if (this.isFullWidthMode) {
+          console.log(
+            'Setting inhibitFullScreenPanAnimation to true',
+            this.areaTransitionMode
+          );
+          this.inhibitFullScreenPanAnimation = this.areaTransitionMode !== '';
+        }
       })
     );
     this.subscriptions.push(
@@ -160,6 +168,18 @@ export class GameAreaComponent {
     // FUTURE: DIALOG
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['isFullWidthMode'] && !changes['isFullWidthMode'].firstChange) {
+      console.log(
+        'isFullWidthMode changed, setting inhibitFullScreenPanAnimation to',
+        this.areaTransitionMode !== ''
+      );
+      this.inhibitFullScreenPanAnimation = true;
+      setTimeout(() => {
+        this.inhibitFullScreenPanAnimation = false;
+      }, 250);
+    }
+  }
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }

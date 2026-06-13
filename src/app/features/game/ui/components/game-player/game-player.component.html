@@ -1,7 +1,7 @@
 <div [style.width]="width" [style.height]="width" [style.z-index]="positionStyle.z"
   class="player-position facing-{{playerFacing}} anim-status-{{ playerAnim.toLowerCase() }}"
   [style.bottom]="positionStyle.bottom" [style.left]="positionStyle.left">
-  <div class="player-position-inner {{ exitTransitionClass }}">
+  <div class="player-position-inner {{ exitTransitionClass }} {{ enteringTransitionClass }}">
     <app-svg-player [playerFacing]="playerFacing" [playerAnim]="playerAnim" />
     <div class="absolute top-8 left-0 w-full flex justify-center text-wite-100"></div>
   </div>
