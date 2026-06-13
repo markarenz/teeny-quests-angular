@@ -4,6 +4,9 @@
 
   transform: translate(0, 0);
   transition: 0.05s all linear;
+  &.cut {
+    transition: none;
+  }
 
   &.anim-status-attacking {
     &.facing-north {
@@ -28,21 +31,87 @@
 }
 
 .player-position-inner {
-  transition: 0.25s transform ease-in-out;
+  animation: none;
 }
 
 .exit-direction-north {
+  animation: exit-north 0.25s forwards;
   transform: translate(15%, -8%);
 }
 
 .exit-direction-south {
+  animation: exit-south 0.25s forwards;
   transform: translate(-15%, 8%);
 }
 
 .exit-direction-east {
+  animation: exit-east 0.25s forwards;
   transform: translate(15%, 8%);
 }
 
 .exit-direction-west {
+  animation: exit-west 0.25s forwards;
+  transform: translate(-15%, -8%);
+}
+
+@keyframes exit-north {
+  0% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(15%, -8%);
+    opacity: 0;
+  }
+}
+@keyframes exit-south {
+  0% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-15%, 8%);
+    opacity: 0;
+  }
+}
+@keyframes exit-east {
+  0% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(15%, 8%);
+    opacity: 0;
+  }
+}
+
+@keyframes exit-west {
+  0% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-15%, -8%);
+    opacity: 0;
+  }
+}
+
+.entering-direction-north {
+  animation: exit-north 0.25s reverse;
+  transform: translate(15%, -8%);
+}
+
+.entering-direction-south {
+  animation: exit-south 0.25s reverse;
+  transform: translate(-15%, 8%);
+}
+
+.entering-direction-east {
+  animation: exit-east 0.25s reverse;
+  transform: translate(15%, 8%);
+}
+
+.entering-direction-west {
+  animation: exit-west 0.25s reverse;
   transform: translate(-15%, -8%);
 }

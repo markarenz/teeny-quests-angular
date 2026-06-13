@@ -22,11 +22,12 @@ export class GamePlayerComponent {
   @Input('playerFacing') playerFacing: string = 'north';
   @Input('cellData') cellData: QuestAreaMapCell | null = null;
 
-  h: number = 0;
-  positionStyle: AreaPosition = { left: '0', bottom: '0', z: 0 };
-  width: string = '0%';
-  exitTransitionClass = '';
-  playerAnim = '';
+  public h: number = 0;
+  public positionStyle: AreaPosition = { left: '0', bottom: '0', z: 0 };
+  public width: string = '0%';
+  public exitTransitionClass = '';
+  public enteringTransitionClass = '';
+  public playerAnim = '';
 
   constructor(private _gameService: GameService) {}
 
@@ -55,6 +56,11 @@ export class GamePlayerComponent {
     this.subscriptions.push(
       this._gameService.exitingDirectionObs.subscribe((data: string) => {
         this.exitTransitionClass = `exit-direction-${data}`;
+      })
+    );
+    this.subscriptions.push(
+      this._gameService.enteringDirectionObs.subscribe((data: string) => {
+        this.enteringTransitionClass = `entering-direction-${data}`;
       })
     );
     this.subscriptions.push(
