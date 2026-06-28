@@ -3,7 +3,7 @@
     isNearPlayer && !isLockedOut ? 'near-player' : ''
   }} {{ shouldDisplayHighlightBelow ? 'highlight-below' : '' }}" [style.bottom]="positionStyle.bottom"
   [style.left]="positionStyle.left" [style.filter]="'brightness(' + (lightLevel * 100) + '%)'">
-  <div aria-hidden="=true" class="highlighted-object {{
+  <div aria-hidden="=true" class="highlighted-object absolute w-[66%] h-[66%] left-[16.5%] top-[32%] {{
       isNearPlayer && !isLockedOut ? 'active-highlight' : ''
     }}"></div>
   @if (itemType.startsWith('key-')) {

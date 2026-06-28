@@ -42,21 +42,21 @@ export class GameAreaComponent {
   private subscriptions: Subscription[] = [];
   constructor(private _gameService: GameService) {}
 
-  areaId: string | null = null;
-  areaMap: QuestAreaMap | null = null;
-  areaExits: QuestAreaExit[] = [];
-  areaItems: QuestItem[] = [];
-  areaProps: QuestProp[] = [];
-  areaActors: QuestActor[] = [];
-  movementOptions: { [key: string]: string[] } = {};
-  movementOptionsKeys: string[] = [];
-  areaDataPositionKeys: string[] = [];
-  playerPosition: string = '0_0';
-  playerFacing: string = 'north';
-  isLockedOut: boolean = false;
-  areaTransitionMode: string = 'cover';
-  areaLightMap: LightMap = {};
-  fullWidthOffsetY: string = '0%';
+  public areaId: string | null = null;
+  public areaMap: QuestAreaMap | null = null;
+  public areaExits: QuestAreaExit[] = [];
+  public areaItems: QuestItem[] = [];
+  public areaProps: QuestProp[] = [];
+  public areaActors: QuestActor[] = [];
+  public movementOptions: { [key: string]: string[] } = {};
+  public movementOptionsKeys: string[] = [];
+  public areaDataPositionKeys: string[] = [];
+  public playerPosition: string = '0_0';
+  public playerFacing: string = 'north';
+  public isLockedOut: boolean = false;
+  public areaTransitionMode: string = 'cover';
+  public areaLightMap: LightMap = {};
+  public fullWidthOffsetY: string = '0%';
   public playerPositionForActors: string = '-1_-1';
   public inhibitFullScreenPanAnimation: boolean = false;
 
