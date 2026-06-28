@@ -65,7 +65,7 @@ export class GameComponent {
   public score: number = 0;
   public gameId: string = '';
   public numTurns: number = 0;
-  public playerHealth: number = 0;
+  public playerHealth: number | null = null;
   public playerMaxHealth: number = 0;
   public showGame: boolean = false;
   public showPlayerHurt: boolean = false;
@@ -165,7 +165,10 @@ export class GameComponent {
         this.weaponOptions = getWeaponOptions(data?.player.inventory);
 
         if (data?.player?.health !== undefined) {
-          if (data.player.health < this.playerHealth) {
+          if (
+            this.playerHealth !== null &&
+            data.player.health < this.playerHealth
+          ) {
             this.showPlayerHurt = true;
             setTimeout(() => {
               this.showPlayerHurt = false;
