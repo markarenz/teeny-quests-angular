@@ -1,5 +1,5 @@
 <div class="game-area-stage {{inhibitFullScreenPanAnimation ? 'cut' : '' }}"
-  [style.bottom]="isFullWidthMode ? fullWidthOffsetY : 0">
+  [style.bottom]="isFullWidthMode || isMobile ? fullWidthOffsetY : 0" [style.left]="isMobile ? fullWidthOffsetX : 0">
   @if(areaMap) {
   <div>
     @for(positionKey of areaDataPositionKeys; track positionKey;) {

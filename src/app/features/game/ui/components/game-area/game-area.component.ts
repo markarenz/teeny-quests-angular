@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, Input, SimpleChanges, HostListener } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { GameService } from '@app/features/game/services/game-service/game-service.service';
 import {
@@ -57,8 +57,11 @@ export class GameAreaComponent {
   public areaTransitionMode: string = 'cover';
   public areaLightMap: LightMap = {};
   public fullWidthOffsetY: string = '0%';
+  public fullWidthOffsetX: string = '0%';
   public playerPositionForActors: string = '-1_-1';
   public inhibitFullScreenPanAnimation: boolean = false;
+  public windowWidth: number = window.innerWidth;
+  public isMobile: boolean = window.innerWidth < 768;
 
   ngOnInit(): void {
     this.subscriptions.push(
@@ -69,13 +72,14 @@ export class GameAreaComponent {
     this.subscriptions.push(
       this._gameService.fullWidthOffsetYObs.subscribe((data: string) => {
         this.fullWidthOffsetY = data;
-        if (this.isFullWidthMode) {
-          console.log(
-            'Setting inhibitFullScreenPanAnimation to true',
-            this.areaTransitionMode
-          );
+        if (this.isFullWidthMode || this.isMobile) {
           this.inhibitFullScreenPanAnimation = this.areaTransitionMode !== '';
         }
+      })
+    );
+    this.subscriptions.push(
+      this._gameService.fullWidthOffsetXObs.subscribe((data: string) => {
+        this.fullWidthOffsetX = data;
       })
     );
     this.subscriptions.push(
@@ -180,6 +184,15 @@ export class GameAreaComponent {
       }, 250);
     }
   }
+
+  // TODO: get this from game service
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    this.windowWidth = (event.target as Window).innerWidth;
+    this.isMobile = this.windowWidth < 768;
+    this._gameService.setIsMobile(this.isMobile);
+  }
+
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }

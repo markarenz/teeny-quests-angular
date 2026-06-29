@@ -190,6 +190,13 @@ export class GameComponent {
             ActivityType.COMPLETE
           );
         }
+
+        if (this.windowWidth < 768) {
+          this._gameService.setIsMobile(true);
+          this._gameService.setFullWidthXYOffsetCurrent();
+        } else {
+          this._gameService.setIsMobile(false);
+        }
       })
     );
     this.subscriptions.push(
@@ -245,7 +252,7 @@ export class GameComponent {
 
   handleToggleFullWidth = () => {
     this.isFullWidthMode = !this.isFullWidthMode;
-    this._gameService.setFullWidthYOffsetCurrent();
+    this._gameService.setFullWidthXYOffsetCurrent();
   };
 
   handleResetProgress = () => {

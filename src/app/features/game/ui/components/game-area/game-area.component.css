@@ -1,13 +1,29 @@
 .game-area-stage {
-  width: 100%;
-  max-width: 90vh;
   margin: 0 auto;
   aspect-ratio: 1 / 1;
   position: relative;
+
+  /* MOBILE */
+  max-width: none;
+  width: 200vw;
+  height: 200vw;
+  left: 0;
+  bottom: 0;
+
+  @media screen and (min-width: 768px) {
+    width: 100%;
+    height: 100%;
+    max-width: 90vh;
+    max-height: 90vh;
+    left: 0;
+    bottom: 0;
+  }
+
   :host-context(.full-width) & {
     max-width: none;
     position: absolute;
     width: 100vw;
+    height: 100vw;
     bottom: 0;
     transition: bottom 0.5s ease-in-out;
     &.cut {

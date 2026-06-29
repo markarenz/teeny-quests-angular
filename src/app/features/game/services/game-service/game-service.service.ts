@@ -72,6 +72,8 @@ export class GameService {
 
   private aspectRatio: number = 1.0;
   public v: string | null = null; // game version
+  public isMobile: boolean = false;
+
   private questROM = new BehaviorSubject<QuestROM | null>(null);
   gameROMObs = this.questROM.asObservable();
 
@@ -107,6 +109,9 @@ export class GameService {
 
   private fullWidthOffsetY = new BehaviorSubject<string>('0%');
   fullWidthOffsetYObs = this.fullWidthOffsetY.asObservable();
+
+  private fullWidthOffsetX = new BehaviorSubject<string>('0%');
+  fullWidthOffsetXObs = this.fullWidthOffsetX.asObservable();
 
   private levelGoals = new BehaviorSubject<string>('');
   levelGoalsObs = this.levelGoals.asObservable();
@@ -317,13 +322,13 @@ export class GameService {
    * Recomputes the full-width viewport offset from the current live game state
    * when an area map is available.
    *
-   * This is a convenience wrapper around `setFullWidthOffsetY` that reads the
+   * This is a convenience wrapper around `setFullWidthOffsetXY` that reads the
    * player's current position and active area map from the service state.
    */
-  public setFullWidthYOffsetCurrent = () => {
+  public setFullWidthXYOffsetCurrent = () => {
     const gameState = this.gameState.value;
     if (gameState?.areas[gameState.player.areaId].map) {
-      this.setFullWidthOffsetY(
+      this.setFullWidthOffsetXY(
         gameState?.player.y ?? 0,
         gameState?.player.x ?? 0,
         gameState?.areas[gameState.player.areaId].map
@@ -342,7 +347,7 @@ export class GameService {
    * @param x The player's grid column.
    * @param map The area map used to resolve tile height at the position.
    */
-  public setFullWidthOffsetY = (y: number, x: number, map: QuestAreaMap) => {
+  public setFullWidthOffsetXY = (y: number, x: number, map: QuestAreaMap) => {
     if (map) {
       const positionStyles = getAreaElementPositionStyle(
         defaultGridSize,
@@ -356,7 +361,19 @@ export class GameService {
         Math.max(offsetY, 0),
         30 * this.aspectRatio
       );
-      this.fullWidthOffsetY.next(`${offsetYLimited}vw`);
+      const playerX = parseFloat(positionStyles.left.replace('%', ''));
+      const offsetX = 50 - playerX + 10 * (1 / this.aspectRatio);
+      const offsetXAdjusted = -100 + offsetX * 2;
+      console.log('this.isMobile', this.isMobile);
+      if (this.isMobile) {
+        // 64 -> 90
+        // 13.5 -> 90
+        console.log('??', offsetY, offsetYLimited, offsetX, offsetXAdjusted);
+        this.fullWidthOffsetY.next(`${offsetY}vw`);
+        this.fullWidthOffsetX.next(`${offsetXAdjusted}vw`);
+      } else {
+        this.fullWidthOffsetY.next(`${offsetYLimited}vw`);
+      }
     }
   };
 
@@ -712,7 +729,7 @@ export class GameService {
     nextGameState.player.areaId = destinationAreaId;
     nextGameState.player.x = destinationExit?.x;
     nextGameState.player.y = destinationExit?.y;
-    this.setFullWidthOffsetY(
+    this.setFullWidthOffsetXY(
       nextGameState.player.y,
       nextGameState.player.x,
       destinationArea.map
@@ -753,7 +770,7 @@ export class GameService {
 
     const [cy, cx] = destination.split('_').map(v => parseInt(v));
     const map = nextGameState.areas[nextGameState.player.areaId].map;
-    this.setFullWidthOffsetY(cy, cx, map);
+    this.setFullWidthOffsetXY(cy, cx, map);
 
     this.isLockedOut.next(true);
     for (let i = 1; i < path.length; i++) {
@@ -1486,5 +1503,9 @@ export class GameService {
       this.isPlayerNearActorCell.next(newIsPlayerNearActorCell);
       this.calculateMovementOptions(nextGameState);
     }
+  }
+
+  public setIsMobile(isMobile: boolean): void {
+    this.isMobile = isMobile;
   }
 }

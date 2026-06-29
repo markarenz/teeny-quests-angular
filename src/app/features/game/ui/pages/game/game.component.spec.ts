@@ -96,10 +96,10 @@ describe('GameComponent', () => {
     expect(router.navigate).toHaveBeenCalledWith(['/']);
   }));
   it('handleToggleFullWidth should call service setYOffset', fakeAsync(async () => {
-    spyOn(service, 'setFullWidthYOffsetCurrent');
+    spyOn(service, 'setFullWidthXYOffsetCurrent');
     fixture.detectChanges();
     component.handleToggleFullWidth();
-    expect(service.setFullWidthYOffsetCurrent).toHaveBeenCalled();
+    expect(service.setFullWidthXYOffsetCurrent).toHaveBeenCalled();
   }));
   it('handle window resize', fakeAsync(async () => {
     spyOn(service, 'setAspectRatio');
