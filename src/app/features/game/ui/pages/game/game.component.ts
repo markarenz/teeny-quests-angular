@@ -73,6 +73,7 @@ export class GameComponent {
   public gameStateMode: GameStateMode = GameStateMode.DEFAULT;
   public playerInventory: Inventory = {};
   private userId: string | null = null;
+  private isMobile: boolean = false;
 
   constructor(
     private _route: ActivatedRoute,
@@ -106,6 +107,7 @@ export class GameComponent {
   }
 
   ngOnInit(): void {
+    this.checkWindowSize();
     const v = this._route.snapshot.queryParamMap.get('v');
     const id = this._route.snapshot.paramMap.get('id');
     this.gameId = id ?? '';
@@ -190,6 +192,10 @@ export class GameComponent {
             ActivityType.COMPLETE
           );
         }
+
+        if (this.isMobile) {
+          this._gameService.setFullWidthXYOffsetCurrent();
+        }
       })
     );
     this.subscriptions.push(
@@ -205,15 +211,21 @@ export class GameComponent {
     );
   }
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event: Event) {
-    this.windowWidth = (event.target as Window).innerWidth;
-    this.windowHeight = (event.target as Window).innerHeight;
+  public checkWindowSize() {
+    this.windowWidth = window.innerWidth;
+    this.windowHeight = window.innerHeight;
     const aspectRatio = this.windowWidth / this.windowHeight;
     if (aspectRatio < 1 && this.isFullWidthMode) {
       this.isFullWidthMode = false;
     }
     this._gameService.setAspectRatio(aspectRatio);
+    this.isMobile = this.windowWidth < 768;
+    this._gameService.setIsMobile(this.isMobile);
+  }
+
+  @HostListener('window:resize', [])
+  onResize() {
+    this.checkWindowSize();
   }
 
   ngOnDestroy() {
@@ -245,7 +257,7 @@ export class GameComponent {
 
   handleToggleFullWidth = () => {
     this.isFullWidthMode = !this.isFullWidthMode;
-    this._gameService.setFullWidthYOffsetCurrent();
+    this._gameService.setFullWidthXYOffsetCurrent();
   };
 
   handleResetProgress = () => {

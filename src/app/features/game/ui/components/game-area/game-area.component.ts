@@ -57,8 +57,10 @@ export class GameAreaComponent {
   public areaTransitionMode: string = 'cover';
   public areaLightMap: LightMap = {};
   public fullWidthOffsetY: string = '0%';
+  public fullWidthOffsetX: string = '0%';
   public playerPositionForActors: string = '-1_-1';
   public inhibitFullScreenPanAnimation: boolean = false;
+  public isMobile: boolean = false;
 
   ngOnInit(): void {
     this.subscriptions.push(
@@ -67,15 +69,21 @@ export class GameAreaComponent {
       })
     );
     this.subscriptions.push(
+      this._gameService.isMobileObs.subscribe((data: boolean) => {
+        this.isMobile = data;
+      })
+    );
+    this.subscriptions.push(
       this._gameService.fullWidthOffsetYObs.subscribe((data: string) => {
         this.fullWidthOffsetY = data;
-        if (this.isFullWidthMode) {
-          console.log(
-            'Setting inhibitFullScreenPanAnimation to true',
-            this.areaTransitionMode
-          );
+        if (this.isFullWidthMode || this.isMobile) {
           this.inhibitFullScreenPanAnimation = this.areaTransitionMode !== '';
         }
+      })
+    );
+    this.subscriptions.push(
+      this._gameService.fullWidthOffsetXObs.subscribe((data: string) => {
+        this.fullWidthOffsetX = data;
       })
     );
     this.subscriptions.push(
@@ -170,10 +178,6 @@ export class GameAreaComponent {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['isFullWidthMode'] && !changes['isFullWidthMode'].firstChange) {
-      console.log(
-        'isFullWidthMode changed, setting inhibitFullScreenPanAnimation to',
-        this.areaTransitionMode !== ''
-      );
       this.inhibitFullScreenPanAnimation = true;
       setTimeout(() => {
         this.inhibitFullScreenPanAnimation = false;
