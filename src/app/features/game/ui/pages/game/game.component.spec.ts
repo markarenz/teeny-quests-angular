@@ -96,10 +96,10 @@ describe('GameComponent', () => {
     expect(router.navigate).toHaveBeenCalledWith(['/']);
   }));
   it('handleToggleFullWidth should call service setYOffset', fakeAsync(async () => {
-    spyOn(service, 'setFullWidthYOffsetCurrent');
+    spyOn(service, 'setFullWidthXYOffsetCurrent');
     fixture.detectChanges();
     component.handleToggleFullWidth();
-    expect(service.setFullWidthYOffsetCurrent).toHaveBeenCalled();
+    expect(service.setFullWidthXYOffsetCurrent).toHaveBeenCalled();
   }));
   it('handle window resize', fakeAsync(async () => {
     spyOn(service, 'setAspectRatio');
@@ -110,7 +110,7 @@ describe('GameComponent', () => {
       //@ts-expect-error
       target: { innerWidth: 1200, innerHeight: 800 },
     };
-    component.onResize(mockEvent as unknown as Event);
+    component.onResize();
     expect(service.setAspectRatio).toHaveBeenCalled();
   }));
   it('should handle reset progress', fakeAsync(async () => {

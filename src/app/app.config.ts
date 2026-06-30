@@ -23,6 +23,7 @@ export const appConfig: ApplicationConfig = {
     GameEditorService,
     provideAnimations(),
     provideToastr({
+      maxOpened: 3,
       timeOut: 4000,
       extendedTimeOut: 7000,
       positionClass: 'toast-bottom-right',
