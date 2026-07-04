@@ -1020,7 +1020,7 @@ export class GameService {
     }
 
     this.playerAnim.next(AnimStatus.IDLE);
-    // TODO: Consumable weapons
+    // TODO: Consumable weapons, spell scrolls attack all monsters in area
     return nextGameState;
   };
 

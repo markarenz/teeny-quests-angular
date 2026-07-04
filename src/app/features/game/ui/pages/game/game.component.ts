@@ -2,6 +2,7 @@ import { Component, HostListener } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GameService } from '@app/features/game/services/game-service/game-service.service';
+import { MainAppService } from '@main/services/main-app-service';
 import { MainLayoutComponent } from '@main/ui/components/main-layout/main-layout.component';
 import {
   QuestROM,
@@ -79,7 +80,8 @@ export class GameComponent {
     private _route: ActivatedRoute,
     private _gameService: GameService,
     private _authGoogleService: AuthProviderService,
-    private router: Router
+    private router: Router,
+    private _mainAppService: MainAppService
   ) {
     this.windowWidth = window.innerWidth;
     this.windowHeight = window.innerHeight;
@@ -265,5 +267,9 @@ export class GameComponent {
     this.gameStatus = '';
     this.showGame = false;
     this.ngOnInit();
+  };
+
+  handleShareClick = () => {
+    this._mainAppService.setIsSharingOpen(true);
   };
 }

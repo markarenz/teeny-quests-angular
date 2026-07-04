@@ -332,3 +332,9 @@ export type ShopTransaction = {
   itemKey: string;
   actionType: 'buy' | 'sell';
 };
+
+export type SocialShareLink = {
+  name: string;
+  url: string;
+  icon: string;
+};

@@ -19,4 +19,11 @@ describe('ButtonToggleComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should handle an option click', () => {
+    spyOn(component.selectedChange, 'emit');
+    const option = 'option1';
+    component.onOptionClick(option);
+    expect(component.selectedChange.emit).toHaveBeenCalledWith(option);
+  });
 });

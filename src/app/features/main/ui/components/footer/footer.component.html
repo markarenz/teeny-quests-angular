@@ -10,12 +10,19 @@
             covered. This is the place to play all sorts of bite-sized quests
             and even make your own.
           </p>
+
+          <p class="mb-4">
+            Got a question, feature suggestion or just want to complain? Join our <b><a class="text-link"
+                href="https://discord.gg/Rcj5Xwwwg" target="_blank" rel="noopener noreferrer">Discord
+                server</a></b>!
+          </p>
+
           <p>
             You can find more web projects like this on
             <b>
               <a class="text-link" href="https://ridiculopathy.com" target="_blank"
                 rel="noopener noreferrer">ridiculopathy.com</a></b>
-            and/or peruse thefull source code on
+            and/or peruse the full source code on
             <b>
               <a class="text-link" href="https://github.com/markarenz/teeny-quests-angular" target="_blank"
                 rel="noopener noreferrer">GitHub.</a>
@@ -23,6 +30,13 @@
           </p>
         </div>
         <div class="flex flex-row justify-center lg:justify-end gap-8">
+          <a class="icon-link" href="https://discord.gg/Rcj5Xwwwg" target="_blank" rel="noopener noreferrer"
+            aria-label="Ridiculopathy Discord Server">
+            <div class="w-12 h-12">
+              <app-svg-discord />
+            </div>
+          </a>
+
           <a class="icon-link" href="https://github.com/markarenz/teeny-quests-angular" target="_blank"
             rel="noopener noreferrer" aria-label="GitHub Repository">
             <div class="w-12 h-12">
@@ -33,9 +47,15 @@
           <a class="icon-link" href="https://ridiculopathy.com" target="_blank" rel="noopener noreferrer"
             aria-label="More Games">
             <div class="w-12 h-12">
-              <app-svg-joystick />
+              <app-svg-ridiculopathy />
             </div>
           </a>
+
+          <button class="icon-link" (click)="openSharingModal()" aria-label="Share this page">
+            <div class="w-12 h-12">
+              <app-svg-share />
+            </div>
+          </button>
         </div>
       </div>
       <div class="w-full h-full">

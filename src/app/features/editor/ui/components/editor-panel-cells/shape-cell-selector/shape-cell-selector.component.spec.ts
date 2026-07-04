@@ -19,4 +19,18 @@ describe('ShapeCellSelectorComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should toggle shape select', () => {
+    expect(component.isOpen).toBe(false);
+    component.handleToggleShapeSelect();
+    expect(component.isOpen).toBe(true);
+    component.handleToggleShapeSelect();
+    expect(component.isOpen).toBe(false);
+  });
+  it('should handle shape option select', () => {
+    spyOn(component.handleShapeSelect, 'emit');
+    const option = 'Ring-7';
+    component.handleShapeOptionSelect(option);
+    expect(component.handleShapeSelect.emit).toHaveBeenCalled();
+  });
 });
