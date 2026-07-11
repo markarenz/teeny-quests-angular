@@ -17,6 +17,7 @@ import questMockData from '@app/features/editor/mocks/game.mock';
 import { QuestROM } from '@app/features/main/interfaces/types';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { MessageService } from '@app/features/game/services/message/message.service';
+import { MainAppService } from '@main/services/main-app-service';
 
 describe('GameComponent', () => {
   let component: GameComponent;
@@ -26,6 +27,7 @@ describe('GameComponent', () => {
   let router: Router;
   let location: Location;
   let messageService: MessageService;
+  let mainAppService: MainAppService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -40,6 +42,7 @@ describe('GameComponent', () => {
       teardown: { destroyAfterEach: false },
     }).compileComponents();
     messageService = TestBed.inject(MessageService);
+    mainAppService = TestBed.inject(MainAppService);
 
     gameMockDataClean = await JSON.parse(
       JSON.stringify({

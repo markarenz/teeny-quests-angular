@@ -13,6 +13,9 @@
         </div>
         <div
           class="absolute z-[110] {{isFullWidthMode ? 'right-4 top-[calc(100vh_-_4rem)]' : 'right-0 bottom-0'}}  flex flex-row gap-2">
+          <app-tooltip content="Share this quest" position="top">
+            <app-icon-button label="Share this quest" size="sm" icon="share" (onButtonClick)="handleShareClick()" />
+          </app-tooltip>
           <app-tooltip content="Goals for this level" position="top">
             <app-icon-button label="Goals for this level" size="sm" icon="info" (onButtonClick)="handleInfoClick()" />
           </app-tooltip>

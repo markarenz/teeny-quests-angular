@@ -1,0 +1,21 @@
+<div class="fixed left-0 top-0 w-full h-full z-[9999] bg-black/50">
+  <div class="fixed left-0 top-0 w-full h-full z-[9999] flex items-center justify-center">
+    <div class="relative bg-gray-800 border-gray-100 border-2 p-8 rounded-lg shadow-lg max-w-md w-full">
+      <div class="absolute right-2 top-2">
+        <app-icon-button label="Delete Area" icon="close" theme="gray" (onButtonClick)="handleClose()" />
+      </div>
+
+      <h2 class="text-xxl font-bold mb-4">Share this page</h2>
+      <p class="mb-4">Copy the link below to share this page:</p>
+
+      <div class="flex flex-row flex-wrap w-full justify-center items-center mb-4 gap-4 px-[3rem]">
+        @for(item of socialShareLinks; track item.url) {
+        <div>
+          <app-icon-button [label]="item.name" size="lg" [icon]="item.icon"
+            (onButtonClick)="handleSocialOutClick(item)" />
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

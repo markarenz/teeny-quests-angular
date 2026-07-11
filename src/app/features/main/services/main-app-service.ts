@@ -16,16 +16,23 @@ export class MainAppService {
   private isMenuOpen = new BehaviorSubject<boolean>(false);
   isMenuOpenObs = this.isMenuOpen.asObservable();
 
+  private isSharingOpen = new BehaviorSubject<boolean>(false);
+  isSharingOpenObs = this.isSharingOpen.asObservable();
+
   constructor() {
     this.isMenuOpen.next(false);
   }
 
-  toggleMenu() {
+  public setIsSharingOpen(isOpen: boolean) {
+    this.isSharingOpen.next(isOpen);
+  }
+
+  public toggleMenu() {
     this.isMenuOpen.next(!this.isMenuOpen.value);
   }
 
   // FUTURE: Pagination, search, etc.
-  getGamesList(): void {
+  public getGamesList(): void {
     this.isLoading.next(true);
 
     fetch(gamesApiUrl, {
