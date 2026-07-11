@@ -6,11 +6,6 @@ export const mainMenuData: MenuItem[] = [
     label: 'Home',
     href: '/',
   },
-  // {
-  //   id: 2,
-  //   label: 'Quests',
-  //   href: '/game',
-  // },
   {
     id: 3,
     label: 'About',
@@ -20,6 +15,12 @@ export const mainMenuData: MenuItem[] = [
     id: 2,
     label: 'Sound Credits',
     href: '/sound-credits',
+  },
+  {
+    id: 7,
+    label: 'How to Create Quests',
+    href: '/editor-how-to',
+    isLoggedInOnly: false,
   },
   {
     id: 4,

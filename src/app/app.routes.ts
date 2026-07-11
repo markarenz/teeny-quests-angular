@@ -24,6 +24,14 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'editor-how-to',
+    loadComponent: () =>
+      import(
+        './features/main/ui/pages/editor-how-to/editor-how-to.component'
+      ).then(m => m.EditorHowToComponent),
+  },
+
+  {
     path: 'sound-credits',
     loadComponent: () =>
       import(

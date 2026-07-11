@@ -300,3 +300,26 @@ select {
     transform: translate(-10%, -10%);
   }
 }
+
+.standard-content {
+  a {
+    text-decoration: none;
+    color: var(--color-primary);
+    font-weight: bold;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  h2 {
+    margin-bottom: 1rem;
+  }
+
+  p {
+    margin-bottom: 1rem;
+  }
+
+  hr {
+    border-bottom: none;
+    border-top: 2px dashed var(--color-primary);
+  }
+}

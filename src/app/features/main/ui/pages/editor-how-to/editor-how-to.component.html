@@ -1,0 +1,394 @@
+<app-main-layout title="How to create quests in Teeny Quests"
+  description="Learn how to create quests in Teeny Quests, the tiny text adventure game platform.">
+  <app-container>
+    <div class="py-8 standard-content">
+      <h2>Teeny Quests' Quest Editor</h2>
+
+      <p>
+        What is Teeny Quests? Wait. Should it be what ARE Teeny Quests?
+        Regardless of grammar, Teeny Quests is a browser-based isometric
+        adventure/puzzle game. More than that, it's an application for people to
+        make tiny games of their own: quests that other people can play.
+      </p>
+
+      <p>
+        We're not going to go into what's going on under the hood in this video.
+        That's for another time, but the impetus of a project like this is
+        obvious: goofing around in a level editor is about the most fun any
+        human person is allowed to have. If you've ever so much as dipped your
+        metaphorical toe into making Doom levels, you know what I mean.
+      </p>
+
+      <p>
+        Creating your own quest in Teeny Quests couldn't be simpler. First,
+        create an account and log in. You can't pick your own username. This is
+        intended to help prevent people from using their usernames and other
+        free text input to harass other players or for other generalized
+        antisocial behavior. So, if you want to set your own username, please do
+        what you can to make the Internet a less terrible place. Once you've
+        logged in, go to the menu and select Quest Editor. From there you can
+        click on the New Quest button to get started. Give your quest a name and
+        a description for the game selection screen. You can always change this
+        later.
+      </p>
+      <p>
+        A relatively simple set of objects and rules can create something the
+        original devs may not have imagined. That's where you come in. Ready?
+        Let's go!
+      </p>
+
+      <h2>Quest/Level components</h2>
+      <ul class="pb-8">
+        <li>
+          <a href="/editor-how-to/#areas">1. Areas/Rooms</a>
+        </li>
+        <li>
+          <a href="/editor-how-to/#map-cells">2. Map Cells</a>
+        </li>
+        <li>
+          <a href="/editor-how-to/#exits">3. Exits</a>
+        </li>
+        <li>
+          <a href="/editor-how-to/#flags">4. Flags</a>
+        </li>
+        <li>
+          <a href="/editor-how-to/#items">5. Items</a>
+        </li>
+        <li>
+          <a href="/editor-how-to/#props">6. Props</a>
+        </li>
+        <li>
+          <a href="/editor-how-to/#events">7. Events</a>
+        </li>
+        <li>
+          <a href="/editor-how-to/#actors">8. Actors</a>
+        </li>
+      </ul>
+
+      <p>
+        A quest is made up of separate components that come together to form the
+        level. We have areas or rooms that the player travels through, and in
+        these areas we can have exits to travel between areas (or just within an
+        area), items as well as props.
+      </p>
+      <p></p>
+      <b>Map Cells</b> are the floors and walls of a given area laid out in a
+      small grid. You can use the map cells to create towers, castles or natural
+      landscapes with specific textures and varying heights.
+      <p></p>
+      <b>Items</b> can be picked up and carried around and can be used in the
+      right circumstances. For example, some items like keys can only be used in
+      the presence of a door that can be opened with that type of key.
+      <p></p>
+      <b>Props</b> cannot be picked up and used, but they can be interacted with
+      like a switch or banner on the wall. Props have states like on or off, and
+      you can attach actions to each status.
+      <p></p>
+      <b>Flags</b> are like variables in the game state that you define. For
+      example, if the player flips a switch you can set a flag to true or false
+      that could be used in combination with other flags.
+      <p></p>
+      We also have <b>Events</b>, which are actions attached to a set of
+      conditions. We run the events check on every player action, so you can create
+      an event that looks at your inventory for a specific amount of gold and
+      sets a flag or does some other action like ending the quest.
+
+      <p>Let's dig into what each of these mean in detail.</p>
+
+      <a name="areas"></a>
+      <h2>1. Areas</h2>
+      <p>
+        Every new map starts with an area called "start" but you can set the
+        start to another area if you want. Just set it in the quest info panel.
+        This is where you set the player start position, define flags and set
+        the initial inventory.
+      </p>
+      <p>
+        Create a new area with the + button and give it a name. Switch between
+        areas with the dropdown.
+      </p>
+
+      <a name="map-cells"></a>
+      <h2>2. Map Cells</h2>
+      <p>
+        The view is isometric, which can be a lot of fun to work in, but be
+        careful not to leave too many blind spots. Since the player can click on
+        an available space and travel into and out of a blind spot, it's not
+        usually a problem, but you should be aware of it.
+      </p>
+      <p>
+        To change a map cell, just click on it or use the position selector to
+        pick a map cell. Sometimes a map cell may be hard to select due to the
+        height of surrounding cells, so just use the position selector in that
+        case.
+      </p>
+      <p>
+        Set the height up or down. Max is 24, min is 0. Players cannot walk on
+        cells of height 0.
+      </p>
+      <p>
+        Set the floor type. Some floors are not walkable such as spikes or a
+        roof.
+      </p>
+      <p>
+        Set the wall types. You can select different left and right walls if you
+        want as transitions from one part of the area to another.
+      </p>
+      <p>
+        You can also hide a map cell for making interesting non-square areas.
+        You can unhide it easily by using the position selector and clicking
+        Unhide.
+      </p>
+      <p>
+        We can also select multiple map cells at once for bulk editing, setting
+        the height, floor and wall types at once. This can be very handy, but
+        you'll want to switch back if you don't need it.
+      </p>
+      <p>
+        With multi-select on, you can also select cells by shape such as All,
+        ring 7, ring 5 center 5 and center 3. Speaking from experience, this
+        saves a load of time and makes editing quests more enjoyable. Why I
+        waited to implement this until I had nearly 8 quests completed is beyond
+        me, but enjoy.
+      </p>
+
+      <a name="exits"></a>
+      <h2>3. Exits</h2>
+      <p>
+        We would naturally think of exits as tools for connecting areas but in
+        reality exits connect to other exits. Each normal exit has fields for
+        destination area and destination exit. Note the checkbox for reciprocal
+        exits. With it on, connecting door A to door B will also connect door B
+        back to door A. Very convenient. This is optional, of course. Disable it
+        if you feel like making quests with illogical doors to drive players
+        insane.
+      </p>
+      <p>Select a direction and a position for your door.</p>
+      <p>
+        You can lock the door with either a silver or gold lock, which can only
+        be opened with a key of the corresponding color. The player stands in
+        the same map cell as the door and selects "use" (the hand button) in the
+        inventory menu to unlock the door with a satisfying sound effect.
+      </p>
+      <p>
+        The default type of door is the one you'll use most often along with a
+        "cave door" for exits in ruins or dirt walls.
+      </p>
+      <p>
+        An exit of type "quest end" will, as the name implies, end the quest and
+        is used for a "find the exit" type of quest. We'll use one of these in
+        our example later.
+      </p>
+      <p>
+        The quest end door isn't the only way to end a level. It's important to
+        remember that you can create all sorts of quest goals and even have
+        multiple ways to end a quest.
+      </p>
+
+      <a name="flags"></a>
+      <h2>4. Flags</h2>
+      <p>
+        Flags are kind of like variables in the game state that let us keep
+        track of what the player has already done. We use this for one-way
+        actions, which we'll talk about in a bit.
+      </p>
+      <p>
+        Flags have scores associated with them, so you can use this to reward
+        players for progress. -
+      </p>
+      <p>
+        You can use actions from props or events to set flags or check progress
+        on a series of flags and set another flag when complete. This is how you
+        can chain quest goals together to create complex compound quest
+        objectives.
+      </p>
+
+      <a name="items"></a>
+      <h2>5. Items</h2>
+      <p>
+        Items are objects that can be picked up, dropped and used in the course
+        of the quest. This includes gold, keys, and gems. More items may be added
+        later.
+      </p>
+      <p>
+        Each item also has a score value associated with it, so you can place a
+        bunch of high value items like gold bags or rubies around to give
+        players loot to collect for higher scores.
+      </p>
+      <p>
+        Keys can be used to unlock doors if the player is standing on the same
+        map cell as a door with a lock of the same color.
+      </p>
+      <p>
+        Gems like diamonds and rubies are loot that boost your score when you
+        collect them. They can also be used in gem frame props, which will
+        trigger actions - more about that later.
+      </p>
+
+      <a name="props"></a>
+      <h2>6. Props</h2>
+      <p>
+        Props are objects the player can interact with but not pick up or move
+        such as torches and switches.
+      </p>
+      <p>
+        Naming props can make it easier to create actions to change their state.
+        You can have several actions on each state.
+      </p>
+      <p>
+        These actions are a big part of making an interesting and creative quest
+        for players. Currently, you have a limited palette of actions since
+        frankly you can do a lot with just a few actions, but there are plans to
+        add more over time.
+      </p>
+      <p>
+        For example, you can add a switch prop with actions for the on and off
+        status. So you can turn on or off a torch in the room like a light
+        switch by selecting an action type that changes a prop's state. We
+        select the torch and set it to on. This is where naming the props can be
+        handy.
+      </p>
+      <p>
+        We can also change the height of a map cell. This is helpful for fencing
+        off items or pathways through your quest. I like to give movable map
+        cells a specific floor type, but you can do what you want. For on, we
+        set the height to one level and for off, we set it to another level.
+      </p>
+      <p>
+        We can also change the floor type in an action. This is helpful for
+        making a secret bridge pop out of the water by combining it with an
+        action to change a map cell's height.
+      </p>
+      <p>
+        When you select the map cell, if it's in the same area, you'll see an
+        indicator telling you which one you're selecting. This is meant to help
+        make this process easier.
+      </p>
+      <p>
+        A fun example of what you can do with props is a simple elevator. Put up
+        a tall column with a switch prop on it with a solid walkable tile below
+        and next to it. The switch status actions for 'on' can change the height
+        of the map cell the prop is on to make it higher, then 'off' can return
+        it to the original height. In no time flat, you've got an elevator!
+      </p>
+      <p>
+        Gem frames are another prop. These are basically shapes in the wall
+        where you can, for example, "use" a diamond to put it in the frame. This
+        can then trigger actions.
+      </p>
+      <p>
+        Since using up an item removes its score value, you will want to
+        trigger a flag with a high score value to compensate. Otherwise the
+        score drops when the player does what you want them to do to progress.
+        Or maybe you want that to happen, which is fine as well.
+      </p>
+
+      <a name="events"></a>
+      <h2>7. Events</h2>
+      <p>
+        Events work just like props but instead of clicking on them to trigger
+        actions, we use conditions that are checked after each player action.
+        Your conditions could be related to inventory or a feature flag. We may
+        add more condition types later, but there's a lot you can do with what
+        we already have.
+      </p>
+      <p>
+        This allows you to set multiple endings for your quest. For example, you
+        can create an event to check the amount of gold in your inventory and if
+        it's over 1000, the quest is complete. You can also have an exit door,
+        so the quest could be completed in multiple ways. Just add an action to
+        set game end flag to true.
+      </p>
+      <p>
+        When you set a name for an event with an action that sets game end flag,
+        this text will be used in the opening statement of quest goals when the
+        player starts the quest. So, try to use a name that will make sense like
+        "Collect 1,000 gold coins" or "Put all the gems in their frames."
+      </p>
+      <p>
+        For example, you can use an item as your McGuffin. If the player picks
+        it up, the quest is complete.
+      </p>
+      <p>
+        Events can be unidirectional, meaning that the player can only do it
+        once. We do this by creating a special flag for the event, and if it's
+        unidirectional we set the flag so the event cannot run again. This all
+        happens under the hood, so you just check the box and don't need to
+        worry about it.
+      </p>
+
+      <a name="actors"></a>
+      <h2>8. Actors</h2>
+      <p>
+        Actors are interactive entities that can move about, or at least some of
+        them can. It's a catch-all entity type for hostiles or shops. So, this
+        introduces two new mechanics to the game: combat and an economy. We'll
+        cover each separately.
+      </p>
+
+      <h3>8a. Hostiles</h3>
+      <p>
+        There are a handful of enemies in the game that you can mix and match in
+        your quests, each one a bit nastier than the last. The biggest and
+        baddest of these is the Skello King, who can easily pound an unprotected
+        player into the ground in a couple of turns.
+      </p>
+      <p>
+        Stand next to an enemy and click on them to attack. If the player hasn't
+        grabbed a weapon yet, they'll be fighting with their bare hands, a low
+        chance to hit and low damage. You won't get very far that way.
+      </p>
+      <p>
+        As a quest editor, you may want to place a low level weapon like Pointy
+        Stick early on in the quest then upgrade to the Adequate Blade or, if
+        you want them to go full OP, the Sword of Awesomeness. You can also
+        place defensive items like the Ring of Protection.
+      </p>
+      <p>
+        There is no equipping mechanic (on purpose to keep things simple) so the
+        best weapon will always be used. You can see it in the messages that pop
+        up on the right side of the screen. Defense buffs are additive, so if
+        you give the player more than 1 ring of protection and they have both,
+        the defense buff is additive. You can make the player an unstoppable
+        death merchant or a fragile weakling. It's all up to you and the
+        player's willingness to search for goodies.
+      </p>
+      <p>
+        When defeated, each hostile can drop an item. You can set this easily in
+        the editor so you can drop a key needed to progress from one of the
+        enemies. You can also trigger actions like you can for events and props
+        just like Doom. You can choose to ignore combat entirely if you want or use
+        it as a gating mechanic for progression. It's up to you.
+      </p>
+      <h3>8b. Shopping!</h3>
+      <p>
+        Shops in the game are very simple. Just create an actor in an area,
+        place it and set the type to Shop. Then select which items are available
+        for sale.
+      </p>
+      <p>
+        This also sets the items that the shop will buy from the player, which
+        allows you to determine difficulty. Sometimes shops can be used to
+        short-circuit a play path, so you may want to not allow the purchase
+        of keys in the shop. Or, as I did in Tell Your Mom I Said Hello (OK, I
+        ran out of ideas for quest titles) I didn't place a silver key at all,
+        which is needed to get the first weapon. Instead, I made it available in
+        the shop and placed gold around so the player can figure it out and play
+        it safe if they choose or rush through and fight with their bare hands
+        and put their fate in the hands of the RNG gods.
+      </p>
+
+      <h2>Misc</h2>
+      <p>
+        If your logged-in session expires before you had a chance to save, no
+        worries. Log in on the same browser and click Restore from Local, then
+        save your changes. We save to your browser's local storage when you
+        change your quest as a backup.
+      </p>
+      <p>
+        Test your games as you go using the Play button. You can set the player
+        start area to shortcut the process to make testing longer quests easier.
+      </p>
+    </div>
+  </app-container>
+</app-main-layout>
