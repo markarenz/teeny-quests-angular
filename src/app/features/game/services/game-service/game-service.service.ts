@@ -1,3 +1,4 @@
+declare let gtag: Function;
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import {
@@ -455,11 +456,15 @@ export class GameService {
    * @param action The activity type being recorded.
    */
   registerActivity(gameId: string, action: string): void {
-    // Called on quest ROM load, progress reset (PLAY)
-    // Called on game complete with initials (COMPLETE)
-    // Not async because we can let this run in the background
     const userId = this.authProviderService.getUserId();
     const username = this.authProviderService.getUsername();
+    gtag('event', 'game_action', {
+      event_category: action,
+      event_label: gameId,
+      link_url: window.location.href,
+      value: 1,
+    });
+
     fetch(activityApiUrl, {
       method: 'POST',
       headers: {
