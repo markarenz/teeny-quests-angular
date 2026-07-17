@@ -153,16 +153,18 @@ export class EditorPanelPropsComponent {
         }
       }
       this.canSetHeight = this.selectedPropDefinition.canSetHeight;
+      const defaultPropHeight = this.propHeightOptions[0]?.value ?? '1';
 
-      this.inputPropHeight = this.propHeightOptions
-        .map(option => option.value)
-        .includes(currentH.toString())
-        ? currentH.toString()
-        : (this.propHeightOptions[0]?.value ?? '1');
+      if (!this.inputPropHeight) {
+        this.inputPropHeight = this.propHeightOptions
+          .map(option => option.value)
+          .includes(currentH.toString())
+          ? currentH.toString()
+          : defaultPropHeight;
+      }
 
       if (!this.canSetHeight) {
-        this.inputPropHeight =
-          currentH.toString() ?? this.propHeightOptions[0]?.value ?? '1';
+        this.inputPropHeight = currentH.toString() ?? defaultPropHeight;
       }
     }
   }

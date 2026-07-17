@@ -1,4 +1,3 @@
-declare let gtag: Function;
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import {
@@ -458,12 +457,15 @@ export class GameService {
   registerActivity(gameId: string, action: string): void {
     const userId = this.authProviderService.getUserId();
     const username = this.authProviderService.getUsername();
-    gtag('event', 'game_action', {
-      event_category: action,
-      event_label: gameId,
-      link_url: window.location.href,
-      value: 1,
-    });
+    const analytics = (globalThis as { gtag?: Function }).gtag;
+    if (typeof analytics === 'function') {
+      analytics('event', 'game_action', {
+        event_category: action,
+        event_label: gameId,
+        link_url: window.location.href,
+        value: 1,
+      });
+    }
 
     fetch(activityApiUrl, {
       method: 'POST',
